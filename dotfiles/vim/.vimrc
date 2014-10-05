@@ -56,8 +56,6 @@ nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
 " Source .vimrc
 nnoremap <silent> <leader>sv :source $MYVIMRC<cr>
 
-nnoremap <silent> <leader>n :NERDTreeToggle<cr>
-
 " Use ; to access command-line
 nnoremap ; :
 nnoremap : ;
@@ -76,6 +74,12 @@ nnoremap <silent> <c-n> <nop>
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Open ctrlp tag window
 nnoremap <silent> <leader>p :CtrlPTag<cr>
+" Toggle NERDTree window
+nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+
+" Ultisnips
+let g:UltiSnipsJumpForwardTrigger = "<c-b>"
+let g:UltiSnipsExpandTrigger = "<c-b>"
 
 " fugitive {{{
 nnoremap <silent> <leader>ga :Git add .<cr>
@@ -149,16 +153,21 @@ set statusline+=%4p             " Percentage through file (lines)
 " }}}
 
 " }}}
-" }}}
 
-" Syntastic checking
+" Variable {{{
+" Plugins {{{
+" Syntastic
 let g:syntastic_python_checkers = ["python", "pep8", "pylint"]
 let g:syntastic_ruby_checkers = ["mri", "rubylint", "rubocop"]
 let g:syntastic_haskell_checkers = ["hdevtools", "hlint"]
-
 " vim-slime
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
+" }}}
+" }}}
+" }}}
+
+" Autocommands {{{
 
 " Delete trailing whitespace when saving
 augroup writer
@@ -172,10 +181,7 @@ augroup newfile
     autocmd BufRead * execute 'normal!' . "'" . '"zz'
 augroup END
 
-
-let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-let g:UltiSnipsExpandTrigger = "<c-b>"
-
+" Python {{{
 augroup Python
   autocmd!
   autocmd FileType python nnoremap <buffer> <localleader>ra :call <SID>PythonTestAll()<CR>
@@ -191,3 +197,6 @@ function! s:PythonTestAll()
     echo "No tests found"
   endif
 endfunction
+" }}}
+" }}}
+
