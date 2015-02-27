@@ -1,0 +1,15 @@
+# ~/.tmuxinator/development.yml
+
+name: development
+root: ~/
+
+project_name: development
+project_root: ~/Dropbox/programming/other/tmux
+
+windows:
+  - editor:
+      layout: main-horizontal
+      panes:
+        - vim
+        - # empty for bash
+  - console: # empty

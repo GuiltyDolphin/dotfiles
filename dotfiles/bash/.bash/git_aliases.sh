@@ -1,0 +1,8 @@
+alias gs='git status '
+alias gc='git commit '
+alias ga='git add '
+alias gb='git branch '
+alias go='git checkout '
+alias gd='git diff '
+alias gk='gitk --all&'
+alias gx='gitx --all'
