@@ -2,20 +2,24 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import subprocess
 
 from collections import namedtuple
 from functools import partial
 
-import getopt
+import getopt  # Use this rather than argparse for compatibility
 
-LINK_BASE = os.path.expandvars("$HOME")
+HOME = os.path.expandvars("$HOME")
+
+LINK_BASE = HOME
+
+DOT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 Link = namedtuple("Link", ["parent", "name", "link_type"])
 
 newpath = os.path.join
 
-dot_dir = os.path.dirname(os.path.realpath(__file__))
 
 def resolve_link_path(link):
     """Return the full path of link's name."""
@@ -41,7 +45,7 @@ def get_files():
     dirn = subprocess.check_output(
         ["dirname", "${BASH_SOURCE[0]}"],
         universal_newlines=True)
-    #dot_dir = subprocess.check_output(
+    #DOT_DIR = subprocess.check_output(
     #    ["cd", dirn, "&&", "pwd"],
     #    shell=True, universal_newlines=True)
 
@@ -63,7 +67,7 @@ def get_files():
     def create_links(base, *args):
         return map_partial(partial(link_default, base), *args)
 
-    bash_dir = Link(dot_dir, "bash", None)
+    bash_dir = Link(DOT_DIR, "bash", None)
     bash_files = create_links(
         bash_dir,
         ".bash/.bashrc",
@@ -72,7 +76,7 @@ def get_files():
     all_files["bash"] = bash_files
 
     # Git files
-    git_dir = Link(dot_dir, "git", None)
+    git_dir = Link(DOT_DIR, "git", None)
     git_files = create_links(
         git_dir,
         ".gitconfig")
@@ -80,14 +84,14 @@ def get_files():
     all_files["git"] = git_files
 
     # Haskell files
-    haskell_dir = Link(dot_dir, "haskell", None)
+    haskell_dir = Link(DOT_DIR, "haskell", None)
     ghci_files = create_links(
         haskell_dir,
         ".ghci")
     all_files["ghci"] = ghci_files
 
     # Tmux files
-    tmux_dir = Link(dot_dir, "tmux", None)
+    tmux_dir = Link(DOT_DIR, "tmux", None)
     tmux_files = create_links(
         tmux_dir,
         ".tmux.conf")
@@ -99,7 +103,7 @@ def get_files():
     all_files["tmuxinator"] = tmuxinator_files
 
     # Vim files
-    vim_dir = Link(dot_dir, "vim", None)
+    vim_dir = Link(DOT_DIR, "vim", None)
     vim_files = create_links(
         vim_dir,
         ".vimrc")
@@ -132,9 +136,11 @@ def link_files(req_prog, files):
 
 
 def setup_solarized_colors(color_dir):
+    """Download files needed for solarized color in terminal"""
     color_path = newpath(color_dir, ".dir_colors")
-    file_url = "https://raw.githubusercontent.com"
-    + "/seebi/dircolors-solarized/master/dircolors.256dark"
+    file_url = ("https://raw.githubusercontent.com"
+                "/seebi/dircolors-solarized/"
+                "master/dircolors.256dark")
     if os.path.exists(color_path):
         print("{} already exists".format(color_path))
     else:
@@ -147,12 +153,59 @@ def setup_solarized_colors(color_dir):
         print("File successfully downloaded.")
 
 
+def get_options(sys_args):
+    def usage():
+        print("""Installer for GuiltyDolphin's dotfiles.
+Hosted at https://www.github.com/GuiltyDolphin/config
+
+Usage: python install.py [long option] [option] ...
+long options:
+  --help (-h) - Display this help message
+  --link - Create symlinks to dotfiles
+  --setup-colors - Download solarized colors
+  --full - Setup everything
+""")
+
+    try:
+        opts, args = getopt.getopt(
+            sys_args, "h",
+            ["help", "link", "setup-colors", "full"])
+    except getopt.GetoptError as err:
+        print(err)
+        usage()
+        sys.exit(2)
+
+    options = {"link": True,
+               "color": False}
+    setups = ["link", "color"]
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif opt == "--link":
+            options["link"] = True
+        elif opt == "--setup-colors":
+            options["color"] = True
+        elif opt == "--full":
+            for setup in setups:
+                options[setup] = True
+        else:
+            print("Unhandled option")
+            sys.exit(2)
+    return options
+
+
 def main():
-    print("Linking dotfiles...")
-    prog_files = get_files()
-    for (prog, files) in prog_files.items():
-        print("Linking files for {}".format(prog))
-        link_files(prog, files)
+    options = get_options(sys.argv[1:])
+    if options["link"]:
+        print("Linking dotfiles...")
+        prog_files = get_files()
+        for (prog, files) in prog_files.items():
+            print("Linking files for {}".format(prog))
+            link_files(prog, files)
+    if options["color"]:
+        print("Would do colors")
+        # setup_solarized_colors(HOME)
 
 
 if __name__ == '__main__':
