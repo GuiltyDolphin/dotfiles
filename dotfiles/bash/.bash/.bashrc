@@ -13,6 +13,12 @@ if [[ -x /usr/bin/dircolors ]]; then
     test -r ~/Dropbox/linux/other/.dircolors && eval "$(dircolors -b ~/Dropbox/linux/other/.dircolors)" || eval "$(dircolors -b)"
 fi
 
+# WILL WANT THIS SOON!
+
+#if [[ -f "$HOME/.dir_colors" ]]; then
+#  eval $(dircolors -b "$HOME/.dir_colors")
+#fi
+
 #if [[ "$TERM" != "screen-256color" ]]; then
 #  # Need to have this detect the number of sessions already taken
 #  # and fill the smallest available number
@@ -81,7 +87,7 @@ alias 'sobash=source ~/.bashrc'
 alias tmux='TERM=xterm-256color tmux'
 
 [ -z "$TMUX" ] && export TERM=xterm-256color
-
+# export TERM=xterm-256color      - May want this in general
 
 ############
 #  PYTHON  #
