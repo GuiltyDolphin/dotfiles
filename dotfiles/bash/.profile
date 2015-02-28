@@ -23,8 +23,32 @@ fi
 
 # set keyboard to own
 #xkbcomp -I$HOME/Dropbox/linux/config2/.xkb ~/Dropbox/linux/config2/.xkb/keymap/custommap $DISPLAY
-xkbcomp -I$HOME/Dropbox/linux/config2/.xkb ~/Dropbox/linux/config2/.xkb/keymap/emacs $DISPLAY 2> /dev/null
 #setxkbmap custom -option ctrl:nocaps
+if [[ $(which xkbcomp) ]]; then
+  xkbcomp -I$HOME/Dropbox/linux/config2/.xkb ~/Dropbox/linux/config2/.xkb/keymap/emacs $DISPLAY 2> /dev/null
+else
+  echo "Cannot set custom keymap, attempting to use programmer dvorak"
+  if [[ $(which setxkbmap) ]]; then
+    setxkbmap -layout us -variant dvp -option ctrl:nocaps
+    if [[ ! $? ]]; then
+      echo "Failed to set programmer dvorak, attempting to use regular dvorak"
+      setxkbmap -layout us -variant dvorak -option ctrl:nocaps
+    else
+      echo "Keyboard layout set"
+      exit 0
+    fi
+    if [[ ! $? ]]; then
+      echo "Could not set keyboard layout"
+      exit 1
+    else
+      echo "Keyboard layout set"
+      exit 0
+    fi
+  else
+    echo "Cannot find 'setxkbmap', keyboard layout not set"
+    exit 1
+  fi
+fi
 
 export HISTIGNORE="&"
 export EDITOR="vim"
