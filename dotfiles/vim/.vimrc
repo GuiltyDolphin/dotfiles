@@ -22,6 +22,7 @@ Plugin 'honza/vim-snippets.git'    " Default ultisnips snippets
 Plugin 'jpalardy/vim-slime'        " One way communication to a (tmux) session
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
+Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'      " Syntax error checking
 Plugin 'sirver/ultisnips'          " Snippet integration
@@ -178,6 +179,7 @@ let g:syntastic_ruby_checkers = ["mri", "rubylint", "rubocop"]
 let g:syntastic_haskell_checkers = ["hdevtools", "hlint"]
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ["perl", "podchecker"]
+let g:syntastic_haskell_hdevtools_quiet_messages = { "regex": 'Could not find module' }
 " vim-slime
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
