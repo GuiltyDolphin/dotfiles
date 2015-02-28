@@ -10,6 +10,8 @@ from functools import partial
 
 import getopt  # Use this rather than argparse for compatibility
 
+import logging as log
+
 HOME = os.path.expandvars("$HOME")
 
 LINK_BASE = HOME
@@ -42,13 +44,6 @@ def get_link_path(link):
 
 def get_files():
     """Retrieve the files to be linked"""
-    dirn = subprocess.check_output(
-        ["dirname", "${BASH_SOURCE[0]}"],
-        universal_newlines=True)
-    #DOT_DIR = subprocess.check_output(
-    #    ["cd", dirn, "&&", "pwd"],
-    #    shell=True, universal_newlines=True)
-
     all_files = {}
 
     # Bash files
@@ -113,17 +108,18 @@ def get_files():
 
 
 def link_files(req_prog, files):
+    """Create symlinks for dotfiles"""
     try:
         subprocess.check_output(["which", req_prog])
     except subprocess.CalledProcessError:
-        print("{} not found, skipping related dotfiles".format(req_prog))
+        log.warn("{} not found, skipping related dotfiles".format(req_prog))
         return 1
     else:
         for (target, link_path) in map(get_link_path, files):
             if os.path.exists(link_path):
                 reason = os.path.samefile(
                     target, link_path) and "Already linked" or "File exists"
-                print("Skipping file {} - {}".format(link_path, reason))
+                log.debug("Skipping file {} - {}".format(link_path, reason))
                 continue
             else:
                 print("Would link! (Add linking)")
@@ -142,19 +138,23 @@ def setup_solarized_colors(color_dir):
                 "/seebi/dircolors-solarized/"
                 "master/dircolors.256dark")
     if os.path.exists(color_path):
-        print("{} already exists".format(color_path))
+        log.debug("{} already exists".format(color_path))
+        return
     else:
-        print("{} not found, downloading from github...".format(color_path))
+        log.info("{} not found, downloading from github...".format(
+            color_path))
     try:
-        subprocess.check_call(["wget", file_url, "-O", color_path])
+        subprocess.check_call(["wget", "-q", file_url, "-O", color_path])
     except subprocess.CalledProcessError:
-        print("Could not download file")
+        log.error("Could not download file {}".format(file_url))
     else:
-        print("File successfully downloaded.")
+        log.debug("File successfully downloaded.")
 
 
 def get_options(sys_args):
+    """Retrieve user options"""
     def usage():
+        """Print the script's usage"""
         print("""Installer for GuiltyDolphin's dotfiles.
 Hosted at https://www.github.com/GuiltyDolphin/config
 
@@ -164,19 +164,21 @@ long options:
   --link - Create symlinks to dotfiles
   --setup-colors - Download solarized colors
   --full - Setup everything
+  --verbose (-v) - Verbose output
 """)
 
     try:
         opts, args = getopt.getopt(
-            sys_args, "h",
-            ["help", "link", "setup-colors", "full"])
+            sys_args, "hv",
+            ["help", "link", "setup-colors", "full", "verbose"])
     except getopt.GetoptError as err:
         print(err)
         usage()
         sys.exit(2)
 
     options = {"link": True,
-               "color": False}
+               "color": False,
+               "verbose": False}
     setups = ["link", "color"]
     for opt, arg in opts:
         if opt in ("-h", "--help"):
@@ -189,6 +191,8 @@ long options:
         elif opt == "--full":
             for setup in setups:
                 options[setup] = True
+        elif opt in ("-v", "--verbose"):
+            options["verbose"] = True
         else:
             print("Unhandled option")
             sys.exit(2)
@@ -197,15 +201,20 @@ long options:
 
 def main():
     options = get_options(sys.argv[1:])
+    if options["verbose"]:
+        log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
+    else:
+        log.basicConfig(format="%(message)s", level=log.INFO)
+
     if options["link"]:
-        print("Linking dotfiles...")
+        log.info("Linking dotfiles...")
         prog_files = get_files()
         for (prog, files) in prog_files.items():
-            print("Linking files for {}".format(prog))
+            log.debug("Linking files for {}".format(prog))
             link_files(prog, files)
     if options["color"]:
-        print("Would do colors")
-        # setup_solarized_colors(HOME)
+        log.info("Setting up colors...")
+        setup_solarized_colors(HOME)
 
 
 if __name__ == '__main__':
