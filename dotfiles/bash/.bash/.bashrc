@@ -26,7 +26,9 @@ fi
 source $HOME'/.bash/git_aliases.sh'
 
 # ;}
-fortune
+if [[ $(which fortune) ]]; then
+  fortune
+fi
 
 ############
 #  PROMPT  #
@@ -106,6 +108,7 @@ if [[ $(which apt) ]]; then
 else
   alias ash='apt-cache search'
 fi
+
 alias as='apt-get show '
 
 # Use vi commands for terminal editing
@@ -120,14 +123,53 @@ alias info="info --vi-keys"
 
 alias la='ls -a'
 alias ll='ls -la'
-alias numfiles="du | wc -l"
+# alias numfiles="du -a | wc -l"
 alias rutest="rake test"
 alias ap='apropos'
 
 alias irb='irb2.0'
 alias ruby='ruby2.0'
 
-# Emacs
+filecount() {
+  local exclude=""
+  while [[ $# > 1 ]]; do
+    case "$1" in
+      -e|--exclude)
+      local exclude="$2"
+      shift
+      ;;
+      *)
+
+      ;;
+    esac
+    shift
+  done
+  du -a --exclude=$exclude | wc -l
+}
+
+
+# Quickly find all files under a certain path that
+# link to (or are) the given file.
+# If one argument is given then it is assumed to be
+# the file to search for.
+# If two arguments are given then the first argument
+# becomes the path to search and the second argument
+# is the file to search for.
+symlinks() {
+  if [[ $# -eq 2 ]]; then
+    local dirToSearch=$1
+    local fileSearch=$2
+  else
+    local dirToSearch=$HOME
+    local fileSearch=$1
+  fi
+  find -L $dirToSearch -samefile $fileSearch
+}
+
+###########
+#  EMACS  #
+###########
+
 alias emacs='emacs-24.4'
 
 
