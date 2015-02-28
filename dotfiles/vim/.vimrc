@@ -175,6 +175,7 @@ set statusline+=%4p             " Percentage through file (lines)
 " Plugins {{{
 " Syntastic
 let g:syntastic_python_checkers = ["python", "pep8", "pylint"]
+let g:syntastic_python_pylint_quiet_messages = { "regex": "parens after u'print'" }
 let g:syntastic_ruby_checkers = ["mri", "rubylint", "rubocop"]
 let g:syntastic_haskell_checkers = ["hdevtools", "hlint"]
 let g:syntastic_enable_perl_checker = 1
