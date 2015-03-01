@@ -7,6 +7,7 @@ import subprocess
 
 from collections import namedtuple
 from functools import partial
+from itertools import chain
 
 import getopt  # Use this rather than argparse for compatibility
 
@@ -14,17 +15,22 @@ import logging as log
 import time
 import shutil
 
+
+newpath = os.path.join
+
+INVOKE_DIR = os.path.dirname(os.path.realpath(__file__))
+
+DOT_DIR = newpath(INVOKE_DIR, "dotfiles")
+
 HOME = os.path.expandvars("$HOME")
 
 LINK_BASE = HOME
 
-DOT_DIR = os.path.dirname(os.path.realpath(__file__))
+CONFIG_DIR = INVOKE_DIR
 
 # Create instances of this when wanting to create new links.
 # The link_type is for determining the link path.
 Link = namedtuple("Link", ["parent", "name", "link_type"])
-
-newpath = os.path.join
 
 
 def resolve_link_path(link):
@@ -44,6 +50,9 @@ def get_link_path(link):
 
     If link.link_type is the string "default" then the path to be
     linked will be the LINK_BASE + link.name.
+
+    If link.link_type is a Link, then the link_path of that link
+    will be used as the link path.
     """
     target = resolve_link_path(link)
     link_type = link.link_type
@@ -51,6 +60,8 @@ def get_link_path(link):
         link_path = newpath(LINK_BASE, os.path.basename(link.name))
     elif callable(link_type):
         link_path = link_type(link)
+    elif isinstance(link_type, Link):
+        link_path = resolve_link_path(link_type)
     else:
         # May want to allow specification of a custom path as string.
         raise NotImplementedError
@@ -101,9 +112,9 @@ def get_files():
     emacs_custom_files = create_links(
         emacs_dir,
         ["custom", emacs_link])
-    emacs_files = emacs_custom_files + create_links(
+    emacs_files = chain(emacs_custom_files, create_links(
         emacs_custom_dir,
-        ["init.el", emacs_link])
+        ["init.el", emacs_link]))
 
     all_files["emacs"] = emacs_files
 
@@ -144,6 +155,13 @@ def get_files():
     return all_files
 
 
+def setup_keyboard():
+    log.info("Setting up keyboard...")
+    keyboard_link = Link(HOME, ".keyboard", None)
+    keyboard_dir = Link(CONFIG_DIR, "keyboard", keyboard_link)
+    create_links([keyboard_dir])
+
+
 def backup_overwrite(to_backup, backup_parent):
     """Create a backup of link_path in an appropriate directory"""
     backup_dir = newpath(
@@ -161,6 +179,31 @@ def backup_overwrite(to_backup, backup_parent):
     log.debug("File {} moved to {}".format(to_backup, target))
 
 
+def create_links(files):
+    """Make symlinks for files on the filesystem.
+
+    files should be a list of Links"""
+    def link_existing(target, link_path):
+        if os.path.samefile(target, link_path):
+            log.debug("Skipping file {} - Already linked".format(link_path))
+        else:
+            overwrite = require_yes_no(
+                "File {} already exists, backup and overwrite?".format(
+                    link_path))
+            if overwrite:
+                backup_overwrite(link_path, HOME)
+                create_soft_link(target, link_path)
+            else:
+                log.debug(
+                    "Skipping file {} - File exists".format(link_path))
+
+    for (target, link_path) in map(get_link_path, files):
+        if os.path.exists(link_path):
+            link_existing(target, link_path)
+        else:
+            create_soft_link(target, link_path)
+
+
 def create_soft_link(target, name):
     """Create a soft link to target with name 'name'."""
     try:
@@ -172,35 +215,19 @@ def create_soft_link(target, name):
 
 
 def link_files(req_prog, files):
-    """Create symlinks for dotfiles"""
+    """Create symlinks for files that have a program requirement"""
     try:
         subprocess.check_output(["which", req_prog])
     except subprocess.CalledProcessError:
         log.warn("{} not found, skipping related dotfiles".format(req_prog))
-        return 1
+        return
     else:
-        for (target, link_path) in map(get_link_path, files):
-            if os.path.exists(link_path):
-                if os.path.samefile(target, link_path):
-                    log.debug("Skipping file {} - Already linked".format(
-                        link_path))
-                    continue
-                else:
-                    overwrite = require_yes_no(
-                        "File {} already exists, backup and overwrite?")
-                    if overwrite:
-                        backup_overwrite(link_path, HOME)
-                        create_soft_link(target, link_path)
-                    else:
-                        log.debug(
-                            "Skipping file {} - File exists".format(link_path))
-                        continue
-            else:
-                create_soft_link(target, link_path)
+        create_links(files)
 
 
 def setup_solarized_colors(color_dir):
     """Download files needed for solarized color in terminal"""
+    log.info("Setting up colors...")
     color_path = newpath(color_dir, ".dir_colors")
     file_url = ("https://raw.githubusercontent.com"
                 "/seebi/dircolors-solarized/"
@@ -280,8 +307,8 @@ def main():
         for (prog, files) in prog_files.items():
             log.debug("Linking files for {}".format(prog))
             link_files(prog, files)
+        setup_keyboard()
     if options["color"]:
-        log.info("Setting up colors...")
         setup_solarized_colors(HOME)
 
 
