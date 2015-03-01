@@ -35,14 +35,22 @@ if $useCustomKeyboard; then
   fi
 fi
 
-export HISTIGNORE="&"
-export EDITOR="vim"
-export EMAIL="guiltydolphin@gmail.com"
+HISTIGNORE="&"
+EDITOR="vim"
+EMAIL="guiltydolphin@gmail.com"
 
 # Force Dropbox to start if it is installed
 if [[ $(which dropbox) ]]; then
   dropbox start &>/dev/null
 fi
 
+# Add local programs to the path
+PATH=$PATH:~/.local/bin
+
+# Add ruby gems to path
+PATH=$PATH:~/.gem/ruby/1.9.1/bin
+
 # Commands compiled from cabal
 [[ -d "$HOME/.cabal/bin" ]] && PATH="$HOME/.cabal/bin:$PATH"
+
+LANG="en_GB.UTF-8"

@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-
-#PATH=$PATH:$HOME/Dropbox/programming/commands
-
-# Add local programs to the path
-export PATH=$PATH:~/.local/bin
-
-# Add ruby gems to path
-export PATH=$PATH:~/.gem/ruby/1.9.1/bin
+# Part of GuiltyDolphin's dotfiles
+# Hosted at: https://www.github.com/GuiltyDolphin/config
 
 if [[ -x /usr/bin/dircolors ]]; then
     #test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -29,12 +23,10 @@ fi
 #  tmux attach-session -t "$USER" || tmux new-session -s "$USER"
 #fi
 
-source $HOME'/.bash/git_aliases.sh'
+source "$HOME/.bash/git_aliases.sh"
 
 # ;}
-if [[ $(which fortune) ]]; then
-  fortune
-fi
+[[ $(which fortune) ]] && fortune
 
 ############
 #  PROMPT  #
@@ -129,13 +121,13 @@ alias info="info --vi-keys"
 
 alias la='ls -a'
 alias ll='ls -la'
-# alias numfiles="du -a | wc -l"
 alias rutest="rake test"
 alias ap='apropos'
 
 alias irb='irb2.0'
 alias ruby='ruby2.0'
 
+# Get the number of files in the current directory tree
 filecount() {
   local exclude=""
   while [[ $# > 1 ]]; do
@@ -201,11 +193,6 @@ h() {
     fi
   fi
 }
-
-# Other aliases
-
-export LANG="en_GB.UTF-8"
-
 
 ############
 #  SCHOOL  #
