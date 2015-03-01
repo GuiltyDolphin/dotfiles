@@ -11,6 +11,8 @@ from functools import partial
 import getopt  # Use this rather than argparse for compatibility
 
 import logging as log
+import time
+import shutil
 
 HOME = os.path.expandvars("$HOME")
 
@@ -18,6 +20,8 @@ LINK_BASE = HOME
 
 DOT_DIR = os.path.dirname(os.path.realpath(__file__))
 
+# Create instances of this when wanting to create new links.
+# The link_type is for determining the link path.
 Link = namedtuple("Link", ["parent", "name", "link_type"])
 
 newpath = os.path.join
@@ -42,18 +46,27 @@ def get_link_path(link):
     return (target, link_path)
 
 
+def require_yes_no(prompt):
+    """Return a boolean value based on a user input of 'yes' or 'no'."""
+    response = input(prompt + " [y/n]: ")
+    affirmatives = ('y', 'yes')
+    negatives = ('n', 'no')
+    while not response.casefold() in affirmatives + negatives:
+        response = input("Response must be y[es] or n[o]: ")
+    return response in affirmatives
+
+
 def get_files():
     """Retrieve the files to be linked"""
     all_files = {}
 
-    # Bash files
     def map_partial(fn, *args):
         result = []
-        for a in args:
-            if isinstance(a, list):
-                result.append(fn(*a))
+        for arg in args:
+            if isinstance(arg, list):
+                result.append(fn(arg))
             else:
-                result.append(fn(a))
+                result.append(fn(arg))
         return result
 
     def link_default(parent, name, link_type="default"):
@@ -62,6 +75,7 @@ def get_files():
     def create_links(base, *args):
         return map_partial(partial(link_default, base), *args)
 
+    # Bash files
     bash_dir = Link(DOT_DIR, "bash", None)
     bash_files = create_links(
         bash_dir,
@@ -107,6 +121,33 @@ def get_files():
     return all_files
 
 
+def backup_overwrite(to_backup, backup_parent):
+    """Create a backup of link_path in an appropriate directory"""
+    backup_dir = newpath(
+        backup_parent, ".dotfile_backup", time.strftime("%F"))
+    if not os.path.exists(backup_dir):
+        log.info("Creating directory {}".format(backup_dir))
+        os.mkdir(backup_dir)
+    else:
+        log.debug("Directory {} already exists".format(backup_dir))
+    target = newpath(backup_dir, to_backup)
+    if os.path.exists(target):
+        log.debug("File {} already exists, appending timestamp".format(target))
+        target = target + "-" + time.strftime("%s")
+    shutil.move(to_backup, target)
+    log.debug("File {} moved to {}".format(to_backup, target))
+
+
+def create_soft_link(target, name):
+    """Create a soft link to target with name 'name'."""
+    try:
+        subprocess.call(["ln", "-s", target, name])
+    except subprocess.CalledProcessError:
+        log.error("Failed to link {} to {}".format(target, name))
+    else:
+        log.debug("Linked file: {} to {}".format(target, name))
+
+
 def link_files(req_prog, files):
     """Create symlinks for dotfiles"""
     try:
@@ -117,18 +158,22 @@ def link_files(req_prog, files):
     else:
         for (target, link_path) in map(get_link_path, files):
             if os.path.exists(link_path):
-                reason = os.path.samefile(
-                    target, link_path) and "Already linked" or "File exists"
-                log.debug("Skipping file {} - {}".format(link_path, reason))
-                continue
+                if os.path.samefile(target, link_path):
+                    log.debug("Skipping file {} - Already linked".format(
+                        link_path))
+                else:
+                    overwrite = require_yes_no(
+                        "File {} already exists, backup and overwrite?")
+                    if overwrite:
+                        backup_overwrite(target, link_path)
+                        create_soft_link(target, link_path)
+                        continue
+                    else:
+                        log.debug(
+                            "Skipping file {} - File exists".format(link_path))
+                        continue
             else:
-                print("Would link! (Add linking)")
-                # try:
-                #   subprocess.call(["ln", "-s", target, link_path])
-                # catch CalledProcessError:
-                #   print("Failed to link {} to {}".format(target, link_path))
-                # else:
-                #   print("Linked file: {} to {}".format(target, link_path))
+                create_soft_link(target, link_path)
 
 
 def setup_solarized_colors(color_dir):
