@@ -1,0 +1,16 @@
+# contributer: GuiltyDolphin
+# name: haddock-header
+# key: header
+# --
+{- |
+Module      :  ${1:`(buffer-name)`}
+Description :  ${2:optional short text displayed on contents page}
+Copyright   :  (c) ${3:`(user-full-name)`}, `(format-time-string "%Y")`
+License     :  ${4:`user-preferred-license`}
+
+Maintainer  :  ${5:`user-mail-address`}
+Stability   :  ${6:$$(yas-completing-prompt "Stability: " '("unstable" "experimental" "provisional" "stable" "frozen"))}
+Portability :  ${7:$$(yas-ido-prompt "Portability: " '("portable" "non-portable"))} ${7:$(when (string= yas-text "non-portable") "(<reason>)")}
+
+${0:module description}
+-}

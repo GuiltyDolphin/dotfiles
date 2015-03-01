@@ -1,0 +1,5 @@
+# contributer: GuiltyDolphin
+# key: copyright
+# --
+(c) ${1:`(user-full-name)`}, ${2:`(format-time-string "%Y")`}
+$0

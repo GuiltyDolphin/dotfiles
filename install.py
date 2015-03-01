@@ -36,12 +36,23 @@ def resolve_link_path(link):
 
 
 def get_link_path(link):
-    """Get the target and path to link to for a particular Link"""
+    """Get the target and path to link to for a particular Link
+
+    If link.link_type is callable then it is passed the link and
+    and should return a string representing the path to be
+    linked to.
+
+    If link.link_type is the string "default" then the path to be
+    linked will be the LINK_BASE + link.name.
+    """
     target = resolve_link_path(link)
     link_type = link.link_type
     if link_type == "default":
         link_path = newpath(LINK_BASE, os.path.basename(link.name))
+    elif callable(link_type):
+        link_path = link_type(link)
     else:
+        # May want to allow specification of a custom path as string.
         raise NotImplementedError
     return (target, link_path)
 
@@ -61,18 +72,15 @@ def get_files():
     all_files = {}
 
     def map_partial(fn, *args):
-        result = []
-        for arg in args:
-            if isinstance(arg, list):
-                result.append(fn(arg))
-            else:
-                result.append(fn(arg))
-        return result
+        return map(
+            lambda arg: isinstance(arg, list) and fn(*arg) or fn(arg), args)
 
     def link_default(parent, name, link_type="default"):
+        """Create a basic link, assuming a default link_type"""
         return Link(parent, name, link_type)
 
     def create_links(base, *args):
+        """Create a series of links using base as the parent"""
         return map_partial(partial(link_default, base), *args)
 
     # Bash files
@@ -83,6 +91,21 @@ def get_files():
         ".profile")
 
     all_files["bash"] = bash_files
+
+    # Emacs files
+
+    def emacs_link(link):
+        return newpath(LINK_BASE, ".emacs.d", link.name)
+    emacs_dir = Link(DOT_DIR, "emacs", None)
+    emacs_custom_dir = Link(emacs_dir, "custom", None)
+    emacs_custom_files = create_links(
+        emacs_dir,
+        ["custom", emacs_link])
+    emacs_files = emacs_custom_files + create_links(
+        emacs_custom_dir,
+        ["init.el", emacs_link])
+
+    all_files["emacs"] = emacs_files
 
     # Git files
     git_dir = Link(DOT_DIR, "git", None)
@@ -161,13 +184,13 @@ def link_files(req_prog, files):
                 if os.path.samefile(target, link_path):
                     log.debug("Skipping file {} - Already linked".format(
                         link_path))
+                    continue
                 else:
                     overwrite = require_yes_no(
                         "File {} already exists, backup and overwrite?")
                     if overwrite:
-                        backup_overwrite(target, link_path)
+                        backup_overwrite(link_path, HOME)
                         create_soft_link(target, link_path)
-                        continue
                     else:
                         log.debug(
                             "Skipping file {} - File exists".format(link_path))
