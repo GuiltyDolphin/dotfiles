@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# install.py
+# Part of GuiltyDolphin's dotfiles
+# Hosted at https://www.github.com/GuiltyDolphin/config
 
 import os
 import sys
 import subprocess
 
-from collections import namedtuple
 from functools import partial
 from itertools import chain
 
@@ -24,48 +26,63 @@ DOT_DIR = newpath(INVOKE_DIR, "dotfiles")
 
 HOME = os.path.expandvars("$HOME")
 
+# The default directory under which files will be linked
 LINK_BASE = HOME
 
 CONFIG_DIR = INVOKE_DIR
 
-# Create instances of this when wanting to create new links.
-# The link_type is for determining the link path.
-Link = namedtuple("Link", ["parent", "name", "link_type"])
+
+class Link(object):
+    """Create hierarchical symlink representations"""
+    def __init__(self, parent, name):
+        """Create a link object
+
+        parent (string | Link) - Parent used for determining
+        filepaths.
+        name (string) - the final target path to the file
+        """
+        self._parent = parent
+        self._name = name
+
+    @property
+    def target_path(self):
+        """Get the path of the file to be linked"""
+        if isinstance(self._parent, str):
+            return newpath(self._parent, self._name)
+        else:
+            return newpath(self._parent.target_path, self._name)
+
+    @property
+    def link_path(self):
+        """Return the path to be linked to.
+
+        Override this to provide custom link paths"""
+        return newpath(LINK_BASE, os.path.basename(self._name))
+
+    def link_parameters(self):
+        """Return the target and path to be linked"""
+        target = self.target_path
+        link_path = self.link_path
+        return (target, link_path)
 
 
-def resolve_link_path(link):
-    """Return the full path of link's name."""
-    if isinstance(link.parent, str):
-        return newpath(link.parent, link.name)
-    else:
-        return newpath(resolve_link_path(link.parent), link.name)
+class EmacsLink(Link):
+    """Link for emacs configuration files"""
+    @property
+    def link_path(self):
+        return newpath(LINK_BASE, ".emacs.d", self._name)
 
 
-def get_link_path(link):
-    """Get the target and path to link to for a particular Link
+class KeyboardLink(Link):
+    """Link for keyboard configuration"""
+    @property
+    def link_path(self):
+        return newpath(LINK_BASE, ".keyboard")
 
-    If link.link_type is callable then it is passed the link and
-    and should return a string representing the path to be
-    linked to.
 
-    If link.link_type is the string "default" then the path to be
-    linked will be the LINK_BASE + link.name.
-
-    If link.link_type is a Link, then the link_path of that link
-    will be used as the link path.
-    """
-    target = resolve_link_path(link)
-    link_type = link.link_type
-    if link_type == "default":
-        link_path = newpath(LINK_BASE, os.path.basename(link.name))
-    elif callable(link_type):
-        link_path = link_type(link)
-    elif isinstance(link_type, Link):
-        link_path = resolve_link_path(link_type)
-    else:
-        # May want to allow specification of a custom path as string.
-        raise NotImplementedError
-    return (target, link_path)
+class DefaultLink(Link):
+    """Default link for standard dotfiles"""
+    pass
 
 
 def require_yes_no(prompt):
@@ -82,21 +99,15 @@ def get_files():
     """Retrieve the files to be linked"""
     all_files = {}
 
-    def map_partial(fn, *args):
-        return map(
-            lambda arg: isinstance(arg, list) and fn(*arg) or fn(arg), args)
-
-    def link_default(parent, name, link_type="default"):
-        """Create a basic link, assuming a default link_type"""
-        return Link(parent, name, link_type)
-
-    def create_links(base, *args):
+    # Fix this!
+    def make_default_links(link_type, base, *args):
         """Create a series of links using base as the parent"""
-        return map_partial(partial(link_default, base), *args)
+        return map(partial(link_type, base), args)
 
     # Bash files
-    bash_dir = Link(DOT_DIR, "bash", None)
-    bash_files = create_links(
+    bash_dir = DefaultLink(DOT_DIR, "bash")
+    bash_files = make_default_links(
+        DefaultLink,
         bash_dir,
         ".bash/.bashrc",
         ".profile")
@@ -105,40 +116,44 @@ def get_files():
 
     # Emacs files
 
-    def emacs_link(link):
-        return newpath(LINK_BASE, ".emacs.d", link.name)
-    emacs_dir = Link(DOT_DIR, "emacs", None)
-    emacs_custom_dir = Link(emacs_dir, "custom", None)
-    emacs_custom_files = create_links(
+    emacs_dir = EmacsLink(DOT_DIR, "emacs")
+    emacs_custom_dir = EmacsLink(emacs_dir, "custom")
+    emacs_custom_files = make_default_links(
+        EmacsLink,
         emacs_dir,
-        ["custom", emacs_link])
-    emacs_files = chain(emacs_custom_files, create_links(
+        "custom")
+    emacs_files = chain(emacs_custom_files, make_default_links(
+        EmacsLink,
         emacs_custom_dir,
-        ["init.el", emacs_link]))
+        "init.el"))
 
     all_files["emacs"] = emacs_files
 
     # Git files
-    git_dir = Link(DOT_DIR, "git", None)
-    git_files = create_links(
+    git_dir = DefaultLink(DOT_DIR, "git")
+    git_files = make_default_links(
+        DefaultLink,
         git_dir,
         ".gitconfig")
 
     all_files["git"] = git_files
 
     # Haskell files
-    haskell_dir = Link(DOT_DIR, "haskell", None)
-    ghci_files = create_links(
+    haskell_dir = DefaultLink(DOT_DIR, "haskell")
+    ghci_files = make_default_links(
+        DefaultLink,
         haskell_dir,
         ".ghci")
     all_files["ghci"] = ghci_files
 
     # Tmux files
-    tmux_dir = Link(DOT_DIR, "tmux", None)
-    tmux_files = create_links(
+    tmux_dir = DefaultLink(DOT_DIR, "tmux")
+    tmux_files = make_default_links(
+        DefaultLink,
         tmux_dir,
         ".tmux.conf")
-    tmuxinator_files = create_links(
+    tmuxinator_files = make_default_links(
+        DefaultLink,
         tmux_dir,
         ".tmuxinator")
 
@@ -146,8 +161,9 @@ def get_files():
     all_files["tmuxinator"] = tmuxinator_files
 
     # Vim files
-    vim_dir = Link(DOT_DIR, "vim", None)
-    vim_files = create_links(
+    vim_dir = DefaultLink(DOT_DIR, "vim")
+    vim_files = make_default_links(
+        DefaultLink,
         vim_dir,
         ".vimrc")
     all_files["vim"] = vim_files
@@ -156,10 +172,10 @@ def get_files():
 
 
 def setup_keyboard():
+    """Link the keyboard directory to allow use of custom layout"""
     log.info("Setting up keyboard...")
-    keyboard_link = Link(HOME, ".keyboard", None)
-    keyboard_dir = Link(CONFIG_DIR, "keyboard", keyboard_link)
-    create_links([keyboard_dir])
+    keyboard_dir = KeyboardLink(CONFIG_DIR, "keyboard")
+    create_link(keyboard_dir)
 
 
 def backup_overwrite(to_backup, backup_parent):
@@ -179,42 +195,53 @@ def backup_overwrite(to_backup, backup_parent):
     log.debug("File {} moved to {}".format(to_backup, target))
 
 
+def link_existing(link):
+    """Attempt to create a symlink to an existing destination"""
+    (target, link_path) = link.link_parameters()
+    if os.path.samefile(target, link_path):
+        log.debug("Skipping file {} - Already linked".format(link_path))
+    else:
+        overwrite = require_yes_no(
+            "File {} already exists, backup and overwrite?".format(
+                link_path))
+        if overwrite:
+            backup_overwrite(link_path, HOME)
+            create_soft_link(link)
+        else:
+            log.debug(
+                "Skipping file {} - File exists".format(link_path))
+
+
+def create_link(link):
+    """Create an individual symlink on the filesystem"""
+    if os.path.exists(link.link_path):
+        link_existing(link)
+    else:
+        create_soft_link(link)
+
+
+# Maybe move this (and related functions) to the Link class?
+# (There isn't much point in them if there isn't state!)
 def create_links(files):
     """Make symlinks for files on the filesystem.
 
     files should be a list of Links"""
-    def link_existing(target, link_path):
-        if os.path.samefile(target, link_path):
-            log.debug("Skipping file {} - Already linked".format(link_path))
-        else:
-            overwrite = require_yes_no(
-                "File {} already exists, backup and overwrite?".format(
-                    link_path))
-            if overwrite:
-                backup_overwrite(link_path, HOME)
-                create_soft_link(target, link_path)
-            else:
-                log.debug(
-                    "Skipping file {} - File exists".format(link_path))
-
-    for (target, link_path) in map(get_link_path, files):
-        if os.path.exists(link_path):
-            link_existing(target, link_path)
-        else:
-            create_soft_link(target, link_path)
+    for link in files:
+        create_link(link)
 
 
-def create_soft_link(target, name):
+def create_soft_link(link):
     """Create a soft link to target with name 'name'."""
+    link_params = link.link_parameters
     try:
-        subprocess.call(["ln", "-s", target, name])
+        subprocess.call(["ln", "-s"].extend(link_params))
     except subprocess.CalledProcessError:
-        log.error("Failed to link {} to {}".format(target, name))
+        log.error("Failed to link {} to {}".format(*link_params))
     else:
-        log.debug("Linked file: {} to {}".format(target, name))
+        log.debug("Linked file: {} to {}".format(*link_params))
 
 
-def link_files(req_prog, files):
+def link_files(req_prog, links):
     """Create symlinks for files that have a program requirement"""
     try:
         subprocess.check_output(["which", req_prog])
@@ -222,7 +249,7 @@ def link_files(req_prog, files):
         log.warn("{} not found, skipping related dotfiles".format(req_prog))
         return
     else:
-        create_links(files)
+        create_links(links)
 
 
 def setup_solarized_colors(color_dir):
@@ -263,7 +290,7 @@ long options:
 """)
 
     try:
-        opts, args = getopt.getopt(
+        opts, _ = getopt.getopt(
             sys_args, "hv",
             ["help", "link", "setup-colors", "full", "verbose"])
     except getopt.GetoptError as err:
@@ -275,7 +302,7 @@ long options:
                "color": False,
                "verbose": False}
     setups = ["link", "color"]
-    for opt, arg in opts:
+    for opt, _ in opts:
         if opt in ("-h", "--help"):
             usage()
             sys.exit()
@@ -289,8 +316,7 @@ long options:
         elif opt in ("-v", "--verbose"):
             options["verbose"] = True
         else:
-            print("Unhandled option")
-            sys.exit(2)
+            raise NotImplementedError
     return options
 
 
@@ -304,9 +330,9 @@ def main():
     if options["link"]:
         log.info("Linking dotfiles...")
         prog_files = get_files()
-        for (prog, files) in prog_files.items():
+        for (prog, links) in prog_files.items():
             log.debug("Linking files for {}".format(prog))
-            link_files(prog, files)
+            link_files(prog, links)
         setup_keyboard()
     if options["color"]:
         setup_solarized_colors(HOME)
