@@ -17,6 +17,10 @@ import logging as log
 import time
 import shutil
 
+try:
+    input = raw_input
+except NameError:
+    pass
 
 newpath = os.path.join
 
@@ -43,6 +47,7 @@ class Link(object):
         """
         self._parent = parent
         self._name = name
+        self._required_program = None
 
     @property
     def target_path(self):
@@ -59,6 +64,16 @@ class Link(object):
         Override this to provide custom link paths"""
         return newpath(LINK_BASE, os.path.basename(self._name))
 
+    # Is this a good idea?
+    # - The instances could carry around the program
+    # they require, meaning that the hash would not be required.
+    # However - this would either require a new class per program
+    # or overriding the property for instances.
+    @property
+    def required_program(self):
+        return self._required_program
+
+    @property
     def link_parameters(self):
         """Return the target and path to be linked"""
         target = self.target_path
@@ -68,6 +83,8 @@ class Link(object):
 
 class EmacsLink(Link):
     """Link for emacs configuration files"""
+    _required_program = "emacs"
+
     @property
     def link_path(self):
         return newpath(LINK_BASE, ".emacs.d", self._name)
@@ -90,7 +107,7 @@ def require_yes_no(prompt):
     response = input(prompt + " [y/n]: ")
     affirmatives = ('y', 'yes')
     negatives = ('n', 'no')
-    while not response.casefold() in affirmatives + negatives:
+    while not response.lower() in affirmatives + negatives:
         response = input("Response must be y[es] or n[o]: ")
     return response in affirmatives
 
@@ -102,6 +119,7 @@ def get_files():
     # Fix this!
     def make_default_links(link_type, base, *args):
         """Create a series of links using base as the parent"""
+        # Could maybe use the type of base as the link_type?
         return map(partial(link_type, base), args)
 
     # Bash files
@@ -197,7 +215,7 @@ def backup_overwrite(to_backup, backup_parent):
 
 def link_existing(link):
     """Attempt to create a symlink to an existing destination"""
-    (target, link_path) = link.link_parameters()
+    (target, link_path) = link.link_parameters
     if os.path.samefile(target, link_path):
         log.debug("Skipping file {} - Already linked".format(link_path))
     else:
@@ -247,7 +265,6 @@ def link_files(req_prog, links):
         subprocess.check_output(["which", req_prog])
     except subprocess.CalledProcessError:
         log.warn("{} not found, skipping related dotfiles".format(req_prog))
-        return
     else:
         create_links(links)
 
@@ -261,16 +278,15 @@ def setup_solarized_colors(color_dir):
                 "master/dircolors.256dark")
     if os.path.exists(color_path):
         log.debug("{} already exists".format(color_path))
-        return
     else:
         log.info("{} not found, downloading from github...".format(
             color_path))
-    try:
-        subprocess.check_call(["wget", "-q", file_url, "-O", color_path])
-    except subprocess.CalledProcessError:
-        log.error("Could not download file {}".format(file_url))
-    else:
-        log.debug("File successfully downloaded.")
+        try:
+            subprocess.check_call(["wget", "-q", file_url, "-O", color_path])
+        except subprocess.CalledProcessError:
+            log.error("Could not download file {}".format(file_url))
+        else:
+            log.debug("File successfully downloaded.")
 
 
 def get_options(sys_args):
