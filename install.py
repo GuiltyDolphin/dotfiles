@@ -11,12 +11,13 @@ import subprocess
 from functools import partial
 from itertools import chain
 
-import getopt  # Use this rather than argparse for compatibility
+import getopt  # Use this rather than argparse (for compatibility)
 
 import logging as log
 import time
 import shutil
 
+# This is just to fix the input incompatability with python2
 try:
     input = raw_input
 except NameError:
@@ -47,7 +48,6 @@ class Link(object):
         """
         self._parent = parent
         self._name = name
-        self._required_program = None
 
     @property
     def target_path(self):
@@ -64,15 +64,6 @@ class Link(object):
         Override this to provide custom link paths"""
         return newpath(LINK_BASE, os.path.basename(self._name))
 
-    # Is this a good idea?
-    # - The instances could carry around the program
-    # they require, meaning that the hash would not be required.
-    # However - this would either require a new class per program
-    # or overriding the property for instances.
-    @property
-    def required_program(self):
-        return self._required_program
-
     @property
     def link_parameters(self):
         """Return the target and path to be linked"""
@@ -83,7 +74,6 @@ class Link(object):
 
 class EmacsLink(Link):
     """Link for emacs configuration files"""
-    _required_program = "emacs"
 
     @property
     def link_path(self):
@@ -116,16 +106,14 @@ def get_files():
     """Retrieve the files to be linked"""
     all_files = {}
 
-    # Fix this!
-    def make_default_links(link_type, base, *args):
+    def make_default_links(base, *args):
         """Create a series of links using base as the parent"""
-        # Could maybe use the type of base as the link_type?
+        link_type = type(base)
         return map(partial(link_type, base), args)
 
     # Bash files
     bash_dir = DefaultLink(DOT_DIR, "bash")
     bash_files = make_default_links(
-        DefaultLink,
         bash_dir,
         ".bash/.bashrc",
         ".profile")
@@ -133,15 +121,12 @@ def get_files():
     all_files["bash"] = bash_files
 
     # Emacs files
-
     emacs_dir = EmacsLink(DOT_DIR, "emacs")
     emacs_custom_dir = EmacsLink(emacs_dir, "custom")
     emacs_custom_files = make_default_links(
-        EmacsLink,
         emacs_dir,
         "custom")
     emacs_files = chain(emacs_custom_files, make_default_links(
-        EmacsLink,
         emacs_custom_dir,
         "init.el"))
 
@@ -150,7 +135,6 @@ def get_files():
     # Git files
     git_dir = DefaultLink(DOT_DIR, "git")
     git_files = make_default_links(
-        DefaultLink,
         git_dir,
         ".gitconfig")
 
@@ -159,7 +143,6 @@ def get_files():
     # Haskell files
     haskell_dir = DefaultLink(DOT_DIR, "haskell")
     ghci_files = make_default_links(
-        DefaultLink,
         haskell_dir,
         ".ghci")
     all_files["ghci"] = ghci_files
@@ -167,11 +150,9 @@ def get_files():
     # Tmux files
     tmux_dir = DefaultLink(DOT_DIR, "tmux")
     tmux_files = make_default_links(
-        DefaultLink,
         tmux_dir,
         ".tmux.conf")
     tmuxinator_files = make_default_links(
-        DefaultLink,
         tmux_dir,
         ".tmuxinator")
 
@@ -181,7 +162,6 @@ def get_files():
     # Vim files
     vim_dir = DefaultLink(DOT_DIR, "vim")
     vim_files = make_default_links(
-        DefaultLink,
         vim_dir,
         ".vimrc")
     all_files["vim"] = vim_files
@@ -226,8 +206,7 @@ def link_existing(link):
             backup_overwrite(link_path, HOME)
             create_soft_link(link)
         else:
-            log.debug(
-                "Skipping file {} - File exists".format(link_path))
+            log.debug("Skipping file {} - File exists".format(link_path))
 
 
 def create_link(link):
