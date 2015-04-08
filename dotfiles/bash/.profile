@@ -18,22 +18,22 @@ fi
 useCustomKeyboard=true
 
 # Set keyboard layout
-if $useCustomKeyboard; then
-  if [[ $(which xkbcomp) ]]; then
-    xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/emacs $DISPLAY 2> /dev/null
-  else
-    echo "Cannot set custom keymap, using programmer dvorak"
-    if [[ $(which setxkbmap) ]]; then
-      setxkbmap -layout us -variant dvp -option ctrl:nocaps
-      if [[ ! $? ]]; then
-        echo "Failed to set programmer dvorak, using regular dvorak"
-        setxkbmap -layout us -variant dvorak -option ctrl:nocaps \
-          || echo "Could not set keyboard layout"
-      fi
-    else echo "Cannot find 'setxkbmap', keyboard layout not set"
+#if $useCustomKeyboard; then
+if [[ $(which xkbcomp) ]]; then
+  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/emacs $DISPLAY 2> /dev/null
+else
+  echo "Cannot set custom keymap, using programmer dvorak"
+  if [[ $(which setxkbmap) ]]; then
+    setxkbmap -layout us -variant dvp -option ctrl:nocaps
+    if [[ ! $? ]]; then
+      echo "Failed to set programmer dvorak, using regular dvorak"
+      setxkbmap -layout us -variant dvorak -option ctrl:nocaps \
+        || echo "Could not set keyboard layout"
     fi
+  else echo "Cannot find 'setxkbmap', keyboard layout not set"
   fi
 fi
+#fi
 
 HISTIGNORE="&"
 EDITOR="vim"
