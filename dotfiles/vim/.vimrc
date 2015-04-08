@@ -32,6 +32,7 @@ Plugin 'tpope/vim-surround'        " Allow manipulation of surrounding character
 Plugin 'Twinside/vim-haskellConceal'
 Plugin 'valloric/youcompleteme'    " Code completion
 Plugin 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
+Plugin 'lesliev/vim-inform7'       " Syntax file highlighting for inform
 
 
 call vundle#end()            " required
@@ -147,6 +148,7 @@ set nobackup       " Don't make backup copies of files when overwriting
 set laststatus=2 " Shows the statusline.
 set shiftwidth=2 " Generally use 2 spaces for indenting
 set softtabstop=2
+set tabstop=2
 " }}}
 
 " String options {{{
@@ -248,6 +250,12 @@ augroup Haskell
   autocmd!
   au FileType haskell setlocal omnifunc=necoghc#omnifunc
   au FileType haskell let g:ycm_semantic_triggers={'haskell' : ['.', '= ', '> ', '- ', ':: '] }
+augroup END
+" }}}
+" Inform {{{
+augroup inform7
+  autocmd!
+  au FileType inform7 setlocal noexpandtab
 augroup END
 " }}}
 " }}}
