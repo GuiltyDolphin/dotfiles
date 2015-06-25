@@ -4,6 +4,7 @@
 # Default path
 PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
 PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
+PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
@@ -34,6 +35,15 @@ else
   fi
 fi
 #fi
+
+setKeyUs() {
+  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/blender $DISPLAY 2> /dev/null
+}
+setKeyDv() {
+  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/emacs $DISPLAY 2> /dev/null
+}
+
+
 
 HISTIGNORE="&"
 EDITOR="vim"
