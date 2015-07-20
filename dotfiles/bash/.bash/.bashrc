@@ -28,6 +28,13 @@ source "$HOME/.bash/git_aliases.sh"
 # ;}
 [[ $(which fortune) ]] && fortune
 
+##############
+#  TERMINAL  #
+##############
+
+# Stop C-s from freezing terminal keys
+stty -ixon
+
 ############
 #  PROMPT  #
 ############
