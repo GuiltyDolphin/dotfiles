@@ -241,14 +241,74 @@ def create_soft_link(link):
         log.debug("Linked file: {} to {}".format(*link_params))
 
 
-def link_files(req_prog, links):
+def link_files(req_prog, links, install):
     """Create symlinks for files that have a program requirement"""
     try:
         subprocess.check_output(["which", req_prog])
     except subprocess.CalledProcessError:
-        log.warn("{} not found, skipping related dotfiles".format(req_prog))
+        if install:
+            log.info("{} not found, attempting to install".format(req_prog))
+            install_prog(req_prog)
+        else:
+            log.warn("{} not found, skipping related dotfiles".format(req_prog))
     else:
         create_links(links)
+
+
+def install_prog(prog):
+    def apt_install(prog):
+        try:
+            subprocess.check_call(["sudo apt-get install {} -y".format(prog)])
+        except subprocess.CalledProcessError:
+            log.warn("Could not install {}".format(prog))
+            return False
+        else:
+            log.info("Successfully installed {}".format(prog))
+            return True
+
+    def retrieve_from_github(repo, path):
+        try:
+            subprocess.check_call(["git clone https://github.com/{} {}".format(repo, path)])
+        except subprocess.CalledProcessError:
+            log.warn("Could not clone repository: {}".format(repo))
+            return False
+        else:
+            log.debug("Sucessfully cloned repository {}".format(repo))
+            return True
+
+    if prog in ["tmuxinator"]:
+        try:
+            subprocess.check_output(["which", "gem1.9.1"])
+        except subprocess.CalledProcessError:
+            log.warn("rubygems1.9.1 not found, cannot install tmuxinator")
+            install_gem = require_yes_no("Install ruby1.9.1")
+            if install_gem:
+                if apt_install("ruby1.9.1"):
+                    install_prog(prog)
+            else:
+                log.debug("Not installing ruby1.9.1")
+        else:
+            try:
+                subprocess.check_call(["gem install --local {}".format(prog)])
+            except subprocess.CalledProcessError:
+                log.warn("Could not install {}".format(prog))
+            else:
+                log.info("Installed {}".format(prog))
+    elif prog == "tmux":
+        log.debug("Creating temporary directory")
+        tmp = temp.mkdtemp()
+        if retrieve_from_github("tmux/tmux.git", tmp):
+            try:
+                subprocess.check_call(["cd {}/tmux && sh autogen.sh && ./configure && make".format(tmp)])
+            except subprocess.CalledProcessError:
+                log.warn("Could not install tmux")
+            else:
+                log.debug("Successfully installed tmux")
+            finally:
+                log.debug("Removing temporary directory")
+                shutil.rmtree(tmp)
+    elif prog in ["git"]:
+        apt_install(prog)
 
 
 def setup_solarized_colors(color_dir):
@@ -298,7 +358,8 @@ long options:
 
     options = {"link": True,
                "color": False,
-               "verbose": False}
+               "verbose": False,
+               "install": False}
     setups = ["link", "color"]
     for opt, _ in opts:
         if opt in ("-h", "--help"):
@@ -308,6 +369,8 @@ long options:
             options["link"] = True
         elif opt == "--setup-colors":
             options["color"] = True
+        elif opt == "--install":
+            options["install"] = True
         elif opt == "--full":
             for setup in setups:
                 options[setup] = True
@@ -330,7 +393,7 @@ def main():
         prog_files = get_files()
         for (prog, links) in prog_files.items():
             log.debug("Linking files for {}".format(prog))
-            link_files(prog, links)
+            link_files(prog, links, options["install"])
         setup_keyboard()
     if options["color"]:
         setup_solarized_colors(HOME)
