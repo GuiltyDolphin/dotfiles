@@ -178,11 +178,14 @@ def setup_keyboard():
 
 def backup_overwrite(to_backup, backup_parent):
     """Create a backup of link_path in an appropriate directory"""
+    if not os.path.exists(backup_parent):
+        log.info("Creating directory {}".format(backup_parent))
+        os.makedirs(backup_parent)
     backup_dir = newpath(
         backup_parent, ".dotfile_backup", time.strftime("%F"))
     if not os.path.exists(backup_dir):
         log.info("Creating directory {}".format(backup_dir))
-        os.mkdir(backup_dir)
+        os.makedirs(backup_dir)
     else:
         log.debug("Directory {} already exists".format(backup_dir))
     target = newpath(backup_dir, to_backup)
@@ -231,7 +234,7 @@ def create_soft_link(link):
     """Create a soft link to target with name 'name'."""
     link_params = link.link_parameters
     try:
-        subprocess.call(["ln", "-s"].extend(link_params))
+        subprocess.call(["ln", "-s"] + list(link_params))
     except subprocess.CalledProcessError:
         log.error("Failed to link {} to {}".format(*link_params))
     else:
