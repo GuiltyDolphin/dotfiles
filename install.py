@@ -7,6 +7,7 @@
 import os
 import sys
 import subprocess
+import tempfile
 
 from functools import partial
 from itertools import chain
@@ -256,25 +257,40 @@ def link_files(req_prog, links, install):
 
 
 def install_prog(prog):
-    def apt_install(prog):
+    def excepting_prog(req_prog, except_process, prog_call, fail_text, info_text):
         try:
-            subprocess.check_call(["sudo apt-get install {} -y".format(prog)])
+            subprocess.check_output(["which", req_prog])
         except subprocess.CalledProcessError:
-            log.warn("Could not install {}".format(prog))
-            return False
+            log.warn("Could not find program '{}'".format(req_prog))
+            except_process()
         else:
-            log.info("Successfully installed {}".format(prog))
-            return True
+            try:
+                subprocess.check_call(prog_call)
+            except subprocess.CalledProcessError:
+                log.warn(fail_text)
+                return False
+            else:
+                log.info(info_text)
+                return True
+
+    def apt_install(prog):
+        def except_process():
+            return None
+        prog_call = ["apt-get", "install", prog, "-y"]
+        fail_text = "Could not install {}".format(prog)
+        info_text = "Successfully installed {}".format(prog)
+        excepting_prog("apt-get", except_process, prog_call, fail_text, info_text)
 
     def retrieve_from_github(repo, path):
-        try:
-            subprocess.check_call(["git clone https://github.com/{} {}".format(repo, path)])
-        except subprocess.CalledProcessError:
-            log.warn("Could not clone repository: {}".format(repo))
-            return False
-        else:
-            log.debug("Sucessfully cloned repository {}".format(repo))
-            return True
+        def except_process():
+            istall_git = require_yes_no("Install Git")
+            if install_git:
+                if apt_install("git"):
+                    retrieve_from_github(repo, path)
+        prog_call = ["git", "clone", "https://github.com/{}".format(repo), path]
+        fail_text = "Could not clone repository: {}".format(repo)
+        info_text = "Sucessfully cloned repository {}".format(repo)
+        excepting_prog("git", except_process, prog_call, fail_text, info_text)
 
     if prog in ["tmuxinator"]:
         try:
@@ -289,25 +305,68 @@ def install_prog(prog):
                 log.debug("Not installing ruby1.9.1")
         else:
             try:
-                subprocess.check_call(["gem install --local {}".format(prog)])
+                subprocess.check_call(["gem", "install", "--local", prog])
             except subprocess.CalledProcessError:
                 log.warn("Could not install {}".format(prog))
             else:
                 log.info("Installed {}".format(prog))
-    elif prog == "tmux":
-        log.debug("Creating temporary directory")
-        tmp = temp.mkdtemp()
-        if retrieve_from_github("tmux/tmux.git", tmp):
-            try:
-                subprocess.check_call(["cd {}/tmux && sh autogen.sh && ./configure && make".format(tmp)])
-            except subprocess.CalledProcessError:
-                log.warn("Could not install tmux")
-            else:
-                log.debug("Successfully installed tmux")
-            finally:
-                log.debug("Removing temporary directory")
-                shutil.rmtree(tmp)
-    elif prog in ["git"]:
+    # elif prog == "tmux":
+    #     log.debug("Creating temporary directory")
+    #     tmp = tempfile.mkdtemp()
+    #     currDir = os.getcwd()
+    #     if retrieve_from_github("tmux/tmux.git", "{}/tmux".format(tmp)):
+    #         try:
+    #             os.chdir("{}/tmux".format(tmp))
+    #             #subprocess.check_call(["cd", "{}/tmux".format(tmp)])
+    #             try:
+    #                 print("Output from autogen")
+    #                 subprocess.check_output(["sh", "autogen.sh"])
+    #                 print("Output from configure")
+    #                 r = subprocess.check_output(["./configure"])
+    #                 if bytes("libevent not found") in r:
+    #                     raise CalledProcessError(output=r)
+    #                 print("Output from make")
+    #                 subprocess.check_output(["make"])
+    #             except subprocess.CalledProcessError as e:
+    #                 if bytes("libevent not found", "UTF-8") in e.output:
+    #                     installed_libevent = False
+    #                     log.debug("Installing libevent")
+    #                     log.debug("Creating temporary directory")
+    #                     tmpLib = tempfile.mkdtemp()
+    #                     if retrieve_from_github("libevent/libevent.git", "{}/libevent".format(tmpLib)):
+    #                         try:
+    #                             os.chdir("{}/libevent".format(tmpLib))
+    #                             subprocess.check_call(["sh", "autogen.sh"])
+    #                             subprocess.check_call(["./configure"])
+    #                             subprocess.check_call(["make"])
+    #                             subprocess.check_call(["make", "install"])
+    #                         except subprocess.CalledProcessError:
+    #                             log.warn("Could not install libevent")
+    #                         else:
+    #                             installed_libevent = True
+    #                         finally:
+    #                             os.chdir("{}/tmux".format(tmp))
+    #                             log.debug("Removing temporary directory")
+    #                             shutil.rmtree(tmpLib)
+    #                     if installed_libevent:
+    #                         print("Output from autogen")
+    #                         subprocess.check_call(["sh", "autogen.sh"])
+    #                         print("Output from configure")
+    #                         subprocess.check_call(["./configure"])
+    #                         print("Output from make")
+    #                         subprocess.check_call(["make"])
+    #                 else:
+    #                     raise e
+    #             #subprocess.check_call("cd {}/tmux && sh autogen.sh && ./configure && make".format(tmp))
+    #         except subprocess.CalledProcessError:
+    #             log.warn("Could not install tmux")
+    #         else:
+    #             log.debug("Successfully installed tmux")
+    #         finally:
+    #             os.chdir(currDir)
+    #             log.debug("Removing temporary directory")
+    #             shutil.rmtree(tmp)
+    elif prog in ["git", "tmux"]:
         apt_install(prog)
 
 
@@ -345,12 +404,13 @@ long options:
   --setup-colors - Download solarized colors
   --full - Setup everything
   --verbose (-v) - Verbose output
+  --install - install any missing programs (may require root access)
 """)
 
     try:
         opts, _ = getopt.getopt(
             sys_args, "hv",
-            ["help", "link", "setup-colors", "full", "verbose"])
+            ["help", "link", "setup-colors", "full", "verbose", "install"])
     except getopt.GetoptError as err:
         print(err)
         usage()
