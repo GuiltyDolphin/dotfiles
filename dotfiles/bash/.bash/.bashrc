@@ -201,13 +201,6 @@ h() {
   fi
 }
 
-############
-#  SCHOOL  #
-############
-
-alias datasheet='okular ~/Dropbox/school/Year_12/Physics/AQA-PHYA4-5-INS-JUN12.PDF'
-alias timetable="cat ~/Dropbox/school/Year_12/timetable.markdown"
-
 
 #############
 #  Options  #
