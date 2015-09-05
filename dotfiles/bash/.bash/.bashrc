@@ -39,7 +39,7 @@ stty -ixon
 #  PROMPT  #
 ############
 
-status-bar() {
+statusBar() {
   exitcode=$?
   Grey='\[\e[1;32m\]'
   Green='\[\e[0;32m\]'
@@ -76,7 +76,8 @@ status-bar() {
 
   PS1+="\$$Reset "
 }
-PROMPT_COMMAND='status-bar'
+
+PROMPT_COMMAND='statusBar'
 
 # Fast access to .bashrc
 alias 'edbash=vim ~/.bashrc'
@@ -93,19 +94,13 @@ alias tmux='TERM=xterm-256color tmux'
 ############
 
 alias py='python3 '
-alias ipy='ipython3 '
 alias pyt='python3 setup.py test '
+alias ipy='ipython3 '
 
-# Open a file as well as its test file
-pytd() {
-  vim $1 -c ":vs tests/test_$1"
-}
 
 ##############
 #  APTITUDE  #
 ##############
-
-alias ai='sudo apt-get install '
 
 # If we can't use apt then use apt-cache
 if [[ $(which apt) ]]; then
@@ -116,9 +111,7 @@ fi
 
 alias as='apt-get show '
 
-# Use vi commands for terminal editing
-set -o vi
-
+# Use vi-keys when invoking the info command.
 alias info="info --vi-keys"
 
 
@@ -134,43 +127,6 @@ alias ap='apropos'
 alias irb='irb2.0'
 alias ruby='ruby2.0'
 
-# Get the number of files in the current directory tree
-filecount() {
-  local exclude=""
-  while [[ $# > 1 ]]; do
-    case "$1" in
-      -e|--exclude)
-      local exclude="$2"
-      shift
-      ;;
-      *)
-
-      ;;
-    esac
-    shift
-  done
-  du -a --exclude=$exclude | wc -l
-}
-
-
-# Quickly find all files under a certain path that
-# link to (or are) the given file.
-# If one argument is given then it is assumed to be
-# the file to search for.
-# If two arguments are given then the first argument
-# becomes the path to search and the second argument
-# is the file to search for.
-symlinks() {
-  if [[ $# -eq 2 ]]; then
-    local dirToSearch=$1
-    local fileSearch=$2
-  else
-    local dirToSearch=$HOME
-    local fileSearch=$1
-  fi
-  find -L $dirToSearch -samefile $fileSearch
-}
-
 ###########
 #  EMACS  #
 ###########
@@ -185,26 +141,12 @@ pdfmkv() {
 }
 
 
-# Run the '--help' for a command
-h() {
-  if [[ $# -lt 1 ]]; then
-    echo "No command specified"
-  elif  [[ ! $(which $1) ]]; then
-    echo "Command not found"
-  else
-    res="$1 --help 2>/dev/null"
-    if [[ ! $? || ! $($res) ]]; then
-      echo "No help found"
-    else
-      $res
-    fi
-  fi
-}
-
-
 #############
 #  Options  #
 #############
 
 # Allow ** to expand recursively.
 shopt -s globstar
+
+# Use vi commands for terminal editing
+set -o vi
