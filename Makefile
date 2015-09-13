@@ -3,13 +3,11 @@ install_prog = @[ $$(which $(1)) ] || (echo "Installing $(1)\n" \
 							 &&  apt-get install $(1) -y)
 
 # Create a symlink if file doesn't already exist.
-linkf = @([ -e $(HOME)/$(2) ] \
-	&& ([ $$(diff -q $(HOME)/$(2) $(dot_dir)/$(1)) ] \
-		&& echo "File $(HOME)/$(2) exists but differs from $(dot_dir)/$(1) - will not make symlink") \
-            || true) \
-					|| ln -s $(dot_dir)/$(1) $(HOME)/$(2)
+linkh = @$(call check_link,$(1),$(2)) || [ -e $(2) ] || ln -s $(1) $(2)
+check_link = @[ -z "$$(diff -q $(2) $(1))" ] || echo "File $(2) exists but differs from $(1) - will not make symlink"
+linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
-links = link_bash link_tmux link_tmuxinator link_vim
+links = link_bash link_git link_tmux link_tmuxinator link_vim
 
 .PHONY: link
 link : $(links)
@@ -42,6 +40,9 @@ install_vundle : install_git
 install_git :
 	$(call install_prog,git)
 
+.PHONY: link_git
+link_git : install_git
+	$(call linkf,git/.gitconfig,.gitconfig)
 
 .PHONY: link_vim
 link_vim :
