@@ -14,27 +14,43 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'tex.vim'
+
+" Disable to stop Vundle from using syntax plugins.
+let g:use_syntax_plugins = 1
+
+if g:use_syntax_plugins
+  Plugin 'lervag/vimtex'
+  Plugin 'lesliev/vim-inform7'       " Syntax file highlighting for inform
+  Plugin 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
+  Plugin 'Twinside/vim-haskellConceal'
+  " Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
+  Plugin 'ehamberg/vim-cute-python'
+endif
+
+" Disable to stop large plugins being used (>10M)
+let g:use_big_plugins = 1
+
+if g:use_big_plugins
+  Plugin 'valloric/youcompleteme'    " Code completion
+endif
+
+
 Plugin 'altercation/vim-colors-solarized' " Solarized colorscheme
 Plugin 'bitc/vim-hdevtools'
 Plugin 'dbakker/vim-lint'
 Plugin 'eagletmt/neco-ghc'
-Plugin 'ehamberg/vim-cute-python'
 Plugin 'honza/vim-snippets.git'    " Default ultisnips snippets
 Plugin 'jpalardy/vim-slime'        " One way communication to a tmux session
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
-" Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'      " Syntax error checking
 Plugin 'sirver/ultisnips'          " Snippet integration
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-fugitive'        " Git integration
 Plugin 'tpope/vim-surround'        " Allow manipulation of surrounding characters
-Plugin 'Twinside/vim-haskellConceal'
-Plugin 'valloric/youcompleteme'    " Code completion
-Plugin 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
-Plugin 'lesliev/vim-inform7'       " Syntax file highlighting for inform
+Plugin 'godlygeek/tabular'         " Text filtering and alignment
+Plugin 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
 
 
 call vundle#end()            " required

@@ -97,6 +97,10 @@ set shiftwidth=2 " Generally use 2 spaces for indenting
 set softtabstop=2
 set tabstop=2
 " }}}
+" Bash {{{
+let g:is_bash = 1 " Default to using bash as filetype.
+let g:sh_fold_enabled = 5 " Enable function & if/do/for folding.
+" }}}
 " }}}
 
 " String options {{{
@@ -136,6 +140,19 @@ augroup newfile
     autocmd BufRead * execute 'normal!' . "'" . '"zz'
 augroup END
 
+" Bash {{{
+augroup bash
+  autocmd!
+  autocmd FileType bash :setlocal foldmethod=syntax
+" }}}
+
+" Inform {{{
+augroup inform7
+  autocmd!
+  au FileType inform7 setlocal noexpandtab
+augroup END
+" }}}
+
 " Python {{{
 augroup Python
   autocmd!
@@ -154,16 +171,11 @@ function! s:PythonTestAll()
   endif
 endfunction
 " }}}
+
 " Vim {{{
 augroup Vim
   autocmd!
   au FileType vim :setlocal foldmethod=marker
-augroup END
-" }}}
-" Inform {{{
-augroup inform7
-  autocmd!
-  au FileType inform7 setlocal noexpandtab
 augroup END
 " }}}
 " }}}
