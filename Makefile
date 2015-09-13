@@ -79,3 +79,10 @@ install_tmuxinator : install_ruby1.9.1
 .PHONY: link_tmuxinator
 link_tmuxinator : install_tmuxinator
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
+
+.PHONY: setup_ycm
+setup_ycm : install_vundle
+	@$(call install_prog,cmake) \
+		&& $(call install_prog,python-dev) \
+		&& cd $(vundle_dir)/YouCompleteMe \
+		&& ./install.py
