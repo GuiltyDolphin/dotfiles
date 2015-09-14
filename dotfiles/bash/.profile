@@ -70,6 +70,9 @@ PATH=$PATH:~/.local/bin
 [[ -d "$HOME/.gem/ruby/1.9.1/bin" ]] \
   && PATH=$PATH:~/.gem/ruby/1.9.1/bin
 
+[[ -d "$HOME/.gem/ruby/2.0.0/bin" ]] \
+  && PATH=$PATH:~/.gem/ruby/2.0.0/bin
+
 # Commands compiled from cabal
 [[ -d "$HOME/.cabal/bin" ]] \
   && PATH="$HOME/.cabal/bin:$PATH"
