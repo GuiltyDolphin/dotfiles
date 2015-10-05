@@ -4,7 +4,7 @@ install_prog = @[ $$(which $(1)) ] || (echo "Installing $(1)\n" \
 
 # Create a symlink if file doesn't already exist.
 linkh = @$(call check_link,$(1),$(2)) || [ -e $(2) ] || ln -s $(1) $(2)
-check_link = @[ -z "$$(diff -q $(2) $(1))" ] || echo "File $(2) exists but differs from $(1) - will not make symlink"
+check_link = @[ -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
 links = link_bash link_git link_tmux link_tmuxinator link_vim
