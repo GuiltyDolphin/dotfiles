@@ -85,5 +85,5 @@ link_tmuxinator : install_tmuxinator
 setup_ycm : install_vundle
 	@$(call install_prog,cmake) \
 		&& $(call install_prog,python-dev) \
-		&& cd $(vundle_dir)/YouCompleteMe \
+		&& cd $(vundle_dir)/youcompleteme \
 		&& ./install.py
