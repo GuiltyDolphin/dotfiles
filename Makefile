@@ -7,7 +7,7 @@ linkh = @$(call check_link,$(1),$(2)) || [ -e $(2) ] || ln -s $(1) $(2)
 check_link = @[ -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
-links = link_bash link_git link_tmux link_tmuxinator link_vim
+links = link_bash link_git link_tmux link_tmuxinator link_vim link_irb
 
 .PHONY: link
 link : $(links)
@@ -80,6 +80,10 @@ install_tmuxinator : install_ruby1.9.1
 .PHONY: link_tmuxinator
 link_tmuxinator : install_tmuxinator
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
+
+.PHONY: link_irb
+link_irb : install_ruby1.9.1
+	@$(call linkf,ruby/.irbrc,.irbrc)
 
 .PHONY: setup_ycm
 setup_ycm : install_vundle
