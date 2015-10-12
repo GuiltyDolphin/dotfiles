@@ -34,7 +34,7 @@ fi
 
 if [ $(which setxkbmap) ]; then
   setxkbmap -layout "us,us" -variant "dvp,"
-    \ -option "ctrl:nocaps,grp:shifts_toggle"
+    \  -option "ctrl:nocaps,grp:shifts_toggle"
   if [ ! $? ]; then
     echo "Failed to set keyboard layout, good luck..."
   fi
