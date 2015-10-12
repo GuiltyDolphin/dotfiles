@@ -1,5 +1,6 @@
 # ~/.profile: executed by the command interpreter for login shells.
-# Part of GuiltyDolphin's dotfiles (https://www.github.com/GuiltyDolphin/config)
+# Part of GuiltyDolphin's dotfiles
+# https://www.github.com/GuiltyDolphin/config
 
 # Default path
 PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
@@ -20,39 +21,24 @@ fi
 [[ -d "$HOME/bin" ]] \
   && PATH="$HOME/bin:$PATH"
 
-# Change this to false if you want to use a
-# keyboard layout other than [programmer]dvorak
-useCustomKeyboard=true
 
-# Set keyboard layout
-#if $useCustomKeyboard; then
+################################################
+#               Keyboard Layout                #
+#                                              #
+#  Capslock->Ctrl                              #
+#  Default layout: Programmer Dvorak           #
+#  Secondary layout: US Qwerty                 #
+#  Both shifts together toggles layout         #
+#                                              #
+################################################
 
-# Custom keyboard layout is essentially programmer dvorak but
-# <CAPS> becomes a control key, <LSGT> becomes escape, and <RALT>
-# becomes left shift.
-if [[ $(which xkbcomp) ]]; then
-  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/emacs $DISPLAY 2> /dev/null
-else
-  echo "Cannot set custom keymap, using programmer dvorak"
-  if [[ $(which setxkbmap) ]]; then
-    setxkbmap -layout us -variant dvp -option ctrl:nocaps
-    if [[ ! $? ]]; then
-      echo "Failed to set programmer dvorak, using regular dvorak"
-      setxkbmap -layout us -variant dvorak -option ctrl:nocaps \
-        || echo "Could not set keyboard layout"
-    fi
-  else echo "Cannot find 'setxkbmap', keyboard layout not set"
+if [ $(which setxkbmap) ]; then
+  setxkbmap -layout "us,us" -variant "dvp,"
+    \ -option "ctrl:nocaps,grp:shifts_toggle"
+  if [ ! $? ]; then
+    echo "Failed to set keyboard layout, good luck..."
   fi
 fi
-#fi
-
-setKeyUs() {
-  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/blender $DISPLAY 2> /dev/null
-}
-setKeyDv() {
-  xkbcomp -I$HOME/.keyboard/xkb ~/.keyboard/xkb/keymap/emacs $DISPLAY 2> /dev/null
-}
-
 
 
 HISTIGNORE="&"
