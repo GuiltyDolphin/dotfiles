@@ -95,6 +95,16 @@ augroup Ruby
   autocmd!
   au FileType ruby nnoremap <silent><buffer> <localleader>rt :!rake test<cr>
 augroup END
+
+augroup GitCommit
+  autocmd!
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>r ^ciwreword<esc>
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>s ^ciwsquash<esc>
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>e ^ciwedit<esc>
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>p ^ciwpick<esc>
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>f ^ciwfixup<esc>
+  au FileType gitrebase nnoremap <silent><buffer> <localleader>x ^ciwexec<esc>
+augroup END
 " }}}
 " }}}
 
