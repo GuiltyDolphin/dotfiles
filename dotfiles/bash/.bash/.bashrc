@@ -2,26 +2,12 @@
 # Part of GuiltyDolphin's dotfiles
 # Hosted at: https://www.github.com/GuiltyDolphin/config
 
-if [[ -x /usr/bin/dircolors ]]; then
-    #test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    test -r ~/Dropbox/linux/other/.dircolors && eval "$(dircolors -b ~/Dropbox/linux/other/.dircolors)" || eval "$(dircolors -b)"
+# If the 'dircolors' file has been downloaded then use solarized colorscheme.
+if [ $(which dircolors) ]; then
+  if [ -e "~/.dircolors" ]; then
+    eval "$(dircolors -b ~/.dircolors)"
+  fi
 fi
-
-# WILL WANT THIS SOON!
-
-#if [[ -f "$HOME/.dir_colors" ]]; then
-#  eval $(dircolors -b "$HOME/.dir_colors")
-#fi
-
-#if [[ "$TERM" != "screen-256color" ]]; then
-#  # Need to have this detect the number of sessions already taken
-#  # and fill the smallest available number
-#  #if [[ $(tmux ls -F#S | grep ^session\d+$) ]]; then
-#  #  session_name="session$(
-#  #fi
-#  #session_name="basic_session$(
-#  tmux attach-session -t "$USER" || tmux new-session -s "$USER"
-#fi
 
 source "$HOME/.bash/git_aliases.sh"
 
