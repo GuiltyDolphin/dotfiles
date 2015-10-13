@@ -47,7 +47,6 @@ link_git : install_git
 .PHONY: link_vim
 link_vim :
 	$(call linkf,vim/.vimrc,.vimrc)
-	$(call linkf,vim/.vimbasic,.vim/.vimbasic)
 
 
 bash_dir = $(dot_dir)/bash
