@@ -1,6 +1,6 @@
 ;;; Provide additional means of remapping keys in evil-mode
 ;;; akin to those found in Vim.
-;;; 
+;;;
 ;;; Overview of which functions affect which modes:
 ;;; FUNCTIONS      MODES
 ;;; noremap        Normal, Visual, Operator-pending
@@ -12,6 +12,23 @@
 ;;; enoremap       Emacs
 ;;; mnoremap       Motion
 ;;; nnoremap!      Normal, Visual, Operator-pending, Motion
+
+;; Copyright (C) 2015 Ben Moon
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 
 ;;; (evil-noremap! ";" 'evil-ex)
 ;;; Code:
