@@ -76,6 +76,10 @@ nnoremap <Space> <nop>
 let maplocalleader = ','
 nnoremap , <nop>
 
+" Provide alternate methods of reversing find.
+nnoremap \ ,
+nnoremap ,, ,
+
 " Move in actual lines rather than virtual
 nnoremap <silent> k gk
 nnoremap <silent> j gj
