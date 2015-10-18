@@ -1,21 +1,21 @@
 [user]
-	name = Ben Moon
-	email = guiltydolphin@gmail.com
+  name = Ben Moon
+  email = guiltydolphin@gmail.com
 [core]
-	editor = vim
-	autocrlf = input
-	safecrlf = true
+  editor = vim
+  autocrlf = input
+  safecrlf = true
 [merge]
-	tool = vimdiff
+  tool = vimdiff
 [alias]
   br = branch
   co = checkout
   ci = commit
-	dfs = diff --staged
+  dfs = diff --staged
   dump = cat-file -p
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-	last = log -1 HEAD
-	qlog = log --pretty=oneline
-	st = status
+  last = log -1 HEAD
+  qlog = log --pretty=oneline
+  st = status
   type = cat-file -t
-	unstage = reset HEAD --
+  unstage = reset HEAD --
