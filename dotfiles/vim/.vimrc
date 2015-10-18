@@ -70,9 +70,11 @@ colorscheme solarized
 
 " Standard {{{
 " Space as leader.
-let mapleader = '<SPC>'
+let mapleader = "\<Space>"
+nnoremap <Space> <nop>
 " Comma as local leader.
 let maplocalleader = ','
+nnoremap , <nop>
 
 " Move in actual lines rather than virtual
 nnoremap <silent> k gk
