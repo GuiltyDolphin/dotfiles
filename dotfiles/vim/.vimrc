@@ -70,9 +70,9 @@ colorscheme solarized
 
 " Standard {{{
 " Space as leader.
-map <space> <leader>
+let mapleader = '<SPC>'
 " Comma as local leader.
-map , <localleader>
+let maplocalleader = ','
 
 " Move in actual lines rather than virtual
 nnoremap <silent> k gk
@@ -103,20 +103,6 @@ nnoremap <silent> <c-n> <nop>
 
 " }}}
 
-" Filetypes {{{
-augroup Haskell
-  autocmd!
-  au FileType haskell nnoremap <buffer> <localleader>ct :HdevtoolsType<cr>
-  au FileType haskell nnoremap <buffer> <localleader>cc :HdevtoolsClear<cr>
-  au FileType haskell nnoremap <buffer> <localleader>ci :HdevtoolsInfo<cr>
-augroup END
-
-augroup Ruby
-  autocmd!
-  au FileType ruby nnoremap <silent><buffer> <localleader>rt :!rake test<cr>
-augroup END
-" }}}
-
 " Plugins {{{
 
 " Toggle tagbar window
@@ -138,19 +124,20 @@ nnoremap <silent> <leader>gd :Git diff %<cr>
 " }}}
 
 " Filetypes {{{
-augroup Haskell
+
+augroup HaskellKeys
   autocmd!
   au FileType haskell nnoremap <buffer> <localleader>ct :HdevtoolsType<cr>
   au FileType haskell nnoremap <buffer> <localleader>cc :HdevtoolsClear<cr>
   au FileType haskell nnoremap <buffer> <localleader>ci :HdevtoolsInfo<cr>
 augroup END
 
-augroup Ruby
+augroup RubyKeys
   autocmd!
   au FileType ruby nnoremap <silent><buffer> <localleader>rt :!rake test<cr>
 augroup END
 
-augroup GitCommit
+augroup GitCommitKeys
   autocmd!
   au FileType gitrebase nnoremap <silent><buffer> <localleader>r ^ciwreword<esc>
   au FileType gitrebase nnoremap <silent><buffer> <localleader>s ^ciwsquash<esc>
@@ -158,6 +145,11 @@ augroup GitCommit
   au FileType gitrebase nnoremap <silent><buffer> <localleader>p ^ciwpick<esc>
   au FileType gitrebase nnoremap <silent><buffer> <localleader>f ^ciwfixup<esc>
   au FileType gitrebase nnoremap <silent><buffer> <localleader>x ^ciwexec<esc>
+augroup END
+
+augroup VimKeys
+  autocmd!
+  au FileType vim nnoremap <silent><buffer> <localleader>sf :source %<cr>
 augroup END
 " }}}
 " }}}
