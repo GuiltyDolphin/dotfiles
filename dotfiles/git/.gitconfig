@@ -11,6 +11,7 @@
   br = branch
   co = checkout
   ci = commit
+  cim = commit -m
   dfs = diff --staged
   dump = cat-file -p
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
