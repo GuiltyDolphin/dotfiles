@@ -54,6 +54,7 @@ Plugin 'tpope/vim-surround'        " Allow manipulation of surrounding character
 Plugin 'godlygeek/tabular'         " Text filtering and alignment
 Plugin 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
 
+Plugin 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -156,6 +157,12 @@ augroup END
 augroup VimKeys
   autocmd!
   au FileType vim nnoremap <silent><buffer> <localleader>sf :source %<cr>
+augroup END
+
+augroup GenericTeXKeys
+  autocmd!
+  au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hh :call TeXHeaderHigher()<cr>
+  au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hl :call TeXHeaderLower()<cr>
 augroup END
 " }}}
 " }}}
