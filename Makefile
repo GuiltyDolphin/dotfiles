@@ -32,7 +32,7 @@ vundle_dir = $(HOME)/.vim/bundle
 
 .PHONY: install_vundle
 install_vundle : install_git
-	@[ -d "$(vundle_dir)" ] || mkdir $(vundle_dir) -p
+	@mkdir $(vundle_dir) -p
 	@[ -e "$(vundle_dir)/Vundle.vim" ] \
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
