@@ -48,6 +48,8 @@ link_git : install_git
 .PHONY: link_vim
 link_vim :
 	$(call linkf,vim/.vimrc,.vimrc)
+	@mkdir -p $(HOME)/.vim
+	$(call linkf,vim/.vim/UltiSnips,.vim/UltiSnips)
 
 
 bash_dir = $(dot_dir)/bash

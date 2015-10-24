@@ -1,0 +1,29 @@
+snippet descit "describe ... it"
+describe ${1:scenario} do
+  it "${2:what}" do
+    $0
+  end
+end
+endsnippet
+
+snippet shebang "#!..."
+#!/usr/bin/env ruby
+# encoding: utf-8
+# `!v expand("%")`
+
+endsnippet
+
+snippet raketest "Rake::TestTask..." b
+require 'rake/testtask'
+
+Rake::TestTask.new do |${1:t}|
+  $1.pattern = "${2:spec/**/*_spec.rb}"
+end
+
+$0
+endsnippet
+
+snippet titlestuff "Description" b
+${1:some text}
+${1/[aeiou]/\u$0/g}
+endsnippet

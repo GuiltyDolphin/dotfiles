@@ -1,0 +1,63 @@
+global !p
+import re
+import os
+def get_vs(s):
+  matcher = re.compile("(?:[A-Z]\w* ([a-z]+))")
+  vs = set(x.groups()[0] for x in matcher.finditer(s)) or ""
+  return " ".join(vs) if vs else ""
+
+def path_to_haskell_module(full_path):
+  if '/src/' in full_path:
+    to_file = full_path.split('/src/')[1]
+    mod_name = to_file.replace('/', '.')
+    return mod_name
+  return "could not get module name"
+
+def module_name():
+  full_path = os.path.realpath(os.curdir) + path
+  return path_to_haskell(full_path)
+
+# def module_name():
+#   matcher = re.compile("^module (?:([0-Z]\.?)+)(!where)+where")
+#   return list(matcher.finditer(s)) or "Could not find module name"
+
+
+def lbracket_check(p):
+  return "(" if t[p] else ""
+
+def rbracket_check(p):
+  return ")" if t[p] else ""
+endglobal
+
+
+
+snippet inst "instance ... where" b
+instance `!p snip.rv = lbracket_check(1)`$1`!p snip.rv = ") => " if t[1] else ""`$2 `!p snip.rv = lbracket_check(1)`${3} `!p snip.rv = get_vs(t[1])``!p snip.rv = rbracket_check(1)` where
+  $0
+endsnippet
+
+snippet prag "{-# LANGUAGE ... -#}" b
+{-# LANGUAGE ${1:/\w+/\u$0/} #-}
+$0
+endsnippet
+
+snippet head "{-|...Module..." b
+{-|
+Module      : $1
+Description : $2
+Copyright   : Copyright (C) ${3:`date +%Y`} ${4:`git config user.name || echo "COPYRIGHT HOLDER"`}
+License     : ${5:GNU GPL, version 3}
+Maintainer  : ${6:`git config user.email || echo "EMAIL"`}
+Stability   : ${7:alpha}
+Portability : ${8:portable}
+
+${0:Long description}
+-}
+endsnippet
+
+
+# The haskell 'deriving' clause - starts with the common
+# ones (Show, Eq etc...) and allows the users to add more!
+snippet der "deriving (Show, Eq...)" b
+deriving (${1:Show, Eq}${2:, Others})$0
+endsnippet
