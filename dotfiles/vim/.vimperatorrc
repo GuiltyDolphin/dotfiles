@@ -1,0 +1,75 @@
+
+"""""""""""""""""""""
+"  KEYBOARD CONFIG  "
+"""""""""""""""""""""
+
+" Hint characters to 'smart Dvorak'.
+set hintchars=htnsaoeuidfgcrlpybmqjkx
+
+set editor=vim
+
+" , as leader
+map , <leader>
+
+
+" Side scrolling (on webpages)
+nnoremap H h
+nnoremap L l
+
+
+""""""""""""""""""
+"  VIMPERATORRC  "
+""""""""""""""""""
+
+nnoremap <leader>ev :run gnome-terminal -x vim ~/.vimperatorrc<CR> " Fast access to config file.
+nnoremap <leader>sv :source ~/.vimperatorrc<CR> " Source config file.
+
+" Disable a A
+unmap a
+unmap A
+
+" Use h and s for tab switching
+nnoremap s :tabnext<cr>
+nnoremap h :tabprevious<cr>
+
+" Clear search
+nnoremap <leader>cs :nohlsearch<CR>
+
+
+"""""""""""""""
+"  BOOKMARKS  "
+"""""""""""""""
+
+" Add bookmark
+nnoremap <Leader>ba :bmark -T=
+
+" List bookmarks
+nnoremap <Leader>bA :bmarks
+
+" Open bookmarks (with tags)
+nnoremap <Leader>B :bmarks -T=
+
+
+" Send Enter
+inoremap <c-m> <cr>
+
+" P as forwards (history)
+unmap P
+nnoremap P :forward<CR>
+nnoremap B :back<cr>
+
+" Disable annoying 'u' but keep functionality via leader
+nnoremap u k
+nnoremap <leader>u u
+
+
+"""""""""""""""
+"  TABGROUPS  "
+"""""""""""""""
+
+" Push tab (to group)
+nnoremap <leader>gp :tabgroups pushtab
+" Add group
+nnoremap <leader>ga :tabgroups add
+" Switch to group
+nnoremap <leader>gs :tabgroups switch

@@ -8,7 +8,7 @@ check_link = @([ ! -L "$(1)" -a -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] \
 						 || [ -L "$(2)" -a "$$(readlink -f $(2))" != "$(1)" ]) && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
-links = link_bash link_git link_tmux link_tmuxinator link_vim link_irb
+links = link_bash link_git link_tmux link_tmuxinator link_vim link_vimperator link_irb
 
 .PHONY: link
 link : $(links)
@@ -50,6 +50,10 @@ link_vim :
 	$(call linkf,vim/.vimrc,.vimrc)
 	@mkdir -p $(HOME)/.vim
 	$(call linkf,vim/.vim/UltiSnips,.vim/UltiSnips)
+
+.PHONY: link_vimerator
+link_vimperator :
+	$(call linkf,vim/.vimperatorrc,.vimperatorrc)
 
 
 bash_dir = $(dot_dir)/bash
