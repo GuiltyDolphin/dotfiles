@@ -9,15 +9,17 @@
   tool = vimdiff
 [alias]
   br = branch
-  co = checkout
   cb = checkout -b
   ci = commit
+  cian = commit --amend --no-edit
   cim = commit -m
+  co = checkout
   dfs = diff --staged
   dump = cat-file -p
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   last = log -1 HEAD
   qlog = log --pretty=oneline
+  ri = rebase -i
   st = status
   type = cat-file -t
   unstage = reset HEAD --
