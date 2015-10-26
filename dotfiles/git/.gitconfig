@@ -14,6 +14,7 @@
   cian = commit --amend --no-edit
   cim = commit -m
   co = checkout
+  d = diff
   dfs = diff --staged
   dump = cat-file -p
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
