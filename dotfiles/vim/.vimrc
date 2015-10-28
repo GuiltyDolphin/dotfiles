@@ -383,6 +383,7 @@ let g:tagbar_type_haskell = {
 " }}}
 
 " Custom functions {{{
+
 " Haskell {{{
 
 " Attempts to generate a suitable Haskell module name for the
@@ -476,6 +477,8 @@ endfunction
 
 " }}}
 
+" Globbing {{{
+
 " Generate a glob pattern that will match any of the items in the
 " given list.
 "
@@ -520,5 +523,8 @@ function! GlobUpDir(pattern, start_path)
   endif
   return ''
 endfunction
+
+" }}}
+
 " }}}
 " }}}
