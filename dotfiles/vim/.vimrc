@@ -142,6 +142,7 @@ augroup END
 augroup RubyKeys
   autocmd!
   au FileType ruby nnoremap <silent><buffer> <localleader>rt :!rake test<cr>
+  au FileType ruby nnoremap <buffer> <localleader>ir :exec "!irb" . ruby_version<cr>
 augroup END
 
 augroup GitCommitKeys
@@ -263,6 +264,12 @@ let g:ycm_autoclose_preview_window_after_insertion = 1 " Autoclose the info wind
 let g:haddock_browser = "/usr/bin/lynx"
 let g:ghc = "/usr/bin/ghc"
 " }}}
+" }}}
+" }}}
+
+" FileTypes {{{
+" Ruby {{{
+let ruby_version = "2.0" " Preferred ruby version
 " }}}
 " }}}
 " }}}
