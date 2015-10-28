@@ -167,6 +167,12 @@ augroup END
 " }}}
 " }}}
 
+" Abbreviations {{{
+
+cnorea fl function-list
+
+" }}}
+
 " Options {{{
 
 " Boolean options {{{
