@@ -7,7 +7,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
 PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 
 # Add TexLive to path if it exists
-[[ -d "/user/local/texlive/2015/bin/x86_64-linux" ]] \
+[[ -d "/usr/local/texlive/2015/bin/x86_64-linux" ]] \
   && PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
 
 # if running bash
