@@ -414,16 +414,65 @@ endfunction
 
 " Misc {{{
 
+let s:project_root_globs = {
+      \ 'ruby' : 'rakefile',
+      \ 'python' : 'setup.py',
+      \ 'haskell' : "*.cabal",
+      \ }
+
+" Use these if project directory cannot be found.
+let s:project_common_root_globs = ['LICEN{S,C}E', 'README*', '.git']
+let s:project_root_smartypants = 1
+
+" Attempt to find the root project directory for a file.
+"
+" Only really works if there is a standard file (or directory structure)
+" that indicates the root of a project - e.g, for Haskell (Cabal) projects,
+" there is usually a .cabal file at the root of the project.
+"
+" Optional arguments:
+" a:1 - Path to use, defaults to the current path (%:p).
+" a:2 - Project type, defaults to the current filetype.
+function! ProjectRootDirectory(...)
+  let start_path = fnamemodify(get(a:000, 0, "%"), ":p")
+  let project_type = get(a:000, 1, &filetype)
+  let backup_match = ListToGlob(s:project_common_root_globs)
+  if has_key(s:project_root_globs, project_type)
+    let res = GlobUpDir(get(s:project_root_globs, project_type), start_path)
+    if res !~ '\v^$'
+      return res
+    endif
+  endif
+  if s:project_root_smartypants
+    return GlobUpDir(backup_match, start_path)
+  endif
+  return ''
+endfunction
+
+" Generate a glob pattern that will match any of the items in the
+" given list.
+"
+" Basically, for a list ['a', 'b', 'c'], it will generate
+" the pattern "{a,b,c}".
+"
+" Optional arguments:
+" a:1 - When nonzero will produce a glob that makes the items optional
+" (e.g, would produce "{a,b,c,}" for the above example).
+function! ListToGlob(to_glob, ...)
+  let allow_other = get(a:000, 0) ? ',' : ''
+  return '{' . join(a:to_glob, ',') . allow_other . '}'
+endfunction
+
 " Starting with the directory of a:start_path, searches upwards
 " for a:pattern, returning the first result or an empty string.
 "
-" Note that 'first result' refers to the first time that a match
-" is found - this may contain several individual matches.
+" Note that 'first result' refers to the first set of matches in a single
+" directory - this may contain several individual matches.
 function! GlobUp(pattern, start_path)
   let curr_dir = fnamemodify(a:start_path, ":p:h")
   while 1
     let curr_res = globpath(curr_dir, a:pattern)
-    if strchars(curr_res)
+    if curr_res !~ '\v^$'
       return curr_res
     endif
     " When the base-most path has been checked.
@@ -441,9 +490,8 @@ function! GlobUpDir(pattern, start_path)
   if res !~ '\v^$'
     let a_match = split(res, "\n")[0]
     return fnamemodify(a_match, ":h")
-  else
-    return ''
   endif
+  return ''
 endfunction
 " }}}
 " }}}
