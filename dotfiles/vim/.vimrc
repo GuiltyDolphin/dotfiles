@@ -369,3 +369,75 @@ let g:tagbar_type_haskell = {
     \ }
 " }}}
 
+" Custom functions {{{
+" Haskell {{{
+
+" Attempts to generate a suitable Haskell module name for the
+" current file.
+"
+" If the file is part of a cabal project (i.e there exists a .cabal file)
+" then the name can be generated intelligently, otherwise the basename
+" of the file (without the extension) will be used.
+"
+" Example:
+" If the project is /stuff/cabal-dir/src/Foo/Bar/Baz.hs then the generate
+" module name will be Foo.Bar.Baz
+"
+" If there were no directory containing a .cabal file, then the generated
+" module name would be Baz.
+function! HaskellModuleName()
+ let cabal_path = HaskellCabalDir()
+ if expand("%") =~ '\v^$'
+   echoerr "Not in a valid module file"
+   return -1
+ endif
+ if cabal_path =~ '\v^$'
+   return expand("%:t:r")
+ endif
+ let full_path = expand("%:p:r")
+ let below_cabal = substitute(full_path, cabal_path, "", "")
+ let module_path = matchlist(below_cabal, '\v/[^/]+/(.*)')[1]
+ return substitute(module_path, '/', '.', 'g')
+endfunction
+
+" Get the cabal directory for the current project.
+function! HaskellCabalDir()
+  return GlobUpDir("*.cabal", expand("%"))
+endfunction
+" }}}
+
+" Misc {{{
+
+" Starting with the directory of a:start_path, searches upwards
+" for a:pattern, returning the first result or an empty string.
+"
+" Note that 'first result' refers to the first time that a match
+" is found - this may contain several individual matches.
+function! GlobUp(pattern, start_path)
+  let curr_dir = fnamemodify(a:start_path, ":p:h")
+  while 1
+    let curr_res = globpath(curr_dir, a:pattern)
+    if strchars(curr_res)
+      return curr_res
+    endif
+    " When the base-most path has been checked.
+    if curr_dir =~ '\v^[./]$'
+      return ''
+    endif
+    let curr_dir = fnamemodify(curr_dir, ":h")
+  endwhile
+endfunction
+
+" The same as *GlobUp*, but will return the first directory
+" containing the match, rather than all the matches.
+function! GlobUpDir(pattern, start_path)
+  let res = GlobUp(a:pattern, a:start_path)
+  if res !~ '\v^$'
+    let a_match = split(res, "\n")[0]
+    return fnamemodify(a_match, ":h")
+  else
+    return ''
+  endif
+endfunction
+" }}}
+" }}}
