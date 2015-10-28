@@ -141,7 +141,6 @@ augroup END
 
 augroup RubyKeys
   autocmd!
-  au FileType ruby nnoremap <silent><buffer> <localleader>rt :!rake test<cr>
   au FileType ruby nnoremap <buffer> <localleader>ir :exec "!irb" . ruby_version<cr>
 augroup END
 
@@ -316,20 +315,8 @@ augroup END
 " Python {{{
 augroup Python
   autocmd!
-  autocmd FileType python nnoremap <buffer> <localleader>ra :call <SID>PythonTestAll()<CR>
   autocmd FileType python set shiftwidth=4
 augroup END
-
-function! s:PythonTestAll()
-  let test_file = expand("test_") . expand("%")
-  if filereadable("setup.py")
-    execute "!python3 setup.py test"
-  elseif filereadable("../setup.py")
-    execute "!cd ..;python3 setup.py test;cd -"
-  else
-    echo "No tests found"
-  endif
-endfunction
 " }}}
 
 " Vim {{{
@@ -344,6 +331,13 @@ augroup Haskell
   autocmd!
   au FileType haskell setlocal omnifunc=necoghc#omnifunc
   au FileType haskell let g:ycm_semantic_triggers={'haskell' : ['.', '= ', '> ', '- ', ':: '] }
+augroup END
+" }}}
+
+" Misc {{{
+augroup TestingKeys
+  autocmd!
+  au FileType * nnoremap <silent><buffer> <localleader>ra :call TestAll()<CR>
 augroup END
 " }}}
 " }}}
