@@ -417,8 +417,9 @@ endfunction
 
 " Misc {{{
 
+" Project {{{
 let s:project_root_globs = {
-      \ 'ruby' : 'rakefile',
+      \ 'ruby' : '{r,R}akefile',
       \ 'python' : 'setup.py',
       \ 'haskell' : "*.cabal",
       \ }
@@ -451,6 +452,29 @@ function! ProjectRootDirectory(...)
   endif
   return ''
 endfunction
+
+
+let s:project_test_commands = {
+      \ 'ruby' : 'rake test',
+      \ 'python' : 'python3 setup.py test',
+      \ 'haskell' : 'cabal test',
+      \ }
+
+" Attempts to run tests for the current project.
+"
+" Optional arguments are the same as for *ProjectRootDirectory*
+function! TestAll(...)
+  let project_dir = call("ProjectRootDirectory", a:000)
+  let project_type = get(a:000, 1, &filetype)
+  if has_key(s:project_test_commands, project_type)
+    let test_command = s:project_test_commands[project_type]
+    exec '!cd ' . project_dir . ' && ' . test_command
+  else
+    echo "No tests found"
+  endif
+endfunction
+
+" }}}
 
 " Generate a glob pattern that will match any of the items in the
 " given list.
