@@ -399,7 +399,7 @@ let g:tagbar_type_haskell = {
 " If there were no directory containing a .cabal file, then the generated
 " module name would be Baz.
 function! HaskellModuleName()
- let cabal_path = HaskellCabalDir()
+ let cabal_path = ProjectRootDirectory("%", "haskell")
  if expand("%") =~ '\v^$'
    echoerr "Not in a valid module file"
    return -1
@@ -413,10 +413,6 @@ function! HaskellModuleName()
  return substitute(module_path, '/', '.', 'g')
 endfunction
 
-" Get the cabal directory for the current project.
-function! HaskellCabalDir()
-  return GlobUpDir("*.cabal", expand("%"))
-endfunction
 " }}}
 
 " Misc {{{
