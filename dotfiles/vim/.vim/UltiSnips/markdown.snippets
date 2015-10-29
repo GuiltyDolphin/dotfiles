@@ -1,0 +1,36 @@
+snippet vim-readme "Basic Readme template for vim plugin" b
+${1:Project name}
+${1/./=/g}
+
+${2:Short summary}
+
+${3:Available on ${4:[GitHub](`git config remote.origin.url`)}}
+
+
+Installing
+----------
+
+If you have [Vundle](https://www.github.com/VundleVim/Vundle.vim),
+then just add \`Plugin '`git config remote.origin.url | sed 's/.*\.com\///g'`'\` to the
+plugin section of your vimrc.
+
+Setup
+-----
+
+${5:How do they set it up?}
+
+
+${6:Example
+-------
+
+${7:Example could be useful}}
+
+
+License
+-------
+
+Copyright (c) `date +%Y` ${8:`git config user.name`}
+
+Licensed under ${9:GNU GPLv3} - see the \`LICENSE\` file for more
+information.$0
+endsnippet
