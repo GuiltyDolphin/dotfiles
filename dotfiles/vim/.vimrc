@@ -155,6 +155,21 @@ augroup GitCommitKeys
   au FileType gitrebase nnoremap <silent><buffer> <localleader>x ^ciwexec<esc>
 augroup END
 
+" Help {{{
+augroup HelpKeys
+  au!
+  au FileType help,text nnoremap <silent><buffer> <localleader>th :call <SID>ToggleHelpType()<cr>
+augroup END
+
+function! s:ToggleHelpType()
+  if &filetype =~ '\vt[e]xt'
+    set filetype=help
+  elseif &filetype =~ 'help'
+    set filetype=text
+  endif
+endfunction
+" }}}
+
 augroup VimKeys
   autocmd!
   au FileType vim nnoremap <silent><buffer> <localleader>sf :source %<cr>
