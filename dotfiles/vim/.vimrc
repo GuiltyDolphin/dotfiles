@@ -55,6 +55,7 @@ Plugin 'godlygeek/tabular'         " Text filtering and alignment
 Plugin 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
 
 Plugin 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
+Plugin 'guiltydolphin/project-root-vim' " Easier project navigation.
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -163,6 +164,12 @@ augroup GenericTeXKeys
   autocmd!
   au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hh :call TeXHeaderHigher()<cr>
   au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hl :call TeXHeaderLower()<cr>
+augroup END
+
+augroup MiscKeys
+  au!
+  au FileType * nnoremap <silent><buffer> <localleader>ra :ProjectRootTest<cr>
+  au FileType * nnoremap <silent><buffer> <localleader>Gr :ProjectRootBrowseRoot<cr>
 augroup END
 " }}}
 " }}}
@@ -280,6 +287,19 @@ let ruby_version = "2.0" " Preferred ruby version
 "  au BufEnter *.hs compiler ghc
 "augroup END
 " }}}
+
+" project-root-vim {{{
+
+" Globs
+let g:project_root_pt_ruby_globs = ['{r,R}akefile']
+let g:project_root_pt_python_globs = ['setup.py']
+let g:project_root_pt_haskell_globs = ['*.cabal']
+
+" Tests
+let g:project_root_pt_ruby_test_command = 'rake test'
+let g:project_root_pt_python_test_command = 'python3 setup.py test'
+let g:project_root_pt_haskell_test_command = 'cabal test'
+" }}}
 " }}}
 
 " Autocommands {{{
@@ -334,12 +354,6 @@ augroup Haskell
 augroup END
 " }}}
 
-" Misc {{{
-augroup TestingKeys
-  autocmd!
-  au FileType * nnoremap <silent><buffer> <localleader>ra :call TestAll()<CR>
-augroup END
-" }}}
 " }}}
 
 " Hasktags (tagbar) {{{
@@ -394,7 +408,7 @@ let g:tagbar_type_haskell = {
 " If there were no directory containing a .cabal file, then the generated
 " module name would be Baz.
 function! HaskellModuleName()
- let cabal_path = ProjectRootDirectory("%", "haskell")
+ let cabal_path = b:project_root_directory
  if expand("%") =~ '\v^$'
    echoerr "Not in a valid module file"
    return -1
@@ -410,115 +424,4 @@ endfunction
 
 " }}}
 
-" Misc {{{
-
-" Project {{{
-let s:project_root_globs = {
-      \ 'ruby' : '{r,R}akefile',
-      \ 'python' : 'setup.py',
-      \ 'haskell' : "*.cabal",
-      \ }
-
-" Use these if project directory cannot be found.
-let s:project_common_root_globs = ['LICEN{S,C}E', 'README*', '.git']
-let s:project_root_smartypants = 1
-
-" Attempt to find the root project directory for a file.
-"
-" Only really works if there is a standard file (or directory structure)
-" that indicates the root of a project - e.g, for Haskell (Cabal) projects,
-" there is usually a .cabal file at the root of the project.
-"
-" Optional arguments:
-" a:1 - Path to use, defaults to the current path (%:p).
-" a:2 - Project type, defaults to the current filetype.
-function! ProjectRootDirectory(...)
-  let start_path = fnamemodify(get(a:000, 0, "%"), ":p")
-  let project_type = get(a:000, 1, &filetype)
-  let backup_match = ListToGlob(s:project_common_root_globs)
-  if has_key(s:project_root_globs, project_type)
-    let res = GlobUpDir(get(s:project_root_globs, project_type), start_path)
-    if res !~ '\v^$'
-      return res
-    endif
-  endif
-  if s:project_root_smartypants
-    return GlobUpDir(backup_match, start_path)
-  endif
-  return ''
-endfunction
-
-
-let s:project_test_commands = {
-      \ 'ruby' : 'rake test',
-      \ 'python' : 'python3 setup.py test',
-      \ 'haskell' : 'cabal test',
-      \ }
-
-" Attempts to run tests for the current project.
-"
-" Optional arguments are the same as for *ProjectRootDirectory*
-function! TestAll(...)
-  let project_dir = call("ProjectRootDirectory", a:000)
-  let project_type = get(a:000, 1, &filetype)
-  if has_key(s:project_test_commands, project_type)
-    let test_command = s:project_test_commands[project_type]
-    exec '!cd ' . project_dir . ' && ' . test_command
-  else
-    echo "No tests found"
-  endif
-endfunction
-
-" }}}
-
-" Globbing {{{
-
-" Generate a glob pattern that will match any of the items in the
-" given list.
-"
-" Basically, for a list ['a', 'b', 'c'], it will generate
-" the pattern "{a,b,c}".
-"
-" Optional arguments:
-" a:1 - When nonzero will produce a glob that makes the items optional
-" (e.g, would produce "{a,b,c,}" for the above example).
-function! ListToGlob(to_glob, ...)
-  let allow_other = get(a:000, 0) ? ',' : ''
-  return '{' . join(a:to_glob, ',') . allow_other . '}'
-endfunction
-
-" Starting with the directory of a:start_path, searches upwards
-" for a:pattern, returning the first result or an empty string.
-"
-" Note that 'first result' refers to the first set of matches in a single
-" directory - this may contain several individual matches.
-function! GlobUp(pattern, start_path)
-  let curr_dir = fnamemodify(a:start_path, ":p:h")
-  while 1
-    let curr_res = globpath(curr_dir, a:pattern)
-    if curr_res !~ '\v^$'
-      return curr_res
-    endif
-    " When the base-most path has been checked.
-    if curr_dir =~ '\v^[./]$'
-      return ''
-    endif
-    let curr_dir = fnamemodify(curr_dir, ":h")
-  endwhile
-endfunction
-
-" The same as *GlobUp*, but will return the first directory
-" containing the match, rather than all the matches.
-function! GlobUpDir(pattern, start_path)
-  let res = GlobUp(a:pattern, a:start_path)
-  if res !~ '\v^$'
-    let a_match = split(res, "\n")[0]
-    return fnamemodify(a_match, ":h")
-  endif
-  return ''
-endfunction
-
-" }}}
-
-" }}}
 " }}}
