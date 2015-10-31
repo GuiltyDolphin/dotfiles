@@ -369,6 +369,11 @@ augroup Haskell
 augroup END
 " }}}
 
+" Spelling {{{
+augroup SpellCheck
+  au!
+  au FileType gitrebase,gitcommit,tex,plaintex,lhaskell setlocal spell
+augroup END
 " }}}
 
 " Hasktags (tagbar) {{{
