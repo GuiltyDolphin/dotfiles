@@ -372,7 +372,7 @@ augroup END
 " Spelling {{{
 augroup SpellCheck
   au!
-  au FileType gitrebase,gitcommit,tex,plaintex,lhaskell setlocal spell
+  au FileType gitrebase,gitcommit,tex,plaintex,lhaskell,*markdown* setlocal spell
 augroup END
 " }}}
 
