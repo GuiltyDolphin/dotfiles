@@ -133,6 +133,8 @@ nnoremap <silent> <leader>gd :Git diff %<cr>
 
 " Filetypes {{{
 
+" Haskell {{{
+
 augroup HaskellKeys
   autocmd!
   au FileType haskell nnoremap <buffer> <localleader>ct :HdevtoolsType<cr>
@@ -140,10 +142,18 @@ augroup HaskellKeys
   au FileType haskell nnoremap <buffer> <localleader>ci :HdevtoolsInfo<cr>
 augroup END
 
+" }}}
+
+" Ruby {{{
+
 augroup RubyKeys
   autocmd!
   au FileType ruby nnoremap <buffer> <localleader>ir :exec "!irb" . ruby_version<cr>
 augroup END
+
+" }}}
+
+" Git {{{
 
 augroup GitCommitKeys
   autocmd!
@@ -155,7 +165,10 @@ augroup GitCommitKeys
   au FileType gitrebase nnoremap <silent><buffer> <localleader>x ^ciwexec<esc>
 augroup END
 
+" }}}
+
 " Help {{{
+
 augroup HelpKeys
   au!
   au FileType help,text nnoremap <silent><buffer> <localleader>th :call <SID>ToggleHelpType()<cr>
@@ -168,12 +181,19 @@ function! s:ToggleHelpType()
     set filetype=text
   endif
 endfunction
+
 " }}}
+
+" Vim {{{
 
 augroup VimKeys
   autocmd!
   au FileType vim nnoremap <silent><buffer> <localleader>sf :source %<cr>
 augroup END
+
+" }}}
+
+" TeX {{{
 
 augroup GenericTeXKeys
   autocmd!
@@ -181,11 +201,17 @@ augroup GenericTeXKeys
   au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hl :call TeXHeaderLower()<cr>
 augroup END
 
+" }}}
+
+" General {{{
+
 augroup MiscKeys
   au!
   au FileType * nnoremap <silent><buffer> <localleader>ra :ProjectRootTest<cr>
   au FileType * nnoremap <silent><buffer> <localleader>Gr :ProjectRootBrowseRoot<cr>
 augroup END
+
+" }}}
 " }}}
 " }}}
 
