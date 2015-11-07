@@ -331,15 +331,28 @@ let ruby_version = "2.0" " Preferred ruby version
 
 " project-root-vim {{{
 
-" Globs
-let g:project_root_pt_ruby_globs = ['{r,R}akefile']
-let g:project_root_pt_python_globs = ['setup.py']
-let g:project_root_pt_haskell_globs = ['*.cabal']
+" Project settings
 
-" Tests
-let g:project_root_pt_ruby_test_command = 'rake test'
-let g:project_root_pt_python_test_command = 'python3 setup.py test'
-let g:project_root_pt_haskell_test_command = 'cabal test'
+let s:pr_ruby =
+      \ { 'root_globs': ['[Rr]akefile'],
+      \   'test_command': 'rake test',
+      \   'test_globs': ['spec'],
+      \ }
+
+let s:pr_python =
+      \ { 'root_globs': ['setup.py'],
+      \   'test_command': 'python3 setup.py test',
+      \ }
+
+let s:pr_haskell =
+      \ { 'root_globs': ['*.cabal'],
+      \   'test_command': 'cabal test',
+      \ }
+
+call proot#initialize_project('ruby', s:pr_ruby)
+call proot#initialize_project('python', s:pr_python)
+call proot#initialize_project('haskell', s:pr_haskell)
+
 " }}}
 " }}}
 
