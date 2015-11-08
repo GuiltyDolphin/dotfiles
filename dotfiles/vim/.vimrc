@@ -360,11 +360,21 @@ call proot#initialize_project('haskell', s:pr_haskell)
 
 " Buffer-based {{{
 
+" Whitespace {{{
+
 " Delete trailing whitespace when saving
 augroup writer
     autocmd!
-    autocmd BufWritePre * :%s/\v\s+$//e
+    autocmd BufWritePre * call <SID>RemoveTrailingWhitespace()
 augroup END
+
+function! s:RemoveTrailingWhitespace()
+  if !exists('b:allow_trailing_whitespace')
+    exec '%s/\v\s+$//e'
+  endif
+endfunction
+
+" }}}
 
 " Automatically jump to (and center on) last place in file
 augroup newfile
@@ -406,6 +416,15 @@ augroup Haskell
   au FileType haskell setlocal omnifunc=necoghc#omnifunc
   au FileType haskell let g:ycm_semantic_triggers={'haskell' : ['.', '= ', '> ', '- ', ':: '] }
 augroup END
+" }}}
+
+" Git {{{
+
+augroup gitdiff
+  au!
+  au FileType diff let b:allow_trailing_whitespace = 1
+augroup END
+
 " }}}
 
 " Spelling {{{
