@@ -8,12 +8,17 @@ check_link = @([ ! -L "$(1)" -a -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] \
 						 || [ -L "$(2)" -a "$$(readlink -f $(2))" != "$(1)" ]) && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
-links = link_bash link_git link_tmux link_tmuxinator link_vim link_vimperator link_irb
+links = link_bash link_ghci link_git link_tmux link_tmuxinator link_vim link_vimperator link_irb
 
 .PHONY: link
 link : $(links)
 
-installs = install_git install_ruby1.9.1 install_tmux install_tmuxinator install_vundle
+installs_haskell = install_haskell_platform install_ghci
+installs_tmux = install_tmux install_tmuxinator
+
+installs = install_git $(installs_haskell) install_ruby1.9.1 $(installs_tmux) install_vundle
+
+
 .PHONY: install
 install : $(installs)
 
@@ -45,6 +50,10 @@ install_git :
 link_git : install_git
 	$(call linkf,git/.gitconfig,.gitconfig)
 
+.PHONY: link_ghci
+link_ghci : install_ghci
+	$(call linkf,haskell/.ghci,.ghci)
+
 .PHONY: link_vim
 link_vim :
 	$(call linkf,vim/.vimrc,.vimrc)
@@ -73,6 +82,15 @@ link_tmux : install_tmux
 .PHONY: install_tmux
 install_tmux :
 	$(call install_prog,tmux)
+
+.PHONY : install_ghci
+install_ghci :
+	@[ $$(which ghci) ] || make install_haskell_platform
+
+.PHONY: install_haskell_platform
+install_haskell_platform :
+	@[ -n "$$(apt version haskell-platform)" ] \
+	  || $(call install_prog,haskell-platform)
 
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
