@@ -8,19 +8,28 @@ check_link = @([ ! -L "$(1)" -a -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] \
 						 || [ -L "$(2)" -a "$$(readlink -f $(2))" != "$(1)" ]) && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
-links = link_bash link_ghci link_git link_tmux link_tmuxinator link_vim link_vimperator link_irb
+links_minimal = link_bash link_git link_vim
+
+links = $(links_minimal) link_ghci link_tmuxinator link_vimperator link_irb
 
 .PHONY: link
 link : $(links)
 
+.PHONY: link_minimal
+link_minimal : $(links_minimal)
+
 installs_haskell = install_haskell_platform install_ghci
 installs_tmux = install_tmux install_tmuxinator
+installs_minimal = install_git install_vim
 
-installs = install_git $(installs_haskell) install_ruby1.9.1 $(installs_tmux) install_vundle
+installs = $(installs_minimal) $(installs_haskell) install_ruby1.9.1 $(installs_tmux) install_vundle
 
 
 .PHONY: install
 install : $(installs)
+
+.PHONY: install_minimal
+install_minimal : $(installs_minimal)
 
 solarized_file_url = "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark"
 solarized_color_file = $(HOME)/.dircolors
@@ -45,6 +54,10 @@ install_vundle : install_git
 .PHONY: install_git
 install_git :
 	$(call install_prog,git)
+
+.PHONY: install_vim
+install_vim :
+	$(call install_prog,vim)
 
 .PHONY: link_git
 link_git : install_git
