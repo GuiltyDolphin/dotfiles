@@ -129,6 +129,16 @@ nnoremap <silent> <leader>ga :Git add %<cr>
 nnoremap <silent> <leader>gs :Gstatus<cr>
 nnoremap <silent> <leader>gd :Git diff %<cr>
 " }}}
+
+" project-root {{{
+
+nnoremap <silent> <localleader>ra :ProjectRootTest<cr>
+nnoremap <silent> <localleader>rt :ProjectRootTestFile<cr>
+nnoremap <silent> <localleader>br :ProjectRootBrowseRoot<cr>
+nnoremap <silent> <localleader>tf :ProjectRootOpenTest<cr>
+
+" }}}
+
 " }}}
 
 " Filetypes {{{
@@ -203,16 +213,8 @@ augroup END
 
 " }}}
 
-" General {{{
-
-augroup MiscKeys
-  au!
-  au FileType * nnoremap <silent><buffer> <localleader>ra :ProjectRootTest<cr>
-  au FileType * nnoremap <silent><buffer> <localleader>Gr :ProjectRootBrowseRoot<cr>
-augroup END
-
 " }}}
-" }}}
+
 " }}}
 
 " Abbreviations {{{
@@ -322,38 +324,82 @@ let ruby_version = "2.0" " Preferred ruby version
 " }}}
 
 " Plugin Config {{{
-" haskellmode {{{
-"augroup HaskellMode
-"  autocmd!
-"  au BufEnter *.hs compiler ghc
-"augroup END
-" }}}
 
 " project-root-vim {{{
 
 " Project settings
 
+" Ruby {{{
+
 let s:pr_ruby =
       \ { 'root_globs': ['[Rr]akefile'],
       \   'test_command': 'rake test',
-      \   'test_globs': ['spec'],
       \ }
+
+call proot#initialize_project('ruby', s:pr_ruby)
+
+function! s:RubySpecTestFile(root_dir)
+  return 'spec/' . fnamemodify(a:root_dir, ':t:r') . '_spec.rb'
+endfunction
+
+function! s:RubySpecTestFileCommand(test_path)
+  return 'ruby ' . a:test_path
+endfunction
+
+let s:pr_ruby_spec =
+      \ { 'test_globs': ['spec'],
+      \   'inherits': ['ruby'],
+      \   'test_file_gen': function('s:RubySpecTestFile'),
+      \   'test_command_file': function('s:RubySpecTestFileCommand'),
+      \ }
+
+call proot#initialize_project('ruby_spec', s:pr_ruby_spec)
+
+" Set the ruby project type based on the type of tests used.
+function! s:SetRubyProject()
+  let spec_match = globpath(b:project_root_directory, 'spec')
+  if !empty(spec_match)
+    call proot#set_project_type('ruby_spec')
+  endif
+endfunction
+
+call proot#add_project_runners('ruby', [function('s:SetRubyProject')])
+
+" }}}
+
+" Python {{{
+
+function! s:PythonTestFile(root_dir)
+  return 'tests/test_' . fnamemodify(a:root_dir, ':t')
+endfunction
+
+function! s:PythonTestFileCommand(test_path)
+  return 'python3 setup.py test -s tests.' . fnamemodify(a:test_path, ':t:r')
+endfunction
 
 let s:pr_python =
       \ { 'root_globs': ['setup.py'],
       \   'test_command': 'python3 setup.py test',
+      \   'test_file_gen': function('s:PythonTestFile'),
+      \   'test_command_file': function('s:PythonTestFileCommand'),
       \ }
 
+call proot#initialize_project('python', s:pr_python)
+
+" }}}
+
+" Haskell {{{
 let s:pr_haskell =
       \ { 'root_globs': ['*.cabal'],
       \   'test_command': 'cabal test',
       \ }
 
-call proot#initialize_project('ruby', s:pr_ruby)
-call proot#initialize_project('python', s:pr_python)
 call proot#initialize_project('haskell', s:pr_haskell)
 
 " }}}
+
+" }}}
+
 " }}}
 
 " Autocommands {{{
@@ -466,6 +512,8 @@ let g:tagbar_type_haskell = {
         \ 'type'   : 't'
     \ }
     \ }
+" }}}
+
 " }}}
 
 " Custom functions {{{
