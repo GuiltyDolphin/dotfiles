@@ -6,7 +6,7 @@ describe ${1:scenario} do
 end
 endsnippet
 
-snippet shebang "#!..."
+snippet shebang "#!..." b
 #!/usr/bin/env ruby
 # encoding: utf-8
 # `!v expand("%")`
@@ -21,9 +21,4 @@ Rake::TestTask.new do |${1:t}|
 end
 
 $0
-endsnippet
-
-snippet titlestuff "Description" b
-${1:some text}
-${1/[aeiou]/\u$0/g}
 endsnippet
