@@ -538,7 +538,8 @@ augroup END
 
 augroup SpellCheck
   au!
-  au FileType gitrebase,gitcommit,tex,plaintex,lhaskell,*markdown* setlocal spell
+  au FileType gitrebase,gitcommit,bib,tex,plaintex,lhaskell,*markdown*
+        \ setlocal spell
 augroup END
 
 " }}}
