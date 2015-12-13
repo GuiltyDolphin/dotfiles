@@ -497,6 +497,15 @@ augroup END
 
 " }}}
 
+" Perl {{{
+
+augroup Perl
+  au!
+  au FileType perl set shiftwidth=4
+augroup END
+
+" }}}
+
 " Python {{{
 
 augroup Python
