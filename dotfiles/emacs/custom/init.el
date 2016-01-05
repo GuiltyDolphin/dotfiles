@@ -49,13 +49,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun make-path (&rest paths)
-  "Return a '/' separated path"
-  (mapconcat 'append paths "/"))
-
 (defun el-dir (&optional path)
   "Return the user's `el-get' directory with PATH optionally appended."
-  (make-path el-get-dir path))
+  (concat el-get-dir "/" path))
 
 ;; Color theme
 (load-theme 'solarized-dark t)
@@ -151,8 +147,12 @@
 (evil-nnoremap! ";" 'evil-ex)
 (evil-nnoremap! ":" 'evil-repeat-find-char)
 (evil-nnoremap! (kbd "C-t") 'evil-window-map)
+(evil-inoremap (kbd "C-c") 'evil-normal-state)
+(evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
 (define-key evil-window-map (kbd "C-t") 'evil-window-next)
 (define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
+(define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
+(define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
 (global-set-key (kbd "C-w") 'nil)
 
 (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
@@ -191,6 +191,8 @@
 
 
 (setq x-select-enable-clipboard t) ; Use the clipboard
+
+(display-time-mode t) ; Allow displaying of time in mode line
 
 (require 'ido) ; Use ido for minibuffer completion
 (setq ido-enable-flex-matching t)
@@ -246,6 +248,11 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (setq haskell-interactive-popup-errors nil)
 
+;; C#
+(set-variable 'omnisharp-server-executable-path
+              "~/Documents/omni/OmniSharpServer/OmniSharp/bin/Debug/OmniSharp.exe")
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+
 ;; Alignment
 ;'(add-to-list 'align-rules-list
 ;              '(haskell-types
@@ -265,11 +272,6 @@
 ;               (modes quote (haskell-mode literate-haskell-mode))))
 
 
-(defmacro after (mode &rest body)
-  (declare (indent defun))
-  `(eval-after-load ,mode
-     '(progn ,@body)))
-
 ;; YASnippet
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
 (require 'yasnippet)
@@ -283,6 +285,11 @@
           (lambda ()
             (yas-activate-extra-mode 'fundamental-mode)))
 
+(defmacro after (mode &rest body)
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
 (after 'yasnippet
        (yas/reload-all)
        (setq yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
@@ -290,14 +297,22 @@
 (after "yasnippet-autoloads"
        (add-hook 'prog-mode-hook 'yas-minor-mode))
 
-
-
 ;; hippie-expand
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
 
 
 ;; Other commands
+
+(defun date (&optional insert-date format-string)
+  ; Retrieve the current system date (time)
+  (interactive "P")
+  (let ((current-date (shell-command-to-string
+                       (if format-string
+                           (format "date +%s" format-string) "date"))))
+    (if insert-date
+        (insert current-date)
+      (message "%s" (string-remove-suffix "\n" current-date)))))
 
 (defun emacs-lisp-space (n)
   ; Similar to 'slime-space', but support all emacs-lisp and custom functions - not just
@@ -350,7 +365,4 @@ Argument strings should follow a pattern similar to
 (evil-define-key 'insert emacs-lisp-mode-map " " 'emacs-lisp-space)
 
 
-
 ;;; init.el ends here
-
-
