@@ -1,18 +1,3 @@
-;;; Provide additional means of remapping keys in evil-mode
-;;; akin to those found in Vim.
-;;;
-;;; Overview of which functions affect which modes:
-;;; FUNCTIONS      MODES
-;;; noremap        Normal, Visual, Operator-pending
-;;; nnoremap       Normal
-;;; vnoremap       Visual
-;;; xnoremap       Ex-mode
-;;; onoremap       Operator-pending
-;;; inoremap       Insert
-;;; enoremap       Emacs
-;;; mnoremap       Motion
-;;; nnoremap!      Normal, Visual, Operator-pending, Motion
-
 ;; Copyright (C) 2015 Ben Moon
 ;;
 ;; This program is free software: you can redistribute it and/or modify
@@ -28,7 +13,20 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+;;; Provide additional means of remapping keys in evil-mode
+;;; akin to those found in Vim.
+;;;
+;;; Overview of which functions affect which modes:
+;;; FUNCTIONS      MODES
+;;; noremap        Normal, Visual, Operator-pending
+;;; nnoremap       Normal
+;;; vnoremap       Visual
+;;; xnoremap       Ex-mode
+;;; onoremap       Operator-pending
+;;; inoremap       Insert
+;;; enoremap       Emacs
+;;; mnoremap       Motion
+;;; nnoremap!      Normal, Visual, Operator-pending, Motion
 
 ;;; (evil-noremap! ";" 'evil-ex)
 ;;; Code:
@@ -90,4 +88,4 @@ See `evil-define-key' for more information."
   (evil-mnoremap key command))
 
 (provide 'evil-remap)
-;;; evil-map.el ends here
+;;; evil-remap.el ends here
