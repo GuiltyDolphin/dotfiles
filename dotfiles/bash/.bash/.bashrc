@@ -117,7 +117,7 @@ alias ruby='ruby2.0'
 #  EMACS  #
 ###########
 
-alias emacs='emacs-24.4'
+alias emacs='emacs-24.5'
 
 
 

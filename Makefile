@@ -10,7 +10,7 @@ linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
 links_minimal = link_bash link_git link_vim
 
-links = $(links_minimal) link_ghci link_tmuxinator link_vimperator link_irb
+links = $(links_minimal) link_emacs link_ghci link_tmuxinator link_vimperator link_irb
 
 .PHONY: link
 link : $(links)
@@ -85,6 +85,19 @@ link_bash :
 	@$(call linkf,bash/.bash,.bash)
 	@$(call linkf,bash/.profile,.profile)
 	@$(call linkf,bash/.bash/.bashrc,.bashrc)
+
+.PHONY: install_emacs
+install_emacs :
+	@(emacs --version | head -n 1 | egrep -q '24.5') \
+	|| ((cd ~/Downloads && ([ -d emacs-24.5 ] || (wget \
+	ftp://www.mirrorservice.org/sites/ftp.gnu.org/gnu/emacs/emacs-24.5.tar.gz \
+	   && tar -xvf emacs-24.5)) && cd emacs-24.5 \
+	   && ./configure && make && src/emacs -Q && make install))
+
+.PHONY: link_emacs
+link_emacs : install_emacs
+	@$(call linkf,emacs/custom,.emacs.d/custom)
+	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
 
 
 .PHONY: link_tmux
