@@ -447,6 +447,27 @@ call proot#initialize_project('haskell', s:pr_haskell)
 
 " }}}
 
+" Perl {{{
+
+function! s:PerlTestFile(root_dir)
+  return 't/' . fnamemodify(a:root_dir, ':t:r') . '.t'
+endfunction
+
+function! s:PerlTestFileCommand(test_path)
+  return 'prove -Ilib ' . a:test_path
+endfunction
+
+let s:pr_perl =
+      \ { 'root_globs': ['lib', 't'],
+      \   'test_command': 'prove -Ilib',
+      \   'test_file_gen': function('s:PerlTestFile'),
+      \   'test_command_file': function('s:PerlTestFileCommand'),
+      \ }
+
+call proot#initialize_project('perl', s:pr_perl)
+
+" }}}
+
 " }}}
 
 " }}}
