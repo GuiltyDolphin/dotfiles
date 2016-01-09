@@ -393,5 +393,9 @@ Argument strings should follow a pattern similar to
 (evil-define-key 'insert ielm-map " " 'emacs-lisp-space)
 (evil-define-key 'insert emacs-lisp-mode-map " " 'emacs-lisp-space)
 
+(global-unset-key (kbd "C-s"))
+(define-key global-map (kbd "C-s n") 'evil-normal-state)
+(define-key global-map (kbd "C-s m") 'evil-motion-state)
+(define-key global-map (kbd "C-s e") 'evil-emacs-state)
 
 ;;; init.el ends here
