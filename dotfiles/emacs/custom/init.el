@@ -164,7 +164,11 @@
 
 (evil-nnoremap! ";" 'evil-ex)
 (evil-nnoremap! ":" 'evil-repeat-find-char)
+(global-set-key (kbd "C-t") 'nil)
 (evil-nnoremap! (kbd "C-t") 'evil-window-map)
+(evil-nnoremap! (kbd "C-t C-h") 'previous-buffer)
+(evil-nnoremap! (kbd "C-t C-l") 'next-buffer)
+
 (evil-inoremap (kbd "C-c") 'evil-normal-state)
 (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
 (define-key evil-window-map (kbd "C-t") 'evil-window-next)
