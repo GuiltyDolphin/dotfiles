@@ -212,6 +212,10 @@
 
 ; Other
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default tab-stop-list '(4 8 12))
+
+
 (defun my-move-key (keymap-from keymap-to key)
   "Moves a keybinding from one keymap to another, removing previous binding"
   (define-key keymap-to key (lookup-key keymap-from key))
