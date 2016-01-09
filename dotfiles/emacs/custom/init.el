@@ -50,15 +50,17 @@
     (eval-print-last-sexp)))
 
 (setq my:el-get-packages
-      '(auto-complete
-        color-theme-solarized
-        el-get
-	evil
-	evil-leader
-	flycheck
-        magit
-	slime
-	yasnippet))
+  '(auto-complete
+    color-theme-solarized
+    el-get
+    evil
+    evil-leader
+    flycheck
+    git-modes
+    magit
+    projectile
+    slime
+    yasnippet))
 
 (el-get 'sync my:el-get-packages)
 
