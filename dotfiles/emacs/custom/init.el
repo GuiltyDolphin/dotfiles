@@ -104,9 +104,7 @@
 (defun reload-user-init-file ()
   "Evaluate the user's init.el file"
   (interactive)
-  (save-excursion
-    (find-user-init-file)
-    (eval-current-buffer)))
+  (load-file user-init-file))
 
 (evil-leader/set-key
   "ex" 'eval-expression)
