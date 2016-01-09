@@ -96,7 +96,18 @@
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "ir" 'align-regexp
-  "ev" 'find-user-init-file)
+  "ev" 'find-user-init-file
+  "sv" 'reload-user-init-file
+  "ns" 'new-scratch
+  ","  'execute-extended-command)
+
+;; Buffers
+(evil-leader/set-key
+  "bk" 'kill-buffer)
+
+;; Files
+(evil-leader/set-key
+  "ff" 'find-file)
 
 (defun find-user-init-file ()
   "Find the user's init.el file"
@@ -126,7 +137,8 @@
 (dolist (mode lisp-modes)
   (evil-local-leader/set-key-for-mode mode
     "er" 'eval-region
-    "eb" 'eval-buffer))
+    "eb" 'eval-buffer
+    "ed" 'eval-defun))
 
 (evil-local-leader/set-key-for-mode 'haskell-mode
   "en" 'ghc-goto-next-error
