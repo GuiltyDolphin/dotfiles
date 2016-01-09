@@ -317,6 +317,10 @@
 
 ;; Other commands
 
+(defun new-scratch ()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
 (defun date (&optional insert-date format-string)
   ; Retrieve the current system date (time)
   (interactive "P")
