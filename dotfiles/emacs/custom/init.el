@@ -148,18 +148,6 @@
 (require 'evil)
 (evil-mode 1)
 
-;; Find out what this was supposed to do
-
-;(defmacro def-evil-remapper (name states)
-;  `(defun ,name (key command)
-;     ,(loop for state in states collect
-;	    `(define-key
-;	       ,(read
-;		(concatenate 'string "evil-" `(symbol-name ,state) "-state-map")) key command))))
-;
-;(def-evil-remapper evil-noremap (normal visual operator))
-;(def-evil-remapper evil-other-map (normal))
-
 (require 'evil-remap)
 
 (evil-nnoremap! ";" 'evil-ex)
