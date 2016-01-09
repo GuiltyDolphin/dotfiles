@@ -266,11 +266,6 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (setq haskell-interactive-popup-errors nil)
 
-;; C#
-(set-variable 'omnisharp-server-executable-path
-              "~/Documents/omni/OmniSharpServer/OmniSharp/bin/Debug/OmniSharp.exe")
-(add-hook 'csharp-mode-hook 'omnisharp-mode)
-
 ;; Alignment
 ;'(add-to-list 'align-rules-list
 ;              '(haskell-types
