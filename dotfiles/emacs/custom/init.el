@@ -16,8 +16,7 @@
 
 (package-initialize)
 ;;; Custom Variables
-(custom-set-variables
- '(haskell-process-type 'cabal-repl))
+(customize-set-variable 'haskell-process-type 'cabal-repl)
 
 ;;; Code:
 
