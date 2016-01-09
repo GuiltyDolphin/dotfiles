@@ -224,6 +224,10 @@
 ;(my-move-key evil-motion-state-map evil-normal-state-map (kbd "RET"))
 (my-move-key evil-motion-state-map evil-normal-state-map " ")
 
+(define-key global-map (kbd "C-h h") 'help)
+(define-key help-map (kbd "C-e") 'evil-scroll-line-down)
+(define-key help-map (kbd "C-y") 'evil-scroll-line-up)
+
 ; Lisp
 
 (setq inferior-lisp-program (executable-find "sbcl"))
