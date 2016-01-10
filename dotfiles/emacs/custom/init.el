@@ -305,6 +305,16 @@
 (add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
 (yas-global-mode 1)
 
+(define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
+
+(add-hook 'yas-before-expand-snippet-hook
+    (lambda ()
+        (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
+
+(add-hook 'yas-after-exit-snippet-hook
+    (lambda ()
+        (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
+
 (add-hook 'yas-minor-mode-hook
           (lambda ()
             (yas-activate-extra-mode 'fundamental-mode)))
