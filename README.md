@@ -42,6 +42,10 @@ for terminal.
 * `make setup_ycm` will configure the `YouCompleteMe` plug-in for
 Vim - this may take a while.
 
+To install/link individual programs, you can use `install_prog` or
+`link_prog` (where `prog` is the required program). Thus `link_tmux`
+will only install and link `tmux` (and any dependencies).
+
 #### Are my files safe?
 
 This will (hopefully) not overwrite any existing files when attempting
