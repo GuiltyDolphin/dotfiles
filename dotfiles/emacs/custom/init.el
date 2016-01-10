@@ -97,7 +97,8 @@
   "ir" 'align-regexp
   "ev" 'find-user-init-file
   "sv" 'reload-user-init-file
-  "ns" 'new-scratch
+  "ns" 'scratch-buffer
+  "nS" 'new-scratch
   ","  'execute-extended-command)
 
 ;; Buffers
@@ -338,9 +339,28 @@
 
 ;; Other commands
 
-(defun new-scratch ()
+(defun scratch-buffer ()
+  "Switch to the *scratch* buffer, making a new
+one if necessary."
   (interactive)
   (switch-to-buffer "*scratch*"))
+
+(defun new-scratch ()
+  "Opens a clean *scratch* buffer.
+
+If a *scratch* buffer exists, this will undo any changes
+made in that buffer."
+  (interactive)
+  (scratch-buffer)
+  (clear-buffer))
+
+
+(defun clear-buffer (&optional buffer)
+  "Clear all the text in BUFFER without modifying the kill ring"
+  (interactive "b")
+  (let ((buffer (or buffer (current-buffer))))
+       (with-current-buffer buffer
+            (kill-region (point-min) (point-max)))))
 
 (defun date (&optional insert-date format-string)
   ; Retrieve the current system date (time)
