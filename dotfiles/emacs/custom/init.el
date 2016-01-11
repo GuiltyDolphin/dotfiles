@@ -234,6 +234,7 @@
 (setq-default tab-width 4)
 (setq-default tab-stop-list '(4 8 12))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (defun my-move-key (keymap-from keymap-to key)
   "Moves a keybinding from one keymap to another, removing previous binding"
