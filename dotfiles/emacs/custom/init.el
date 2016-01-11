@@ -103,7 +103,8 @@
 
 ;; Buffers
 (evil-leader/set-key
-  "bk" 'kill-buffer)
+  "bk" 'kill-buffer
+  "bs" 'switch-to-buffer)
 
 ;; Files
 (evil-leader/set-key
