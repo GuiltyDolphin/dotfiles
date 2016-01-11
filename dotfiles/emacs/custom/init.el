@@ -164,6 +164,8 @@
 
 (require 'evil-remap)
 
+(setq evil-want-C-w-in-emacs-state 1)
+
 (evil-nnoremap! ";" 'evil-ex)
 (evil-nnoremap! ":" 'evil-repeat-find-char)
 (global-set-key (kbd "C-t") 'nil)
