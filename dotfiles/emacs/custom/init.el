@@ -55,6 +55,7 @@
     evil
     evil-leader
     flycheck
+    flx
     git-modes
     magit
     projectile
@@ -217,10 +218,13 @@
 
 (display-time-mode t) ; Allow displaying of time in mode line
 
-(require 'ido) ; Use ido for minibuffer completion
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+(require 'flx-ido)
 (ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
 
 
 ; Other
