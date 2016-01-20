@@ -7,6 +7,10 @@
   safecrlf = true
 [merge]
   tool = vimdiff
+[gc]
+  pruneexpire = never
+  reflogexpire = never
+  reflogexpireunreachable = never
 [alias]
   br = branch
   cb = checkout -b
