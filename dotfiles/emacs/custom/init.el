@@ -51,9 +51,11 @@
 (setq my:el-get-packages
   '(auto-complete
     color-theme-solarized
+    duckpan
     el-get
     evil
     evil-leader
+    evil-remap
     flycheck
     flx
     git-modes
