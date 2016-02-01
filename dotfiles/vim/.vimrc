@@ -325,11 +325,12 @@ let g:syntastic_python_checkers = ["python", "pep8", "pylint"]
 let g:syntastic_python_pylint_quiet_messages = {
             \ "regex": "\\(parens after u'print'"
             \ . "\\|Redefining built-in 'file'\\)" }
-let g:syntastic_ruby_checkers = ["mri", "rubylint", "rubocop"]
+let g:syntastic_ruby_checkers = ["mri", "rubocop", "rubylint"]
 let g:syntastic_haskell_checkers = ["hdevtools", "hlint"]
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ["perl", "podchecker"]
 let g:syntastic_haskell_hdevtools_quiet_messages = { "regex": 'Could not find module' }
+let g:syntastic_javascript_checkers = ["jshint", "jslint"]
 
 " }}}
 
