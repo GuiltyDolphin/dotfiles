@@ -466,6 +466,30 @@ let s:pr_perl =
 
 call proot#initialize_project('perl', s:pr_perl)
 
+" Set the ruby project type based on the type of tests used.
+function! s:SetPerlProject()
+  setlocal shiftwidth=4
+  let a:dir = fnamemodify(b:project_root_directory, ":t")
+  if a:dir =~ '\v(duckduckgo|p5-app-duckpan)'
+    call proot#set_project_type('ddg_backend')
+  endif
+endfunction
+
+call proot#add_project_runners('perl', [function('s:SetPerlProject')])
+
+
+let s:pr_ddg_backend = { 'inherits': ['perl'] }
+
+call proot#initialize_project('ddg_backend', s:pr_ddg_backend) " s:pr_ddg_backend)
+
+function! s:SetDDGBackendProject()
+  echom "Got set"
+  setlocal noexpandtab
+  setlocal shiftwidth=2
+endfunction
+
+call proot#add_project_runners('ddg_backend', [function('s:SetDDGBackendProject')])
+
 " }}}
 
 " }}}
@@ -518,11 +542,11 @@ augroup END
 
 " }}}
 
-" Perl {{{
+" JavaScript {{{
 
-augroup Perl
+augroup JavaScript
   au!
-  au FileType perl set shiftwidth=4
+  au FileType javascript set shiftwidth=4
 augroup END
 
 " }}}
