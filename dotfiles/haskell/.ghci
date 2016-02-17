@@ -2,3 +2,4 @@
 :def doc    \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
 :def hg     \x -> return $ ":!hoogle \""        ++ x ++ "\""
 :set +t +s
+:set prompt "ghci> "
