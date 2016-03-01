@@ -10,6 +10,10 @@ PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 [[ -d "/usr/local/texlive/2015/bin/x86_64-linux" ]] \
   && PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
 
+# Add perl5 bin to path if it exists
+[[ -d "$HOME/perl5/bin" ]] \
+  && PATH="$HOME/perl5/bin:$PATH"
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
