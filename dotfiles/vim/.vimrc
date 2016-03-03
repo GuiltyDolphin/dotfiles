@@ -196,9 +196,9 @@ augroup END
 
 function! s:ToggleHelpType()
   if &filetype =~ '\vt[e]xt'
-    set filetype=help
+    setlocal filetype=help
   elseif &filetype =~ 'help'
-    set filetype=text
+    setlocal filetype=text
   endif
 endfunction
 
@@ -551,7 +551,16 @@ augroup END
 
 augroup JavaScript
   au!
-  au FileType javascript set shiftwidth=4
+  au FileType javascript setlocal shiftwidth=4
+augroup END
+
+" }}}
+
+" JSON {{{
+
+augroup JSON
+  au!
+  au FileType json setlocal shiftwidth=4
 augroup END
 
 " }}}
@@ -560,7 +569,7 @@ augroup END
 
 augroup Python
   autocmd!
-  autocmd FileType python set shiftwidth=4
+  autocmd FileType python setlocal shiftwidth=4
 augroup END
 
 " }}}
