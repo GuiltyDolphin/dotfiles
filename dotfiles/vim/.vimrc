@@ -91,6 +91,9 @@ nnoremap ,, ,
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
+" Jump to parens
+nnoremap gp %
+
 " Open .vimrc
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
 " Source .vimrc
