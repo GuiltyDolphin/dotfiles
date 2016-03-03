@@ -91,6 +91,9 @@ nnoremap ,, ,
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
+" Jump to parens
+nnoremap gp %
+
 " Open .vimrc
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
 " Source .vimrc
@@ -121,7 +124,7 @@ nnoremap <silent> <c-n> <nop>
 " Toggle tagbar window
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Open ctrlp tag window
-nnoremap <silent> <leader>p :CtrlPTag<cr>
+nnoremap <silent> <leader>p :CtrlP<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
 
@@ -193,9 +196,9 @@ augroup END
 
 function! s:ToggleHelpType()
   if &filetype =~ '\vt[e]xt'
-    set filetype=help
+    setlocal filetype=help
   elseif &filetype =~ 'help'
-    set filetype=text
+    setlocal filetype=text
   endif
 endfunction
 
@@ -332,6 +335,8 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ["perl", "podchecker"]
 let g:syntastic_haskell_hdevtools_quiet_messages = { "regex": 'Could not find module' }
 let g:syntastic_javascript_checkers = ["jshint", "jslint"]
+let g:syntastic_javascript_jshint_quiet_messages = { "regex": "\v'(DDH|$)' was used before it was defined." }
+let g:syntastic_javascript_jslint_quiet_messages = { "regex": "\v'(DDH|$)' was used before it was defined." }
 
 " }}}
 
@@ -548,7 +553,16 @@ augroup END
 
 augroup JavaScript
   au!
-  au FileType javascript set shiftwidth=4
+  au FileType javascript setlocal shiftwidth=4
+augroup END
+
+" }}}
+
+" JSON {{{
+
+augroup JSON
+  au!
+  au FileType json setlocal shiftwidth=4
 augroup END
 
 " }}}
@@ -557,7 +571,7 @@ augroup END
 
 augroup Python
   autocmd!
-  autocmd FileType python set shiftwidth=4
+  autocmd FileType python setlocal shiftwidth=4
 augroup END
 
 " }}}
