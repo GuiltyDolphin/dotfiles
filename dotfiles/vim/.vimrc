@@ -124,7 +124,7 @@ nnoremap <silent> <c-n> <nop>
 " Toggle tagbar window
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Open ctrlp tag window
-nnoremap <silent> <leader>p :CtrlPTag<cr>
+nnoremap <silent> <leader>p :CtrlP<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
 
