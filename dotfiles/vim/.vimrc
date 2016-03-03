@@ -53,6 +53,7 @@ Plugin 'tpope/vim-fugitive'        " Git integration
 Plugin 'tpope/vim-surround'        " Allow manipulation of surrounding characters
 Plugin 'godlygeek/tabular'         " Text filtering and alignment
 Plugin 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
+Plugin 'mustache/vim-mustache-handlebars' " Mustache & Handlebars integration
 
 Plugin 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
 Plugin 'guiltydolphin/project-root-vim' " Easier project navigation.
