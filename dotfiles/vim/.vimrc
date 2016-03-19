@@ -430,11 +430,13 @@ function! s:PythonTestFile(root_dir)
 endfunction
 
 function! s:PythonTestFileCommand(test_path)
-  return 'python3 setup.py test -s tests.' . fnamemodify(a:test_path, ':t:r')
+  let test_module = 'tests.' . fnamemodify(a:test_path, ':t:r')
+  return '[ -e "setup.py" ] && python3 setup.py test -s ' . test_module . ' || '
+        \ . 'PYTHONPATH=$PYTHONPATH:./src python3 -m ' . test_module
 endfunction
 
 let s:pr_python =
-      \ { 'root_globs': ['setup.py'],
+      \ { 'root_globs': ['setup.py', 'src'],
       \   'test_command': 'python3 setup.py test',
       \   'test_file_gen': function('s:PythonTestFile'),
       \   'test_command_file': function('s:PythonTestFileCommand'),
