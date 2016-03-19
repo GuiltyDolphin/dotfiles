@@ -474,29 +474,57 @@ let s:pr_perl =
 
 call proot#initialize_project('perl', s:pr_perl)
 
-" Set the ruby project type based on the type of tests used.
+" DuckDuckGo {{{
+
 function! s:SetPerlProject()
   setlocal shiftwidth=4
   let a:dir = fnamemodify(b:project_root_directory, ":t")
   if a:dir =~ '\v(duckduckgo|p5-app-duckpan)'
     call proot#set_project_type('ddg_backend')
+  elseif a:dir =~ '\v^(zeroclickinfo-.*)'
+    call proot#set_project_type('ddg_zci')
   endif
 endfunction
 
 call proot#add_project_runners('perl', [function('s:SetPerlProject')])
 
-
 let s:pr_ddg_backend = { 'inherits': ['perl'] }
 
-call proot#initialize_project('ddg_backend', s:pr_ddg_backend) " s:pr_ddg_backend)
+call proot#initialize_project('ddg_backend', s:pr_ddg_backend)
 
 function! s:SetDDGBackendProject()
-  echom "Got set"
   setlocal noexpandtab
   setlocal shiftwidth=2
 endfunction
 
 call proot#add_project_runners('ddg_backend', [function('s:SetDDGBackendProject')])
+
+function! s:DDGZCITestFile(root_dir)
+  if a:root_dir =~# '.*Role\/.*'
+    return 't/00-roles.t'
+  elseif a:root_dir =~# '.*share.*'
+    return matchstr(a:root_dir, '\v.*share/\zs([_\w]+)\ze/?.*')
+  endif
+  return fnamemodify(a:root_dir, ':t:r')
+endfunction
+
+function! s:DDGZCITestFileCommand(test_path)
+  if a:test_path ==# 't/00-roles.t'
+    return 'prove -Ilib t/00-roles.t'
+  endif
+  return 'duckpan test ' . a:test_path
+endfunction
+
+let s:pr_ddg_zci =
+      \ { 'inherits': ['perl'],
+      \   'test_command': 'duckpan test',
+      \   'test_file_gen': function('s:DDGZCITestFile'),
+      \   'test_command_file': function('s:DDGZCITestFileCommand'),
+      \ }
+
+call proot#initialize_project('ddg_zci', s:pr_ddg_zci)
+
+" }}}
 
 " }}}
 
