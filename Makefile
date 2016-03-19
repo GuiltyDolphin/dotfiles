@@ -155,3 +155,11 @@ get_solarized_colors :
 	    @[ -e $(solarized_color_file) ] \
 				|| (echo "Retrieving solarized colorscheme" \
 				&& wget -q $(solarized_file_url) -O $(solarized_color_file))
+
+# Vim Linters
+
+vim_linters = install_vim-vint
+
+.PHONY: install_vim-vint
+install_vim-vint :
+	@pip3 install --user vim-vint

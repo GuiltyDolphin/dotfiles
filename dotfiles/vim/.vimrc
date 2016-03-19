@@ -337,6 +337,7 @@ let g:syntastic_haskell_hdevtools_quiet_messages = { "regex": 'Could not find mo
 let g:syntastic_javascript_checkers = ["jshint", "jslint"]
 let g:syntastic_javascript_jshint_quiet_messages = { "regex": "\v'(DDH|$)' was used before it was defined." }
 let g:syntastic_javascript_jslint_quiet_messages = { "regex": "\v'(DDH|$)' was used before it was defined." }
+let g:syntastic_vim_checkers = ['vint']
 
 " }}}
 
