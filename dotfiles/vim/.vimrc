@@ -507,14 +507,15 @@ function! s:DDGZCITestFile(root_dir)
   elseif a:root_dir =~# '.*share.*'
     return matchstr(a:root_dir, '\v.*share/\zs([_\w]+)\ze/?.*')
   endif
-  return fnamemodify(a:root_dir, ':t:r')
+  return 't/' . fnamemodify(a:root_dir, ':t:r') . '.t'
 endfunction
 
 function! s:DDGZCITestFileCommand(test_path)
   if a:test_path ==# 't/00-roles.t'
     return 'prove -Ilib t/00-roles.t'
   endif
-  return 'duckpan test ' . a:test_path
+  let ia_name = fnamemodify(a:test_path, ':t:r')
+  return 'duckpan test ' . ia_name
 endfunction
 
 let s:pr_ddg_zci =
