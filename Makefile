@@ -10,6 +10,14 @@ check_link = @([ ! -L "$(1)" -a -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] \
 						 || [ -L "$(2)" -a "$$(readlink -f $(2))" != "$(1)" ]) && echo "File $(2) exists but differs from $(1) - will not make symlink"
 linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
 
+# (link_contents,$(search_dir),$(target_dir))
+# Create a link in $(target_dir) for every file in $(search_dir)
+link_contents = @$(foreach fname, \
+									$(wildcard $(dot_dir)/$(1)/*), \
+										$(call linkh, \
+											$(fname), \
+											$(HOME)/$(2)/$(shell basename $(fname))))
+
 links_minimal = link_bash link_git link_vim
 
 links_medium = $(links_minimal) link_tmux
