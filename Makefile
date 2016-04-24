@@ -1,12 +1,11 @@
 # Install a program via apt-get
 
-install_prog = @./install/install.pl install $(1)
+debug = $(if $(MAKE_DEBUG),--debug)
+installer = @perl install/install.pl $(debug) $(1)
 
-dot_dir = $(PWD)/dotfiles
-
-linkf = @./install/install.pl link $(1) $(2)
-
-link_contents = @./install/install.pl link_contents $(1) $(2)
+install_prog = $(call installer,install) $(1)
+linkf = $(call installer,link) $(1) $(2)
+link_contents = $(call installer,link_contents) $(1) $(2)
 
 links_minimal = link_bash link_git link_vim link_scripts
 

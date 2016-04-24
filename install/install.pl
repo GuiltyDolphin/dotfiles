@@ -11,8 +11,6 @@ my $DEBUG = 0;
 my $DOT_DIR = "$ENV{PWD}/dotfiles";
 my $usage = 'Usage: script_files COMMAND ARGS..';
 
-my $command = shift;
-
 sub dot_file { join '/', ($DOT_DIR, shift); }
 
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
@@ -66,16 +64,22 @@ sub install_program {
     }
 }
 
-if ($command eq 'link') {
-    my $source = dot_file(shift);
-    my $target = home(shift);
-    link_program($source, $target);
-} elsif ($command eq 'install') {
-    install_program(shift);
-} elsif ($command eq 'link_contents') {
-    my $search_dir = dot_file(shift);
-    my $target_dir = home(shift);
-    link_contents($search_dir, $target_dir);
+while (my $command = shift) {
+    if ($command eq '--debug') {
+        $DEBUG = 1;
+        next;
+    } elsif ($command eq 'link') {
+        my $source = dot_file(shift);
+        my $target = home(shift);
+        link_program($source, $target);
+    } elsif ($command eq 'install') {
+        install_program(shift);
+    } elsif ($command eq 'link_contents') {
+        my $search_dir = dot_file(shift);
+        my $target_dir = home(shift);
+        link_contents($search_dir, $target_dir);
+    }
+    last;
 }
 
 sub check_link {
