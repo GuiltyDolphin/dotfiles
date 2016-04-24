@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+USAGE='Usage: ddgc_env_vars [-h|--help] | . ddgc_env_vars'
+
+case $1 in
+  -h|--help )
+    echo $USAGE
+    exit;;
+esac
+
+echo -n "Choose password: "
+read pass </dev/tty
+
+user='ddgc'
+host='127.0.0.1'
+db='ddgc'
+
+export DDGC_DB_USER="$user"
+export DDGC_DB_PASSWORD="$pass"
+export DDGC_DB_DSN="dbi:Pg:database=$db;host=$host"
+echo "$host:5432:$db:$user:$pass" > $HOME/.pgpass

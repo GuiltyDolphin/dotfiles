@@ -18,7 +18,7 @@ link_contents = @$(foreach fname, \
 											$(fname), \
 											$(HOME)/$(2)/$(shell basename $(fname))))
 
-links_minimal = link_bash link_git link_vim
+links_minimal = link_bash link_git link_vim link_scripts
 
 links_medium = $(links_minimal) link_tmux
 
@@ -78,6 +78,10 @@ install_git :
 .PHONY: link_git
 link_git : install_git
 	$(call linkf,git/.gitconfig,.gitconfig)
+
+.PHONY: link_scripts
+link_scripts :
+	$(call link_contents,bash/scripts,.local/bin)
 
 # Medium
 
