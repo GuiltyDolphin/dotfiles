@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+description='delete any branches that are merged and in-line with master'
+usage='Usage: git-delete-merged [-h|--help]'
+
+case $1 in
+  -h|--help )
+    echo "$usage\n$description"
+    exit;;
+esac
+
+git branch --merged | grep -v 'master' | xargs git branch -d
+
+exit
