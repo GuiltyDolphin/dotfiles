@@ -1,22 +1,12 @@
 # Install a program via apt-get
-install_prog = @[ $$(which $(1)) ] || (echo "Installing $(1)\n" \
-							 &&  apt-get install $(1) -y)
+
+install_prog = @./install/install.pl install $(1)
 
 dot_dir = $(PWD)/dotfiles
 
-# Create a symlink if file doesn't already exist.
-linkh = @$(call check_link,$(1),$(2)) || [ -e $(2) ] || ln -s $(1) $(2)
-check_link = @([ ! -L "$(1)" -a -n "$$(diff -q $(2) $(1) 2>/dev/null)" ] \
-						 || [ -L "$(2)" -a "$$(readlink -f $(2))" != "$(1)" ]) && echo "File $(2) exists but differs from $(1) - will not make symlink"
-linkf = @$(call linkh,$(dot_dir)/$(1),$(HOME)/$(2))
+linkf = @./install/install.pl link $(1) $(2)
 
-# (link_contents,$(search_dir),$(target_dir))
-# Create a link in $(target_dir) for every file in $(search_dir)
-link_contents = @$(foreach fname, \
-									$(wildcard $(dot_dir)/$(1)/*), \
-										$(call linkh, \
-											$(fname), \
-											$(HOME)/$(2)/$(shell basename $(fname))))
+link_contents = @./install/install.pl link_contents $(1) $(2)
 
 links_minimal = link_bash link_git link_vim link_scripts
 
