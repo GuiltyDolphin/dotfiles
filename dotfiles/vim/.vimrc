@@ -414,7 +414,7 @@ call proot#initialize_project('ruby_spec', s:pr_ruby_spec)
 
 " Set the ruby project type based on the type of tests used.
 function! s:SetRubyProject()
-  let spec_match = globpath(b:project_root_directory, 'spec')
+  let spec_match = globpath(b:project_root_project.root_directory, 'spec')
   if !empty(spec_match)
     call proot#set_project_type('ruby_spec')
   endif
@@ -481,7 +481,7 @@ call proot#initialize_project('perl', s:pr_perl)
 
 function! s:SetPerlProject()
   setlocal shiftwidth=4
-  let a:dir = fnamemodify(b:project_root_directory, ":t")
+  let a:dir = fnamemodify(b:project_root_project.root_directory, ":t")
   if a:dir =~ '\v(duckduckgo|p5-app-duckpan)'
     call proot#set_project_type('ddg_backend')
   elseif a:dir =~ '\v^(zeroclickinfo-.*)'
