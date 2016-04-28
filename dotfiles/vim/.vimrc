@@ -470,7 +470,7 @@ endfunction
 
 let s:pr_perl =
       \ { 'root_globs': ['lib', 't'],
-      \   'test_command': 'prove -Ilib',
+      \   'test_command': 'prove -lr',
       \   'test_file_gen': function('s:PerlTestFile'),
       \   'test_command_file': function('s:PerlTestFileCommand'),
       \ }
