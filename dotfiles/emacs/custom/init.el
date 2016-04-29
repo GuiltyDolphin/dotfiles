@@ -181,6 +181,8 @@
 (define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
 (define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
 (define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
+(define-key evil-window-map "x" 'kill-buffer-and-window-ask)
+(define-key evil-window-map "s" 'ido-switch-buffer)
 (global-set-key (kbd "C-w") 'nil)
 
 (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
@@ -364,6 +366,16 @@ made in that buffer."
   (scratch-buffer)
   (clear-buffer))
 
+(defun kill-buffer-and-window-ask ()
+  "Kill the current buffer and window if user responds in the affirmative.
+
+Ask again if the buffer is modified."
+  (interactive)
+  (when (y-or-n-p "Kill current buffer and window?: ")
+    (when (or
+           (not (buffer-modified-p))
+           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
+      (kill-buffer-and-window))))
 
 (defun clear-buffer (&optional buffer)
   "Clear all the text in BUFFER without modifying the kill ring"
