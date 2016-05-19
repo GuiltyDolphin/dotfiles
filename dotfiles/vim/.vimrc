@@ -27,6 +27,7 @@ if g:use_syntax_plugins
   Plugin 'Twinside/vim-haskellConceal'
   " Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
   Plugin 'ehamberg/vim-cute-python'
+  Plugin 'idris-hackers/idris-vim' " General plugin for Idris
 endif
 
 " Disable to stop large plugins being used (>10M)
