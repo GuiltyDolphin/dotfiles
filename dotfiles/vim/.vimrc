@@ -318,6 +318,17 @@ set statusline+=%4p             " Percentage through file (lines)
 
 " }}}
 
+" Ignored Files {{{
+
+set wildignore=
+set wildignore+=*/.git " VCS
+set wildignore+=*.ibc  " Idris compilation files
+set wildignore+=*.ho   " Haskell compilation files
+set wildignore+=*.pdf
+set wildignore+=*.toc,*.aux " LaTeX build files
+
+" }}}
+
 " }}}
 
 " Variable {{{
