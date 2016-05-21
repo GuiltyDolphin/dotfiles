@@ -1,8 +1,8 @@
 snippet descit "describe ... it"
 describe ${1:scenario} do
-  it "${2:what}" do
-    $0
-  end
+	it "${2:what}" do
+		$0
+	end
 end
 endsnippet
 
@@ -17,7 +17,7 @@ snippet raketest "Rake::TestTask..." b
 require 'rake/testtask'
 
 Rake::TestTask.new do |${1:t}|
-  $1.pattern = "${2:spec/**/*_spec.rb}"
+	$1.pattern = "${2:spec/**/*_spec.rb}"
 end
 
 $0
