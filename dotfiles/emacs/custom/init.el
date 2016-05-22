@@ -56,6 +56,7 @@
     evil
     evil-leader
     evil-remap
+    evil-surround
     flycheck
     flx
     git-modes
