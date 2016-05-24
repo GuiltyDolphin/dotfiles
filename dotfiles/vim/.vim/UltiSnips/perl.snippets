@@ -1,0 +1,12 @@
+snippet hasb "has...lazy => 1... builder => 1" b
+has ${1} => (
+	is      => 'ro',
+	lazy    => 1,
+	builder => 1,
+);
+
+sub _build_$1 {
+	my $self = shift;
+	$0
+}
+endsnippet
