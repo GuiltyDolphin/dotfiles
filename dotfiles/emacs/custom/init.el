@@ -358,6 +358,24 @@
 (evil-leader/set-key
   "p" 'projectile-command-map)
 
+;; org
+
+(require 'org)
+
+(defun org-subdir (path)
+  "Return PATH under ORG-DIRECTORY"
+  (concat org-directory "/" path))
+
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+
+(setq org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
+
+(evil-leader/set-key
+  "oa" 'org-agenda
+  "oc" 'org-capture
+  "ol" 'org-store-link
+  "os" 'org-switchb)
+
 ;; Other commands
 
 (defun scratch-buffer ()
