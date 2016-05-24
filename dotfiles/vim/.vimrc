@@ -125,7 +125,7 @@ nnoremap <silent> <c-n> <nop>
 " Toggle tagbar window
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Open ctrlp tag window
-nnoremap <silent> <leader>p :CtrlP<cr>
+nnoremap <silent <C-p> :CtrlP<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
 
@@ -143,10 +143,11 @@ nnoremap <silent> <leader>gd :Git diff %<cr>
 
 " project-root {{{
 
-nnoremap <silent> <localleader>ra :ProjectRootTest<cr>
-nnoremap <silent> <localleader>rt :ProjectRootTestFile<cr>
-nnoremap <silent> <localleader>br :ProjectRootBrowseRoot<cr>
-nnoremap <silent> <localleader>tf :ProjectRootOpenTest<cr>
+let s:proot_leader_key = 'p'
+exec 'nnoremap <silent> <leader>' . s:proot_leader_key . 'ra :ProjectRootTest<cr>'
+exec 'nnoremap <silent> <leader>' . s:proot_leader_key . 'rt :ProjectRootTestFile<cr>'
+exec 'nnoremap <silent> <leader>' . s:proot_leader_key . 'br :ProjectRootBrowseRoot<cr>'
+exec 'nnoremap <silent> <leader>' . s:proot_leader_key . 'tf :ProjectRootOpenTest<cr>'
 
 " }}}
 
