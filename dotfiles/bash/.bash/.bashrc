@@ -141,9 +141,6 @@ set -o vi
 #  DuckDuckGo  #
 ################
 
-# added by duckpan installer
-eval $(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
-
 # Don't download metadata (it is slow)
 export NO_METADATA_DOWNLOAD=1
 
