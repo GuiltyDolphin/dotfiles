@@ -98,7 +98,7 @@ link_vimperator :
 
 .PHONY: install_emacs
 install_emacs :
-	@(emacs --version | head -n 1 | egrep -q '24.5') \
+	@(emacs --version | head -n 1 | grep -qE '24.5') \
 	|| ((cd ~/Downloads && ([ -d emacs-24.5 ] || (wget \
 	ftp://www.mirrorservice.org/sites/ftp.gnu.org/gnu/emacs/emacs-24.5.tar.gz \
 	   && tar -xvf emacs-24.5)) && cd emacs-24.5 \
