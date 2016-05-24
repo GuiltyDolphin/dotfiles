@@ -189,6 +189,8 @@
 (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
 (evil-nnoremap! (kbd "M-u") 'universal-argument)
 
+(evil-nnoremap! (kbd "Q") 'quit-window) ; So we can *always* quit
+
 ;; Magit
 (require 'magit)
 
