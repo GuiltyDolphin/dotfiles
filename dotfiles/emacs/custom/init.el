@@ -351,6 +351,12 @@
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
 
+;; projectile
+
+(require 'projectile)
+(projectile-global-mode 1)
+(evil-leader/set-key
+  "p" 'projectile-command-map)
 
 ;; Other commands
 
