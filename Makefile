@@ -101,8 +101,9 @@ install_mercurial :
 	@$(call install_prog,mercurial)
 
 # Requires mercurial for 'evil'
+# Requires Inconsolata font (used as font in Emacs)
 .PHONY: install_emacs
-install_emacs : install_mercurial
+install_emacs : install_mercurial install_font_inconsolata
 	@(which emacs && emacs --version | head -n 1 | grep -qE '24.5') \
 	|| ((cd ~/Downloads && ([ -d emacs-24.5 ] || (wget \
 	ftp://www.mirrorservice.org/sites/ftp.gnu.org/gnu/emacs/emacs-24.5.tar.gz \
