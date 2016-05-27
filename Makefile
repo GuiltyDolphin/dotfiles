@@ -148,6 +148,10 @@ setup_ycm : install_vundle
 		&& cd $(vundle_dir)/youcompleteme \
 		&& ./install.py
 
+.PHONY: setup_vundle_plugins
+setup_vundle_plugins : install_vundle
+	@vim -c 'exec "PluginInstall" | qa'
+
 solarized_file_url = "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark"
 solarized_color_file = $(HOME)/.dircolors
 
