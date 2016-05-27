@@ -60,6 +60,7 @@
     flycheck
     flx
     git-modes
+    haskell-mode
     magit
     projectile
     slime
