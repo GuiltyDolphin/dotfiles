@@ -166,6 +166,18 @@ get_solarized_colors :
 				|| (echo "Retrieving solarized colorscheme" \
 				&& wget -q $(solarized_file_url) -O $(solarized_color_file))
 
+# Preferred font is Inconsolata Medium 14pt
+inconsolata_file_url = "http://levien.com/type/myfonts/Inconsolata.otf"
+inconsolata_font_file = $(HOME)/.fonts/Inconsolata.otf
+
+.PHONY: install_font_inconsolata
+install_font_inconsolata :
+	@[ -e $(inconsolata_font_file) ] \
+		|| (echo "Retrieving inconsolata font" \
+		&& mkdir -p ~/.fonts \
+		&& wget -q $(inconsolata_file_url) -O $(inconsolata_font_file) \
+		&& fc-cache -fv)
+
 # Vim Linters
 
 vim_linters = install_vim-vint
