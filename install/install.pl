@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use Cwd qw(abs_path getcwd);
+
 #######################################################################
 #                           Options/Globals                           #
 #######################################################################
@@ -53,7 +55,7 @@ sub with_directory {
         # Not using Perl's 'mkdir' as it doesn't work with nested directories.
         `mkdir -p $directory`;
     }
-    chomp(my $curr = `pwd`);
+    my $curr = getcwd();
     chdir $directory or error("failed to change directory to '$directory'") && return 0;
     my $ret = $sub->();
     chdir $curr;
@@ -96,11 +98,11 @@ sub install_firefox {
     with_directory $software_directory => sub {
         my $ffurl = get_latest_firefox_tar_url();
         $ffurl =~ /^$firefox_dir_url(.*)$/;
-        my $firefile = "$1";
+        my $firefile = abs_path("$1");
         system("wget $ffurl");
         system("tar xjf $firefile");
-        system("rm -r $firefile");
-        link_script_local("$software_directory/firefox/firefox", 'firefox');
+        system("rm $firefile");
+        link_script_local(abs_path('firefox/firefox'), 'firefox');
     }
 }
 
