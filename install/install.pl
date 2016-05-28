@@ -155,11 +155,19 @@ sub install_program {
     $ret and info("successfully installed '$program'");
 }
 
+my @tmp_argv;
 while (my $command = shift) {
     if ($command eq '--debug') {
         $DEBUG = 1;
         next;
-    } elsif ($command eq 'link') {
+    }
+    push @tmp_argv, $command;
+}
+
+@ARGV = @tmp_argv;
+
+while (my $command = shift) {
+    if ($command eq 'link') {
         my $source = dot_file(shift);
         my $target = home(shift);
         link_program($source, $target);
