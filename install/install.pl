@@ -38,6 +38,22 @@ sub error {
 #                              Utilities                              #
 #######################################################################
 
+# Execute a subroutine in the given directory, returning to the original
+# directory on completion.
+sub with_directory {
+    my ($directory, $sub, %options) = @_;
+    my $make_dir = $options{make_dir} // 1;
+    if (!-d $directory && $make_dir) {
+        # Not using Perl's 'mkdir' as it doesn't work with nested directories.
+        `mkdir -p $directory`;
+    }
+    chomp(my $curr = `pwd`);
+    chdir $directory or error("failed to change directory to '$directory'") && return 0;
+    my $ret = $sub->();
+    chdir $curr;
+    return $ret;
+}
+
 my $local_bin = "$ENV{HOME}/.local/bin";
 
 sub link_script_local {
