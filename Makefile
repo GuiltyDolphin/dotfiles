@@ -28,7 +28,7 @@ link_full : $(links_full)
 installs_haskell = install_haskell_platform install_ghci
 installs_minimal = install_git install_vim
 installs_medium = $(installs_minimal) install_tmux
-installs_full = $(installs_medium) $(installs_haskell) install_ruby1.9.1 install_tmuxinator install_vundle
+installs_full = $(installs_medium) install_firefox $(installs_haskell) install_ruby1.9.1 install_tmuxinator install_vundle
 
 .PHONY: install
 install : $(installs_medium)
@@ -91,6 +91,10 @@ install_vundle : install_git
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
 # Full
+
+.PHONY: install_firefox
+install_firefox :
+	@$(call install_prog,firefox)
 
 .PHONY: link_vimerator
 link_vimperator :

@@ -65,6 +65,40 @@ sub link_script_local {
 #                              Commands                               #
 #######################################################################
 
+my %software_config = (
+    firefox => {
+        install => \&install_firefox,
+    },
+);
+
+#############
+#  FireFox  #
+#############
+
+my $firefox_dir_url = "https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-release-l10n/";
+sub get_latest_firefox_tar_url {
+    my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
+    my $sub_url = `$install_s`;
+    $sub_url =~ /^(.*)\.tar\.bz2$/;
+    debug("firefox version found: $1");
+    return "$firefox_dir_url$sub_url";
+}
+
+my $software_directory = "$ENV{HOME}/software";
+
+sub install_firefox {
+    debug('Installing: firefox');
+    with_directory $software_directory => sub {
+        my $ffurl = get_latest_firefox_tar_url();
+        $ffurl =~ /^$firefox_dir_url(.*)$/;
+        my $firefile = "$1";
+        system("wget $ffurl");
+        system("tar xjf $firefile");
+        system("rm -r $firefile");
+        link_script_local("$software_directory/firefox/firefox", 'firefox');
+    }
+}
+
 sub link_program {
     my ($source, $target) = @_;
     do {
@@ -95,6 +129,10 @@ sub install_program {
         return;
     }
     debug("Installing: $program");
+    if (my $config = $software_config{$program}) {
+        $config->{install}();
+        return;
+    }
     system("apt-get install $program -y");
 }
 
