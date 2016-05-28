@@ -69,6 +69,14 @@ sub link_script_local {
     link_program($path, "$local_bin/$name");
 }
 
+sub sequence {
+    my @commands = @_;
+    foreach my $command (@commands) {
+        system($command) == 0 or return $?;
+    }
+    return 0;
+}
+
 #######################################################################
 #                              Commands                               #
 #######################################################################
@@ -99,9 +107,11 @@ sub install_firefox {
         my $ffurl = get_latest_firefox_tar_url();
         $ffurl =~ /^$firefox_dir_url(.*)$/;
         my $firefile = abs_path("$1");
-        system("wget $ffurl");
-        system("tar xjf $firefile");
-        system("rm $firefile");
+        sequence(
+            "wget $ffurl",
+            "tar xjf $firefile",
+            "rm $firefile*",
+        ) and return $?;
         link_script_local(abs_path('firefox/firefox'), 'firefox');
     }
 }
@@ -136,12 +146,13 @@ sub install_program {
         return;
     }
     info("installing '$program'");
+    my $ret;
     if (my $config = $software_config{$program}) {
-        $config->{install}();
+        $ret = $config->{install}();
     } else {
-        system("apt-get install $program -y");
+        $ret = system("apt-get install $program -y");
     }
-    $? or info("successfully installed '$program'");
+    $ret and info("successfully installed '$program'");
 }
 
 while (my $command = shift) {
