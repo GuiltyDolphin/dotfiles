@@ -8,6 +8,7 @@ use warnings;
 #######################################################################
 
 my $DEBUG = 0;
+my $INFO  = 1;
 my $DOT_DIR = "$ENV{PWD}/dotfiles";
 my $usage = 'Usage: script_files COMMAND ARGS..';
 
@@ -20,6 +21,11 @@ sub home { join '/', ($ENV{HOME}, shift); }
 #######################################################################
 #                                DEBUG                                #
 #######################################################################
+
+sub info {
+    my $text = shift;
+    print "INFO: $text\n" if $INFO;
+}
 
 sub debug {
     my $text = shift;
