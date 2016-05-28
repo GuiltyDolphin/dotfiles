@@ -134,12 +134,13 @@ sub install_program {
         debug("Skipping '$program' (already installed)");
         return;
     }
-    debug("Installing: $program");
+    info("installing '$program'");
     if (my $config = $software_config{$program}) {
         $config->{install}();
-        return;
+    } else {
+        system("apt-get install $program -y");
     }
-    system("apt-get install $program -y");
+    $? or info("successfully installed '$program'");
 }
 
 while (my $command = shift) {
