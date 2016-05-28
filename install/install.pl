@@ -93,7 +93,6 @@ sub get_latest_firefox_tar_url {
 my $software_directory = "$ENV{HOME}/software";
 
 sub install_firefox {
-    debug('Installing: firefox');
     with_directory $software_directory => sub {
         my $ffurl = get_latest_firefox_tar_url();
         $ffurl =~ /^$firefox_dir_url(.*)$/;
