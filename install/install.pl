@@ -56,12 +56,19 @@ sub link_contents {
     }
 }
 
+sub is_installed {
+    my $program = shift;
+    return `which $program`;
+}
+
 sub install_program {
     my $program = shift;
-    unless (`which $program`) {
-        debug("Installing: $program");
-        system("apt-get install $program -y");
+    if (is_installed($program)) {
+        debug("Skipping '$program' (already installed)");
+        return;
     }
+    debug("Installing: $program");
+    system("apt-get install $program -y");
 }
 
 while (my $command = shift) {
