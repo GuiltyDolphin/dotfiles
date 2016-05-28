@@ -90,6 +90,10 @@ install_vundle : install_git
 	@[ -e "$(vundle_dir)/Vundle.vim" ] \
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
+.PHONY: link_gnome_terminal
+link_gnome_terminal : install_font_inconsolata
+	@$(call linkf,gconf/apps/gnome-terminal/profiles/Ben,.gconf/apps/gnome-terminal/profiles/Ben)
+
 # Full
 
 .PHONY: link_vimerator
