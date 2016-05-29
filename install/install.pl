@@ -87,6 +87,13 @@ my %software_config = (
     },
 );
 
+sub get_config {
+    my ($program, $accessor) = @_;
+    my $config = $software_config{$program};
+    return $config unless $accessor;
+    return $config->{$accessor};
+}
+
 #############
 #  FireFox  #
 #############
