@@ -162,6 +162,22 @@ sub install_program {
     $ret or info("successfully installed '$program'");
 }
 
+sub update_program {
+    my $program = shift;
+    unless (is_installed($program)) {
+        error("cannot update '$program' (not installed)");
+        return;
+    }
+    info("updating '$program'");
+    my $ret;
+    if (my $updater = get_config($program, 'update')) {
+        $ret = $updater->();
+    } else {
+        $ret = system("apt-get install $program -y");
+    }
+    $ret or info("successfully updated '$program'");
+}
+
 my @tmp_argv;
 while (my $command = shift) {
     if ($command eq '--debug') {
@@ -184,6 +200,8 @@ while (my $command = shift) {
         my $search_dir = dot_file(shift);
         my $target_dir = home(shift);
         link_contents($search_dir, $target_dir);
+    } elsif ($command eq 'update') {
+        update_program(shift);
     }
     last;
 }
