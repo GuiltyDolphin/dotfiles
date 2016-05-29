@@ -89,10 +89,13 @@ my %software_config = (
 );
 
 sub get_config {
-    my ($program, $accessor) = @_;
+    my ($program, @accessors) = @_;
     my $config = $software_config{$program};
-    return $config unless $accessor;
-    return $config->{$accessor};
+    foreach (@accessors) {
+        $config = $config->{$_};
+        last unless defined $config;
+    }
+    return $config;
 }
 
 #############
