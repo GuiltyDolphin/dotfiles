@@ -152,7 +152,7 @@ sub install_program {
     } else {
         $ret = system("apt-get install $program -y");
     }
-    $ret and info("successfully installed '$program'");
+    $ret or info("successfully installed '$program'");
 }
 
 my @tmp_argv;
