@@ -154,8 +154,8 @@ sub install_program {
     }
     info("installing '$program'");
     my $ret;
-    if (my $config = $software_config{$program}) {
-        $ret = $config->{install}();
+    if (my $installer = get_config($program, 'install')) {
+        $ret = $installer->();
     } else {
         $ret = system("apt-get install $program -y");
     }
