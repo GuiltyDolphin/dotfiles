@@ -14,6 +14,18 @@ Running these commands requires that you have `make` (or something
 that can run like `make`) installed on your system. Additionally,
 `git` and `apt-get` may be used for installing software.
 
+##### Root
+
+Much of the software will likely require elevated privileges in order
+to install. Recommended is the `sudo` program with
+
+```
+Defaults>username !lecture
+username ALL=(ALL) ALL
+```
+
+in the `/etc/sudoers` file.
+
 #### Commands
 
 For a relatively complete installation, run the following command:
