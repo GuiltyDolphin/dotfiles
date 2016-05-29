@@ -85,6 +85,10 @@ my %software_config = (
     firefox => {
         install => \&install_firefox,
         update  => \&update_firefox,
+        version => {
+            current => \&get_current_firefox_version,
+            latest  => \&get_latest_firefox_version,
+        },
     },
 );
 
@@ -145,31 +149,28 @@ my $firefox_dir_url = "https://ftp.mozilla.org/pub/firefox/nightly/latest-mozill
 
 sub get_current_firefox_version {
     chomp (my $version = `firefox --version`);
-    $version =~ s/^\D*//;
+    $version =~ s/^Mozilla Firefox //;
     return $version;
 }
+
+my %cache;
 
 sub get_latest_firefox_version {
     my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
     my $sub_url = `$install_s`;
+    $cache{firefox}->{sub_url} = $sub_url;
     $sub_url =~ /^firefox-((?:[0-9]+\.?)+)\./;
     return $1;
 }
 
 sub update_firefox {
-    my ($current, $latest) = (get_current_firefox_version(), get_latest_firefox_version());
-    debug("comparing version $current (current) to $latest (latest)");
-    if ($current ne $latest) {
-        system("rm $local_bin/firefox");
-        install_firefox();
-    }
+    system("rm $local_bin/firefox");
+    install_firefox();
 }
 
 sub get_latest_firefox_tar_url {
     my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
-    my $sub_url = `$install_s`;
-    $sub_url =~ /^(.*)\.tar\.bz2$/;
-    debug("firefox version found: $1");
+    my $sub_url = $cache{firefox}->{sub_url} // `$install_s`;
     return "$firefox_dir_url$sub_url";
 }
 
