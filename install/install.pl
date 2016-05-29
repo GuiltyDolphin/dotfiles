@@ -98,6 +98,45 @@ sub get_config {
     return $config;
 }
 
+sub default_get_current_version {
+    my $program = shift;
+    chomp (my $version = `apt version $program`);
+    return $version;
+}
+
+sub default_get_latest_version {
+    my $program = shift;
+    my $info = `apt-cache show $program`;
+    $info =~ /^Version: (.+)$/m;
+    return $1;
+}
+
+sub get_current_version {
+    my $program = shift;
+    if (my $fetch_version = get_config($program, 'version', 'current')) {
+        return $fetch_version->();
+    } else {
+        return default_get_current_version($program);
+    }
+}
+
+sub get_latest_version {
+    my $program = shift;
+    if (my $fetch_version = get_config($program, 'version', 'latest')) {
+        return $fetch_version->();
+    } else {
+        return default_get_latest_version($program);
+    }
+}
+
+sub is_up_to_date {
+    my $program = shift;
+    my $current = get_current_version($program);
+    my $latest  = get_latest_version($program);
+    debug("comparing version $current (current) to $latest (latest)");
+    return !system("dpkg --compare-versions $current ge $latest");
+}
+
 #############
 #  FireFox  #
 #############
@@ -191,11 +230,15 @@ sub install_program {
 
 sub update_program {
     my $program = shift;
+    info("updating '$program'");
     unless (is_installed($program)) {
         error("cannot update '$program' (not installed)");
         return;
     }
-    info("updating '$program'");
+    if (is_up_to_date($program)) {
+        info("skipping $program (up-to-date)");
+        return;
+    }
     my $ret;
     if (my $updater = get_config($program, 'update')) {
         $ret = $updater->();
