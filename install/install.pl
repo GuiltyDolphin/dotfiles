@@ -83,11 +83,11 @@ sub sequence {
 
 my %software_config = (
     firefox => {
-        install => \&install_firefox,
-        update  => \&update_firefox,
+        install => \&firefox_install,
+        update  => \&firefox_update,
         version => {
-            current => \&get_current_firefox_version,
-            latest  => \&get_latest_firefox_version,
+            current => \&firefox_version_current,
+            latest  => \&firefox_version_latest,
         },
     },
 );
@@ -138,7 +138,7 @@ sub is_up_to_date {
 
 my $firefox_dir_url = "https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-release-l10n/";
 
-sub get_current_firefox_version {
+sub firefox_version_current {
     chomp (my $version = `firefox --version`);
     $version =~ s/^Mozilla Firefox //;
     return $version;
@@ -146,7 +146,7 @@ sub get_current_firefox_version {
 
 my %cache;
 
-sub get_latest_firefox_version {
+sub firefox_version_latest {
     my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
     my $sub_url = `$install_s`;
     $cache{firefox}->{sub_url} = $sub_url;
@@ -154,9 +154,9 @@ sub get_latest_firefox_version {
     return $1;
 }
 
-sub update_firefox {
+sub firefox_update {
     system("rm $local_bin/firefox");
-    install_firefox();
+    firefox_install();
 }
 
 sub get_latest_firefox_tar_url {
@@ -167,7 +167,7 @@ sub get_latest_firefox_tar_url {
 
 my $software_directory = "$ENV{HOME}/software";
 
-sub install_firefox {
+sub firefox_install {
     with_directory $software_directory => sub {
         my $ffurl = get_latest_firefox_tar_url();
         $ffurl =~ /^$firefox_dir_url(.*)$/;
