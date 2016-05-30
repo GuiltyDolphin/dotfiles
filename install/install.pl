@@ -111,6 +111,9 @@ sub get_distribution {
 #######################################################################
 
 my %distro_config = (
+    arch => {
+        install => \&distro_arch_install,
+    },
     debian => {
         install => \&distro_debian_install,
         update  => \&distro_debian_update,
@@ -121,6 +124,15 @@ my %distro_config = (
         },
     },
 );
+
+##########
+#  Arch  #
+##########
+
+sub distro_arch_install {
+    my $program = shift;
+    return system("pacman -S $program");
+}
 
 ############
 #  Debian  #
