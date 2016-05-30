@@ -327,9 +327,7 @@ sub emacs_install {
         sequence(
             "wget $emacs_url",
             "tar -xvf $tar",
-            "cd $emacs",
-            './configure', 'make', 'src/emacs -Q', 'make install',
-            'cd ..',
+            "cd $emacs && ./configure && make && src/emacs -Q && make install",
             "rm $tar",
         );
     };
