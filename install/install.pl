@@ -384,6 +384,7 @@ sub install_program {
     info("installing '$program'");
     my $ret = run_config_or_default($program, 'install');
     $ret or info("successfully installed '$program'");
+    error("error encountered while installing '$program'") if $ret;
 }
 
 sub update_program {
@@ -399,6 +400,7 @@ sub update_program {
     }
     my $ret = run_config_or_default($program, 'update');
     $ret or info("successfully updated '$program'");
+    error("error encountered while updating '$program'") if $ret;
 }
 
 my @tmp_argv;
