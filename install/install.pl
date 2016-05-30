@@ -206,7 +206,7 @@ sub run_config_or_default {
     $user_distro //= get_distribution();
     my $default = get_config_distro($user_distro, @accessors[1..$#accessors]);
     unless ($default) {
-        error('no default implementation of ' . join('-', @accessors[1..$#accessors]) . " for '$user_distro'");
+        error('no default implementation of ' . join('_', @accessors[1..$#accessors]) . " for '$user_distro'");
         return 1;
     }
     return $default->($accessors[0], @args);
