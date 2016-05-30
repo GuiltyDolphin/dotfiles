@@ -77,6 +77,33 @@ sub sequence {
     return 0;
 }
 
+my %distro_map = (
+    'linuxmint' => 'debian',
+    'generic'   => 'debian',
+    'arch'      => 'arch',
+);
+
+my $default_distro = 'debian';
+
+sub get_distribution {
+    chomp (my $distro = `lsb_release -is`);
+    unless ($distro) {
+        my $kernel_release = `uname -r`;
+        unless ($kernel_release) {
+            error('unable to detect distribution, defaulting to Debian-like system');
+            $distro = 'Debian';
+        } else {
+            $kernel_release =~ /^.+?(\w+)$/;
+            $distro = $1;
+        }
+    }
+    unless ($distro = $distro_map{lc $distro}) {
+        error("no custom configuration for $distro - defaulting to $default_distro");
+        $distro = $distro_map{lc $distro} // $default_distro;
+    }
+    return $distro;
+}
+
 #######################################################################
 #                              Commands                               #
 #######################################################################
