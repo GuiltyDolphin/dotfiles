@@ -264,6 +264,8 @@ while (my $command = shift) {
         link_contents($search_dir, $target_dir);
     } elsif ($command eq 'update') {
         update_program(shift);
+    } else {
+        print "$usage\n" and die 1;
     }
     last;
 }
