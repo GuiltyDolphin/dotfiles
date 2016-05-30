@@ -115,6 +115,7 @@ my %distro_config = (
         install => \&distro_debian_install,
         update  => \&distro_debian_update,
         version => {
+            compare => \&distro_debian_version_compare,
             current => \&distro_debian_version_current,
             latest  => \&distro_debian_version_latest,
         },
@@ -148,6 +149,15 @@ sub distro_debian_version_latest {
     return $1;
 }
 
+sub distro_debian_version_compare {
+    my (undef, $current, $latest) = @_;
+    my $comp = 'dpkg --compare-versions';
+    return -1 if !system("$comp $current lt $latest");
+    return 1  if !system("$comp $current gt $latest");
+    return 0  if !system("$comp $current eq $latest");
+    return;
+}
+
 #######################################################################
 #                              Commands                               #
 #######################################################################
@@ -164,8 +174,8 @@ my %software_config = (
 );
 
 sub get_config_generic {
-    my ($config_h, $program, @accessors) = @_;
-    my $config = $config_h->{$program};
+    my ($config_h, @accessors) = @_;
+    my $config = $config_h;
     foreach (@accessors) {
         $config = $config->{$_};
         last unless defined $config;
@@ -181,18 +191,25 @@ sub get_config_distro {
     return get_config_generic(\%distro_config, @_);
 }
 
+# Args, either: ($program, acc1, acc2, ..., accN)
+# or ([args], $program, acc1, acc2, ..., accN)
+# $program is passed implicitly as first argument to a default sub.
 sub run_config_or_default {
-    my ($program, @accessors) = @_;
-    if (my $custom = get_config($program, @accessors)) {
-        return $custom->();
+    my @accessors = @_;
+    my @args;
+    if (ref $accessors[0] eq 'ARRAY') {
+        @args = @{shift @accessors};
+    }
+    if (my $custom = get_config(@accessors)) {
+        return $custom->(@args);
     }
     $user_distro //= get_distribution();
-    my $default = get_config_distro($user_distro, @accessors);
+    my $default = get_config_distro($user_distro, @accessors[1..$#accessors]);
     unless ($default) {
-        error('no default implementation of ' . join('-', @accessors) . " for '$user_distro'");
+        error('no default implementation of ' . join('-', @accessors[1..$#accessors]) . " for '$user_distro'");
         return 1;
     }
-    return $default->($program);
+    return $default->($accessors[0], @args);
 }
 
 sub is_up_to_date {
@@ -200,7 +217,8 @@ sub is_up_to_date {
     my $current = run_config_or_default($program, 'version', 'current');
     my $latest  = run_config_or_default($program, 'version', 'latest');
     debug("comparing version $current (current) to $latest (latest)");
-    return !system("dpkg --compare-versions $current ge $latest");
+    my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
+    return ($comp <= 0);
 }
 
 #############
