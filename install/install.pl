@@ -229,7 +229,7 @@ sub is_up_to_date {
     my $latest  = run_config_or_default($program, 'version', 'latest');
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
-    return ($comp <= 0);
+    return ($comp >= 0);
 }
 
 #############
