@@ -79,6 +79,13 @@ sub sequence {
     return 0;
 }
 
+sub q_version {
+    my $program = shift;
+    return sub {
+        return `$program --version`;
+    }
+}
+
 my %distro_map = (
     'arch'      => 'arch',
     'debian'    => 'debian',
@@ -189,17 +196,19 @@ sub distro_debian_version_compare {
 
 my %software_config = (
     emacs   => {
-        install => \&emacs_install,
-        update  => \&emacs_update,
-        version => {
+        install   => \&emacs_install,
+        installed => q_version('emacs'),
+        update    => \&emacs_update,
+        version   => {
             current => \&emacs_version_current,
             latest  => \&emacs_version_latest,
         },
     },
     firefox => {
-        install => \&firefox_install,
-        update  => \&firefox_update,
-        version => {
+        install   => \&firefox_install,
+        installed => q_version('firefox'),
+        update    => \&firefox_update,
+        version   => {
             current => \&firefox_version_current,
             latest  => \&firefox_version_latest,
         },
