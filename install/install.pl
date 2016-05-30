@@ -80,9 +80,10 @@ sub sequence {
 }
 
 my %distro_map = (
-    'linuxmint' => 'debian',
-    'generic'   => 'debian',
     'arch'      => 'arch',
+    'debian'    => 'debian',
+    'generic'   => 'debian',
+    'linuxmint' => 'debian',
 );
 
 my $default_distro = 'debian';
