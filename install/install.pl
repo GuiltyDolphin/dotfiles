@@ -139,7 +139,7 @@ my %distro_config = (
 
 sub distro_arch_install {
     my $program = shift;
-    return system("pacman -S $program");
+    return system("pacman --noconfirm -S $program");
 }
 
 sub distro_arch_installed {
