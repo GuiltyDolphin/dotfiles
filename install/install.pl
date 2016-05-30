@@ -14,6 +14,8 @@ my $INFO  = 1;
 my $DOT_DIR = "$ENV{PWD}/dotfiles";
 my $usage = 'Usage: script_files COMMAND ARGS..';
 
+my $user_distro;
+
 sub dot_file { join '/', ($DOT_DIR, shift); }
 
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
@@ -105,6 +107,48 @@ sub get_distribution {
 }
 
 #######################################################################
+#                     Distribution Configuration                      #
+#######################################################################
+
+my %distro_config = (
+    debian => {
+        install => \&distro_debian_install,
+        update  => \&distro_debian_update,
+        version => {
+            current => \&distro_debian_version_current,
+            latest  => \&distro_debian_version_latest,
+        },
+    },
+);
+
+############
+#  Debian  #
+############
+
+sub distro_debian_install {
+    my $program = shift;
+    return system("apt-get install $program -y");
+}
+
+sub distro_debian_update {
+    my $program = shift;
+    return system("apt-get install $program -y");
+}
+
+sub distro_debian_version_current {
+    my $program = shift;
+    chomp (my $version = `apt version $program`);
+    return $version;
+}
+
+sub distro_debian_version_latest {
+    my $program = shift;
+    my $info = `apt-cache show $program`;
+    $info =~ /^Version: (.+)$/m;
+    return $1;
+}
+
+#######################################################################
 #                              Commands                               #
 #######################################################################
 
@@ -119,9 +163,9 @@ my %software_config = (
     },
 );
 
-sub get_config {
-    my ($program, @accessors) = @_;
-    my $config = $software_config{$program};
+sub get_config_generic {
+    my ($config_h, $program, @accessors) = @_;
+    my $config = $config_h->{$program};
     foreach (@accessors) {
         $config = $config->{$_};
         last unless defined $config;
@@ -129,26 +173,26 @@ sub get_config {
     return $config;
 }
 
+sub get_config {
+    return get_config_generic(\%software_config, @_);
+}
+
+sub get_config_distro {
+    return get_config_generic(\%distro_config, @_);
+}
+
 sub run_config_or_default {
     my ($program, @accessors) = @_;
     if (my $custom = get_config($program, @accessors)) {
         return $custom->();
     }
-    my $default = \&{'default_' . join '_', @accessors};
+    $user_distro //= get_distribution();
+    my $default = get_config_distro($user_distro, @accessors);
+    unless ($default) {
+        error('no default implementation of ' . join('-', @accessors) . " for '$user_distro'");
+        return 1;
+    }
     return $default->($program);
-}
-
-sub default_version_current {
-    my $program = shift;
-    chomp (my $version = `apt version $program`);
-    return $version;
-}
-
-sub default_version_latest {
-    my $program = shift;
-    my $info = `apt-cache show $program`;
-    $info =~ /^Version: (.+)$/m;
-    return $1;
 }
 
 sub is_up_to_date {
@@ -231,11 +275,6 @@ sub is_installed {
     return `which $program`;
 }
 
-sub default_install {
-    my $program = shift;
-    return system("apt-get install $program -y");
-}
-
 sub install_program {
     my $program = shift;
     if (is_installed($program)) {
@@ -245,11 +284,6 @@ sub install_program {
     info("installing '$program'");
     my $ret = run_config_or_default($program, 'install');
     $ret or info("successfully installed '$program'");
-}
-
-sub default_update {
-    my $program = shift;
-    return system("apt-get install $program -y");
 }
 
 sub update_program {
