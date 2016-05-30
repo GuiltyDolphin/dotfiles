@@ -171,8 +171,12 @@ get_solarized_colors :
 inconsolata_file_url = "http://levien.com/type/myfonts/Inconsolata.otf"
 inconsolata_font_file = $(HOME)/.fonts/Inconsolata.otf
 
+.PHONY: install_fontconfig
+install_fontconfig :
+	@$(call install_prog,fontconfig)
+
 .PHONY: install_font_inconsolata
-install_font_inconsolata :
+install_font_inconsolata : install_fontconfig
 	@[ -e $(inconsolata_font_file) ] \
 		|| (echo "Retrieving inconsolata font" \
 		&& mkdir -p ~/.fonts \
