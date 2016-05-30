@@ -174,6 +174,14 @@ sub distro_debian_version_compare {
 #######################################################################
 
 my %software_config = (
+    emacs   => {
+        install => \&emacs_install,
+        update  => \&emacs_update,
+        version => {
+            current => \&emacs_version_current,
+            latest  => \&emacs_version_latest,
+        },
+    },
     firefox => {
         install => \&firefox_install,
         update  => \&firefox_update,
@@ -279,6 +287,48 @@ sub firefox_install {
         ) and return $?;
         link_script_local(abs_path('firefox/firefox'), 'firefox');
     }
+}
+
+###########
+#  Emacs  #
+###########
+
+my $emacs_dir_url = 'https://ftp.gnu.org/gnu/emacs/';
+
+sub emacs_install {
+    my $version = emacs_version_latest();
+    my $emacs = "emacs-$version";
+    my $tar = "$emacs.tar.gz";
+    my $emacs_url = "$emacs_dir_url/$tar";
+    with_directory $software_directory => sub {
+        sequence(
+            "wget $emacs_url",
+            "tar -xvf $tar",
+            "cd $emacs",
+            './configure', 'make', 'src/emacs -Q', 'make install',
+            'cd ..',
+            "rm $tar",
+        );
+    };
+}
+
+sub emacs_version_current {
+    my $version = `emacs --version`;
+    $version =~ /^GNU Emacs (.+)$/m;
+    return $1;
+}
+
+sub emacs_version_latest {
+    my $dat = `curl -s $emacs_dir_url`;
+    my @versions;
+    while ($dat =~ /emacs-([-.\d]+)\.tar\.gz/g) {
+        push @versions, $1;
+    }
+    return (sort @versions)[$#versions];
+}
+
+sub emacs_update {
+    emacs_install();
 }
 
 sub link_program {
