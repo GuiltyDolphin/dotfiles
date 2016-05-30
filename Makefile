@@ -125,8 +125,7 @@ link_ghci : install_ghci
 
 .PHONY: install_haskell_platform
 install_haskell_platform :
-	@[ -n "$$(apt version haskell-platform)" ] \
-	  || $(call install_prog,haskell-platform)
+	  @$(call install_prog,haskell-platform)
 
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
