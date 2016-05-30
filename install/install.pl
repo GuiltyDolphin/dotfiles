@@ -102,6 +102,15 @@ sub get_config {
     return $config;
 }
 
+sub run_config_or_default {
+    my ($program, @accessors) = @_;
+    if (my $custom = get_config($program, @accessors)) {
+        return $custom->();
+    }
+    my $default = \&{'default_' . join '_', @accessors};
+    return $default->($program);
+}
+
 sub default_get_current_version {
     my $program = shift;
     chomp (my $version = `apt version $program`);
