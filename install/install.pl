@@ -111,41 +111,23 @@ sub run_config_or_default {
     return $default->($program);
 }
 
-sub default_get_current_version {
+sub default_version_current {
     my $program = shift;
     chomp (my $version = `apt version $program`);
     return $version;
 }
 
-sub default_get_latest_version {
+sub default_version_latest {
     my $program = shift;
     my $info = `apt-cache show $program`;
     $info =~ /^Version: (.+)$/m;
     return $1;
 }
 
-sub get_current_version {
-    my $program = shift;
-    if (my $fetch_version = get_config($program, 'version', 'current')) {
-        return $fetch_version->();
-    } else {
-        return default_get_current_version($program);
-    }
-}
-
-sub get_latest_version {
-    my $program = shift;
-    if (my $fetch_version = get_config($program, 'version', 'latest')) {
-        return $fetch_version->();
-    } else {
-        return default_get_latest_version($program);
-    }
-}
-
 sub is_up_to_date {
     my $program = shift;
-    my $current = get_current_version($program);
-    my $latest  = get_latest_version($program);
+    my $current = run_config_or_default($program, 'version', 'current');
+    my $latest  = run_config_or_default($program, 'version', 'latest');
     debug("comparing version $current (current) to $latest (latest)");
     return !system("dpkg --compare-versions $current ge $latest");
 }
@@ -222,6 +204,11 @@ sub is_installed {
     return `which $program`;
 }
 
+sub default_install {
+    my $program = shift;
+    return system("apt-get install $program -y");
+}
+
 sub install_program {
     my $program = shift;
     if (is_installed($program)) {
@@ -229,13 +216,13 @@ sub install_program {
         return;
     }
     info("installing '$program'");
-    my $ret;
-    if (my $installer = get_config($program, 'install')) {
-        $ret = $installer->();
-    } else {
-        $ret = system("apt-get install $program -y");
-    }
+    my $ret = run_config_or_default($program, 'install');
     $ret or info("successfully installed '$program'");
+}
+
+sub default_update {
+    my $program = shift;
+    return system("apt-get install $program -y");
 }
 
 sub update_program {
@@ -249,12 +236,7 @@ sub update_program {
         info("skipping $program (up-to-date)");
         return;
     }
-    my $ret;
-    if (my $updater = get_config($program, 'update')) {
-        $ret = $updater->();
-    } else {
-        $ret = system("apt-get install $program -y");
-    }
+    my $ret = run_config_or_default($program, 'update');
     $ret or info("successfully updated '$program'");
 }
 
