@@ -11,7 +11,7 @@ use Cwd qw(abs_path getcwd);
 
 my $DEBUG = 0;
 my $INFO  = 1;
-my $DOT_DIR = "$ENV{PWD}/dotfiles";
+my $DOT_DIR = do { my $pwd = getcwd(); "$pwd/dotfiles" };
 my $usage = 'Usage: script_files COMMAND ARGS..';
 
 my $user_distro;
