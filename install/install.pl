@@ -89,16 +89,14 @@ my %distro_map = (
 my $default_distro = 'debian';
 
 sub get_distribution {
-    chomp (my $distro = `lsb_release -is`);
-    unless ($distro) {
-        my $kernel_release = `uname -r`;
-        unless ($kernel_release) {
-            error('unable to detect distribution, defaulting to Debian-like system');
-            $distro = 'Debian';
-        } else {
-            $kernel_release =~ /^.+?(\w+)$/;
-            $distro = $1;
-        }
+    chomp (my $kernel_release = `uname -r`);
+    my $distro;
+    unless ($kernel_release) {
+        error('unable to detect distribution, defaulting to debian system');
+        $distro = 'debian';
+    } else {
+        $kernel_release =~ /^.+?(\w+)$/;
+        $distro = $1;
     }
     unless ($distro = $distro_map{lc $distro}) {
         error("no custom configuration for $distro - defaulting to $default_distro");
