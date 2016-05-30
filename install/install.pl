@@ -111,12 +111,14 @@ sub get_distribution {
 
 my %distro_config = (
     arch => {
-        install => \&distro_arch_install,
+        install   => \&distro_arch_install,
+        installed => \&distro_arch_installed,
     },
     debian => {
-        install => \&distro_debian_install,
-        update  => \&distro_debian_update,
-        version => {
+        install   => \&distro_debian_install,
+        installed => \&distro_debian_installed,
+        update    => \&distro_debian_update,
+        version   => {
             compare => \&distro_debian_version_compare,
             current => \&distro_debian_version_current,
             latest  => \&distro_debian_version_latest,
@@ -133,6 +135,11 @@ sub distro_arch_install {
     return system("pacman -S $program");
 }
 
+sub distro_arch_installed {
+    my $program = shift;
+    return system("pacman -Q $program &>/dev/null") == 0;
+}
+
 ############
 #  Debian  #
 ############
@@ -140,6 +147,13 @@ sub distro_arch_install {
 sub distro_debian_install {
     my $program = shift;
     return system("apt-get install $program -y");
+}
+
+sub distro_debian_installed {
+    my $program = shift;
+    my $status = `dpkg -s $program 2>/dev/null`;
+    return 1 if $status =~ /^Status: install .+? installed$/m;
+    return 0;
 }
 
 sub distro_debian_update {
@@ -351,7 +365,7 @@ sub link_contents {
 
 sub is_installed {
     my $program = shift;
-    return `which $program`;
+    return run_config_or_default($program, 'installed');
 }
 
 sub install_program {
