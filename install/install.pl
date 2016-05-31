@@ -82,7 +82,7 @@ sub sequence {
 sub q_version {
     my $program = shift;
     return sub {
-        return `$program --version`;
+        return `$program --version &>/dev/null`;
     }
 }
 
