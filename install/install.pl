@@ -195,6 +195,10 @@ sub distro_debian_version_compare {
 #######################################################################
 
 my %software_config = (
+    cpanm   => {
+        install   => \&cpanm_install,
+        installed => q_version('cpanm'),
+    },
     emacs   => {
         install   => \&emacs_install,
         installed => q_version('emacs'),
@@ -261,6 +265,14 @@ sub is_up_to_date {
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
     return ($comp >= 0);
+}
+
+###############
+#  Cpanminus  #
+###############
+
+sub cpanm_install {
+    system('curl -L https://cpanmin.us | perl - App::cpanminus');
 }
 
 #############
