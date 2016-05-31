@@ -327,7 +327,9 @@ sub emacs_install {
         sequence(
             "wget $emacs_url",
             "tar -xvf $tar",
-            "cd $emacs && ./configure && make && src/emacs -Q && make install",
+            "cd $emacs && " .
+            "./configure --prefix=$software_directory/emacs --bindir=$local_bin " .
+            '&& make && src/emacs -Q && make install',
             "rm $tar",
         );
     };
