@@ -10,3 +10,10 @@ sub _build_$1 {
 	$0
 }
 endsnippet
+
+snippet pattern "Regexp::Common pattern" b
+pattern
+	name   => [qw(${1})],
+	create => $0,
+	;
+endsnippet
