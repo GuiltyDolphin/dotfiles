@@ -75,9 +75,93 @@
   "Return the user's `el-get' directory with PATH optionally appended."
   (concat el-get-dir "/" path))
 
+
+;;; TIME & Colorscheme
+
+(require 'calendar)
+
+(defun time-am-pm-to-24 (time)
+  "Convert TIME in AM/PM format to 24 hour format."
+  (let* ((field-regex "\\([0-9]\\{1,2\\}\\)")
+        (time-regexp (concat field-regex "\\(:" field-regex "\\(?::" field-regex "\\)?\\)?")))
+    (when (string-match-p time-regexp time)
+        (string-match time-regexp time)
+      (let ((hours (match-string 1 time))
+            (minsec (match-string 2 time)))
+        (if (string-match-p "am" time)
+            (concat hours minsec)
+          (concat (format "%d" (+ (read hours) 12)) minsec))))))
+
+(defvar location-name "London"
+  "Name of major location for use in calendar calculations.")
+
+(defvar location-longitude [0 5 west]
+  "Longitude of major location.")
+
+(defvar location-latitude [51 32 north]
+  "Latitude of major location.")
+
+(defvar location-loc (list location-name location-latitude location-longitude)
+  "Preferred location information in the form '(NAME LATITUDE LONGITUDE).")
+
+(require 'solar)
+
+(defun sunrise-sunset-times (loc-name loc-lat loc-lon)
+  "Get the sunrise, sunset and hours of daylight in the form (SUNRISE SUNSET HOURS).
+
+LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
+which sunrise/sunset times should be retrieved. They should be in a form acceptable to
+calendar-location-name, calendar-longitude, and calendar-latitude respectively."
+  (let ((calendar-location-name loc-name)
+        (calendar-longitude loc-lon)
+        (calendar-latitude loc-lat))
+    (let ((sunrise-string (solar-sunrise-sunset-string (calendar-current-date))))
+      (when (string-match "Sunrise \\(.*?[ap]m\\).*?sunset \\(.*?[ap]m\\)" sunrise-string)
+        (let* ((sunrise-ampm (match-string 1 sunrise-string))
+               (sunset-ampm (match-string 2 sunrise-string))
+               (sunrise-time (time-am-pm-to-24 sunrise-ampm))
+               (sunset-time (time-am-pm-to-24 sunset-ampm))
+               (wrap-start (format-time-string "%FT"))
+               (wrap-end (format-time-string "%Z")))
+          (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
+                  (list sunrise-time sunset-time)))))))
+
+(defun time-compare (time1 time2)
+  "Return 'lt if TIME1 is less than TIME2, 'eq if they are equal or 'gt otherwise."
+  (if (time-less-p time1 time2) 'lt
+    (if (= 0 (time-to-seconds (time-subtract time1 time2))) 'eq 'gt)))
+
+(defun time-greater-p (time1 time2)
+  "Return non-nil if TIME1 is later than TIME2."
+  (not (or (time-less-p time1 time2) (eq time1 time2))))
+
+(defun location-sunrise-sunset (location)
+  "Get the '(SUNRISE SUNSET) times for LOCATION."
+  (let ((loc-name (car location))
+        (loc-lat (cadr location))
+        (loc-lon  (caddr location)))
+    (sunrise-sunset-times loc-name loc-lat loc-lon)))
+
+(defun date-in-daylight-hours (date)
+  "Return non-nil if DATE is within the daylight hours for the current location.
+
+Default to NIL if daylight times cannot be retrieved."
+  (let* ((sunrise-sunset (location-sunrise-sunset location-loc))
+         (sunrise-time (car sunrise-sunset))
+         (sunset-time (cadr sunrise-sunset))
+         (curr-time (or date (current-time))))
+    (and sunrise-time sunset-time
+         (time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
+
+(defun get-background-mode-for-time-of-day (&optional date)
+  "Return either 'light or 'dark based on whether DATE (or (current-time)) is during daylight
+hours or not."
+  (if (date-in-daylight-hours (or date (current-time))) 'light 'dark))
+
 ;; Color theme
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
+(let ((bgmode (get-background-mode-for-time-of-day)))
+  (set-frame-parameter nil 'background-mode bgmode)
+  (set-terminal-parameter nil 'background-mode bgmode))
 (load-theme 'solarized t)
 
 ;; Font
