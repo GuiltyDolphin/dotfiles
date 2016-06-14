@@ -195,6 +195,18 @@ sub distro_debian_version_compare {
     return;
 }
 
+# $version_re should match the 'numeric' version in $1
+sub version_latest_from_directory_url {
+    my ($url, $version_re) = @_;
+    my $dat = `curl -s $url`;
+    my @versions;
+    while ($dat =~ /$version_re/g) {
+        push @versions, $1;
+    }
+    return (sort @versions)[$#versions];
+}
+
+
 #######################################################################
 #                              Commands                               #
 #######################################################################
@@ -292,14 +304,11 @@ sub firefox_version_current {
     return $version;
 }
 
-my %cache;
-
 sub firefox_version_latest {
-    my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
-    my $sub_url = `$install_s`;
-    $cache{firefox}->{sub_url} = $sub_url;
-    $sub_url =~ /^firefox-((?:[0-9]+\.?)+)\./;
-    return $1;
+    return version_latest_from_directory_url(
+        $firefox_dir_url,
+        qr/firefox-((?:[0-9]+\.?)+)\.en-GB\.linux-x86_64\.tar\.bz2/o,
+    );
 }
 
 sub firefox_update {
@@ -308,9 +317,9 @@ sub firefox_update {
 }
 
 sub get_latest_firefox_tar_url {
-    my $install_s = "curl -s $firefox_dir_url | grep " . q{'firefox-\([0-9]\+\.\)\+en-GB\.linux-x86_64\.tar\.bz2' -o | sort | head -n 1};
-    my $sub_url = $cache{firefox}->{sub_url} // `$install_s`;
-    return "$firefox_dir_url$sub_url";
+    my $latest = firefox_version_latest();
+    my $tar = "firefox-$latest.en-GB.linux-x86_64.tar.bz2";
+    return "$firefox_dir_url$tar";
 }
 
 my $software_directory = "$ENV{HOME}/software";
@@ -359,12 +368,10 @@ sub emacs_version_current {
 }
 
 sub emacs_version_latest {
-    my $dat = `curl -s $emacs_dir_url`;
-    my @versions;
-    while ($dat =~ /emacs-([-.\d]+)\.tar\.gz/g) {
-        push @versions, $1;
-    }
-    return (sort @versions)[$#versions];
+    return version_latest_from_directory_url(
+        $emacs_dir_url,
+        qr/emacs-([-.\d]+)\.tar\.gz/o
+    );
 }
 
 sub emacs_update {
