@@ -429,6 +429,13 @@ sub update_program {
     error("error encountered while updating '$program'") if $ret;
 }
 
+sub version {
+    my ($type, $program) = @_;
+    debug("fetching $type version for '$program'");
+    my $version = run_config_or_default($program, 'version', $type);
+    data($version);
+}
+
 my @tmp_argv;
 while (my $command = shift) {
     if ($command eq '--debug') {
@@ -453,6 +460,8 @@ while (my $command = shift) {
         link_contents($search_dir, $target_dir);
     } elsif ($command eq 'update') {
         update_program(shift);
+    } elsif ($command eq 'version') {
+        version(shift, shift);
     } else {
         print "$usage\n" and die 1;
     }
