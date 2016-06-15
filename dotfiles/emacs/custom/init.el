@@ -80,18 +80,6 @@
 
 (require 'calendar)
 
-(defun time-am-pm-to-24 (time)
-  "Convert TIME in AM/PM format to 24 hour format."
-  (let* ((field-regex "\\([0-9]\\{1,2\\}\\)")
-        (time-regexp (concat field-regex "\\(:" field-regex "\\(?::" field-regex "\\)?\\)?")))
-    (when (string-match-p time-regexp time)
-        (string-match time-regexp time)
-      (let ((hours (match-string 1 time))
-            (minsec (match-string 2 time)))
-        (if (string-match-p "am" time)
-            (concat hours minsec)
-          (concat (format "%d" (+ (read hours) 12)) minsec))))))
-
 (defvar location-name "London"
   "Name of major location for use in calendar calculations.")
 
@@ -112,19 +100,16 @@
 LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
 which sunrise/sunset times should be retrieved. They should be in a form acceptable to
 calendar-location-name, calendar-longitude, and calendar-latitude respectively."
-  (let ((calendar-location-name loc-name)
+  (let* ((calendar-location-name loc-name)
         (calendar-longitude loc-lon)
-        (calendar-latitude loc-lat))
-    (let ((sunrise-string (solar-sunrise-sunset-string (calendar-current-date))))
-      (when (string-match "Sunrise \\(.*?[ap]m\\).*?sunset \\(.*?[ap]m\\)" sunrise-string)
-        (let* ((sunrise-ampm (match-string 1 sunrise-string))
-               (sunset-ampm (match-string 2 sunrise-string))
-               (sunrise-time (time-am-pm-to-24 sunrise-ampm))
-               (sunset-time (time-am-pm-to-24 sunset-ampm))
-               (wrap-start (format-time-string "%FT"))
-               (wrap-end (format-time-string "%Z")))
-          (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
-                  (list sunrise-time sunset-time)))))))
+        (calendar-latitude loc-lat)
+        (times (solar-sunrise-sunset (calendar-current-date)))
+        (sunrise-time (solar-daylight (caar times)))
+        (sunset-time (solar-daylight (caadr times)))
+        (wrap-start (format-time-string "%FT"))
+        (wrap-end (format-time-string "%Z")))
+    (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
+            (list sunrise-time sunset-time))))
 
 (defun time-compare (time1 time2)
   "Return 'lt if TIME1 is less than TIME2, 'eq if they are equal or 'gt otherwise."
