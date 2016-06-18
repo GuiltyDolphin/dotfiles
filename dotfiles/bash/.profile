@@ -3,7 +3,8 @@
 # https://www.github.com/GuiltyDolphin/config
 
 # Default path
-PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
+PATH=~/.local/bin # Prefer local versions
+PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
 PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 
 # Add TexLive to path if it exists
@@ -52,9 +53,6 @@ EDITOR="vim"
 if [[ $(which dropbox) ]]; then
   dropbox start &>/dev/null
 fi
-
-# Add local programs to the path
-PATH=$PATH:~/.local/bin
 
 # Add ruby gems to path
 [[ -d "$HOME/.gem/ruby/1.9.1/bin" ]] \
