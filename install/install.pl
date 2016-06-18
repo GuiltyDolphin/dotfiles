@@ -395,6 +395,7 @@ sub pip_install {
     with_temp_dir {
         sequence(
             'wget https://bootstrap.pypa.io/get-pip.py',
+            'python2.7 get-pip.py --user',
             'python get-pip.py --user',
         );
     }
