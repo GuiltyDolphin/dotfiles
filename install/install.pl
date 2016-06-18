@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Cwd qw(abs_path getcwd);
+use File::Temp qw(tempdir);
 
 #######################################################################
 #                           Options/Globals                           #
@@ -67,6 +68,12 @@ sub with_directory {
     my $ret = $sub->();
     chdir $curr;
     return $ret;
+}
+
+sub with_temp_dir (&) {
+    my $to_execute = shift;
+    my $dir = tempdir(CLEANUP => 1);
+    with_directory $dir => $to_execute;
 }
 
 my $local_bin = "$ENV{HOME}/.local/bin";
@@ -234,6 +241,10 @@ my %software_config = (
             latest  => \&firefox_version_latest,
         },
     },
+    pip => {
+        install   => \&pip_install,
+        installed => q_version('pip'),
+    },
 );
 
 sub get_config_generic {
@@ -376,6 +387,17 @@ sub emacs_version_latest {
 
 sub emacs_update {
     emacs_install();
+}
+
+# Pip
+
+sub pip_install {
+    with_temp_dir {
+        sequence(
+            'wget https://bootstrap.pypa.io/get-pip.py',
+            'python get-pip.py --user',
+        );
+    }
 }
 
 sub link_program {
