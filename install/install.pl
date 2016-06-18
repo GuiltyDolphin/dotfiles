@@ -124,6 +124,32 @@ sub get_distribution {
     return $distro;
 }
 
+my @local_bins = (
+    home('.local/bin'),
+);
+
+sub is_local_bin {
+    my $bin_path = shift or return;
+    my $re = qr/^(?:@{[join '|', map { quotemeta $_ } @local_bins]})/o;
+    return $bin_path =~ $re;
+}
+
+sub get_bin_path {
+    my $program = shift;
+    chomp (my $bin = `which $program &2>/dev/null`);
+    return $bin;
+}
+
+# Install to user installs with pip
+sub install_via_pip {
+    my ($program, %options) = @_;
+    my $version = $options{pip_version} // '';
+    my $command = "pip$version install --user ";
+    $command .= '-I ' if $options{ignore_installed};
+    $command .= $program;
+    system($command);
+}
+
 #######################################################################
 #                     Distribution Configuration                      #
 #######################################################################
@@ -240,6 +266,10 @@ my %software_config = (
             current => \&firefox_version_current,
             latest  => \&firefox_version_latest,
         },
+    },
+    mercurial => {
+        install   => \&mercurial_install,
+        installed => \&mercurial_installed,
     },
     pip => {
         install   => \&pip_install,
@@ -387,6 +417,20 @@ sub emacs_version_latest {
 
 sub emacs_update {
     emacs_install();
+}
+
+# Mercurial
+
+sub mercurial_install {
+    install_via_pip(
+        'mercurial',
+        pip_version      => 2.7,
+        ignore_installed => 1,
+    );
+}
+
+sub mercurial_installed {
+    is_local_bin(get_bin_path('hg'));
 }
 
 # Pip
