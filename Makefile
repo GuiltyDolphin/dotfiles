@@ -104,8 +104,12 @@ install_firefox :
 link_vimperator :
 	$(call linkf,vim/.vimperatorrc,.vimperatorrc)
 
+.PHONY: install_pip
+install_pip :
+	$(call install_prog,pip)
+
 .PHONY: install_mercurial
-install_mercurial :
+install_mercurial : install_pip
 	@$(call install_prog,mercurial)
 
 # Requires mercurial for 'evil'
