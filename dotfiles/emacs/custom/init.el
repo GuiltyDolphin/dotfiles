@@ -53,6 +53,7 @@
     color-theme-solarized
     duckpan
     el-get
+    emaps
     evil
     evil-leader
     evil-remap
@@ -160,6 +161,9 @@ hours or not."
   "License to use by default with some modes")
 
 (setq user-mail-address "guiltydolphin@gmail.com")
+
+;; Emaps
+(require 'emaps)
 
 ;; Evil leader
 (require 'evil-leader)
