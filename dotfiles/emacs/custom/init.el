@@ -268,11 +268,15 @@ hours or not."
 ;; Magit
 (require 'magit)
 
+(defvar evil-leader-magit-map
+  (make-sparse-keymap "keymap for magit bindings under leader key"))
+
 (evil-leader/set-key
-  "gd" 'magit-diff
-  "gs" 'magit-status
-  "gca" 'magit-commit-ammend
-  "gcs" 'magit-commit-squash)
+  "m" evil-leader-magit-map)
+
+(emaps-define-key evil-leader-magit-map
+  "d" 'magit-diff-working-tree
+  "s" 'magit-status)
 
 
 ;; Flycheck
@@ -326,8 +330,9 @@ hours or not."
 (my-move-key evil-motion-state-map evil-normal-state-map " ")
 
 (define-key global-map (kbd "C-h h") 'help)
-(define-key help-map (kbd "C-e") 'evil-scroll-line-down)
-(define-key help-map (kbd "C-y") 'evil-scroll-line-up)
+(emaps-define-key help-map
+  (kbd "C-e") 'evil-scroll-line-down
+  (kbd "C-y") 'evil-scroll-line-up)
 
 ; Lisp
 
@@ -444,11 +449,17 @@ hours or not."
 
 (setq org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
 
+(defvar evil-leader-org-map
+  (make-sparse-keymap "leader org-mode map"))
+
 (evil-leader/set-key
-  "oa" 'org-agenda
-  "oc" 'org-capture
-  "ol" 'org-store-link
-  "os" 'org-switchb)
+  "o" evil-leader-org-map)
+
+(emaps-define-key evil-leader-org-map
+  "a" 'org-agenda
+  "c" 'org-capture
+  "l" 'org-store-link
+  "s" 'org-switchb)
 
 ;; Other commands
 
@@ -546,8 +557,10 @@ Argument strings should follow a pattern similar to
 (evil-define-key 'insert emacs-lisp-mode-map " " 'emacs-lisp-space)
 
 (global-unset-key (kbd "C-s"))
-(define-key global-map (kbd "C-s n") 'evil-normal-state)
-(define-key global-map (kbd "C-s m") 'evil-motion-state)
-(define-key global-map (kbd "C-s e") 'evil-emacs-state)
+
+(emaps-define-key global-map
+  (kbd "C-s n") 'evil-normal-state
+  (kbd "C-s m") 'evil-motion-state
+  (kbd "C-s e") 'evil-emacs-state)
 
 ;;; init.el ends here
