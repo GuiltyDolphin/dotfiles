@@ -20,7 +20,6 @@
 
 ;;; Code:
 
-(require 'cl)  ; Use all the common-lisp goodies
 ;;;;;;;;
 ;; EL ;;
 ;;;;;;;;
@@ -72,6 +71,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package cl-lib)
 
 (defun el-dir (&optional path)
   "Return the user's `el-get' directory with PATH optionally appended."
