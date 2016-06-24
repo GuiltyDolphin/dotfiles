@@ -518,14 +518,6 @@ Ask again if the buffer is modified."
 (defun split-lines (str &optional omit-nulls trim)
   (split-string str "\n" omit-nulls trim))
 
-(defun first-pred (pred ls)
-  "Return the first of LS for which PRED returns non-nil.
-
-Return nil if PRED never returns non-nil."
-  (dolist (elt ls nil)
-    (when (funcall pred elt)
-      (return elt))))
-
 (defun argument-string-p (str)
   "Return t if STR is a valid argument string
 
