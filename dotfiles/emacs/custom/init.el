@@ -372,25 +372,6 @@ hours or not."
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (setq haskell-interactive-popup-errors nil)
 
-;; Alignment
-;'(add-to-list 'align-rules-list
-;              '(haskell-types
-;                (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-;                (modes quote (haskell-mode literate-haskell-mode))))
-;(add-to-list 'align-rules-list
-;             '(haskell-assignment
-;               (regexp . "\\(\\s-+\\)=\\s-+")
-;               (modes quote (haskell-mode literate-haskell-mode))))
-;(add-to-list 'align-rules-list
-;             '(haskell-arrows
-;               (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-;               (modes quote (haskell-mode literate-haskell-mode))))
-;(add-to-list 'align-rules-list
-;             '(haskell-left-arrows
-;               (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-;               (modes quote (haskell-mode literate-haskell-mode))))
-
-
 ;; YASnippet
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
 (require 'yasnippet)
