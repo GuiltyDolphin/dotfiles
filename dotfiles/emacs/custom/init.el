@@ -65,6 +65,7 @@
     magit
     projectile
     slime
+    use-package
     yasnippet))
 
 (el-get 'sync my:el-get-packages)
@@ -179,14 +180,6 @@ hours or not."
   "nS" 'new-scratch
   ","  'execute-extended-command)
 
-;; Buffers
-(evil-leader/set-key
-  "bk" 'kill-buffer
-  "bs" 'switch-to-buffer)
-
-;; Files
-(evil-leader/set-key
-  "ff" 'find-file)
 
 (defun find-user-init-file ()
   "Find the user's init.el file"
