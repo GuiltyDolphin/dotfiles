@@ -232,6 +232,8 @@ hours or not."
 (use-package evil
   :config
   (setq evil-want-C-w-in-emacs-state 1)
+  ; * and # search for full symbols.
+  (setq evil-symbol-word-search t)
   (evil-mode 1))
 
 (use-package evil-remap
