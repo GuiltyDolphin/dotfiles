@@ -165,11 +165,12 @@ hours or not."
 (setq user-mail-address "guiltydolphin@gmail.com")
 
 ;; Emaps
-(require 'emaps)
+(use-package emaps)
 
 ;; Evil leader
-(require 'evil-leader)
-(global-evil-leader-mode 1)
+(use-package evil-leader
+  :config
+  (global-evil-leader-mode 1))
 
 ; Use the space key as leader
 (evil-leader/set-leader "<SPC>")
@@ -180,7 +181,6 @@ hours or not."
   "ns" 'scratch-buffer
   "nS" 'new-scratch
   ","  'execute-extended-command)
-
 
 (defun find-user-init-file ()
   "Find the user's init.el file"
@@ -197,11 +197,10 @@ hours or not."
 
 
 (add-to-list 'load-path (locate-user-emacs-file "custom/evil"))
-(require 'evil-local-leader) ; Merely a modification of `evil-leader'
-(global-evil-local-leader-mode 1)
-
-; Use ',' as the 'local leader' key
-(evil-local-leader/set-local-leader ",")
+(use-package evil-local-leader ; Merely a modification of `evil-leader'
+  :config
+  (global-evil-local-leader-mode 1)
+  (evil-local-leader/set-local-leader ","))
 
 (setq lisp-modes '(emacs-lisp-mode
                    lisp-interaction-mode
@@ -230,62 +229,61 @@ hours or not."
   "y" 'org-mode-yank)
 
 ;; Eveeel....
-(require 'evil)
-(evil-mode 1)
+(use-package evil
+  :config
+  (setq evil-want-C-w-in-emacs-state 1)
+  (evil-mode 1))
 
-(require 'evil-remap)
+(use-package evil-remap
+  :config
+  (evil-nnoremap! ";" 'evil-ex)
+  (evil-nnoremap! ":" 'evil-repeat-find-char)
+  (global-set-key (kbd "C-t") 'nil)
+  (evil-nnoremap! (kbd "C-t") 'evil-window-map)
+  (evil-nnoremap! (kbd "C-t C-h") 'previous-buffer)
+  (evil-nnoremap! (kbd "C-t C-l") 'next-buffer)
 
-(setq evil-want-C-w-in-emacs-state 1)
+  (evil-inoremap (kbd "C-c") 'evil-normal-state)
+  (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
+  (define-key evil-window-map (kbd "C-t") 'evil-window-next)
+  (define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
+  (define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
+  (define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
+  (define-key evil-window-map "x" 'kill-buffer-and-window-ask)
+  (define-key evil-window-map "s" 'ido-switch-buffer)
+  (global-set-key (kbd "C-w") 'nil)
 
-(evil-nnoremap! ";" 'evil-ex)
-(evil-nnoremap! ":" 'evil-repeat-find-char)
-(global-set-key (kbd "C-t") 'nil)
-(evil-nnoremap! (kbd "C-t") 'evil-window-map)
-(evil-nnoremap! (kbd "C-t C-h") 'previous-buffer)
-(evil-nnoremap! (kbd "C-t C-l") 'next-buffer)
+  (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
+  (evil-nnoremap! (kbd "M-u") 'universal-argument)
 
-(evil-inoremap (kbd "C-c") 'evil-normal-state)
-(evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
-(define-key evil-window-map (kbd "C-t") 'evil-window-next)
-(define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
-(define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
-(define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
-(define-key evil-window-map "x" 'kill-buffer-and-window-ask)
-(define-key evil-window-map "s" 'ido-switch-buffer)
-(global-set-key (kbd "C-w") 'nil)
-
-(evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
-(evil-nnoremap! (kbd "M-u") 'universal-argument)
-
-(evil-nnoremap! (kbd "Q") 'quit-window) ; So we can *always* quit
+  (evil-nnoremap! (kbd "Q") 'quit-window)) ; So we can *always* quit
 
 ;; Magit
-(require 'magit)
+(use-package magit
+  :init
+  (defvar evil-leader-magit-map
+    (make-sparse-keymap "keymap for magit bindings under leader key"))
+  (evil-leader/set-key
+    "m" evil-leader-magit-map)
+  :config
+  (emaps-define-key evil-leader-magit-map
+    "d" 'magit-diff-working-tree
+    "s" 'magit-status))
 
-(defvar evil-leader-magit-map
-  (make-sparse-keymap "keymap for magit bindings under leader key"))
-
-(evil-leader/set-key
-  "m" evil-leader-magit-map)
-
-(emaps-define-key evil-leader-magit-map
-  "d" 'magit-diff-working-tree
-  "s" 'magit-status)
-
+;; Todo
 
 ;; Flycheck
 (add-to-list 'load-path (locate-user-emacs-file "el-get/dash"))
 (load (locate-user-emacs-file "el-get/dash/dash.el"))
-(require 'dash)
+(use-package dash)
 
 (add-to-list 'load-path (locate-user-emacs-file "el-get/flycheck"))
-(require 'flycheck)
-;(add-hook 'after-init-hook #'(global-flycheck-mode 1))
-(global-flycheck-mode 1)
-
-(evil-leader/set-key
-  "fn" 'flycheck-next-error
-  "fp" 'flycheck-previous-error)
+(use-package flycheck
+  :config
+  (global-flycheck-mode 1)
+  (evil-leader/set-key
+    "fn" 'flycheck-next-error
+    "fp" 'flycheck-previous-error))
 
 ;; Column and line number in mode line
 (line-number-mode 1)
@@ -299,14 +297,13 @@ hours or not."
 
 (display-time-mode t) ; Allow displaying of time in mode line
 
-(require 'flx-ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-
-
+(use-package flx-ido
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil))
 
 ; Other
 (setq-default indent-tabs-mode nil)
@@ -334,11 +331,10 @@ hours or not."
 
 ; Slime
 (add-to-list 'load-path "~/.emacs.d/el-get/slime")
-(require 'slime)
-(require 'slime-autoloads)
-
-(slime-setup '(slime-fancy))
-
+(use-package slime-autoloads)
+(use-package slime
+  :config
+  (slime-setup '(slime-fancy)))
 
 ;; Python
 (add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
@@ -349,94 +345,96 @@ hours or not."
 ;; Haskell-mode
 (add-to-list 'load-path (el-dir "ghc-mod/elisp"))
 (add-to-list 'load-path (el-dir "haskell-mode"))
-(require 'haskell-mode)
-(load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode.el"))
-(load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode-autoloads.el"))
-;(setq haskell-program-name (executable-find "cabal-dev"))
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-;(setq haskell-program-name "cabal")
-;(setq haskell-ghci-program-name "cabal repl")
-;(setq haskell-ghci-program-args "repl")
-(setq haskell-process-type 'cabal-repl)
-(add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
-                                                ; Flycheck seems to handle errors well, and the
-                                                ; cably-repl doesn't seem to be broken.
-                                                ; Not sure what the issue was before.
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-(setq haskell-interactive-popup-errors nil)
+
+(use-package haskell-mode
+  :config
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (setq haskell-process-type 'cabal-repl)
+  (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
+                                                  ; Flycheck seems to handle errors well, and the
+                                                  ; cably-repl doesn't seem to be broken.
+                                                  ; Not sure what the issue was before.
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+  (setq haskell-interactive-popup-errors nil))
+
+; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode.el"))
+; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode-autoloads.el"))
+
+(defmacro after (mode &rest body)
+(declare (indent defun))
+`(eval-after-load ,mode
+    '(progn ,@body)))
 
 ;; YASnippet
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
-(require 'yasnippet)
-(add-to-list 'yas-snippet-dirs
-             (locate-user-emacs-file "custom/snippets"))
+(use-package yasnippet
+  :config
+  (add-to-list 'yas-snippet-dirs
+               (locate-user-emacs-file "custom/snippets"))
 
-(add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
-(yas-global-mode 1)
+  (add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
+  (yas-global-mode 1)
 
-(define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
 
-(add-hook 'yas-before-expand-snippet-hook
-    (lambda ()
-        (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
+  (add-hook 'yas-before-expand-snippet-hook
+            (lambda ()
+              (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
 
-(add-hook 'yas-after-exit-snippet-hook
-    (lambda ()
-        (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
+  (add-hook 'yas-after-exit-snippet-hook
+            (lambda ()
+              (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
 
-(add-hook 'yas-minor-mode-hook
-          (lambda ()
-            (yas-activate-extra-mode 'fundamental-mode)))
+  (add-hook 'yas-minor-mode-hook
+            (lambda ()
+              (yas-activate-extra-mode 'fundamental-mode)))
 
-(defmacro after (mode &rest body)
-  (declare (indent defun))
-  `(eval-after-load ,mode
-     '(progn ,@body)))
+  (after 'yasnippet
+    (yas/reload-all)
+    (setq yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
 
-(after 'yasnippet
-       (yas/reload-all)
-       (setq yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
-
-(after "yasnippet-autoloads"
-       (add-hook 'prog-mode-hook 'yas-minor-mode))
+  (after "yasnippet-autoloads"
+    (add-hook 'prog-mode-hook 'yas-minor-mode)))
 
 ;; hippie-expand
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
 
 ;; projectile
-
-(require 'projectile)
-(projectile-global-mode 1)
-(evil-leader/set-key
-  "p" 'projectile-command-map)
+(use-package projectile
+  :config
+  (projectile-global-mode 1)
+  (evil-leader/set-key
+    "p" 'projectile-command-map))
 
 ;; org
+(use-package org
+  :init
+  (defvar evil-leader-org-map
+    (make-sparse-keymap "leader org-mode map"))
 
-(require 'org)
+  (emaps-define-key evil-leader-org-map
+    "a" 'org-agenda
+    "c" 'org-capture
+    "l" 'org-store-link
+    "s" 'org-switchb)
+  :config
+  (defun org-subdir (path)
+    "Return PATH under ORG-DIRECTORY"
+    (concat org-directory "/" path))
 
-(defun org-subdir (path)
-  "Return PATH under ORG-DIRECTORY"
-  (concat org-directory "/" path))
+  (setq org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
 
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
 
-(setq org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
-
-(defvar evil-leader-org-map
-  (make-sparse-keymap "leader org-mode map"))
-
-(evil-leader/set-key
-  "o" evil-leader-org-map)
-
-(emaps-define-key evil-leader-org-map
-  "a" 'org-agenda
-  "c" 'org-capture
-  "l" 'org-store-link
-  "s" 'org-switchb)
+  (evil-leader/set-key
+    "o" evil-leader-org-map))
 
 ;; Other commands
+
+
+
 
 (defun scratch-buffer ()
   "Switch to the *scratch* buffer, making a new
