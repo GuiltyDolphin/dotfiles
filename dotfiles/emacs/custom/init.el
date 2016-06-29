@@ -26,15 +26,15 @@
 
 ;; NO FRILLS
 
-(setq inhibit-startup-screen t) ; no splash screen on start
+(customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
 (tool-bar-mode -1) ; no tool bar with icons
 (scroll-bar-mode -1) ; no scroll bars
 (menu-bar-mode -1) ; no menu bar
 
 
 ;; NO JUNK
-(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-      backup-directory-alist `((".*" . ,temporary-file-directory)))
+(customize-set-variable 'auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+(customize-set-variable 'backup-directory-alist `((".*" . ,temporary-file-directory)))
 
 
 ;; EL-GET
@@ -162,7 +162,7 @@ hours or not."
 (defvar user-preferred-license "GPL-3"
   "License to use by default with some modes")
 
-(setq user-mail-address "guiltydolphin@gmail.com")
+(customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
 
 ;; Emaps
 (use-package emaps)
@@ -231,9 +231,9 @@ hours or not."
 ;; Eveeel....
 (use-package evil
   :config
-  (setq evil-want-C-w-in-emacs-state 1)
+  (customize-set-variable 'evil-want-C-w-in-emacs-state t)
   ; * and # search for full symbols.
-  (setq evil-symbol-word-search t)
+  (customize-set-variable 'evil-symbol-word-search t)
   (evil-mode 1))
 
 (use-package evil-remap
@@ -295,7 +295,7 @@ hours or not."
 (global-hl-line-mode 1) ; highlight current line
 
 
-(setq x-select-enable-clipboard t) ; Use the clipboard
+(customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
 
 (display-time-mode t) ; Allow displaying of time in mode line
 
@@ -304,8 +304,8 @@ hours or not."
   (ido-mode 1)
   (ido-everywhere 1)
   (flx-ido-mode 1)
-  (setq ido-enable-flex-matching t)
-  (setq ido-use-faces nil))
+  (customize-set-variable 'ido-enable-flex-matching t)
+  (customize-set-variable 'ido-use-faces nil))
 
 ; Other
 (setq-default indent-tabs-mode nil)
@@ -351,14 +351,14 @@ hours or not."
 (use-package haskell-mode
   :config
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (setq haskell-process-type 'cabal-repl)
+  (customize-set-variable 'haskell-process-type 'cabal-repl)
   (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
                                                   ; Flycheck seems to handle errors well, and the
                                                   ; cably-repl doesn't seem to be broken.
                                                   ; Not sure what the issue was before.
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-  (setq haskell-interactive-popup-errors nil))
+  (customize-set-variable 'haskell-interactive-popup-errors nil))
 
 ; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode.el"))
 ; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode-autoloads.el"))
@@ -394,7 +394,7 @@ hours or not."
 
   (after 'yasnippet
     (yas/reload-all)
-    (setq yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
+    (customize-set-variable 'yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
 
   (after "yasnippet-autoloads"
     (add-hook 'prog-mode-hook 'yas-minor-mode)))
@@ -426,9 +426,9 @@ hours or not."
     "Return PATH under ORG-DIRECTORY"
     (concat org-directory "/" path))
 
-  (setq org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
+  (customize-set-variable 'org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
 
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
   (evil-leader/set-key
     "o" evil-leader-org-map))
