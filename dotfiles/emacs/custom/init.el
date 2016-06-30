@@ -176,7 +176,6 @@ hours or not."
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "ir" 'align-regexp
-  "ev" 'find-user-init-file
   "sv" 'reload-user-init-file
   "ns" 'scratch-buffer
   "nS" 'new-scratch
@@ -541,4 +540,14 @@ Argument strings should follow a pattern similar to
 
 (emaps-define-key global-map (kbd "C-s") state-switch-map)
 
+
+(defvar jump-map
+  (make-sparse-keymap "jump map")
+  "Keymap for jumping around.")
+
+(emaps-define-key jump-map
+  "t" 'eshell
+  "i" 'find-user-init-file)
+
+(evil-leader/set-key "g" jump-map)
 ;;; init.el ends here
