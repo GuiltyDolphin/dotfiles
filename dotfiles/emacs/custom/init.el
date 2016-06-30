@@ -530,9 +530,15 @@ Argument strings should follow a pattern similar to
 
 (global-unset-key (kbd "C-s"))
 
-(emaps-define-key global-map
-  (kbd "C-s n") 'evil-normal-state
-  (kbd "C-s m") 'evil-motion-state
-  (kbd "C-s e") 'evil-emacs-state)
+(defvar state-switch-map
+  (make-sparse-keymap "evil state switch map")
+  "Map for switching evil states")
+
+(emaps-define-key state-switch-map
+  "n" 'evil-normal-state
+  "m" 'evil-motion-state
+  "e" 'evil-emacs-state)
+
+(emaps-define-key global-map (kbd "C-s") state-switch-map)
 
 ;;; init.el ends here
