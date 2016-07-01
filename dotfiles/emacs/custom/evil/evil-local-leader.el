@@ -152,5 +152,12 @@ See `evil-local-leader/set-key'."
     (setq key (pop bindings)
           def (pop bindings))))
 
+;;;###autoload
+(defun evil-local-leader/bindings-for-mode (mode)
+  "Return a keymap of all bindings for MODE under `evil-local-leader/local-leader'.
+
+Return NIL if no keymap exists."
+  (cdr (assq mode evil-local-leader--mode-maps)))
+
 (provide 'evil-local-leader)
 ;;; evil-local-leader.el ends here
