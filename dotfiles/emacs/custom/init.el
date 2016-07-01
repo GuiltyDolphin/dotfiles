@@ -429,12 +429,12 @@ hours or not."
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
   (evil-leader/set-key
-    "o" evil-leader-org-map))
+    "o" evil-leader-org-map)
   (setq org-capture-templates
         `(("t" "Todo" entry (file+headline ,(org-subdir "todo.org") "Tasks")
            "* TODO %?\n  %i\n  %a")
           ("j" "Journal" entry (file+datetree ,(org-subdir "journal.org"))
-           "* %?\nEntered on %U\n  %i\n  %a")))
+           "* %?\nEntered on %U\n  %i\n  %a"))))
 
 ;; Other commands
 
