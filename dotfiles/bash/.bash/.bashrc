@@ -113,14 +113,6 @@ alias ap='apropos'
 alias irb='irb2.0'
 alias ruby='ruby2.0'
 
-###########
-#  EMACS  #
-###########
-
-alias emacs='emacs-24.5'
-
-
-
 # Attempt to compile the specified latex file to pdf then view it
 pdfmkv() {
   pdflatex $1 && okular ${1%.*}.pdf
