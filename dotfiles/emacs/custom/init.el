@@ -283,8 +283,7 @@ hours or not."
   :config
   (global-flycheck-mode 1)
   (evil-leader/set-key
-    "fn" 'flycheck-next-error
-    "fp" 'flycheck-previous-error))
+    "f" flycheck-command-map))
 
 ;; Column and line number in mode line
 (line-number-mode 1)
