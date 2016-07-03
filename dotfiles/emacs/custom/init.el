@@ -74,7 +74,7 @@
 
 (use-package cl-lib)
 
-(defun el-dir (&optional path)
+(defun my-el-dir (&optional path)
   "Return the user's `el-get' directory with PATH optionally appended."
   (concat el-get-dir "/" path))
 
@@ -83,21 +83,21 @@
 
 (require 'calendar)
 
-(defvar location-name "London"
+(defvar my-location-name "London"
   "Name of major location for use in calendar calculations.")
 
-(defvar location-longitude [0 5 west]
+(defvar my-location-longitude [0 5 west]
   "Longitude of major location.")
 
-(defvar location-latitude [51 32 north]
+(defvar my-location-latitude [51 32 north]
   "Latitude of major location.")
 
-(defvar location-loc (list location-name location-latitude location-longitude)
+(defvar my-location-loc (list my-location-name my-location-latitude my-location-longitude)
   "Preferred location information in the form '(NAME LATITUDE LONGITUDE).")
 
 (require 'solar)
 
-(defun sunrise-sunset-times (loc-name loc-lat loc-lon)
+(defun my-sunrise-sunset-times (loc-name loc-lat loc-lon)
   "Get the sunrise, sunset and hours of daylight in the form (SUNRISE SUNSET HOURS).
 
 LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
@@ -114,35 +114,35 @@ calendar-location-name, calendar-longitude, and calendar-latitude respectively."
     (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
             (list sunrise-time sunset-time))))
 
-(defun time-greater-p (time1 time2)
+(defun my-time-greater-p (time1 time2)
   "Return non-nil if TIME1 is later than TIME2."
   (not (or (time-less-p time1 time2) (eq time1 time2))))
 
-(defun location-sunrise-sunset (location)
+(defun my-location-sunrise-sunset (location)
   "Get the '(SUNRISE SUNSET) times for LOCATION."
   (let ((loc-name (car location))
         (loc-lat (cadr location))
         (loc-lon  (caddr location)))
-    (sunrise-sunset-times loc-name loc-lat loc-lon)))
+    (my-sunrise-sunset-times loc-name loc-lat loc-lon)))
 
-(defun date-in-daylight-hours (date)
+(defun my-date-in-daylight-hours (date)
   "Return non-nil if DATE is within the daylight hours for the current location.
 
 Default to NIL if daylight times cannot be retrieved."
-  (let* ((sunrise-sunset (location-sunrise-sunset location-loc))
+  (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
          (sunrise-time (car sunrise-sunset))
          (sunset-time (cadr sunrise-sunset))
          (curr-time (or date (current-time))))
     (and sunrise-time sunset-time
-         (time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
+         (my-time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
 
-(defun get-background-mode-for-time-of-day (&optional date)
+(defun my-get-background-mode-for-time-of-day (&optional date)
   "Return either 'light or 'dark based on whether DATE (or (current-time)) is during daylight
 hours or not."
-  (if (date-in-daylight-hours (or date (current-time))) 'light 'dark))
+  (if (my-date-in-daylight-hours (or date (current-time))) 'light 'dark))
 
 ;; Color theme
-(let ((bgmode (get-background-mode-for-time-of-day)))
+(let ((bgmode (my-get-background-mode-for-time-of-day)))
   (set-frame-parameter nil 'background-mode bgmode)
   (set-terminal-parameter nil 'background-mode bgmode))
 (load-theme 'solarized t)
@@ -154,7 +154,7 @@ hours or not."
 (add-to-list 'load-path (locate-user-emacs-file "custom"))
 
 
-(defvar user-preferred-license "GPL-3"
+(defvar my-user-preferred-license "GPL-3"
   "License to use by default with some modes")
 
 (customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
@@ -171,17 +171,17 @@ hours or not."
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "ir" 'align-regexp
-  "sv" 'reload-user-init-file
-  "ns" 'scratch-buffer
-  "nS" 'new-scratch
+  "sv" 'my-reload-user-init-file
+  "ns" 'my-scratch-buffer
+  "nS" 'my-new-scratch
   ","  'execute-extended-command)
 
-(defun find-user-init-file ()
+(defun my-find-user-init-file ()
   "Find the user's init.el file"
   (interactive)
   (find-file user-init-file))
 
-(defun reload-user-init-file ()
+(defun my-reload-user-init-file ()
   "Evaluate the user's init.el file"
   (interactive)
   (load-file user-init-file))
@@ -245,7 +245,7 @@ hours or not."
   (define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
   (define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
   (define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
-  (define-key evil-window-map "x" 'kill-buffer-and-window-ask)
+  (define-key evil-window-map "x" 'my-kill-buffer-and-window-ask)
   (define-key evil-window-map "s" 'ido-switch-buffer)
   (global-set-key (kbd "C-w") 'nil)
 
@@ -257,12 +257,12 @@ hours or not."
 ;; Magit
 (use-package magit
   :init
-  (defvar evil-leader-magit-map
+  (defvar my-evil-leader-magit-map
     (make-sparse-keymap "keymap for magit bindings under leader key"))
   (evil-leader/set-key
-    "m" evil-leader-magit-map)
+    "m" my-evil-leader-magit-map)
   :config
-  (emaps-define-key evil-leader-magit-map
+  (emaps-define-key my-evil-leader-magit-map
     "d" 'magit-diff-working-tree
     "s" 'magit-status))
 
@@ -338,8 +338,8 @@ hours or not."
 ;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;; Haskell-mode
-(add-to-list 'load-path (el-dir "ghc-mod/elisp"))
-(add-to-list 'load-path (el-dir "haskell-mode"))
+(add-to-list 'load-path (my-el-dir "ghc-mod/elisp"))
+(add-to-list 'load-path (my-el-dir "haskell-mode"))
 
 (use-package haskell-mode
   :config
@@ -406,29 +406,29 @@ hours or not."
 ;; org
 (use-package org
   :init
-  (defvar evil-leader-org-map
+  (defvar my-evil-leader-org-map
     (make-sparse-keymap "leader org-mode map"))
 
-  (emaps-define-key evil-leader-org-map
+  (emaps-define-key my-evil-leader-org-map
     "a" 'org-agenda
     "c" 'org-capture
     "l" 'org-store-link
     "s" 'org-switchb)
   :config
-  (defun org-subdir (path)
+  (defun my-org-subdir (path)
     "Return PATH under ORG-DIRECTORY"
     (concat org-directory "/" path))
 
-  (customize-set-variable 'org-agenda-files `(,(org-subdir "todo.org") ,(org-subdir "homework.org")))
+  (customize-set-variable 'org-agenda-files `(,(my-org-subdir "todo.org") ,(my-org-subdir "homework.org")))
 
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
   (evil-leader/set-key
-    "o" evil-leader-org-map)
+    "o" my-evil-leader-org-map)
   (setq org-capture-templates
-        `(("t" "Todo" entry (file+headline ,(org-subdir "todo.org") "Tasks")
+        `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
            "* TODO %?\n  %i\n  %a")
-          ("j" "Journal" entry (file+datetree ,(org-subdir "journal.org"))
+          ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a"))))
 
 ;; Other commands
@@ -436,22 +436,22 @@ hours or not."
 
 
 
-(defun scratch-buffer ()
+(defun my-scratch-buffer ()
   "Switch to the *scratch* buffer, making a new
 one if necessary."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(defun new-scratch ()
+(defun my-new-scratch ()
   "Opens a clean *scratch* buffer.
 
 If a *scratch* buffer exists, this will undo any changes
 made in that buffer."
   (interactive)
-  (scratch-buffer)
-  (clear-buffer))
+  (my-scratch-buffer)
+  (my-clear-buffer))
 
-(defun kill-buffer-and-window-ask ()
+(defun my-kill-buffer-and-window-ask ()
   "Kill the current buffer and window if user responds in the affirmative.
 
 Ask again if the buffer is modified."
@@ -462,76 +462,77 @@ Ask again if the buffer is modified."
            (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
       (kill-buffer-and-window))))
 
-(defun clear-buffer (&optional buffer)
+(defun my-clear-buffer (&optional buffer)
   "Clear all the text in BUFFER without modifying the kill ring"
   (interactive "b")
   (let ((buffer (or buffer (current-buffer))))
        (with-current-buffer buffer
             (kill-region (point-min) (point-max)))))
 
-(defun emacs-lisp-space (n)
+(defun my-emacs-lisp-space (n)
   ; Similar to 'slime-space', but support all emacs-lisp and custom functions - not just
   ; those supported by slime packages
   (interactive "p")
   (self-insert-command n)
-  (emacs-lisp-echo-arglist))
+  (my-emacs-lisp-echo-arglist))
 
-(defun emacs-lisp-echo-arglist ()
+(defun my-emacs-lisp-echo-arglist ()
   "Echo to the minibuffer the argument syntax of the symbol under `point', if any"
   (let ((opr (slime-operator-before-point)))
     (when opr
       (let* ((op (read opr))
-             (arglist (get-function-arglist op)))
+             (arglist (my-get-function-arglist op)))
         (when arglist
           (slime-message "%s" arglist))))))
 
-(defun get-function-arglist (fn)
+(defun my-get-function-arglist (fn)
   "Retrieve the arglist of the function-like object fn.
    returns nil if no there is no function with the specified symbol"
   (when (symbol-function fn)
-    (let* ((full-doc (split-lines (documentation fn)))
+    (let* ((full-doc (my-split-lines (documentation fn)))
            (argstring (car (last full-doc))))
-      (if (argument-string-p argstring)
+      (if (my-argument-string-p argstring)
         (format "%s" (replace-regexp-in-string "^(fn" (format "(%s" fn) argstring))
         (let ((argstring (help-function-arglist fn t)))
           (when argstring
             (format "%s" (append (list fn) argstring))))))))
 
-(defun split-lines (str &optional omit-nulls trim)
+(defun my-split-lines (str &optional omit-nulls trim)
   (split-string str "\n" omit-nulls trim))
 
-(defun argument-string-p (str)
+(defun my-argument-string-p (str)
   "Return t if STR is a valid argument string
 
 Argument strings should follow a pattern similar to
 (fn arg1 arg2 &rest args)"
   (when (string-match "(fn[^)]*)" str) t))
 
-;; Use `emacs-lisp-space' when using the space key in emacs-lisp modes
-(evil-define-key 'insert ielm-map " " 'emacs-lisp-space)
-(evil-define-key 'insert emacs-lisp-mode-map " " 'emacs-lisp-space)
+;; Use `my-emacs-lisp-space' when using the space key in emacs-lisp modes
+(evil-define-key 'insert ielm-map " " 'my-emacs-lisp-space)
+(evil-define-key 'insert emacs-lisp-mode-map " " 'my-emacs-lisp-space)
 
 (global-unset-key (kbd "C-s"))
 
-(defvar state-switch-map
+(defvar my-state-switch-map
   (make-sparse-keymap "evil state switch map")
   "Map for switching evil states")
 
-(emaps-define-key state-switch-map
+(emaps-define-key my-state-switch-map
   "n" 'evil-normal-state
   "m" 'evil-motion-state
   "e" 'evil-emacs-state)
 
-(emaps-define-key global-map (kbd "C-s") state-switch-map)
+(emaps-define-key global-map (kbd "C-s") my-state-switch-map)
 
 
-(defvar jump-map
+(defvar my-jump-map
   (make-sparse-keymap "jump map")
   "Keymap for jumping around.")
 
-(emaps-define-key jump-map
+(emaps-define-key my-jump-map
   "t" 'eshell
-  "i" 'find-user-init-file)
+  "i" 'my-find-user-init-file)
 
-(evil-leader/set-key "g" jump-map)
+(evil-leader/set-key "g" my-jump-map)
+
 ;;; init.el ends here
