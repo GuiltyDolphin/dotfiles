@@ -535,4 +535,18 @@ Argument strings should follow a pattern similar to
 
 (evil-leader/set-key "g" my-jump-map)
 
+(defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
+  "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
+  (let ((major-mode-map-symbol (intern (concat (symbol-name major-mode) "-map"))))
+    (when (boundp major-mode-map-symbol)
+      (let ((major-mode-map (symbol-value major-mode-map-symbol))
+            (local-major-bindings (evil-local-leader/bindings-for-mode major-mode)))
+        (map-keymap
+         (lambda (key def)
+           (-if-let (key (and (characterp key) (char-to-string key)))
+               (unless (and local-major-bindings (lookup-key local-major-bindings key))
+                 (evil-local-leader/set-key-for-mode major-mode key def))))
+         major-mode-map)))))
+
+(add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
 ;;; init.el ends here
