@@ -114,11 +114,6 @@ calendar-location-name, calendar-longitude, and calendar-latitude respectively."
     (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
             (list sunrise-time sunset-time))))
 
-(defun time-compare (time1 time2)
-  "Return 'lt if TIME1 is less than TIME2, 'eq if they are equal or 'gt otherwise."
-  (if (time-less-p time1 time2) 'lt
-    (if (= 0 (time-to-seconds (time-subtract time1 time2))) 'eq 'gt)))
-
 (defun time-greater-p (time1 time2)
   "Return non-nil if TIME1 is later than TIME2."
   (not (or (time-less-p time1 time2) (eq time1 time2))))
@@ -473,16 +468,6 @@ Ask again if the buffer is modified."
   (let ((buffer (or buffer (current-buffer))))
        (with-current-buffer buffer
             (kill-region (point-min) (point-max)))))
-
-(defun date (&optional insert-date format-string)
-  ; Retrieve the current system date (time)
-  (interactive "P")
-  (let ((current-date (shell-command-to-string
-                       (if format-string
-                           (format "date +%s" format-string) "date"))))
-    (if insert-date
-        (insert current-date)
-      (message "%s" (string-remove-suffix "\n" current-date)))))
 
 (defun emacs-lisp-space (n)
   ; Similar to 'slime-space', but support all emacs-lisp and custom functions - not just
