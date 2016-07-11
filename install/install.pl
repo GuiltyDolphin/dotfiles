@@ -126,6 +126,7 @@ sub get_distribution {
 
 my @local_bins = (
     home('.local/bin'),
+    home('bin'),
 );
 
 sub is_local_bin {
