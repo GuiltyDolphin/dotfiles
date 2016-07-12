@@ -235,9 +235,11 @@ hours or not."
   (evil-nnoremap! ";" 'evil-ex)
   (evil-nnoremap! ":" 'evil-repeat-find-char)
   (global-set-key (kbd "C-t") 'nil)
-  (evil-nnoremap! (kbd "C-t") 'evil-window-map)
   (evil-nnoremap! (kbd "C-t C-h") 'previous-buffer)
   (evil-nnoremap! (kbd "C-t C-l") 'next-buffer)
+  (dolist (state '(insert motion normal visual))
+    (emaps-define-key (symbol-value (intern (concat "evil-" (symbol-name state) "-state-map")))
+      (kbd "C-t") evil-window-map))
 
   (evil-inoremap (kbd "C-c") 'evil-normal-state)
   (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
