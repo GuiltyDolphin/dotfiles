@@ -160,7 +160,9 @@ hours or not."
 (customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
 
 ;; Emaps
-(use-package emaps)
+(use-package emaps
+  :config
+  (define-key global-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
 
 ;; Evil leader
 (use-package evil-leader
