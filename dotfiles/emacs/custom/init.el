@@ -232,6 +232,13 @@ hours or not."
   (customize-set-variable 'evil-symbol-word-search t)
   (evil-mode 1))
 
+(defun my-evil-set-initial-state-modes (state &rest modes)
+  "Set STATE as the initial state for each of MODES.
+
+See `evil-set-initial-state'."
+  (--map (evil-set-initial-state it state) modes))
+(put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
+
 (use-package evil-remap
   :config
   (evil-nnoremap! ";" 'evil-ex)
@@ -279,7 +286,11 @@ hours or not."
     "}" 'magit-goto-next-section)
   (evil-define-key 'visual magit-mode-map
     "s" 'magit-stage-item
-    "u" 'magit-unstage-item))
+    "u" 'magit-unstage-item)
+  (my-evil-set-initial-state-modes 'motion
+    'magit-status-mode
+    'magit-commit-mode
+    'magit-log-mode))
 
 (add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
 
