@@ -5,6 +5,7 @@ use warnings;
 
 use Cwd qw(abs_path getcwd);
 use File::Temp qw(tempdir);
+use IPC::Cmd qw(run);
 
 #######################################################################
 #                           Options/Globals                           #
@@ -248,6 +249,26 @@ sub version_latest_from_directory_url {
     return (sort @versions)[$#versions];
 }
 
+#################
+# Git Utilities #
+#################
+
+sub git_clone {
+    my ($url) = @_;
+    my $buff;
+    unless (scalar run(
+                command => "git clone $url",
+                buffer  => \$buff,
+            )) {
+        my ($path) = $buff =~ /destination path '(.+?)' already exists/i;
+        with_directory $path => sub {
+            my ($remote_url) = `git remote show origin` =~ /Fetch URL: (.+?)\.git$/m;
+            return $OK if ($remote_url eq $url =~ s/\.git$//r);
+            return $ERROR;
+        }
+    }
+}
+
 
 #######################################################################
 #                              Commands                               #
@@ -283,6 +304,10 @@ my %software_config = (
     pip => {
         install   => \&pip_install,
         installed => q_version('pip'),
+    },
+    'swi-prolog' => {
+        install   => \&swi_prolog_install,
+        installed => \&swi_prolog_installed,
     },
 );
 
@@ -452,6 +477,28 @@ sub pip_install {
             'python get-pip.py --user',
         );
     }
+}
+
+##############
+# SWI Prolog #
+##############
+
+sub swi_prolog_install {
+    with_directory $software_directory => sub {
+        sequence(
+            git_clone('https://github.com/SWI-prolog/swipl.git'),
+            with_directory 'swipl' => sub {
+                sequence(
+                    'cp build.templ build',
+                    './build',
+                    );
+            },
+        );
+    }
+}
+
+sub swi_prolog_installed {
+    is_local_bin(get_bin_path('swipl'));
 }
 
 sub link_program {
