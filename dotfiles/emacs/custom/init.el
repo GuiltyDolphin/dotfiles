@@ -294,6 +294,8 @@ See `evil-set-initial-state'."
 
 (add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
 
+(evil-set-initial-state 'git-commit-mode 'insert)
+
 ;; Todo
 
 ;; Flycheck
