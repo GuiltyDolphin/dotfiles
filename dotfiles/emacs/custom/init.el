@@ -279,6 +279,8 @@ hours or not."
     "s" 'magit-stage-item
     "u" 'magit-unstage-item))
 
+(add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
+
 ;; Todo
 
 ;; Flycheck
