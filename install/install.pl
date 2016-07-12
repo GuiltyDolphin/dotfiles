@@ -15,6 +15,12 @@ my $INFO  = 1;
 my $DOT_DIR = do { my $pwd = getcwd(); "$pwd/dotfiles" };
 my $usage = 'Usage: script_files COMMAND ARGS..';
 
+# Routines should return $OK or $ERROR to indicate whether they passed
+# or failed if they interact with the system.
+my $OK = 0;
+my $ERROR = !$OK;
+sub success { $_[0] eq $OK }
+
 my $user_distro;
 
 sub dot_file { join '/', ($DOT_DIR, shift); }
@@ -86,9 +92,11 @@ sub link_script_local {
 sub sequence {
     my @commands = @_;
     foreach my $command (@commands) {
+        next if $command eq $OK;
+        return $? if $command eq $ERROR;
         system($command) == 0 or return $?;
     }
-    return 0;
+    return $OK;
 }
 
 sub q_version {
@@ -476,9 +484,9 @@ sub install_program {
         return;
     }
     info("installing '$program'");
-    my $ret = run_config_or_default($program, 'install');
-    $ret or info("successfully installed '$program'");
-    error("error encountered while installing '$program'") if $ret;
+    my $ok = success(run_config_or_default($program, 'install'));
+    $ok and info("successfully installed '$program'");
+    error("error encountered while installing '$program'") unless $ok;
 }
 
 sub update_program {
@@ -492,9 +500,9 @@ sub update_program {
         info("skipping $program (up-to-date)");
         return;
     }
-    my $ret = run_config_or_default($program, 'update');
-    $ret or info("successfully updated '$program'");
-    error("error encountered while updating '$program'") if $ret;
+    my $ok = success(run_config_or_default($program, 'update'));
+    $ok and info("successfully updated '$program'");
+    error("error encountered while updating '$program'") unless $ok;
 }
 
 sub version {
