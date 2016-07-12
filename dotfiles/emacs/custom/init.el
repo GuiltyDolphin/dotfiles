@@ -235,20 +235,21 @@ hours or not."
   (evil-nnoremap! ";" 'evil-ex)
   (evil-nnoremap! ":" 'evil-repeat-find-char)
   (global-set-key (kbd "C-t") 'nil)
-  (evil-nnoremap! (kbd "C-t C-h") 'previous-buffer)
-  (evil-nnoremap! (kbd "C-t C-l") 'next-buffer)
   (dolist (state '(insert motion normal visual))
     (emaps-define-key (symbol-value (intern (concat "evil-" (symbol-name state) "-state-map")))
       (kbd "C-t") evil-window-map))
+  (emaps-define-key evil-window-map
+    (kbd "C-h") 'previous-buffer
+    (kbd "C-l") 'next-buffer
+    (kbd "C-t") 'evil-window-next
+    "t" 'evil-window-right ; Replaces evil-window-top-left
+    "-" 'evil-window-split ; Replaces evil-window-set-width
+    "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
+    "x" 'my-kill-buffer-and-window-ask
+    "s" 'ido-switch-buffer)
 
   (evil-inoremap (kbd "C-c") 'evil-normal-state)
   (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
-  (define-key evil-window-map (kbd "C-t") 'evil-window-next)
-  (define-key evil-window-map "t" 'evil-window-right) ; Replaces evil-window-top-left
-  (define-key evil-window-map "-" 'evil-window-split) ; Replaces evil-window-set-width
-  (define-key evil-window-map "|" 'evil-window-vsplit) ; Replaces evil-window-decrease-height
-  (define-key evil-window-map "x" 'my-kill-buffer-and-window-ask)
-  (define-key evil-window-map "s" 'ido-switch-buffer)
   (global-set-key (kbd "C-w") 'nil)
 
   (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
