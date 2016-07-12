@@ -267,7 +267,17 @@ hours or not."
   :config
   (emaps-define-key my-evil-leader-magit-map
     "d" 'magit-diff-working-tree
-    "s" 'magit-status))
+    "s" 'magit-status)
+  (evil-define-key '(motion normal) magit-mode-map
+    (kbd "TAB") 'magit-toggle-section
+    (kbd "RET") 'magit-visit-item
+    (kbd "z o") 'magit-show-section
+    (kbd "z c") 'magit-hide-section
+    "{" 'magit-goto-previous-section
+    "}" 'magit-goto-next-section)
+  (evil-define-key 'visual magit-mode-map
+    "s" 'magit-stage-item
+    "u" 'magit-unstage-item))
 
 ;; Todo
 
