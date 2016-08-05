@@ -290,6 +290,7 @@ See `evil-set-initial-state'."
   (my-evil-set-initial-state-modes 'motion
     'magit-status-mode
     'magit-commit-mode
+    'magit-diff-mode
     'magit-log-mode))
 
 (add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
