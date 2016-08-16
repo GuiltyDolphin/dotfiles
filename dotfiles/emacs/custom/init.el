@@ -288,6 +288,7 @@ See `evil-set-initial-state'."
     "s" 'magit-stage-item
     "u" 'magit-unstage-item)
   (my-evil-set-initial-state-modes 'motion
+    'magit-branch-manager-mode
     'magit-status-mode
     'magit-commit-mode
     'magit-diff-mode
