@@ -61,6 +61,7 @@
     flx
     git-modes
     haskell-mode
+    idris-mode
     magit
     projectile
     slime
@@ -388,6 +389,16 @@ See `evil-set-initial-state'."
 
 ; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode.el"))
 ; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode-autoloads.el"))
+
+;;; Idris
+(use-package idris-mode
+  :config
+  (evil-local-leader/set-key-for-mode 'idris-mode
+    "a" 'idris-add-clause
+    "c" 'idris-case-dwim
+    "l" 'idris-make-lemma
+    "p" 'idris-proof-search
+    "t" 'idris-type-at-point))
 
 (defmacro after (mode &rest body)
 (declare (indent defun))
