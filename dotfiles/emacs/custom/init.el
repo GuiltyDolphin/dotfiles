@@ -160,6 +160,11 @@ hours or not."
 
 (customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
 
+;;; dash
+(add-to-list 'load-path (locate-user-emacs-file "el-get/dash"))
+(load (locate-user-emacs-file "el-get/dash/dash.el"))
+(use-package dash)
+
 ;; Emaps
 (use-package emaps
   :config
@@ -302,11 +307,7 @@ See `evil-set-initial-state'."
 
 ;; Todo
 
-;; Flycheck
-(add-to-list 'load-path (locate-user-emacs-file "el-get/dash"))
-(load (locate-user-emacs-file "el-get/dash/dash.el"))
-(use-package dash)
-
+;;; Flycheck
 (add-to-list 'load-path (locate-user-emacs-file "el-get/flycheck"))
 (use-package flycheck
   :config
