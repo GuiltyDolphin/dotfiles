@@ -245,6 +245,24 @@ See `evil-set-initial-state'."
   (--map (evil-set-initial-state it state) modes))
 (put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
 
+(defun my-kill-buffer-and-window-ask ()
+  "Kill the current buffer and window if user responds in the affirmative.
+
+Ask again if the buffer is modified."
+  (interactive)
+  (when (y-or-n-p "Kill current buffer and window?: ")
+    (when (or
+           (not (buffer-modified-p))
+           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
+      (kill-buffer-and-window))))
+
+(defun my-clear-buffer (&optional buffer)
+  "Clear all the text in BUFFER without modifying the kill ring"
+  (interactive "b")
+  (let ((buffer (or buffer (current-buffer))))
+       (with-current-buffer buffer
+            (kill-region (point-min) (point-max)))))
+
 (use-package evil-remap
   :config
   (evil-nnoremap! ";" 'evil-ex)
@@ -495,24 +513,6 @@ made in that buffer."
   (interactive)
   (my-scratch-buffer)
   (my-clear-buffer))
-
-(defun my-kill-buffer-and-window-ask ()
-  "Kill the current buffer and window if user responds in the affirmative.
-
-Ask again if the buffer is modified."
-  (interactive)
-  (when (y-or-n-p "Kill current buffer and window?: ")
-    (when (or
-           (not (buffer-modified-p))
-           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
-      (kill-buffer-and-window))))
-
-(defun my-clear-buffer (&optional buffer)
-  "Clear all the text in BUFFER without modifying the kill ring"
-  (interactive "b")
-  (let ((buffer (or buffer (current-buffer))))
-       (with-current-buffer buffer
-            (kill-region (point-min) (point-max)))))
 
 (defun my-emacs-lisp-space (n)
   ; Similar to 'slime-space', but support all emacs-lisp and custom functions - not just
