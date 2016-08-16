@@ -568,6 +568,8 @@ Argument strings should follow a pattern similar to
 
 (emaps-define-key global-map (kbd "C-s") my-state-switch-map)
 
+;;; Spelling
+(add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
 (defvar my-jump-map
   (make-sparse-keymap "jump map")
