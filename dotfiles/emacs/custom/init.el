@@ -275,6 +275,7 @@ See `evil-set-initial-state'."
     "m" my-evil-leader-magit-map)
   :config
   (emaps-define-key my-evil-leader-magit-map
+    "b" 'magit-branch-manager
     "d" 'magit-diff-working-tree
     "s" 'magit-status)
   (evil-define-key '(motion normal) magit-mode-map
