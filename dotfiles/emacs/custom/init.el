@@ -109,7 +109,7 @@ calendar-location-name, calendar-longitude, and calendar-latitude respectively."
         (calendar-latitude loc-lat)
         (times (solar-sunrise-sunset (calendar-current-date)))
         (sunrise-time (solar-daylight (caar times)))
-        (sunset-time (solar-daylight (caadr times)))
+        (sunset-time (solar-daylight (cl-caadr times)))
         (wrap-start (format-time-string "%FT"))
         (wrap-end (format-time-string "%Z")))
     (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
@@ -123,7 +123,7 @@ calendar-location-name, calendar-longitude, and calendar-latitude respectively."
   "Get the '(SUNRISE SUNSET) times for LOCATION."
   (let ((loc-name (car location))
         (loc-lat (cadr location))
-        (loc-lon  (caddr location)))
+        (loc-lon  (cl-caddr location)))
     (my-sunrise-sunset-times loc-name loc-lat loc-lon)))
 
 (defun my-date-in-daylight-hours (date)
