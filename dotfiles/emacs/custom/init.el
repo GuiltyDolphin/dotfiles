@@ -456,6 +456,16 @@ Ask again if the buffer is modified."
   (after "yasnippet-autoloads"
     (add-hook 'prog-mode-hook 'yas-minor-mode)))
 
+;;; helm
+(use-package helm
+  :init
+  (defvar my-helm-leader-map
+    (make-sparse-keymap "helm leader map"))
+  (evil-leader/set-key "h" my-helm-leader-map)
+  :config
+  (emaps-define-key my-helm-leader-map
+    "i" 'helm-imenu)
+  (evil-leader/set-key "b" 'helm-imenu)
 ;; hippie-expand
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
