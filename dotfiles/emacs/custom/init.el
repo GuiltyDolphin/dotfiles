@@ -61,6 +61,7 @@
     flx
     git-modes
     haskell-mode
+    helm
     idris-mode
     magit
     projectile
