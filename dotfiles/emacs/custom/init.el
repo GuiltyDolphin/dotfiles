@@ -466,6 +466,9 @@ Ask again if the buffer is modified."
   (emaps-define-key my-helm-leader-map
     "i" 'helm-imenu)
   (evil-leader/set-key "b" 'helm-imenu)
+  (evil-nnoremap! (kbd "C-p") 'helm-find-files)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files))
+
 ;; hippie-expand
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
