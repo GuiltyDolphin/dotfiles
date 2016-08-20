@@ -280,7 +280,7 @@ Ask again if the buffer is modified."
     "-" 'evil-window-split ; Replaces evil-window-set-width
     "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
     "x" 'my-kill-buffer-and-window-ask
-    "s" 'ido-switch-buffer)
+    "s" 'helm-buffers-list)
 
   (evil-inoremap (kbd "C-c") 'evil-normal-state)
   (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
