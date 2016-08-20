@@ -183,7 +183,7 @@ hours or not."
   "sv" 'my-reload-user-init-file
   "ns" 'my-scratch-buffer
   "nS" 'my-new-scratch
-  ","  'execute-extended-command)
+  ","  'helm-M-x)
 
 (defun my-find-user-init-file ()
   "Find the user's init.el file"
