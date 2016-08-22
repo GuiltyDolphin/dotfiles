@@ -138,16 +138,54 @@ Default to NIL if daylight times cannot be retrieved."
     (and sunrise-time sunset-time
          (my-time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
 
-(defun my-get-background-mode-for-time-of-day (&optional date)
-  "Return either 'light or 'dark based on whether DATE (or (current-time)) is during daylight
-hours or not."
-  (if (my-date-in-daylight-hours (or date (current-time))) 'light 'dark))
+(defvar my-background-timers nil
+  "Timers for changing the background mode.")
+
+(defun my-background-clear-timers ()
+  "Clear the current background timers."
+  (dolist (timer my-background-timers)
+    (cancel-timer timer))
+  (setq my-background-timers nil))
+
+(defun my-background-set (bgmode)
+  "Set the current background mode to BGMODE.
+BGMODE should be one of 'light or 'dark."
+  (set-frame-parameter nil 'background-mode bgmode)
+  (set-terminal-parameter nil 'background-mode bgmode)
+  (my-background-clear-timers)
+  (my-background-initialize-timers)
+  (load-theme 'solarized t))
+
+(defun my-background-set-dark ()
+  "Set the current background mode to 'dark."
+  (my-background-set 'dark))
+
+(defun my-background-set-light ()
+  "Set the current background mode to 'light."
+  (my-background-set 'light))
+
+(defun my-background-initialize-timers ()
+  (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
+         (sunrise-time (car sunrise-sunset))
+         (sunset-time (cadr sunrise-sunset))
+         (time-format "%F %T %Z")
+         (add-bg-timer (lambda (mode time)
+                         (push (run-at-time
+                                (format-time-string time-format time) nil
+                                (intern (format "my-background-set-%s" mode)))
+                               my-background-timers))))
+  (if (my-date-in-daylight-hours (current-time))
+      (funcall add-bg-timer 'dark sunset-time)
+    (let ((sunrise-today-or-next (if (time-less-p (current-time) sunrise-time)
+                                     sunrise-time
+                                   (time-add (days-to-time 1) sunrise-time)))) ; close enough
+      (funcall add-bg-timer 'light sunrise-today-or-next)))))
+
 
 ;; Color theme
-(let ((bgmode (my-get-background-mode-for-time-of-day)))
-  (set-frame-parameter nil 'background-mode bgmode)
-  (set-terminal-parameter nil 'background-mode bgmode))
-(load-theme 'solarized t)
+(if (my-date-in-daylight-hours (current-time))
+    (my-background-set-light)
+  (my-background-set-dark))
 
 ;; Font
 (set-face-font 'default "Inconsolata-14")
