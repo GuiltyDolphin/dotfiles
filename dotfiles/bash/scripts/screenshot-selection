@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+fdate=$(date --iso-8601=s)
+fname_tmp=$(mktemp --suffix="-screenshot-${fdate}.png")
+FNAME_DEF="$HOME/Pictures/screenshot-${fdate}.png"
+shutter -n -e -s --o $fname_tmp
+fname_choice=$(zenity --file-selection --title="Where to save screenshot?" \
+  --filename=$FNAME_DEF --confirm-overwrite --save)
+
+if [ -n "$fname_choice" ]; then
+  mv $fname_tmp $fname_choice
+else
+  # No output destination specified
+  exit 1
+fi
