@@ -353,6 +353,8 @@ Ask again if the buffer is modified."
   (evil-define-key 'visual magit-mode-map
     "s" 'magit-stage-item
     "u" 'magit-unstage-item)
+  (evil-define-key 'motion magit-status-mode-map
+    "g" magit-section-jump-map)
   (my-evil-set-initial-state-modes 'motion
     'magit-branch-manager-mode
     'magit-status-mode
