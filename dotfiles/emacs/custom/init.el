@@ -153,7 +153,8 @@ BGMODE should be one of 'light or 'dark."
   (set-frame-parameter nil 'background-mode bgmode)
   (set-terminal-parameter nil 'background-mode bgmode)
   (my-background-clear-timers)
-  (my-background-initialize-timers)
+  ; give it time to sort itself out
+  (run-at-time "2 minutes" nil 'my-background-initialize-timers)
   (load-theme 'solarized t))
 
 (defun my-background-set-dark ()
