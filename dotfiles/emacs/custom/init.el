@@ -55,6 +55,7 @@
     emaps
     evil
     evil-leader
+    evil-org
     evil-remap
     evil-surround
     flycheck
