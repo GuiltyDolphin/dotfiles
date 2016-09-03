@@ -279,6 +279,9 @@ BGMODE should be one of 'light or 'dark."
   (customize-set-variable 'evil-symbol-word-search t)
   (evil-mode 1))
 
+;;; evil-org
+(use-package evil-org)
+
 (defun my-evil-set-initial-state-modes (state &rest modes)
   "Set STATE as the initial state for each of MODES.
 
