@@ -645,6 +645,9 @@ Argument strings should follow a pattern similar to
 (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
 ;;; irc
+
+(evil-set-initial-state 'rcirc-mode 'normal)
+
 (defvar my-rcirc-cmd-list-map
   (make-sparse-keymap "rcirc list"))
 
