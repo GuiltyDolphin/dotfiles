@@ -224,7 +224,7 @@ BGMODE should be one of 'light or 'dark."
 ;; Emaps
 (use-package emaps
   :config
-  (define-key global-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
+  (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
 
 ;; Evil leader
 (use-package evil-leader
@@ -429,7 +429,7 @@ Ask again if the buffer is modified."
 ;(my-move-key evil-motion-state-map evil-normal-state-map (kbd "RET"))
 (my-move-key evil-motion-state-map evil-normal-state-map " ")
 
-(define-key global-map (kbd "C-h h") 'help)
+(define-key my-global-mode-map (kbd "C-h h") 'help)
 (emaps-define-key help-map
   (kbd "C-e") 'evil-scroll-line-down
   (kbd "C-y") 'evil-scroll-line-up)
@@ -641,7 +641,7 @@ Argument strings should follow a pattern similar to
   "m" 'evil-motion-state
   "e" 'evil-emacs-state)
 
-(emaps-define-key global-map (kbd "C-s") my-state-switch-map)
+(emaps-define-key my-global-mode-map (kbd "C-s") my-state-switch-map)
 
 ;;; Spelling
 (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
