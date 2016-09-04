@@ -292,6 +292,8 @@ BGMODE should be one of 'light or 'dark."
   (customize-set-variable 'evil-want-C-w-in-emacs-state t)
   ; * and # search for full symbols.
   (customize-set-variable 'evil-symbol-word-search t)
+  (evil-define-key '(insert replace) my-global-mode-map
+    (kbd "C-c") 'evil-normal-state)
   (evil-define-key '(emacs insert motion normal visual) my-global-mode-map
     (kbd "C-t") evil-window-map)
   (emaps-define-key evil-window-map
