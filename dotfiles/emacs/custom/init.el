@@ -207,6 +207,15 @@ BGMODE should be one of 'light or 'dark."
 
 (customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
 
+(define-minor-mode my-global-mode
+  "Personal configuration without changing the default global settings."
+  :keymap (make-sparse-keymap))
+
+(define-globalized-minor-mode my-global-global-mode my-global-mode
+  (lambda () (my-global-mode)))
+
+(my-global-global-mode)
+
 ;;; dash
 (add-to-list 'load-path (locate-user-emacs-file "el-get/dash"))
 (load (locate-user-emacs-file "el-get/dash/dash.el"))
