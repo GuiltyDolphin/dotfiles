@@ -644,6 +644,21 @@ Argument strings should follow a pattern similar to
 ;;; Spelling
 (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
+;;; irc
+(defvar my-rcirc-cmd-list-map
+  (make-sparse-keymap "rcirc list"))
+
+(emaps-define-key my-rcirc-cmd-list-map
+  "n" 'rcirc-cmd-names)
+
+(evil-local-leader/set-key-for-mode 'rcirc-mode
+  "j" 'rcirc-cmd-join
+  "m" 'rcirc-cmd-msg
+  "n" 'rcirc-cmd-nick
+  "l" my-rcirc-cmd-list-map)
+
+(customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
+
 (defvar my-jump-map
   (make-sparse-keymap "jump map")
   "Keymap for jumping around.")
