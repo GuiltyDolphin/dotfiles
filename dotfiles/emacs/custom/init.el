@@ -166,6 +166,10 @@ BGMODE should be one of 'light or 'dark."
   "Set the current background mode to 'light."
   (my-background-set 'light))
 
+(defun my-current-background-mode ()
+  "Get the current background mode (light or dark)."
+  (frame-parameter nil 'background-mode))
+
 (defun my-background-initialize-timers ()
   (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
          (sunrise-time (car sunrise-sunset))
@@ -177,11 +181,13 @@ BGMODE should be one of 'light or 'dark."
                                 (intern (format "my-background-set-%s" mode)))
                                my-background-timers))))
   (if (my-date-in-daylight-hours (current-time))
-      (funcall add-bg-timer 'dark sunset-time)
-    (let ((sunrise-today-or-next (if (time-less-p (current-time) sunrise-time)
-                                     sunrise-time
-                                   (time-add (days-to-time 1) sunrise-time)))) ; close enough
-      (funcall add-bg-timer 'light sunrise-today-or-next)))))
+      (if (eq (my-current-background-mode) 'dark) (my-background-set-light)
+        (funcall add-bg-timer 'dark sunset-time))
+    (if (eq (my-current-background-mode) 'light) (my-background-set-dark)
+      (let ((sunrise-today-or-next (if (time-less-p (current-time) sunrise-time)
+                                       sunrise-time
+                                     (time-add (days-to-time 1) sunrise-time)))) ; close enough
+        (funcall add-bg-timer 'light sunrise-today-or-next))))))
 
 
 ;; Color theme
