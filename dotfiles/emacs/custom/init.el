@@ -294,6 +294,15 @@ BGMODE should be one of 'light or 'dark."
   (customize-set-variable 'evil-symbol-word-search t)
   (evil-define-key '(emacs insert motion normal visual) my-global-mode-map
     (kbd "C-t") evil-window-map)
+  (emaps-define-key evil-window-map
+    (kbd "C-h") 'previous-buffer
+    (kbd "C-l") 'next-buffer
+    (kbd "C-t") 'evil-window-next
+    "t" 'evil-window-right ; Replaces evil-window-top-left
+    "-" 'evil-window-split ; Replaces evil-window-set-width
+    "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
+    "x" 'my-kill-buffer-and-window-ask
+    "s" 'helm-buffers-list)
   (evil-mode 1))
 
 ;;; evil-org
@@ -329,15 +338,6 @@ Ask again if the buffer is modified."
   (evil-nnoremap! ";" 'evil-ex)
   (evil-nnoremap! ":" 'evil-repeat-find-char)
   (global-set-key (kbd "C-t") 'nil)
-  (emaps-define-key evil-window-map
-    (kbd "C-h") 'previous-buffer
-    (kbd "C-l") 'next-buffer
-    (kbd "C-t") 'evil-window-next
-    "t" 'evil-window-right ; Replaces evil-window-top-left
-    "-" 'evil-window-split ; Replaces evil-window-set-width
-    "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
-    "x" 'my-kill-buffer-and-window-ask
-    "s" 'helm-buffers-list)
 
   (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
   (global-set-key (kbd "C-w") 'nil)
