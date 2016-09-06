@@ -566,15 +566,13 @@ Ask again if the buffer is modified."
         `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
            "* TODO %?\n\nEntered on: %U\n%^G\n%i")
           ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
-           "* %?\nEntered on %U\n  %i\n  %a"))))
-
-;; Other commands
-
+           "* %?\n\nEntered on %U\n%^G\n%i"))))
 
 ;; Comint
 (evil-define-key '(motion normal) comint-mode-map
   (kbd "C-d") 'evil-scroll-down)
 
+;; Other commands
 
 (defun my-scratch-buffer ()
   "Switch to the *scratch* buffer, making a new
