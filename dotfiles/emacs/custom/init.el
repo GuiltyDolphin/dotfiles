@@ -217,8 +217,6 @@ BGMODE should be one of 'light or 'dark."
 (my-global-global-mode)
 
 ;;; dash
-(add-to-list 'load-path (locate-user-emacs-file "el-get/dash"))
-(load (locate-user-emacs-file "el-get/dash/dash.el"))
 (use-package dash)
 
 ;; Emaps
