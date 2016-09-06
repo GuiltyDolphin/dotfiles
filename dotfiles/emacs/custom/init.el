@@ -564,7 +564,7 @@ Ask again if the buffer is modified."
     "o" my-evil-leader-org-map)
   (setq org-capture-templates
         `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
-           "* TODO %?\n  %i\n  %a")
+           "* TODO %?\n\nEntered on: %U\n%^G\n%i")
           ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a"))))
 
