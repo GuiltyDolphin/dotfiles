@@ -680,6 +680,11 @@ Argument strings should follow a pattern similar to
   :init
   (defalias 'perl-mode 'cperl-mode)
   :config
+  (customize-set-variable 'cperl-indent-level 4)
+  (customize-set-variable
+   'cperl-close-paren-offset (- cperl-indent-level))
+  (customize-set-variable
+   'cperl-continued-statement-offset cperl-indent-level)
   (customize-set-variable 'cperl-indent-parens-as-block t
                           "Ensure nice indentation after parens."))
 
