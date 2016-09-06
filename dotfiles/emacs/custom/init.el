@@ -526,12 +526,19 @@ Ask again if the buffer is modified."
   :init
   (defvar my-helm-leader-map
     (make-sparse-keymap "helm leader map"))
+  (defvar my-helm-web-search-map
+    (make-sparse-keymap "helm search web via"))
   (evil-leader/set-key "h" my-helm-leader-map)
   :config
   (emaps-define-key my-helm-leader-map
-    "i" 'helm-imenu)
+    "i" 'helm-imenu
+    "o" 'helm-occur
+    "s" my-helm-web-search-map)
   (customize-set-variable 'helm-google-suggest-search-url
                           "https://duckduckgo.com/?q=%s")
+  (emaps-define-key my-helm-web-search-map
+    "d" 'helm-google-suggest
+    "w" 'helm-wikipedia-suggest)
   (evil-leader/set-key "b" 'helm-imenu)
   (evil-nnoremap! "/" 'helm-occur)
   (evil-nnoremap! (kbd "C-p") 'helm-find-files)
