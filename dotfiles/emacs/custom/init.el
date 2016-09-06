@@ -586,6 +586,9 @@ Ask again if the buffer is modified."
 ;; Other commands
 
 
+;; Comint
+(evil-define-key '(motion normal) comint-mode-map
+  (kbd "C-d") 'evil-scroll-down)
 
 
 (defun my-scratch-buffer ()
