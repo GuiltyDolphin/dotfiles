@@ -27,9 +27,9 @@
 ;; NO FRILLS
 
 (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
-(tool-bar-mode -1) ; no tool bar with icons
+(tool-bar-mode -1)   ; no tool bar with icons
 (scroll-bar-mode -1) ; no scroll bars
-(menu-bar-mode -1) ; no menu bar
+(menu-bar-mode -1)   ; no menu bar
 
 
 ;; NO JUNK
