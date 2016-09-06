@@ -351,8 +351,8 @@ Ask again if the buffer is modified."
 ;; Magit
 (use-package magit
   :init
-  (defvar my-evil-leader-magit-map
-    (make-sparse-keymap "keymap for magit bindings under leader key"))
+  (defvar my-evil-leader-magit-map (make-sparse-keymap)
+    "Keymap for magit bindings under leader key.")
   (defvar my-magit-section-jump-map (make-sparse-keymap)
     "Keymap for jumping around magit sections.")
   (evil-leader/set-key
@@ -515,10 +515,10 @@ Ask again if the buffer is modified."
 ;;; helm
 (use-package helm
   :init
-  (defvar my-helm-leader-map
-    (make-sparse-keymap "helm leader map"))
-  (defvar my-helm-web-search-map
-    (make-sparse-keymap "helm search web via"))
+  (defvar my-helm-leader-map (make-sparse-keymap)
+    "Helm leader map.")
+  (defvar my-helm-web-search-map (make-sparse-keymap)
+    "Helm web search map.")
   (evil-leader/set-key "h" my-helm-leader-map)
   :config
   (emaps-define-key my-helm-leader-map
@@ -549,9 +549,8 @@ Ask again if the buffer is modified."
 ;; org
 (use-package org
   :init
-  (defvar my-evil-leader-org-map
-    (make-sparse-keymap "leader org-mode map"))
-
+  (defvar my-evil-leader-org-map (make-sparse-keymap)
+     "Leader org-mode map.")
   (emaps-define-key my-evil-leader-org-map
     "a" 'org-agenda
     "c" 'org-capture
@@ -642,10 +641,8 @@ Argument strings should follow a pattern similar to
 
 (global-unset-key (kbd "C-s"))
 
-(defvar my-state-switch-map
-  (make-sparse-keymap "evil state switch map")
-  "Map for switching evil states")
-
+(defvar my-state-switch-map (make-sparse-keymap)
+  "Map for switching evil states.")
 (emaps-define-key my-state-switch-map
   "n" 'evil-normal-state
   "m" 'evil-motion-state
@@ -663,8 +660,8 @@ Argument strings should follow a pattern similar to
 
 (evil-set-initial-state 'rcirc-mode 'normal)
 
-(defvar my-rcirc-cmd-list-map
-  (make-sparse-keymap "rcirc list"))
+(defvar my-rcirc-cmd-list-map (make-sparse-keymap)
+  "Keymap for rcirc listing commands.")
 
 (emaps-define-key my-rcirc-cmd-list-map
   "n" 'rcirc-cmd-names)
@@ -677,8 +674,7 @@ Argument strings should follow a pattern similar to
 
 (customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
 
-(defvar my-jump-map
-  (make-sparse-keymap "jump map")
+(defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
 
 (emaps-define-key my-jump-map
