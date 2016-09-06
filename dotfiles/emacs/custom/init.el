@@ -661,6 +661,9 @@ Argument strings should follow a pattern similar to
 ;;; Spelling
 (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
+(evil-set-initial-state 'Custom-mode 'normal)
+(evil-set-initial-state 'finder-mode 'motion)
+
 ;;; irc
 
 (evil-set-initial-state 'rcirc-mode 'normal)
