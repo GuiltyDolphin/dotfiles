@@ -226,6 +226,11 @@ BGMODE should be one of 'light or 'dark."
   :config
   (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
 
+;; Auto Complete
+(use-package auto-complete
+  :config
+  (global-auto-complete-mode))
+
 ;; Evil leader
 (use-package evil-leader
   :config
