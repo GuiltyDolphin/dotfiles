@@ -674,6 +674,15 @@ Argument strings should follow a pattern similar to
 
 (customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
 
+;;; cperl
+
+(use-package cperl-mode
+  :init
+  (defalias 'perl-mode 'cperl-mode)
+  :config
+  (customize-set-variable 'cperl-indent-parens-as-block t
+                          "Ensure nice indentation after parens."))
+
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
 
