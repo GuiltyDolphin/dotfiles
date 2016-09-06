@@ -353,6 +353,8 @@ Ask again if the buffer is modified."
   :init
   (defvar my-evil-leader-magit-map
     (make-sparse-keymap "keymap for magit bindings under leader key"))
+  (defvar my-magit-section-jump-map (make-sparse-keymap)
+    "Keymap for jumping around magit sections.")
   (evil-leader/set-key
     "m" my-evil-leader-magit-map)
   :config
@@ -360,6 +362,10 @@ Ask again if the buffer is modified."
     "b" 'magit-branch-manager
     "d" 'magit-diff-working-tree
     "s" 'magit-status)
+  (emaps-define-key my-magit-section-jump-map
+    "s" 'magit-jump-to-staged
+    "u" 'magit-jump-to-unstaged
+    "z" 'magit-jump-to-stashes)
   (evil-define-key '(motion normal) magit-mode-map
     (kbd "TAB") 'magit-toggle-section
     (kbd "RET") 'magit-visit-item
@@ -371,7 +377,7 @@ Ask again if the buffer is modified."
     "s" 'magit-stage-item
     "u" 'magit-unstage-item)
   (evil-define-key 'motion magit-status-mode-map
-    "g" magit-section-jump-map)
+    "g" my-magit-section-jump-map)
   (my-evil-set-initial-state-modes 'motion
     'magit-branch-manager-mode
     'magit-status-mode
