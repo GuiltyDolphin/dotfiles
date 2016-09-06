@@ -533,6 +533,7 @@ Ask again if the buffer is modified."
   (customize-set-variable 'helm-google-suggest-search-url
                           "https://duckduckgo.com/?q=%s")
   (evil-leader/set-key "b" 'helm-imenu)
+  (evil-nnoremap! "/" 'helm-occur)
   (evil-nnoremap! (kbd "C-p") 'helm-find-files)
   (global-set-key (kbd "C-x C-f") 'helm-find-files))
 
