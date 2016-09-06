@@ -669,6 +669,7 @@ Argument strings should follow a pattern similar to
   "Keymap for jumping around.")
 
 (emaps-define-key my-jump-map
+  "p" 'evil-switch-to-windows-last-buffer
   "t" 'eshell
   "i" 'my-find-user-init-file)
 
