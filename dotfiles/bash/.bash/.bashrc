@@ -129,10 +129,5 @@ shopt -s globstar
 # Use vi commands for terminal editing
 set -o vi
 
-################
-#  DuckDuckGo  #
-################
 
-# Don't download metadata (it is slow)
-export NO_METADATA_DOWNLOAD=1
 
