@@ -287,10 +287,6 @@ BGMODE should be one of 'light or 'dark."
   "ir" 'tex-region
   "cb" 'latex-close-block)
 
-(evil-local-leader/set-key-for-mode 'org-mode
-  "ih" 'org-insert-heading
-  "y" 'org-mode-yank)
-
 ;; Eveeel....
 (use-package evil
   :config
