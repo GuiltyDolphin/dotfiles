@@ -383,8 +383,6 @@ Ask again if the buffer is modified."
 
 (evil-set-initial-state 'git-commit-mode 'insert)
 
-;; Todo
-
 ;;; Flycheck
 (add-to-list 'load-path (locate-user-emacs-file "el-get/flycheck"))
 (use-package flycheck
@@ -425,7 +423,6 @@ Ask again if the buffer is modified."
   (define-key keymap-to key (lookup-key keymap-from key))
   (define-key keymap-from key nil))
 
-;(my-move-key evil-motion-state-map evil-normal-state-map (kbd "RET"))
 (my-move-key evil-motion-state-map evil-normal-state-map " ")
 
 (define-key my-global-mode-map (kbd "C-h h") 'help)
@@ -446,9 +443,6 @@ Ask again if the buffer is modified."
 
 ;; Python
 (add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
-;(autoload 'python-mode "python-mode" "Python Mode." t)
-;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;; Haskell-mode
 (add-to-list 'load-path (my-el-dir "ghc-mod/elisp"))
@@ -465,9 +459,6 @@ Ask again if the buffer is modified."
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
   (customize-set-variable 'haskell-interactive-popup-errors nil))
-
-; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode.el"))
-; (load (locate-user-emacs-file "el-get/haskell-mode/haskell-mode-autoloads.el"))
 
 ;;; Idris
 (use-package idris-mode
