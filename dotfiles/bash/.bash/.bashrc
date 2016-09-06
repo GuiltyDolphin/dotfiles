@@ -130,4 +130,8 @@ shopt -s globstar
 set -o vi
 
 
+########
+# Perl #
+########
 
+export PERL5LIB=$HOME/perl5/lib/perl5
