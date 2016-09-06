@@ -565,6 +565,9 @@ Ask again if the buffer is modified."
   (setq org-capture-templates
         `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
            "* TODO %?\n\nEntered on: %U\n%^G\n%i")
+          ("c" "Calendar")
+          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
+           "* %^{Title}\n%?\n%^{Start}T--%^{End}T\n\n%T\n%^G")
           ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
            "* %?\n\nEntered on %U\n%^G\n%i"))))
 
