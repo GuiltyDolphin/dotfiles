@@ -175,17 +175,18 @@ BGMODE should be one of 'light or 'dark."
   (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
          (sunrise-time (car sunrise-sunset))
          (sunset-time (cadr sunrise-sunset))
+         (current-time (current-time))
          (time-format "%F %T %Z")
          (add-bg-timer (lambda (mode time)
                          (push (run-at-time
                                 (format-time-string time-format time) nil
                                 (intern (format "my-background-set-%s" mode)))
                                my-background-timers))))
-  (if (my-date-in-daylight-hours (current-time))
+  (if (my-date-in-daylight-hours current-time)
       (if (eq (my-current-background-mode) 'dark) (my-background-set-light)
         (funcall add-bg-timer 'dark sunset-time))
     (if (eq (my-current-background-mode) 'light) (my-background-set-dark)
-      (let ((sunrise-today-or-next (if (time-less-p (current-time) sunrise-time)
+      (let ((sunrise-today-or-next (if (time-less-p current-time sunrise-time)
                                        sunrise-time
                                      (time-add (days-to-time 1) sunrise-time)))) ; close enough
         (funcall add-bg-timer 'light sunrise-today-or-next))))))
