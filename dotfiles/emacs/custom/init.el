@@ -155,7 +155,8 @@ BGMODE should be one of 'light or 'dark."
   (set-terminal-parameter nil 'background-mode bgmode)
   (my-background-clear-timers)
   ; give it time to sort itself out
-  (run-at-time "2 minutes" nil 'my-background-initialize-timers)
+  (push (run-at-time "2 minutes" nil 'my-background-initialize-timers)
+        my-background-timers)
   (load-theme 'solarized t))
 
 (defun my-background-set-dark ()
