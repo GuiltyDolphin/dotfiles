@@ -55,7 +55,6 @@
     emaps
     evil
     evil-leader
-    evil-org
     evil-remap
     evil-surround
     flycheck
@@ -65,6 +64,7 @@
     helm
     idris-mode
     magit
+    org-evil
     projectile
     slime
     use-package
@@ -308,8 +308,8 @@ BGMODE should be one of 'light or 'dark."
     "s" 'helm-buffers-list)
   (evil-mode 1))
 
-;;; evil-org
-(use-package evil-org)
+;;; org-evil
+(use-package org-evil)
 
 (defun my-evil-set-initial-state-modes (state &rest modes)
   "Set STATE as the initial state for each of MODES.
