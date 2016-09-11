@@ -64,6 +64,7 @@
     helm
     idris-mode
     magit
+    monitor
     org-evil
     projectile
     slime
@@ -540,6 +541,9 @@ Ask again if the buffer is modified."
 ;; hippie-expand
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
+
+;; monitor
+(use-package monitor)
 
 ;; projectile
 (use-package projectile
