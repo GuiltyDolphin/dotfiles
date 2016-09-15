@@ -171,6 +171,7 @@ my %distro_config = (
     },
     debian => {
         install   => \&distro_debian_install,
+        install_deps => \&distro_debian_install_deps,
         installed => \&distro_debian_installed,
         update    => \&distro_debian_update,
         version   => {
@@ -202,6 +203,11 @@ sub distro_arch_installed {
 sub distro_debian_install {
     my $program = shift;
     return system("apt-get install $program -y");
+}
+
+sub distro_debian_install_deps {
+    my ($program) = @_;
+    return system("apt-get build-dep $program -y");
 }
 
 sub distro_debian_installed {
@@ -536,6 +542,18 @@ sub install_program {
     error("error encountered while installing '$program'") unless $ok;
 }
 
+sub install_deps {
+    my $program = shift;
+    if (is_installed($program)) {
+        debug("Skipping '$program' (already installed)");
+        return;
+    }
+    info("installing dependencies for '$program'");
+    my $ok = success(run_config_or_default($program, 'install_deps'));
+    $ok and info("successfully installed dependencies for '$program'");
+    error("error encountered while installing dependencies for '$program'") unless $ok;
+}
+
 sub update_program {
     my $program = shift;
     info("updating '$program'");
@@ -577,6 +595,8 @@ while (my $command = shift) {
         link_program($source, $target);
     } elsif ($command eq 'install') {
         install_program(shift);
+    } elsif ($command eq 'install_deps') {
+        install_deps(shift);
     } elsif ($command eq 'link_contents') {
         my $search_dir = dot_file(shift);
         my $target_dir = home(shift);
