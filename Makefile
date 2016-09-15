@@ -137,6 +137,10 @@ link_ghci : install_ghci
 install_haskell_platform :
 	  @$(call install_prog,haskell-platform)
 
+.PHONY: install_owncloud_desktop
+install_owncloud_desktop :
+	@$(call install_prog,owncloud_desktop)
+
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
 	$(call install_prog,ruby1.9.1)
