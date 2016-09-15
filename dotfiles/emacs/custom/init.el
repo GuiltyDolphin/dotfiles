@@ -67,6 +67,7 @@
     monitor
     org-evil
     projectile
+    prompt
     slime
     use-package
     yasnippet))
