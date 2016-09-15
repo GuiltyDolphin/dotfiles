@@ -71,6 +71,7 @@ sub with_directory {
         `mkdir -p $directory`;
     }
     my $curr = getcwd();
+    debug("entering directory '$directory'");
     chdir $directory or error("failed to change directory to '$directory'") && return 0;
     my $ret = $sub->();
     chdir $curr;
@@ -262,6 +263,7 @@ sub version_latest_from_directory_url {
 sub git_clone {
     my ($url) = @_;
     my $buff;
+    debug("Cloning $url");
     unless (scalar run(
                 command => "git clone $url",
                 buffer  => \$buff,
