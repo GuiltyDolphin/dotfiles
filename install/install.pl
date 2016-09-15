@@ -309,6 +309,11 @@ my %software_config = (
         install   => \&mercurial_install,
         installed => \&mercurial_installed,
     },
+    owncloud_desktop => {
+        install      => \&owncloud_desktop_install,
+        install_deps => \&owncloud_desktop_install_deps,
+        installed    => q_version('owncloud'),
+    },
     pip => {
         install   => \&pip_install,
         installed => q_version('pip'),
@@ -473,6 +478,39 @@ sub mercurial_install {
 
 sub mercurial_installed {
     is_local_bin(get_bin_path('hg'));
+}
+
+# Owncloud
+
+my $owncloud_debian_source =
+    'http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/';
+
+sub owncloud_desktop_install_deps {
+    error('only have owncloud installation instructions for debian (currently)', critical => 1)
+        unless $user_distro eq 'debian';
+    sequence(
+        "echo 'deb $owncloud_debian_source /' > /etc/apt/sources.list.d/owncloud-client.list",
+        "echo 'deb-src $owncloud_debian_source /' >> /etc/apt/sources.list",
+        'apt-get update',
+        distro_debian_build_deps('owncloud-client'),
+    );
+}
+
+sub owncloud_desktop_install {
+    with_directory "$software_directory/owncloud" => sub {
+        sequence(
+            git_clone('git://github.com/owncloud/client.git'),
+            'git submodule init',
+            'git submodule update',
+            with_directory "$software_directory/owncloud/client-build" => sub {
+                sequence(
+                    'cmake WITH_DOC=TRUE -DCMAKE_BUILD_TYPE="Debug" ../client',
+                    'make',
+                    link_script_local(abs_path('bin/owncloud'), 'owncloud'),
+                );
+            },
+        );
+    };
 }
 
 # Pip
