@@ -29,6 +29,7 @@ installs_haskell = install_haskell_platform install_ghci
 installs_minimal = install_git install_vim
 installs_medium = $(installs_minimal) install_cpanm install_tmux
 installs_full = $(installs_medium) install_firefox $(installs_haskell) \
+                                install_owncloud_desktop \
 								install_ruby1.9.1 install_shutter \
 								install_tmuxinator install_vundle
 
