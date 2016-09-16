@@ -570,7 +570,9 @@ Ask again if the buffer is modified."
 
   (customize-set-variable 'org-mobile-directory "~/ownCloud/mobile-org/")
 
-  (customize-set-variable 'org-agenda-files `(,(my-org-subdir "todo.org") ,(my-org-subdir "homework.org")))
+  (customize-set-variable 'org-agenda-files `(,(my-org-subdir "todo.org")
+                                              ,(my-org-subdir "homework.org")
+                                              ,(my-org-subdir "uni-calendar.org")))
 
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
