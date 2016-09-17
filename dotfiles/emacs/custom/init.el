@@ -180,9 +180,7 @@ BGMODE should be one of 'light or 'dark."
          (current-time (current-time))
          (time-format "%F %T %Z")
          (add-bg-timer (lambda (mode time)
-                         (push (run-at-time
-                                (format-time-string time-format time) nil
-                                (intern (format "my-background-set-%s" mode)))
+                         (push (run-at-time time nil (intern (format "my-background-set-%s" mode)))
                                my-background-timers))))
   (if (my-date-in-daylight-hours current-time)
       (if (eq (my-current-background-mode) 'dark) (my-background-set-light)
