@@ -61,6 +61,11 @@ sub data {
 #                              Utilities                              #
 #######################################################################
 
+sub is_error {
+    my ($err) = @_;
+    $err =~ /^[1-9][0-9]{0,2}$/ ? 1 : 0;
+}
+
 # Execute a subroutine in the given directory, returning to the original
 # directory on completion.
 sub with_directory {
@@ -95,7 +100,7 @@ sub sequence {
     my @commands = @_;
     foreach my $command (@commands) {
         next if $command eq $OK;
-        return $? if $command eq $ERROR;
+        return $? if is_error($command);
         system($command) == 0 or return $?;
     }
     return $OK;
