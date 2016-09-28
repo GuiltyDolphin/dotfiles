@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Cwd qw(abs_path getcwd);
+use File::Basename;
 use File::Temp qw(tempdir);
 use IPC::Cmd qw(run);
 
@@ -23,6 +24,8 @@ my $ERROR = !$OK;
 sub success { $_[0] eq $OK }
 
 my $user_distro;
+
+my $software_directory = "$ENV{HOME}/software";
 
 my $dotted_version_re = qr/(?:[0-9]+\.?)+/;
 
@@ -113,6 +116,13 @@ sub q_version {
     return sub {
         return `$program --version 2>/dev/null`;
     }
+}
+
+sub query_noerr {
+    my ($program, $args) = @_;
+    return sub {
+        `$program $args 2>/dev/null`;
+    };
 }
 
 my %distro_map = (
@@ -290,6 +300,15 @@ sub git_clone {
 #######################################################################
 
 my %software_config = (
+    apache_ant => {
+        install   => \&apache_ant_install,
+        installed => query_noerr('ant', '-version'),
+        update    => \&apache_ant_update,
+        version   => {
+            current => \&apache_ant_version_current,
+            latest  => \&apache_ant_version_latest,
+        },
+    },
     cpanm   => {
         install   => \&cpanm_install,
         installed => q_version('cpanm'),
@@ -379,6 +398,51 @@ sub is_up_to_date {
     return ($comp >= 0);
 }
 
+##############
+# Apache Ant #
+##############
+
+my $apache_ant_archive = 'https://archive.apache.org/dist/ant/binaries/';
+
+sub apache_ant_install {
+    with_directory $software_directory => sub {
+        my $latest = apache_ant_version_latest();
+        my $ant_url = get_latest_apache_ant_tar_url();
+        $ant_url =~ /^$apache_ant_archive(.*)$/;
+        my $antfile = abs_path("$1");
+        sequence(
+            "wget $ant_url",
+            "tar xvf $antfile",
+            "rm $antfile*",
+        ) and return $?;
+        link_script_local(abs_path("apache-ant-$latest/bin/ant"), 'ant');
+    }
+}
+
+sub get_latest_apache_ant_tar_url {
+    my $latest = apache_ant_version_latest();
+    my $tar = "apache-ant-$latest-bin.tar.gz";
+    return "$apache_ant_archive$tar";
+}
+
+sub apache_ant_version_current {
+    chomp (my $version = `ant -version`);
+    $version =~ /version ($dotted_version_re) /;
+    return $1;
+}
+
+sub apache_ant_version_latest {
+    return version_latest_from_directory_url(
+        $apache_ant_archive,
+        qr/apache-ant-($dotted_version_re)-bin\.tar\.gz/o,
+    );
+}
+
+sub apache_ant_update {
+    system("rm $local_bin/ant");
+    apache_ant_install();
+}
+
 ###############
 #  Cpanminus  #
 ###############
@@ -416,8 +480,6 @@ sub get_latest_firefox_tar_url {
     my $tar = "firefox-$latest.en-GB.linux-x86_64.tar.bz2";
     return "$firefox_dir_url$tar";
 }
-
-my $software_directory = "$ENV{HOME}/software";
 
 sub firefox_install {
     with_directory $software_directory => sub {
