@@ -24,6 +24,8 @@ sub success { $_[0] eq $OK }
 
 my $user_distro;
 
+my $dotted_version_re = qr/(?:[0-9]+\.?)+/;
+
 sub dot_file { join '/', ($DOT_DIR, shift); }
 
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
@@ -400,7 +402,7 @@ sub firefox_version_current {
 sub firefox_version_latest {
     return version_latest_from_directory_url(
         $firefox_dir_url,
-        qr/firefox-((?:[0-9]+\.?)+)\.en-GB\.linux-x86_64\.tar\.bz2/o,
+        qr/firefox-($dotted_version_re)\.en-GB\.linux-x86_64\.tar\.bz2/o,
     );
 }
 
