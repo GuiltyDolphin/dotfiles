@@ -313,6 +313,10 @@ my %software_config = (
         install   => \&cpanm_install,
         installed => q_version('cpanm'),
     },
+    eclipse => {
+        install   => \&eclipse_install,
+        installed => q_version('eclipse'),
+    },
     emacs   => {
         install   => \&emacs_install,
         installed => q_version('emacs'),
@@ -449,6 +453,25 @@ sub apache_ant_update {
 
 sub cpanm_install {
     system('curl -L https://cpanmin.us | perl - App::cpanminus');
+}
+
+###########
+# Eclipse #
+###########
+
+my $eclipse_file = 'eclipse-inst-linux64.tar.gz';
+my $eclipse_dl_url = "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/oomph/epp/neon/R/$eclipse_file";
+
+sub eclipse_install {
+    with_directory $software_directory => sub {
+        sequence(
+            "wget $eclipse_dl_url",
+            "tar xf $eclipse_file",
+            "rm $eclipse_file",
+            "./eclipse-installer/eclipse-inst",
+            "rm -r eclipse-installer",
+        ) and return $?;
+    }
 }
 
 #############
