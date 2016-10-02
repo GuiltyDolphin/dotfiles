@@ -480,6 +480,7 @@ sub eclim_install {
             },
         );
         link_script_local(abs_path("$software_directory/eclipse/eclimd"), 'eclimd');
+        link_script_local(abs_path("$software_directory/eclipse/eclim"), 'eclim');
     };
 }
 
