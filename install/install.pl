@@ -118,6 +118,14 @@ sub q_version {
     }
 }
 
+sub q_which {
+    my $program = shift;
+    return sub {
+        `which $program 2>/dev/null`;
+        return !$?;
+    }
+}
+
 sub query_noerr {
     my ($program, $args) = @_;
     return sub {
@@ -315,7 +323,7 @@ my %software_config = (
     },
     eclipse => {
         install   => \&eclipse_install,
-        installed => q_version('eclipse'),
+        installed => q_which('eclipse'),
     },
     emacs   => {
         install   => \&emacs_install,
@@ -459,18 +467,17 @@ sub cpanm_install {
 # Eclipse #
 ###########
 
-my $eclipse_file = 'eclipse-inst-linux64.tar.gz';
-my $eclipse_dl_url = "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/oomph/epp/neon/R/$eclipse_file";
+my $eclipse_tar_file = 'eclipse-java-neon-1-linux-gtk-x86_64.tar.gz';
+my $eclipse_dl_url = "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/1/$eclipse_tar_file";
 
 sub eclipse_install {
     with_directory $software_directory => sub {
         sequence(
             "wget $eclipse_dl_url",
-            "tar xf $eclipse_file",
-            "rm $eclipse_file",
-            "./eclipse-installer/eclipse-inst",
-            "rm -r eclipse-installer",
+            "tar xf $eclipse_tar_file",
+            "rm $eclipse_tar_file",
         ) and return $?;
+        link_script_local(abs_path('eclipse/eclipse'), 'eclipse');
     }
 }
 
