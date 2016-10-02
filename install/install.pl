@@ -321,6 +321,10 @@ my %software_config = (
         install   => \&cpanm_install,
         installed => q_version('cpanm'),
     },
+    eclim => {
+        install   => \&eclim_install,
+        installed => query_noerr('eclimd', '-version'),
+    },
     eclipse => {
         install   => \&eclipse_install,
         installed => q_which('eclipse'),
@@ -461,6 +465,22 @@ sub apache_ant_update {
 
 sub cpanm_install {
     system('curl -L https://cpanmin.us | perl - App::cpanminus');
+}
+
+#########
+# Eclim #
+#########
+
+sub eclim_install {
+    with_directory $software_directory => sub {
+        sequence(
+            git_clone('git://github.com/ervandew/eclim.git'),
+            with_directory "$software_directory/eclim" => sub {
+                sequence("ant clean deploy -Dvim.skip=true -Declipse.home=$software_directory/eclipse");
+            },
+        );
+        link_script_local(abs_path("$software_directory/eclipse/eclimd"), 'eclimd');
+    };
 }
 
 ###########
