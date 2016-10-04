@@ -51,6 +51,7 @@
   '(auto-complete
     color-theme-solarized
     duckpan
+    eclim
     el-get
     emaps
     evil
@@ -696,6 +697,21 @@ Argument strings should follow a pattern similar to
    'cperl-continued-statement-offset cperl-indent-level)
   (customize-set-variable 'cperl-indent-parens-as-block t
                           "Ensure nice indentation after parens."))
+
+;;;; java
+
+;;; eclim
+
+(defvar my-software-directory (directory-file-name (file-truename "~/software"))
+  "Directory under which custom software installations are located.")
+
+(defvar my-eclipse-directory (directory-file-name (concat my-software-directory "eclipse"))
+  "Directory for eclipse installation.")
+
+(use-package eclim
+  :config
+  (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
+  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim")))
 
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
