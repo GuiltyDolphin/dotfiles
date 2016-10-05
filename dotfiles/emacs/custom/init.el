@@ -723,7 +723,8 @@ Argument strings should follow a pattern similar to
   (evil-local-leader/set-key-for-mode 'java-mode
     "f" my-eclim-find-map)
   (evil-define-minor-mode-key 'motion 'eclim-mode
-    "gd" 'eclim-java-find-declaration))
+    "gd" 'eclim-java-find-declaration)
+  (global-eclim-mode))
 
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
