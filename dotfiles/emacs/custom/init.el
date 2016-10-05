@@ -712,6 +712,8 @@ Argument strings should follow a pattern similar to
   :init
   (defvar my-eclim-find-map (make-sparse-keymap)
     "Keymap for finding things in `eclim-mode'.")
+  (defvar my-eclim-refactor-map (make-sparse-keymap)
+    "Keymap for refactoring in `eclim-mode'.")
   :config
   (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
   (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
@@ -720,8 +722,11 @@ Argument strings should follow a pattern similar to
     "g" 'eclim-java-find-generic
     "r" 'eclim-java-find-references
     "t" 'eclim-java-find-type)
+  (emaps-define-key my-eclim-refactor-map
+    "r" 'eclim-java-refactor-rename-symbol-at-point)
   (evil-local-leader/set-key-for-mode 'java-mode
-    "f" my-eclim-find-map)
+    "f" my-eclim-find-map
+    "r" my-eclim-refactor-map)
   (evil-define-minor-mode-key 'motion 'eclim-mode
     "gd" 'eclim-java-find-declaration)
   (global-eclim-mode))
