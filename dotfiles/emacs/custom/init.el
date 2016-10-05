@@ -709,9 +709,21 @@ Argument strings should follow a pattern similar to
   "Directory for eclipse installation.")
 
 (use-package eclim
+  :init
+  (defvar my-eclim-find-map (make-sparse-keymap)
+    "Keymap for finding things in `eclim-mode'.")
   :config
   (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
-  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim")))
+  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
+  (emaps-define-key my-eclim-find-map
+    "d" 'eclim-java-find-declaration
+    "g" 'eclim-java-find-generic
+    "r" 'eclim-java-find-references
+    "t" 'eclim-java-find-type)
+  (evil-local-leader/set-key-for-mode 'java-mode
+    "f" my-eclim-find-map)
+  (evil-define-minor-mode-key 'motion 'eclim-mode
+    "gd" 'eclim-java-find-declaration))
 
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
