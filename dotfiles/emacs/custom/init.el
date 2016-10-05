@@ -702,10 +702,10 @@ Argument strings should follow a pattern similar to
 
 ;;; eclim
 
-(defvar my-software-directory (directory-file-name (file-truename "~/software"))
+(defvar my-software-directory (file-name-as-directory (file-truename "~/software"))
   "Directory under which custom software installations are located.")
 
-(defvar my-eclipse-directory (directory-file-name (concat my-software-directory "eclipse"))
+(defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
   "Directory for eclipse installation.")
 
 (use-package eclim
