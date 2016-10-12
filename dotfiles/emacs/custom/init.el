@@ -708,6 +708,11 @@ Argument strings should follow a pattern similar to
 (defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
   "Directory for eclipse installation.")
 
+(defun my-eclim-run-tests ()
+  "Run tests via Maven in an Eclim project."
+  (interactive)
+  (eclim-maven-run "test"))
+
 (use-package eclim
   :init
   (defvar my-eclim-find-map (make-sparse-keymap)
@@ -727,6 +732,8 @@ Argument strings should follow a pattern similar to
   (evil-local-leader/set-key-for-mode 'java-mode
     "f" my-eclim-find-map
     "r" my-eclim-refactor-map)
+  (evil-local-leader/set-key-for-mode 'java-mode
+    "rt" 'my-eclim-run-tests)
   (evil-define-minor-mode-key 'motion 'eclim-mode
     "gd" 'eclim-java-find-declaration)
   (global-eclim-mode))
