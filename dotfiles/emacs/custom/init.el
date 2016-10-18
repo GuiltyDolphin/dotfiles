@@ -762,4 +762,14 @@ Argument strings should follow a pattern similar to
          major-mode-map)))))
 
 (add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
+
+;;;; Snippets
+
+;;; Helpers
+
+(defun my-java-args-to-param-doc-list (text)
+  "Split text into Java parameter names."
+  (let ((params (split-string text ",")))
+    (--filter it (--map (progn (string-match "\\w+ \\(\\w+\\)$" it) (ignore-errors (match-string 1 it))) params))))
+
 ;;; init.el ends here

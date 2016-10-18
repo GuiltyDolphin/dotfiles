@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: method with doc
+# key: md
+# --
+/**
+ * ${5:description}
+ *${4:$(mapconcat 'identity (--map (when it (format "\n * @param %s DESCRIPTION" it)) (my-java-args-to-param-doc-list yas-text)) "")}
+ * ${2:$(when (not (equal "void" yas-text)) (format "@return %s DESCRIPTION" yas-text))}
+ */
+${1:public} ${2:void} ${3:name}(${4:args}) {
+            $0
+}
