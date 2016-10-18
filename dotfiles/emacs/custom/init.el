@@ -584,7 +584,9 @@ Ask again if the buffer is modified."
           ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
            "* %^{Title}\n%?\n%^{Start}T--%^{End}T\n\n%T\n%^G")
           ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
-           "* %?\n\nEntered on %U\n%^G\n%i"))))
+           "* %?\n\nEntered on %U\n%^G\n%i")
+          ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
+           "* %? :NOTE:\n%U\n%a\n"))))
 
 ;; Comint
 (evil-define-key '(motion normal) comint-mode-map
