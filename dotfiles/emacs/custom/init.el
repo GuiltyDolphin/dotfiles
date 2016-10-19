@@ -208,7 +208,7 @@ BGMODE should be one of 'light or 'dark."
 (defvar my-user-preferred-license "GPL-3"
   "License to use by default with some modes")
 
-(customize-set-variable 'user-mail-address "guiltydolphin@gmail.com")
+(customize-set-variable 'user-mail-address "software@guiltydolphin.com")
 
 (define-minor-mode my-global-mode
   "Personal configuration without changing the default global settings."
