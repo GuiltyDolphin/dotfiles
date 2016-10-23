@@ -743,6 +743,12 @@ Argument strings should follow a pattern similar to
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
 
+;;;; Erlang
+
+(use-package erlang
+  :config
+  (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
+
 (emaps-define-key my-jump-map
   "p" 'evil-switch-to-windows-last-buffer
   "t" 'eshell
