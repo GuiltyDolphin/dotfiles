@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: simple block
+# key: begin
+# --
+#+BEGIN_${1:$$(upcase yas-text)} $2
+$0
+#+END_$1
