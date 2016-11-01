@@ -360,6 +360,15 @@ my %software_config = (
         install   => \&pip_install,
         installed => q_version('pip'),
     },
+    ruby_stable => {
+        install   => \&ruby_stable_install,
+        installed => q_version('ruby'),
+        update    => \&ruby_stable_update,
+        version   => {
+            current => \&ruby_stable_version_current,
+            latest  => \&ruby_stable_version_latest,
+        },
+    },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,
@@ -643,6 +652,46 @@ sub pip_install {
             'python get-pip.py --user',
         );
     }
+}
+
+###############
+# Ruby Stable #
+###############
+
+my $ruby_stable_dir_url = 'ftp.ruby-lang.org/pub/ruby/stable/';
+
+sub ruby_stable_install {
+    my $version = ruby_stable_version_latest();
+    my $ruby = "ruby-$version";
+    my $tar = "$ruby.tar.gz";
+    my $ruby_url = "$ruby_stable_dir_url/$tar";
+    with_directory $software_directory => sub {
+        sequence(
+            "wget $ruby_url",
+            "tar -xvf $tar",
+            "cd $ruby && " .
+            "./configure --prefix=$software_directory/ruby_stable --bindir=$local_bin " .
+            '&& make && make test && make install',
+            "rm $tar",
+        );
+    };
+}
+
+sub ruby_stable_version_current {
+    my $version = `ruby --version`;
+    $version =~ /^ruby ($dotted_version_re).+? \(/m;
+    return $1;
+}
+
+sub ruby_stable_version_latest {
+    return version_latest_from_directory_url(
+        $ruby_stable_dir_url,
+        qr/ruby-($dotted_version_re)\.tar\.gz/o
+    );
+}
+
+sub ruby_stable_update {
+    ruby_stable_install();
 }
 
 ##############
