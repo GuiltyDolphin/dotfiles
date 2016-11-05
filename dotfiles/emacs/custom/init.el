@@ -675,6 +675,8 @@ Argument strings should follow a pattern similar to
 (defvar my-rcirc-cmd-list-map (make-sparse-keymap)
   "Keymap for rcirc listing commands.")
 
+(customize-set-variable 'rcirc-log-flag t "log IRC messages")
+
 (emaps-define-key my-rcirc-cmd-list-map
   "n" 'rcirc-cmd-names)
 
