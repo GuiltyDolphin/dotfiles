@@ -751,6 +751,12 @@ Argument strings should follow a pattern similar to
   :config
   (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
 
+;;;; Prolog
+
+(use-package prolog
+  :config
+  (customize-set-variable 'prolog-system 'swi))
+
 (emaps-define-key my-jump-map
   "p" 'evil-switch-to-windows-last-buffer
   "t" 'eshell
