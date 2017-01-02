@@ -50,6 +50,7 @@
 (setq my:el-get-packages
   '(auto-complete
     color-theme-solarized
+    company-mode
     duckpan
     eclim
     el-get
@@ -484,6 +485,14 @@ Ask again if the buffer is modified."
 (declare (indent defun))
 `(eval-after-load ,mode
     '(progn ,@body)))
+
+;;;; Completion
+
+;;; company
+
+(use-package company
+  :config
+  (global-company-mode 1))
 
 ;; YASnippet
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
