@@ -591,6 +591,10 @@ Ask again if the buffer is modified."
           ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
            "* %? :NOTE:\n%U\n%a\n")))
 
+  ;; source blocks
+
+  (customize-set-variable 'org-src-fontify-natively t)
+
   (customize-set-variable
    'org-babel-load-languages
    '((emacs-lisp . t)
