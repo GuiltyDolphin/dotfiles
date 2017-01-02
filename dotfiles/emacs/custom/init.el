@@ -589,7 +589,12 @@ Ask again if the buffer is modified."
           ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
            "* %?\n\nEntered on %U\n%^G\n%i")
           ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
-           "* %? :NOTE:\n%U\n%a\n"))))
+           "* %? :NOTE:\n%U\n%a\n")))
+
+  (customize-set-variable
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t))))
 
 ;;; org-ref
 (use-package org-ref)
