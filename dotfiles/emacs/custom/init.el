@@ -67,6 +67,7 @@
     magit
     monitor
     org-evil
+    org-ref
     projectile
     prompts
     slime
@@ -552,7 +553,9 @@ Ask again if the buffer is modified."
   (evil-leader/set-key
     "p" 'projectile-command-map))
 
-;; org
+;;;; Org
+
+;;; org
 (use-package org
   :init
   (defvar my-evil-leader-org-map (make-sparse-keymap)
@@ -587,6 +590,9 @@ Ask again if the buffer is modified."
            "* %?\n\nEntered on %U\n%^G\n%i")
           ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
            "* %? :NOTE:\n%U\n%a\n"))))
+
+;;; org-ref
+(use-package org-ref)
 
 ;; Comint
 (evil-define-key '(motion normal) comint-mode-map
