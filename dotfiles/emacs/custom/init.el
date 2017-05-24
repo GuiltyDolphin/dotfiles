@@ -77,6 +77,10 @@
 
 (el-get 'sync my:el-get-packages)
 
+;;; Execution Path
+
+(add-to-list 'exec-path "~/.cabal/bin")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
