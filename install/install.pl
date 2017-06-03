@@ -5,6 +5,7 @@ use warnings;
 
 use Cwd qw(abs_path getcwd);
 use File::Basename;
+use File::Path qw(make_path);
 use File::Temp qw(tempdir);
 use IPC::Cmd qw(run);
 
@@ -77,8 +78,7 @@ sub with_directory {
     my ($directory, $sub, %options) = @_;
     my $make_dir = $options{make_dir} // 1;
     if (!-d $directory && $make_dir) {
-        # Not using Perl's 'mkdir' as it doesn't work with nested directories.
-        `mkdir -p $directory`;
+        make_path($directory);
     }
     my $curr = getcwd();
     debug("entering directory '$directory'");
