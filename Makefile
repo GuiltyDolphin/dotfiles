@@ -186,10 +186,6 @@ get_solarized_colors :
 				|| (echo "Retrieving solarized colorscheme" \
 				&& wget -q $(solarized_file_url) -O $(solarized_color_file))
 
-# Preferred font is Inconsolata Medium 14pt
-inconsolata_file_url = "http://levien.com/type/myfonts/Inconsolata.otf"
-inconsolata_font_file = $(HOME)/.fonts/Inconsolata.otf
-
 .PHONY: install_fontconfig
 install_fontconfig :
 	@$(call install_prog,fontconfig)
