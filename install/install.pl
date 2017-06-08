@@ -288,8 +288,11 @@ sub version_latest_from_directory_url {
 sub with_guix_config {
     my ($package) = @_;
     return (
-        install => sub { return system("guix package -i $package") },
-        update  => sub { return system("guix package -u \\<$package\\>") },
+        install   => sub { return system("guix package -i $package") },
+        installed => sub {
+            return `guix package --list-installed` =~ /^$package\s/im;
+        },
+        update => sub { return system("guix package -u \\<$package\\>") },
     );
 }
 
