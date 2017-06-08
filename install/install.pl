@@ -557,7 +557,8 @@ sub is_installed {
 sub install_program {
     my $program = shift;
     if (is_installed($program)) {
-        debug("Skipping '$program' (already installed)");
+        info("'$program' already installed, updating...");
+        update_program($program);
         return;
     }
     info("installing '$program'");
