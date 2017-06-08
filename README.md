@@ -26,6 +26,16 @@ username ALL=(ALL) ALL
 
 in the `/etc/sudoers` file.
 
+##### Guix
+
+To use Guix (https://www.gnu.org/software/guix/) to install and manage
+packages, follow these steps (install scripts are found under `install/`):
+
+1. Run the `install-guix.sh` script as root to install Guix
+2. Run `guix pull` to update Guix distribution
+3. Run the `guix-application-setup.sh` script to initialize Guix for the
+   current user.
+
 #### Commands
 
 For a relatively complete installation, run the following command:
