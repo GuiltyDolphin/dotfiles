@@ -378,6 +378,9 @@ my %software_config = (
     tmux => {
         with_guix_config('tmux'),
     },
+    vim => {
+        with_guix_config('vim'),
+    },
 );
 
 sub get_config_generic {
