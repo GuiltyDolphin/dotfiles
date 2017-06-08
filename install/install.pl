@@ -329,6 +329,7 @@ my %software_config = (
     cpanm   => {
         install   => \&cpanm_install,
         installed => q_version('cpanm'),
+        update    => \&cpanm_update,
     },
     eclim => {
         install   => \&eclim_install,
@@ -437,6 +438,10 @@ sub is_up_to_date {
 
 sub cpanm_install {
     system('curl -L https://cpanmin.us | perl - App::cpanminus');
+}
+
+sub cpanm_update {
+    system('cpanm --self-upgrade');
 }
 
 #########
