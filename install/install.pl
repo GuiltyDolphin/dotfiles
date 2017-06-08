@@ -375,6 +375,9 @@ my %software_config = (
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,
     },
+    tmux => {
+        with_guix_config('tmux'),
+    },
 );
 
 sub get_config_generic {
