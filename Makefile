@@ -109,7 +109,8 @@ link_vimperator :
 
 .PHONY: install_pip
 install_pip :
-	$(call install_prog,pip)
+	$(call install_prog,pip2)
+	$(call install_prog,pip3)
 
 .PHONY: install_mercurial
 install_mercurial : install_pip
@@ -194,12 +195,8 @@ install_fontconfig :
 	@$(call install_prog,fontconfig)
 
 .PHONY: install_font_inconsolata
-install_font_inconsolata : install_fontconfig
-	@[ -e $(inconsolata_font_file) ] \
-		|| (echo "Retrieving inconsolata font" \
-		&& mkdir -p ~/.fonts \
-		&& wget -q $(inconsolata_file_url) -O $(inconsolata_font_file) \
-		&& fc-cache -fv)
+install_font_inconsolata :
+	@$(call install_prog,font_inconsolata)
 
 # Vim Linters
 

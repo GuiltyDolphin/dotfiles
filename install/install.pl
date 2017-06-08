@@ -281,6 +281,18 @@ sub version_latest_from_directory_url {
     return (sort @versions)[$#versions];
 }
 
+##########
+#  Guix  #
+##########
+
+sub with_guix_config {
+    my ($package) = @_;
+    return (
+        install => sub { return system("guix package -i $package") },
+        update  => sub { return system("guix package -u \\<$package\\>") },
+    );
+}
+
 #################
 # Git Utilities #
 #################
@@ -309,13 +321,7 @@ sub git_clone {
 
 my %software_config = (
     apache_ant => {
-        install   => \&apache_ant_install,
-        installed => query_noerr('ant', '-version'),
-        update    => \&apache_ant_update,
-        version   => {
-            current => \&apache_ant_version_current,
-            latest  => \&apache_ant_version_latest,
-        },
+        with_guix_config('ant'),
     },
     cpanm   => {
         install   => \&cpanm_install,
@@ -330,13 +336,7 @@ my %software_config = (
         installed => q_which('eclipse'),
     },
     emacs   => {
-        install   => \&emacs_install,
-        installed => q_version('emacs'),
-        update    => \&emacs_update,
-        version   => {
-            current => \&emacs_version_current,
-            latest  => \&emacs_version_latest,
-        },
+        with_guix_config('emacs'),
     },
     firefox => {
         install   => \&firefox_install,
@@ -347,27 +347,23 @@ my %software_config = (
             latest  => \&firefox_version_latest,
         },
     },
+    font_inconsolata => {
+        with_guix_config('font-inconsolata'),
+    },
     mercurial => {
-        install   => \&mercurial_install,
-        installed => \&mercurial_installed,
+        with_guix_config('mercurial'),
     },
     owncloud_desktop => {
-        install      => \&owncloud_desktop_install,
-        install_deps => \&owncloud_desktop_install_deps,
-        installed    => q_version('owncloud'),
+        with_guix_config('owncloud-desktop'),
     },
-    pip => {
-        install   => \&pip_install,
-        installed => q_version('pip'),
+    pip2 => {
+        with_guix_config('python2-pip'),
+    },
+    pip3 => {
+        with_guix_config('python-pip'),
     },
     ruby_stable => {
-        install   => \&ruby_stable_install,
-        installed => q_version('ruby'),
-        update    => \&ruby_stable_update,
-        version   => {
-            current => \&ruby_stable_version_current,
-            latest  => \&ruby_stable_version_latest,
-        },
+        with_guix_config('ruby'),
     },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
@@ -421,51 +417,6 @@ sub is_up_to_date {
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
     return ($comp >= 0);
-}
-
-##############
-# Apache Ant #
-##############
-
-my $apache_ant_archive = 'https://archive.apache.org/dist/ant/binaries/';
-
-sub apache_ant_install {
-    with_directory $software_directory => sub {
-        my $latest = apache_ant_version_latest();
-        my $ant_url = get_latest_apache_ant_tar_url();
-        $ant_url =~ /^$apache_ant_archive(.*)$/;
-        my $antfile = abs_path("$1");
-        sequence(
-            "wget $ant_url",
-            "tar xvf $antfile",
-            "rm $antfile*",
-        ) and return $?;
-        link_script_local(abs_path("apache-ant-$latest/bin/ant"), 'ant');
-    }
-}
-
-sub get_latest_apache_ant_tar_url {
-    my $latest = apache_ant_version_latest();
-    my $tar = "apache-ant-$latest-bin.tar.gz";
-    return "$apache_ant_archive$tar";
-}
-
-sub apache_ant_version_current {
-    chomp (my $version = `ant -version`);
-    $version =~ /version ($dotted_version_re) /;
-    return $1;
-}
-
-sub apache_ant_version_latest {
-    return version_latest_from_directory_url(
-        $apache_ant_archive,
-        qr/apache-ant-($dotted_version_re)-bin\.tar\.gz/o,
-    );
-}
-
-sub apache_ant_update {
-    system("rm $local_bin/ant");
-    apache_ant_install();
 }
 
 ###############
@@ -553,145 +504,6 @@ sub firefox_install {
         ) and return $?;
         link_script_local(abs_path('firefox/firefox'), 'firefox');
     }
-}
-
-###########
-#  Emacs  #
-###########
-
-my $emacs_dir_url = 'https://ftp.gnu.org/gnu/emacs/';
-
-sub emacs_install {
-    my $version = emacs_version_latest();
-    my $emacs = "emacs-$version";
-    my $tar = "$emacs.tar.gz";
-    my $emacs_url = "$emacs_dir_url/$tar";
-    with_directory $software_directory => sub {
-        sequence(
-            "wget $emacs_url",
-            "tar -xvf $tar",
-            "cd $emacs && " .
-            "./configure --prefix=$software_directory/emacs --bindir=$local_bin " .
-            '&& make && src/emacs -Q && make install',
-            "rm $tar",
-        );
-    };
-}
-
-sub emacs_version_current {
-    my $version = `emacs --version`;
-    $version =~ /^GNU Emacs (.+)$/m;
-    return $1;
-}
-
-sub emacs_version_latest {
-    return version_latest_from_directory_url(
-        $emacs_dir_url,
-        qr/emacs-([-.\d]+)\.tar\.gz/o
-    );
-}
-
-sub emacs_update {
-    emacs_install();
-}
-
-# Mercurial
-
-sub mercurial_install {
-    install_via_pip(
-        'mercurial',
-        pip_version      => 2.7,
-        ignore_installed => 1,
-    );
-}
-
-sub mercurial_installed {
-    is_local_bin(get_bin_path('hg'));
-}
-
-# Owncloud
-
-my $owncloud_debian_source =
-    'http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/';
-
-sub owncloud_desktop_install_deps {
-    error('only have owncloud installation instructions for debian (currently)', critical => 1)
-        unless $user_distro eq 'debian';
-    sequence(
-        "echo 'deb $owncloud_debian_source /' > /etc/apt/sources.list.d/owncloud-client.list",
-        "echo 'deb-src $owncloud_debian_source /' >> /etc/apt/sources.list",
-        'apt-get update',
-        distro_debian_build_deps('owncloud-client'),
-    );
-}
-
-sub owncloud_desktop_install {
-    with_directory "$software_directory/owncloud" => sub {
-        sequence(
-            git_clone('git://github.com/owncloud/client.git'),
-            'git submodule init',
-            'git submodule update',
-            with_directory "$software_directory/owncloud/client-build" => sub {
-                sequence(
-                    'cmake WITH_DOC=TRUE -DCMAKE_BUILD_TYPE="Debug" ../client',
-                    'make',
-                    link_script_local(abs_path('bin/owncloud'), 'owncloud'),
-                );
-            },
-        );
-    };
-}
-
-# Pip
-
-sub pip_install {
-    with_temp_dir {
-        sequence(
-            'wget https://bootstrap.pypa.io/get-pip.py',
-            'python2.7 get-pip.py --user',
-            'python get-pip.py --user',
-        );
-    }
-}
-
-###############
-# Ruby Stable #
-###############
-
-my $ruby_stable_dir_url = 'ftp.ruby-lang.org/pub/ruby/stable/';
-
-sub ruby_stable_install {
-    my $version = ruby_stable_version_latest();
-    my $ruby = "ruby-$version";
-    my $tar = "$ruby.tar.gz";
-    my $ruby_url = "$ruby_stable_dir_url/$tar";
-    with_directory $software_directory => sub {
-        sequence(
-            "wget $ruby_url",
-            "tar -xvf $tar",
-            "cd $ruby && " .
-            "./configure --prefix=$software_directory/ruby_stable --bindir=$local_bin " .
-            '&& make && make test && make install',
-            "rm $tar",
-        );
-    };
-}
-
-sub ruby_stable_version_current {
-    my $version = `ruby --version`;
-    $version =~ /^ruby ($dotted_version_re).+? \(/m;
-    return $1;
-}
-
-sub ruby_stable_version_latest {
-    return version_latest_from_directory_url(
-        $ruby_stable_dir_url,
-        qr/ruby-($dotted_version_re)\.tar\.gz/o
-    );
-}
-
-sub ruby_stable_update {
-    ruby_stable_install();
 }
 
 ##############
