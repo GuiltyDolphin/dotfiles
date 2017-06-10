@@ -361,7 +361,7 @@ my %software_config = (
         with_guix_config('mercurial'),
     },
     owncloud_desktop => {
-        with_guix_config('owncloud-desktop'),
+        with_guix_config('owncloud-client'),
     },
     pip2 => {
         with_guix_config('python2-pip'),
