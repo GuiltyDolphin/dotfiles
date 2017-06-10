@@ -570,12 +570,12 @@ sub is_installed {
 
 sub install_program {
     my $program = shift;
+    info("installing '$program'");
     if (is_installed($program)) {
         info("'$program' already installed, updating...");
         update_program($program);
         return;
     }
-    info("installing '$program'");
     my $ok = success(run_config_or_default($program, 'install'));
     $ok and info("successfully installed '$program'");
     error("error encountered while installing '$program'") unless $ok;
