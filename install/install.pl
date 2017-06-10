@@ -426,7 +426,11 @@ sub run_config_or_default {
 sub is_up_to_date {
     my $program = shift;
     my $current = run_config_or_default($program, 'version', 'current');
+    info('could not retrieve current version number, assuming up-to-date')
+        and return 1 unless defined $current;
     my $latest  = run_config_or_default($program, 'version', 'latest');
+    info('could not retrieve latest version number, assuming up-to-date')
+        and return 1 unless defined $latest;
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
     return ($comp >= 0);
