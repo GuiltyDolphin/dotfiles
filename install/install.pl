@@ -296,6 +296,36 @@ sub with_guix_config {
     );
 }
 
+#########
+#  Gem  #
+#########
+
+sub with_gem_config {
+    my ($package, %options) = @_;
+    my $gem = 'gem' . ($options{version} // '1.9.1');
+    my $version_re = qr/\((?<version>\d+\.\d+\.\d+)(?:, [^)]+)?\)/;
+    my $install = sub {
+        return system("$gem install --user-install $package");
+    };
+    return (
+        install   => $install,
+        installed => sub {
+            return `$gem list --local` =~ /^$package\s/im;
+        },
+        version   => {
+            current => sub {
+                `$gem list --local $package` =~ /^$package $version_re$/im;
+                return $+{version};
+            },
+            latest  => sub {
+                `$gem list --remote $package` =~ /^$package $version_re$/im;
+                return $+{version};
+            },
+        },
+        update    => $install,
+    );
+}
+
 #################
 # Git Utilities #
 #################
@@ -378,6 +408,9 @@ my %software_config = (
     },
     tmux => {
         with_guix_config('tmux'),
+    },
+    tmuxinator => {
+        with_gem_config('tmuxinator', version => '1.9.1'),
     },
     vim => {
         with_guix_config('vim'),

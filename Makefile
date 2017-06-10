@@ -149,8 +149,7 @@ install_ruby1.9.1 :
 
 .PHONY: install_tmuxinator
 install_tmuxinator : install_ruby1.9.1
-	@[ $$(which tmuxinator) ] || (echo "Installing tmuxinator" \
-		&& gem1.9.1 install --user-install tmuxinator)
+	$(call install_prog,tmuxinator)
 
 .PHONY: link_tmuxinator
 link_tmuxinator : install_tmuxinator
