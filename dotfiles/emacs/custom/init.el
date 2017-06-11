@@ -449,6 +449,10 @@ Ask again if the buffer is modified."
 
 (setq inferior-lisp-program (executable-find "sbcl"))
 
+;;; eldoc
+
+(global-eldoc-mode)
+
 ; Slime
 (add-to-list 'load-path "~/.emacs.d/el-get/slime")
 (use-package slime-autoloads)
@@ -636,48 +640,6 @@ made in that buffer."
   (interactive)
   (my-scratch-buffer)
   (my-clear-buffer))
-
-(defun my-emacs-lisp-space (n)
-  ; Similar to 'slime-space', but support all emacs-lisp and custom functions - not just
-  ; those supported by slime packages
-  (interactive "p")
-  (self-insert-command n)
-  (my-emacs-lisp-echo-arglist))
-
-(defun my-emacs-lisp-echo-arglist ()
-  "Echo to the minibuffer the argument syntax of the symbol under `point', if any"
-  (let ((opr (slime-operator-before-point)))
-    (when opr
-      (let* ((op (read opr))
-             (arglist (my-get-function-arglist op)))
-        (when arglist
-          (slime-message "%s" arglist))))))
-
-(defun my-get-function-arglist (fn)
-  "Retrieve the arglist of the function-like object fn.
-   returns nil if no there is no function with the specified symbol"
-  (when (symbol-function fn)
-    (let* ((full-doc (my-split-lines (documentation fn)))
-           (argstring (car (last full-doc))))
-      (if (my-argument-string-p argstring)
-        (format "%s" (replace-regexp-in-string "^(fn" (format "(%s" fn) argstring))
-        (let ((argstring (help-function-arglist fn t)))
-          (when argstring
-            (format "%s" (append (list fn) argstring))))))))
-
-(defun my-split-lines (str &optional omit-nulls trim)
-  (split-string str "\n" omit-nulls trim))
-
-(defun my-argument-string-p (str)
-  "Return t if STR is a valid argument string
-
-Argument strings should follow a pattern similar to
-(fn arg1 arg2 &rest args)"
-  (when (string-match "(fn[^)]*)" str) t))
-
-;; Use `my-emacs-lisp-space' when using the space key in emacs-lisp modes
-(evil-define-key 'insert ielm-map " " 'my-emacs-lisp-space)
-(evil-define-key 'insert emacs-lisp-mode-map " " 'my-emacs-lisp-space)
 
 (global-unset-key (kbd "C-s"))
 
