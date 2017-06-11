@@ -14,30 +14,70 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(package-initialize)
-;;; Custom Variables
-(customize-set-variable 'haskell-process-type 'cabal-repl)
-
 ;;; Code:
 
-;;;;;;;;
-;; EL ;;
-;;;;;;;;
+(package-initialize)
 
-;; NO FRILLS
+;;; Custom Variables
+
+(customize-set-variable 'haskell-process-type 'cabal-repl)
+
+;;;; Base Configuration
+
+;;; NO FRILLS
 
 (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
 (tool-bar-mode -1)   ; no tool bar with icons
 (scroll-bar-mode -1) ; no scroll bars
 (menu-bar-mode -1)   ; no menu bar
 
+;;; NO JUNK
 
-;; NO JUNK
 (customize-set-variable 'auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 (customize-set-variable 'backup-directory-alist `((".*" . ,temporary-file-directory)))
 
+;;; Other
 
-;; EL-GET
+(line-number-mode 1) ; column number in mode line
+(column-number-mode 1) ; line number in mode line
+
+(global-linum-mode 1) ; line number in margin
+(global-hl-line-mode 1) ; highlight current line
+
+(customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
+
+(display-time-mode t) ; Allow displaying of time in mode line
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default tab-stop-list '(4 8 12))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;;; Execution Path
+
+(add-to-list 'exec-path "~/.cabal/bin")
+
+;;; Folder with own content
+
+(add-to-list 'load-path (locate-user-emacs-file "custom"))
+
+;;; Custom functions
+
+(defun my-find-user-init-file ()
+  "Find the user's init.el file"
+  (interactive)
+  (find-file user-init-file))
+
+(defun my-reload-user-init-file ()
+  "Evaluate the user's init.el file"
+  (interactive)
+  (load-file user-init-file))
+
+;;;; Packages
+
+;;; el-get
+
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
 (unless (require 'el-get nil t) ; t -> 'noerror
@@ -77,21 +117,13 @@
 
 (el-get 'sync my:el-get-packages)
 
-;;; Execution Path
-
-(add-to-list 'exec-path "~/.cabal/bin")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package cl-lib)
 
 (defun my-el-dir (&optional path)
   "Return the user's `el-get' directory with PATH optionally appended."
   (concat el-get-dir "/" path))
 
-
-;;; TIME & Colorscheme
+;;;; Time & Colorscheme
 
 (require 'calendar)
 
@@ -198,18 +230,15 @@ BGMODE should be one of 'light or 'dark."
                                      (time-add (days-to-time 1) sunrise-time)))) ; close enough
         (funcall add-bg-timer 'light sunrise-today-or-next))))))
 
+;;; Color theme
 
-;; Color theme
 (if (my-date-in-daylight-hours (current-time))
     (my-background-set-light)
   (my-background-set-dark))
 
-;; Font
+;;; Font
+
 (set-face-font 'default "Inconsolata-14")
-
-; Folder with own content
-(add-to-list 'load-path (locate-user-emacs-file "custom"))
-
 
 (defvar my-user-preferred-license "GPL-3"
   "License to use by default with some modes")
@@ -225,46 +254,41 @@ BGMODE should be one of 'light or 'dark."
 
 (my-global-global-mode)
 
+;;;; Misc Packages
+
 ;;; dash
+
 (use-package dash)
 
-;; Emaps
+;;; emaps
+
 (use-package emaps
   :config
   (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
 
-;; Auto Complete
+;;; auto-complete
+
 (use-package auto-complete
   :config
   (global-auto-complete-mode))
 
-;; Evil leader
+;;; evil-leader
+
 (use-package evil-leader
   :config
   (global-evil-leader-mode 1))
 
-; Use the space key as leader
+;; Use the space key as leader
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
+  "ex" 'eval-expression
   "ir" 'align-regexp
   "sv" 'my-reload-user-init-file
   "ns" 'my-scratch-buffer
   "nS" 'my-new-scratch
   ","  'helm-M-x)
 
-(defun my-find-user-init-file ()
-  "Find the user's init.el file"
-  (interactive)
-  (find-file user-init-file))
-
-(defun my-reload-user-init-file ()
-  "Evaluate the user's init.el file"
-  (interactive)
-  (load-file user-init-file))
-
-(evil-leader/set-key
-  "ex" 'eval-expression)
-
+;;; evil-local-leader
 
 (add-to-list 'load-path (locate-user-emacs-file "custom/evil"))
 (use-package evil-local-leader ; Merely a modification of `evil-leader'
@@ -294,7 +318,19 @@ BGMODE should be one of 'light or 'dark."
   "ir" 'tex-region
   "cb" 'latex-close-block)
 
-;; Eveeel....
+;;; evil
+
+(defun my-kill-buffer-and-window-ask ()
+  "Kill the current buffer and window if user responds in the affirmative.
+
+Ask again if the buffer is modified."
+  (interactive)
+  (when (y-or-n-p "Kill current buffer and window?: ")
+    (when (or
+           (not (buffer-modified-p))
+           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
+      (kill-buffer-and-window))))
+
 (use-package evil
   :config
   (customize-set-variable 'evil-want-C-w-in-emacs-state t)
@@ -316,32 +352,10 @@ BGMODE should be one of 'light or 'dark."
   (evil-mode 1))
 
 ;;; org-evil
+
 (use-package org-evil)
 
-(defun my-evil-set-initial-state-modes (state &rest modes)
-  "Set STATE as the initial state for each of MODES.
-
-See `evil-set-initial-state'."
-  (--map (evil-set-initial-state it state) modes))
-(put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
-
-(defun my-kill-buffer-and-window-ask ()
-  "Kill the current buffer and window if user responds in the affirmative.
-
-Ask again if the buffer is modified."
-  (interactive)
-  (when (y-or-n-p "Kill current buffer and window?: ")
-    (when (or
-           (not (buffer-modified-p))
-           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
-      (kill-buffer-and-window))))
-
-(defun my-clear-buffer (&optional buffer)
-  "Clear all the text in BUFFER without modifying the kill ring"
-  (interactive "b")
-  (let ((buffer (or buffer (current-buffer))))
-       (with-current-buffer buffer
-            (kill-region (point-min) (point-max)))))
+;;; evil-remap
 
 (use-package evil-remap
   :config
@@ -357,7 +371,15 @@ Ask again if the buffer is modified."
 
   (evil-nnoremap! (kbd "Q") 'quit-window)) ; So we can *always* quit
 
-;; Magit
+;;; magit
+
+(defun my-evil-set-initial-state-modes (state &rest modes)
+  "Set STATE as the initial state for each of MODES.
+
+See `evil-set-initial-state'."
+  (--map (evil-set-initial-state it state) modes))
+(put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
+
 (use-package magit
   :init
   (defvar my-evil-leader-magit-map (make-sparse-keymap)
@@ -398,7 +420,8 @@ Ask again if the buffer is modified."
 
 (evil-set-initial-state 'git-commit-mode 'insert)
 
-;;; Flycheck
+;;; flycheck
+
 (add-to-list 'load-path (locate-user-emacs-file "el-get/flycheck"))
 (use-package flycheck
   :config
@@ -406,17 +429,7 @@ Ask again if the buffer is modified."
   (evil-leader/set-key
     "f" flycheck-command-map))
 
-;; Column and line number in mode line
-(line-number-mode 1)
-(column-number-mode 1)
-
-(global-linum-mode 1) ; line number in margin
-(global-hl-line-mode 1) ; highlight current line
-
-
-(customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
-
-(display-time-mode t) ; Allow displaying of time in mode line
+;;; flx-ido
 
 (use-package flx-ido
   :config
@@ -426,26 +439,12 @@ Ask again if the buffer is modified."
   (customize-set-variable 'ido-enable-flex-matching t)
   (customize-set-variable 'ido-use-faces nil))
 
-; Other
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default tab-stop-list '(4 8 12))
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(defun my-move-key (keymap-from keymap-to key)
-  "Moves a keybinding from one keymap to another, removing previous binding"
-  (define-key keymap-to key (lookup-key keymap-from key))
-  (define-key keymap-from key nil))
-
-(my-move-key evil-motion-state-map evil-normal-state-map " ")
-
 (define-key my-global-mode-map (kbd "C-h h") 'help)
 (emaps-define-key help-map
   (kbd "C-e") 'evil-scroll-line-down
   (kbd "C-y") 'evil-scroll-line-up)
 
-; Lisp
+;;;; Lisp
 
 (setq inferior-lisp-program (executable-find "sbcl"))
 
@@ -453,17 +452,22 @@ Ask again if the buffer is modified."
 
 (global-eldoc-mode)
 
-; Slime
+;;; slime
+
 (add-to-list 'load-path "~/.emacs.d/el-get/slime")
 (use-package slime-autoloads)
 (use-package slime
   :config
   (slime-setup '(slime-fancy)))
 
-;; Python
+;;;; Python
+
 (add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
 
-;; Haskell-mode
+;;;; Haskell
+
+;;; haskell-mode
+
 (add-to-list 'load-path (my-el-dir "ghc-mod/elisp"))
 (add-to-list 'load-path (my-el-dir "haskell-mode"))
 
@@ -479,7 +483,10 @@ Ask again if the buffer is modified."
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
   (customize-set-variable 'haskell-interactive-popup-errors nil))
 
-;;; Idris
+;;;; Idris
+
+;;; idris-mode
+
 (use-package idris-mode
   :config
   (evil-local-leader/set-key-for-mode 'idris-mode
@@ -489,11 +496,6 @@ Ask again if the buffer is modified."
     "p" 'idris-proof-search
     "t" 'idris-type-at-point))
 
-(defmacro after (mode &rest body)
-(declare (indent defun))
-`(eval-after-load ,mode
-    '(progn ,@body)))
-
 ;;;; Completion
 
 ;;; company
@@ -502,7 +504,13 @@ Ask again if the buffer is modified."
   :config
   (global-company-mode 1))
 
-;; YASnippet
+;;; yasnippet
+
+(defmacro after (mode &rest body)
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
 (use-package yasnippet
   :config
@@ -534,6 +542,7 @@ Ask again if the buffer is modified."
     (add-hook 'prog-mode-hook 'yas-minor-mode)))
 
 ;;; helm
+
 (use-package helm
   :init
   (defvar my-helm-leader-map (make-sparse-keymap)
@@ -556,14 +565,17 @@ Ask again if the buffer is modified."
   (evil-nnoremap! (kbd "C-p") 'helm-find-files)
   (global-set-key (kbd "C-x C-f") 'helm-find-files))
 
-;; hippie-expand
+;;; hippie-expand
+
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-SPC") 'hippie-expand)
 
-;; monitor
+;;; monitor
+
 (use-package monitor)
 
-;; projectile
+;;; projectile
+
 (use-package projectile
   :config
   (projectile-global-mode 1)
@@ -573,6 +585,7 @@ Ask again if the buffer is modified."
 ;;;; Org
 
 ;;; org
+
 (use-package org
   :init
   (defvar my-evil-leader-org-map (make-sparse-keymap)
@@ -618,19 +631,28 @@ Ask again if the buffer is modified."
      (python . t))))
 
 ;;; org-ref
+
 (use-package org-ref)
 
-;; Comint
+;;; comint
+
 (evil-define-key '(motion normal) comint-mode-map
   (kbd "C-d") 'evil-scroll-down)
 
-;; Other commands
+;;;; Other commands
 
 (defun my-scratch-buffer ()
   "Switch to the *scratch* buffer, making a new
 one if necessary."
   (interactive)
   (switch-to-buffer "*scratch*"))
+
+(defun my-clear-buffer (&optional buffer)
+  "Clear all the text in BUFFER without modifying the kill ring"
+  (interactive "b")
+  (let ((buffer (or buffer (current-buffer))))
+       (with-current-buffer buffer
+            (kill-region (point-min) (point-max)))))
 
 (defun my-new-scratch ()
   "Opens a clean *scratch* buffer.
@@ -652,7 +674,8 @@ made in that buffer."
 
 (emaps-define-key my-global-mode-map (kbd "C-s") my-state-switch-map)
 
-;;; Spelling
+;;; spelling
+
 (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
 (evil-set-initial-state 'Custom-mode 'normal)
@@ -769,13 +792,18 @@ made in that buffer."
 
 (add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
 
-;;;; Snippets
-
 ;;; Helpers
 
 (defun my-java-args-to-param-doc-list (text)
   "Split text into Java parameter names."
   (let ((params (split-string text ",")))
     (--filter it (--map (progn (string-match "\\w+ \\(\\w+\\)$" it) (ignore-errors (match-string 1 it))) params))))
+
+(defun my-move-key (keymap-from keymap-to key)
+  "Moves a keybinding from one keymap to another, removing previous binding"
+  (define-key keymap-to key (lookup-key keymap-from key))
+  (define-key keymap-from key nil))
+
+(my-move-key evil-motion-state-map evil-normal-state-map " ")
 
 ;;; init.el ends here
