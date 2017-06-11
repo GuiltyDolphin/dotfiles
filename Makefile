@@ -126,6 +126,7 @@ install_emacs : install_mercurial install_font_inconsolata
 link_emacs : install_emacs
 	@$(call linkf,emacs/custom,.emacs.d/custom)
 	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
+	@$(call linkf,emacs/custom/config.org,.emacs.d/config.org)
 
 .PHONY : install_ghci
 install_ghci :
