@@ -135,14 +135,3 @@ set -o vi
 ########
 
 export PERL5LIB=$HOME/perl5/lib/perl5
-
-##########
-#  Guix  #
-##########
-
-GUIX_PROFILE="$HOME/.guix-profile"
-export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
-export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
-export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
-
-source "$GUIX_PROFILE/etc/profile"

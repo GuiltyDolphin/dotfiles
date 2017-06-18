@@ -76,4 +76,23 @@ PERL_MB_OPT="--install_base \"$HOME/perl5\""
 PERL_LOCAL_LIB_ROOT="$HOME/perl5"
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
 
+########
+# Guix #
+########
+
+GUIX_PROFILE="$HOME/.guix-profile"
+export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
+GUIX_CERTS_DIR="$GUIX_PROFILE/etc/ssl/certs"
+if [[ -d $GUIX_CERTS_DIR ]]; then
+  GUIX_CERT_FILE="$GUIX_CERTS_DIR/ca-certificates.crt"
+  if [[ -f $GUIX_CERT_FILE ]]; then
+    export SSL_CERT_DIR="$GUIX_CERTS_DIR"
+    export SSL_CERT_FILE="$GUIX_CERT_FILE"
+  fi
+fi
+
+GUIX_PROFILE_FILE="$GUIX_PROFILE/etc/profile"
+[[ -f "$GUIX_PROFILE_FILE" ]] \
+  && source "$GUIX_PROFILE_FILE"
+
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
