@@ -28,7 +28,7 @@ link_full : $(links_full)
 installs_haskell = install_haskell_platform install_ghci
 installs_minimal = install_git install_vim
 installs_medium = $(installs_minimal) install_cpanm install_tmux
-installs_full = $(installs_medium) install_emacs install_firefox \
+installs_full = $(installs_medium) install_emacs install_icecat \
 								$(installs_haskell) install_owncloud_desktop \
 								install_ruby1.9.1 install_shutter install_tmuxinator \
 								install_vundle
@@ -99,9 +99,9 @@ install_vundle : install_git
 
 # Full
 
-.PHONY: install_firefox
-install_firefox :
-	@$(call install_prog,firefox)
+.PHONY: install_icecat
+install_icecat :
+	@$(call install_prog,icecat)
 
 .PHONY: link_vimerator
 link_vimperator :

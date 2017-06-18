@@ -372,20 +372,14 @@ my %software_config = (
     emacs   => {
         with_guix_config('emacs'),
     },
-    firefox => {
-        install   => \&firefox_install,
-        installed => q_version('firefox'),
-        update    => \&firefox_update,
-        version   => {
-            current => \&firefox_version_current,
-            latest  => \&firefox_version_latest,
-        },
-    },
     font_inconsolata => {
         with_guix_config('font-inconsolata'),
     },
     git => {
         with_guix_config('git'),
+    },
+    icecat => {
+        with_guix_config('icecat'),
     },
     mercurial => {
         with_guix_config('mercurial'),
@@ -513,50 +507,6 @@ sub eclipse_install {
             "rm $eclipse_tar_file",
         ) and return $?;
         link_script_local(abs_path('eclipse/eclipse'), 'eclipse');
-    }
-}
-
-#############
-#  FireFox  #
-#############
-
-my $firefox_dir_url = "https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-release-l10n/";
-
-sub firefox_version_current {
-    chomp (my $version = `firefox --version`);
-    $version =~ s/^Mozilla Firefox //;
-    return $version;
-}
-
-sub firefox_version_latest {
-    return version_latest_from_directory_url(
-        $firefox_dir_url,
-        qr/firefox-($dotted_version_re)\.en-GB\.linux-x86_64\.tar\.bz2/o,
-    );
-}
-
-sub firefox_update {
-    system("rm $local_bin/firefox");
-    firefox_install();
-}
-
-sub get_latest_firefox_tar_url {
-    my $latest = firefox_version_latest();
-    my $tar = "firefox-$latest.en-GB.linux-x86_64.tar.bz2";
-    return "$firefox_dir_url$tar";
-}
-
-sub firefox_install {
-    with_directory $software_directory => sub {
-        my $ffurl = get_latest_firefox_tar_url();
-        $ffurl =~ /^$firefox_dir_url(.*)$/;
-        my $firefile = abs_path("$1");
-        sequence(
-            "wget $ffurl",
-            "tar xjf $firefile",
-            "rm $firefile*",
-        ) and return $?;
-        link_script_local(abs_path('firefox/firefox'), 'firefox');
     }
 }
 
