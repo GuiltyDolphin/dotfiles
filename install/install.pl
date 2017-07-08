@@ -293,6 +293,16 @@ sub with_guix_config {
             return `guix package --list-installed` =~ /^$package\s/im;
         },
         update => sub { return system("guix package -u \\<$package\\>") },
+        version => {
+            current => sub {
+                `guix package --list-installed='^$package\$'` =~ /^$package\t(?<version>[^\t]+)\t/;
+                return $+{version};
+            },
+            latest => sub {
+                `guix package --show='$package' | recsel -p version` =~ /^version: (?<version>.*)/;
+                return $+{version};
+            },
+        },
     );
 }
 
