@@ -4,12 +4,6 @@
 
 ** Base Configuration
 
-*** Custom Variables
-
-#+BEGIN_SRC emacs-lisp
-(customize-set-variable 'haskell-process-type 'cabal-repl)
-#+END_SRC
-
 *** NO FRILLS
 
 #+BEGIN_SRC emacs-lisp
@@ -511,7 +505,7 @@ See `evil-set-initial-state'."
 (use-package haskell-mode
   :config
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (customize-set-variable 'haskell-process-type 'cabal-repl)
+  (customize-set-variable 'haskell-process-type 'stack-ghci)
   (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
                                                   ; Flycheck seems to handle errors well, and the
                                                   ; cably-repl doesn't seem to be broken.
