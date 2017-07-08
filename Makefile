@@ -116,10 +116,15 @@ install_pip :
 install_mercurial : install_pip
 	@$(call install_prog,mercurial)
 
+.PHONY: install_mu
+install_mu :
+	@$(call install_prog,mu)
+
 # Requires mercurial for 'evil'
+# Requires mu for e-mail
 # Requires Inconsolata font (used as font in Emacs)
 .PHONY: install_emacs
-install_emacs : install_mercurial install_font_inconsolata
+install_emacs : install_mercurial install_mu install_font_inconsolata
 	@$(call install_prog,emacs)
 
 .PHONY: link_emacs

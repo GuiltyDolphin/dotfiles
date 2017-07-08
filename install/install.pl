@@ -394,6 +394,9 @@ my %software_config = (
     mercurial => {
         with_guix_config('mercurial'),
     },
+    mu => {
+        with_guix_config('mu'),
+    },
     owncloud_desktop => {
         with_guix_config('owncloud-client'),
     },

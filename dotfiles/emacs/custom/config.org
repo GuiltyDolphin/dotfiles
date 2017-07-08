@@ -466,6 +466,12 @@ See `evil-set-initial-state'."
   (kbd "C-y") 'evil-scroll-line-up)
 #+END_SRC
 
+** Email
+
+#+BEGIN_SRC emacs-lisp
+(use-package mu4e)
+#+END_SRC
+
 ** Lisp
 
 #+BEGIN_SRC emacs-lisp
