@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: phony-full
+# key: phony
+# expand-env: ((yas-indent-line 'fixed))
+# --
+.PHONY: ${1:rule}
+$1 : $2
+	$0
