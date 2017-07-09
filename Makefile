@@ -24,7 +24,7 @@ configure_dev : link_bash link_git link_tmux configure_vim
 
 # General development, but using Emacs as editor.
 .PHONY: configure_dev_emacs
-configure_dev_heavy : link_emacs
+configure_dev_heavy : configure_emacs
 
 # All language development
 .PHONY: configure_dev_language_all
@@ -144,12 +144,30 @@ install_mercurial : install_pip
 install_mu :
 	@$(call install_prog,mu)
 
+# Use offlineimap for fetching mail
+.PHONY: configure_mu
+configure_mu : configure_offlineimap install_mu
+
+.PHONY: install_offlineimap
+install_offlineimap :
+	@$(call install_prog,offlineimap)
+
+.PHONY: link_offlineimap
+link_offlineimap : install_offlineimap
+	@$(call linkf,mail/.offlineimaprc,.offlineimaprc)
+
+.PHONY: configure_offlineimap
+configure_offlineimap : link_offlineimap
+
+.PHONY: install_emacs
+install_emacs :
+	@$(call install_prog,emacs)
+
 # Requires mercurial for 'evil'
 # Requires mu for e-mail
 # Requires Inconsolata font (used as font in Emacs)
-.PHONY: install_emacs
-install_emacs : install_mercurial install_mu install_font_inconsolata
-	@$(call install_prog,emacs)
+.PHONY: configure_emacs
+configure_emacs : configure_mu install_font_inconsolata install_mercurial link_emacs
 
 .PHONY: link_emacs
 link_emacs : install_emacs

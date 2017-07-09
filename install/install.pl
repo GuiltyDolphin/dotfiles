@@ -397,6 +397,9 @@ my %software_config = (
     mu => {
         with_guix_config('mu'),
     },
+    offlineimap => {
+        with_guix_config('offlineimap'),
+    },
     owncloud_desktop => {
         with_guix_config('owncloud-client'),
     },
