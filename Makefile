@@ -7,43 +7,67 @@ install_prog = $(call installer,install) $(1)
 linkf = $(call installer,link) $(1) $(2)
 link_contents = $(call installer,link_contents) $(1) $(2)
 
-links_minimal = link_bash link_git link_vim link_scripts
+# Full Configuration
+.PHONY: configure_all
+configure_all : configure_dev_all configure_user_all
 
-links_medium = $(links_minimal) link_tmux
+# Full development configuration
+.PHONY: configure_dev_all
+configure_dev_all : configure_dev_heavy configure_dev_language_all
 
-links_full = $(links_medium) link_emacs link_ghci link_tmuxinator link_vimperator link_irb
+# General development
+# Git for general version control.
+# Tmux for easier multi-session development in a terminal.
+# Vim as a fairly light-weight editor
+.PHONY: configure_dev
+configure_dev : link_bash link_git link_tmux configure_vim
 
-.PHONY: link
-link : $(links_medium)
+# General development, but using Emacs as editor.
+.PHONY: configure_dev_emacs
+configure_dev_heavy : link_emacs
 
-.PHONY: link_minimal
-link_minimal : $(links_minimal)
+# All language development
+.PHONY: configure_dev_language_all
+configure_dev_language_all : configure_dev_haskell configure_dev_perl \
+	configure_dev_ruby
 
-.PHONY: link_medium
-link_medium : $(links_medium)
+# Haskell development
+.PHONY: configure_dev_haskell
+configure_dev_haskell : configure_dev install_haskell_platform link_ghci
 
-.PHONY: link_full
-link_full : $(links_full)
+# Perl development
+.PHONY: configure_dev_perl
+configure_dev_perl : install_cpanm
 
-installs_haskell = install_haskell_platform install_ghci
-installs_minimal = install_git install_vim
-installs_medium = $(installs_minimal) install_cpanm install_tmux
-installs_full = $(installs_medium) install_emacs install_icecat \
-								$(installs_haskell) install_owncloud_desktop \
-								install_ruby1.9.1 install_shutter install_tmuxinator \
-								install_vundle
+# Ruby development
+.PHONY: configure_dev_ruby
+configure_dev_ruby : install_ruby1.9.1 link_irb
 
-.PHONY: install
-install : $(installs_medium)
+# Enhanced development in Vim
+# NOTE: We should also set up YCM here, but install is currently broken.
+.PHONY: configure_vim
+configure_vim : link_vim setup_vundle_plugins
 
-.PHONY: install_minimal
-install_minimal : $(installs_minimal)
+# Misc scripts
+.PHONY: configure_scripts
+configure_scripts : link_scripts
 
-.PHONY: install_medium
-install_medium : $(installs_medium)
+# Misc tools
+# Owncloud-desktop for file backup and syncing.
+# Shutter for screenshots.
+# Tmuxinator for Tmux session config.
+.PHONY: configure_tools
+configure_tools : install_owncloud_desktop install_shutter link_tmuxinator
 
-.PHONY: install_full
-install_full : $(installs_full)
+# Better user experience (personal tools)
+.PHONY: configure_user_all
+configure_user_all : configure_tools configure_scripts configure_web
+
+# Web use
+# Icecat for browser.
+# Vimperator for Vim-like bindings.
+.PHONY: configure_web
+configure_web : install_icecat link_vimperator
 
 # Minimal
 

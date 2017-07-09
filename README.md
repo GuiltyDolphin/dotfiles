@@ -38,24 +38,18 @@ packages, follow these steps (install scripts are found under `install/`):
 
 #### Commands
 
-For a relatively complete installation, run the following command:
-`git clone https://github.com/GuiltyDolphin/dotfiles && cd dotfiles && make link`.
+For a complete installation, run the following command:
+`git clone https://github.com/GuiltyDolphin/dotfiles && cd dotfiles && make configure_all`.
 
-General commands (described in more detail later on) - these should
-be run in the `dotfiles` directory (the one with the `Makefile`
-present):
+If a full setup is not desired, individual packages can be configured
+via Make, or the following commands
+(which should be run from the `dotfiles` directory) can be used:
 
-* `make link` - the same as `make link_medium`.
-* `make link_minimal` - will install and setup a minimal set of
-software.
-* `make link_medium` - will install and setup most of the configured
-software.
-* `make link_full` - will install and setup all configured software
-(may take a while).
+* `make configure_dev`   - sets up a basic development environment.
+* `make configure_tools` - sets up some tools for miscellaneous tasks.
+* `make configure_web`   - configures software for web use.
 
-In each case, there exists an `install` version
-(e.g, `install_minimal`) which will only install the software without
-configuring it.
+More recipes can be found in the `Makefile` file in the `dotfiles` directory.
 
 ##### Other Commands
 
@@ -68,6 +62,10 @@ To install/link individual programs, you can use `install_prog` or
 `link_prog` (where `prog` is the required program). Thus `link_tmux`
 will only install and link `tmux` (and any dependencies).
 
+Using `install_prog` recipes (e.g., `install_tmux`) will _only_
+install the given package (and its dependencies), and will not
+perform any additional configuration.
+
 #### Are my files safe?
 
 This will (hopefully) not overwrite any existing files when attempting
@@ -75,48 +73,26 @@ to perform a link - it will instead warn you that an existing file
 exists and differs from the source (if you wish to link that file,
 you will need to move (or remove) the existing file).
 
-### 'Minimal' Installation
+##### Configuration Files Used
 
-The `link_minimal` command is for the minimal setup I would consider
-being able to work in for any system.
+The following files are placed/linked when configuring
+(or linking) the given packages:
 
-These programs are linked and/or installed when the `link_minimal` or
-`install_minimal` make recipes are used.
-
-* `bash` - will link `.bash/`, `.profile`, and `.bashrc`.
-* `git` - will link `.gitconfig`.
-* `vim` - will link `.vimrc` and `.vim/UltiSnips`.
-
-### 'Medium' Installation
-
-The `link_medium` command is for a setup I would be comfortable with
-on many systems, allowing for ease of development across languages.
-
-In addition to those described in "'Minimal' Installation", the
-following programs will be configured:
-
-* `tmux` - will link `.tmux.config`.
-* `vundle` - will place `Vundle` in `.vim/bundle/Vundle.vim/`.
-
-### 'Full' Installation
-
-Using `make link_full` will install and link all configured software
-(`make install_full` will just install).
-
-The 'Full' installation is only really for home systems where I want
-to be able to mess around with lots of different pieces of software.
-
-In addition to those described in "'Medium' Installation", the
-following programs will be configured:
-
-* `emacs` - will link `.emacs.d/custom/` and `.emacs.d/init.el`.
-* `ghci` - will link `.ghci`.
+* `bash`       - will link `.bash/`, `.profile`, and `.bashrc`.
+* `emacs`      - will link `.emacs.d/custom/` and `.emacs.d/init.el`.
+* `ghci`       - will link `.ghci`.
+* `git`        - will link `.gitconfig`.
+* `irb`        - will link `.irbrc`.
+* `tmux`       - will link `.tmux.config`.
 * `tmuxinator` - will link `.tmuxinator`.
+* `vim`        - will link `.vimrc` and `.vim/UltiSnips`.
 * `vimperator` - will link `.vimperatorrc`.
-* `irb` - will link `.irbrc`.
+* `vundle`     - will place `Vundle` in `.vim/bundle/Vundle.vim/`.
 
 #### Caveats
 
 Some of the software is installed via `apt-get install`, which will
 require root privileges on most systems, this can be fixed by running
-the appropriate `make` command with `sudo` - e.g, `sudo make link`.
+the appropriate `make` command with `sudo`; this is not recommended
+however, and I am working on making as much of the software install-able
+and configurable without requiring root privileges.
