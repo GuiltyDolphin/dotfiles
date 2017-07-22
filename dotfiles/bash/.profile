@@ -76,6 +76,13 @@ PERL_MB_OPT="--install_base \"$HOME/perl5\""
 PERL_LOCAL_LIB_ROOT="$HOME/perl5"
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
 
+#########
+# Idris #
+#########
+
+# Set this to empty so it can be set correctly in the Guix profile.
+IDRIS_LIBRARY_PATH=
+
 ########
 # Guix #
 ########
