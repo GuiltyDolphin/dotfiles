@@ -391,6 +391,9 @@ my %software_config = (
     icecat => {
         with_guix_config('icecat'),
     },
+    idris => {
+        with_guix_config('idris'),
+    },
     mercurial => {
         with_guix_config('mercurial'),
     },

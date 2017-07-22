@@ -28,12 +28,16 @@ configure_dev_heavy : configure_emacs
 
 # All language development
 .PHONY: configure_dev_language_all
-configure_dev_language_all : configure_dev_haskell configure_dev_perl \
-	configure_dev_ruby
+configure_dev_language_all : configure_dev_haskell configure_dev_idris \
+	configure_dev_perl configure_dev_ruby
 
 # Haskell development
 .PHONY: configure_dev_haskell
 configure_dev_haskell : configure_dev install_haskell_platform link_ghci
+
+# Idris development
+.PHONY: configure_dev_idris
+configure_dev_idris : install_idris
 
 # Perl development
 .PHONY: configure_dev_perl
@@ -76,6 +80,10 @@ link_bash :
 	@$(call linkf,bash/.bash,.bash)
 	@$(call linkf,bash/.profile,.profile)
 	@$(call linkf,bash/.bash/.bashrc,.bashrc)
+
+.PHONY: install_idris
+install_idris :
+	@$(call install_prog,idris)
 
 .PHONY: install_vim
 install_vim :
