@@ -73,7 +73,7 @@ configure_user_all : configure_tools configure_scripts configure_web
 .PHONY: configure_web
 configure_web : install_icecat link_vimperator
 
-# Minimal
+# Individual Programs
 
 .PHONY: link_bash
 link_bash :
@@ -81,91 +81,9 @@ link_bash :
 	@$(call linkf,bash/.profile,.profile)
 	@$(call linkf,bash/.bash/.bashrc,.bashrc)
 
-.PHONY: install_idris
-install_idris :
-	@$(call install_prog,idris)
-
-.PHONY: install_vim
-install_vim :
-	$(call install_prog,vim)
-
-.PHONY: link_vim
-link_vim :
-	$(call linkf,vim/.vimrc,.vimrc)
-	@mkdir -p $(HOME)/.vim
-	$(call linkf,vim/.vim/UltiSnips,.vim/UltiSnips)
-
-.PHONY: install_git
-install_git :
-	$(call install_prog,git)
-
-.PHONY: link_git
-link_git : install_git
-	$(call linkf,git/.gitconfig,.gitconfig)
-
-.PHONY: link_scripts
-link_scripts :
-	$(call link_contents,bash/scripts,.local/bin)
-
-# Medium
-
 .PHONY: install_cpanm
 install_cpanm :
 	$(call install_prog,cpanm)
-
-.PHONY: install_tmux
-install_tmux :
-	$(call install_prog,tmux)
-
-.PHONY: link_tmux
-link_tmux : install_tmux
-	@$(call linkf,tmux/.tmux.conf,.tmux.conf)
-
-vundle_dir = $(HOME)/.vim/bundle
-
-.PHONY: install_vundle
-install_vundle : install_git
-	@mkdir $(vundle_dir) -p
-	@[ -e "$(vundle_dir)/Vundle.vim" ] \
-		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
-
-# Full
-
-.PHONY: install_icecat
-install_icecat :
-	@$(call install_prog,icecat)
-
-.PHONY: link_vimerator
-link_vimperator :
-	$(call linkf,vim/.vimperatorrc,.vimperatorrc)
-
-.PHONY: install_pip
-install_pip :
-	$(call install_prog,pip2)
-	$(call install_prog,pip3)
-
-.PHONY: install_mercurial
-install_mercurial : install_pip
-	@$(call install_prog,mercurial)
-
-.PHONY: install_mu
-install_mu :
-	@$(call install_prog,mu)
-
-# Use offlineimap for fetching mail
-.PHONY: configure_mu
-configure_mu : configure_offlineimap install_mu
-
-.PHONY: install_offlineimap
-install_offlineimap :
-	@$(call install_prog,offlineimap)
-
-.PHONY: link_offlineimap
-link_offlineimap : install_offlineimap
-	@$(call linkf,mail/.offlineimaprc,.offlineimaprc)
-
-.PHONY: configure_offlineimap
-configure_offlineimap : link_offlineimap
 
 .PHONY: install_emacs
 install_emacs :
@@ -191,17 +109,81 @@ install_ghci :
 link_ghci : install_ghci
 	$(call linkf,haskell/.ghci,.ghci)
 
+.PHONY: install_git
+install_git :
+	$(call install_prog,git)
+
+.PHONY: link_git
+link_git : install_git
+	$(call linkf,git/.gitconfig,.gitconfig)
+
 .PHONY: install_haskell_platform
 install_haskell_platform :
 	  @$(call install_prog,haskell-platform)
+
+.PHONY: install_icecat
+install_icecat :
+	@$(call install_prog,icecat)
+
+.PHONY: install_idris
+install_idris :
+	@$(call install_prog,idris)
+
+.PHONY: link_irb
+link_irb : install_ruby1.9.1
+	@$(call linkf,ruby/.irbrc,.irbrc)
+
+.PHONY: install_mercurial
+install_mercurial : install_pip
+	@$(call install_prog,mercurial)
+
+.PHONY: install_mu
+install_mu :
+	@$(call install_prog,mu)
+
+# Use offlineimap for fetching mail
+.PHONY: configure_mu
+configure_mu : configure_offlineimap install_mu
+
+.PHONY: install_offlineimap
+install_offlineimap :
+	@$(call install_prog,offlineimap)
+
+.PHONY: link_offlineimap
+link_offlineimap : install_offlineimap
+	@$(call linkf,mail/.offlineimaprc,.offlineimaprc)
+
+.PHONY: configure_offlineimap
+configure_offlineimap : link_offlineimap
 
 .PHONY: install_owncloud_desktop
 install_owncloud_desktop :
 	@$(call install_prog,owncloud_desktop)
 
+.PHONY: install_pip
+install_pip :
+	$(call install_prog,pip2)
+	$(call install_prog,pip3)
+
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
 	$(call install_prog,ruby1.9.1)
+
+.PHONY: link_scripts
+link_scripts :
+	$(call link_contents,bash/scripts,.local/bin)
+
+.PHONY: install_shutter
+install_shutter :
+	@$(call install_prog,shutter)
+
+.PHONY: install_tmux
+install_tmux :
+	$(call install_prog,tmux)
+
+.PHONY: link_tmux
+link_tmux : install_tmux
+	@$(call linkf,tmux/.tmux.conf,.tmux.conf)
 
 .PHONY: install_tmuxinator
 install_tmuxinator : install_ruby1.9.1
@@ -211,13 +193,27 @@ install_tmuxinator : install_ruby1.9.1
 link_tmuxinator : install_tmuxinator
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
 
-.PHONY: link_irb
-link_irb : install_ruby1.9.1
-	@$(call linkf,ruby/.irbrc,.irbrc)
+.PHONY: install_vim
+install_vim :
+	$(call install_prog,vim)
 
-.PHONY: install_shutter
-install_shutter :
-	@$(call install_prog,shutter)
+.PHONY: link_vim
+link_vim :
+	$(call linkf,vim/.vimrc,.vimrc)
+	@mkdir -p $(HOME)/.vim
+	$(call linkf,vim/.vim/UltiSnips,.vim/UltiSnips)
+
+.PHONY: link_vimperator
+link_vimperator :
+	$(call linkf,vim/.vimperatorrc,.vimperatorrc)
+
+vundle_dir = $(HOME)/.vim/bundle
+
+.PHONY: install_vundle
+install_vundle : install_git
+	@mkdir $(vundle_dir) -p
+	@[ -e "$(vundle_dir)/Vundle.vim" ] \
+		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
 # Other
 
