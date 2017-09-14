@@ -10,4 +10,12 @@ fi
 # Key repeat delay: 500ms delay with 33Hz repeat rate.
 xset r rate 500 33
 
+# Ensure scripts in /etc/X11/xinit/xinitrc.d are sourced.
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+ for f in /etc/X11/xinit/xinitrc.d/?*.sh; do
+  [ -x "$f" ] && . "$f"
+ done
+ unset f
+fi
+
 exec xmonad
