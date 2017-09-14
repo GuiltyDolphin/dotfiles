@@ -9,8 +9,6 @@ if [ $(which dircolors) ]; then
   fi
 fi
 
-source "$HOME/.bash/git_aliases.sh"
-
 # ;}
 [[ $(which fortune) ]] && fortune
 
@@ -135,3 +133,14 @@ set -o vi
 ########
 
 export PERL5LIB=$HOME/perl5/lib/perl5
+
+#######
+# Git #
+#######
+
+source "$HOME/.bash/git_aliases.sh"
+
+# Autocompletion
+if [ -f ~/.git-completion.bash ]; then
+  source ~/.git-completion.bash
+fi

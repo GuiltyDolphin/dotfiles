@@ -20,7 +20,7 @@ configure_dev_all : configure_dev_heavy configure_dev_language_all
 # Tmux for easier multi-session development in a terminal.
 # Vim as a fairly light-weight editor
 .PHONY: configure_dev
-configure_dev : link_bash link_git link_tmux configure_vim
+configure_dev : link_bash configure_git link_tmux configure_vim
 
 # General development, but using Emacs as editor.
 .PHONY: configure_dev_emacs
@@ -109,6 +109,9 @@ install_ghci :
 link_ghci : install_ghci
 	$(call linkf,haskell/.ghci,.ghci)
 
+.PHONY: configure_git
+configure_git : link_git configure_git_autocomplete
+
 .PHONY: install_git
 install_git :
 	$(call install_prog,git)
@@ -116,6 +119,10 @@ install_git :
 .PHONY: link_git
 link_git : install_git
 	$(call linkf,git/.gitconfig,.gitconfig)
+
+.PHONY: configure_git_autocomplete
+configure_git_autocomplete :
+	curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
 .PHONY: install_haskell_platform
 install_haskell_platform :
