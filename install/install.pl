@@ -194,6 +194,9 @@ my %distro_config = (
     arch => {
         install   => \&distro_arch_install,
         installed => \&distro_arch_installed,
+        version   => {
+            compare => \&distro_arch_version_compare,
+        },
     },
     debian => {
         install   => \&distro_debian_install,
@@ -220,6 +223,15 @@ sub distro_arch_install {
 sub distro_arch_installed {
     my $program = shift;
     return system("pacman -Q $program &>/dev/null") == 0;
+}
+
+sub distro_arch_version_compare {
+    my (undef, $current, $latest) = @_;
+    my $comp = 'vercmp';
+    my $cmp = `$comp $current $latest`;
+    return -1 if $cmp < 0;
+    return 1  if $cmp > 0;
+    return 0;
 }
 
 ############
