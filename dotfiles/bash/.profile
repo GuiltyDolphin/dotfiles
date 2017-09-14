@@ -26,6 +26,9 @@ GUIX_PROFILE_FILE="$GUIX_PROFILE/etc/profile"
 [[ -f "$GUIX_PROFILE_FILE" ]] \
   && source "$GUIX_PROFILE_FILE"
 
+# Set locale for Guix
+export LC_ALL=en_GB.UTF-8
+
 # Add TexLive to path if it exists
 [[ -d "/usr/local/texlive/2015/bin/x86_64-linux" ]] \
   && PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
