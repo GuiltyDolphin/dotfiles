@@ -415,6 +415,9 @@ my %software_config = (
     ruby_stable => {
         with_guix_config('ruby'),
     },
+    setxkbmap => {
+        with_guix_config('setxkbmap'),
+    },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,

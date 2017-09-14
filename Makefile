@@ -52,6 +52,10 @@ configure_dev_ruby : install_ruby1.9.1 link_irb
 .PHONY: configure_vim
 configure_vim : link_vim setup_vundle_plugins
 
+# Keyboard
+.PHONY: configure_keyboard
+configure_keyboard : install_setxkbmap
+
 # Misc scripts
 .PHONY: configure_scripts
 configure_scripts : link_scripts
@@ -65,7 +69,7 @@ configure_tools : install_owncloud_desktop install_shutter link_tmuxinator
 
 # Better user experience (personal tools)
 .PHONY: configure_user_all
-configure_user_all : configure_tools configure_scripts configure_web
+configure_user_all : configure_keyboard configure_tools configure_scripts configure_web
 
 # Web use
 # Icecat for browser.
@@ -179,6 +183,10 @@ install_ruby1.9.1 :
 .PHONY: link_scripts
 link_scripts :
 	$(call link_contents,bash/scripts,.local/bin)
+
+.PHONY: install_setxkbmap
+setxkbmap :
+	@$(call install_prog,setxkbmap)
 
 .PHONY: install_shutter
 install_shutter :
