@@ -7,6 +7,25 @@ PATH=~/.local/bin # Prefer local versions
 PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
 PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 
+########
+# Guix #
+########
+
+GUIX_PROFILE="$HOME/.guix-profile"
+export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
+GUIX_CERTS_DIR="$GUIX_PROFILE/etc/ssl/certs"
+if [[ -d $GUIX_CERTS_DIR ]]; then
+  GUIX_CERT_FILE="$GUIX_CERTS_DIR/ca-certificates.crt"
+  if [[ -f $GUIX_CERT_FILE ]]; then
+    export SSL_CERT_DIR="$GUIX_CERTS_DIR"
+    export SSL_CERT_FILE="$GUIX_CERT_FILE"
+  fi
+fi
+
+GUIX_PROFILE_FILE="$GUIX_PROFILE/etc/profile"
+[[ -f "$GUIX_PROFILE_FILE" ]] \
+  && source "$GUIX_PROFILE_FILE"
+
 # Add TexLive to path if it exists
 [[ -d "/usr/local/texlive/2015/bin/x86_64-linux" ]] \
   && PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
@@ -82,24 +101,5 @@ PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
 
 # Set this to empty so it can be set correctly in the Guix profile.
 IDRIS_LIBRARY_PATH=
-
-########
-# Guix #
-########
-
-GUIX_PROFILE="$HOME/.guix-profile"
-export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
-GUIX_CERTS_DIR="$GUIX_PROFILE/etc/ssl/certs"
-if [[ -d $GUIX_CERTS_DIR ]]; then
-  GUIX_CERT_FILE="$GUIX_CERTS_DIR/ca-certificates.crt"
-  if [[ -f $GUIX_CERT_FILE ]]; then
-    export SSL_CERT_DIR="$GUIX_CERTS_DIR"
-    export SSL_CERT_FILE="$GUIX_CERT_FILE"
-  fi
-fi
-
-GUIX_PROFILE_FILE="$GUIX_PROFILE/etc/profile"
-[[ -f "$GUIX_PROFILE_FILE" ]] \
-  && source "$GUIX_PROFILE_FILE"
 
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
