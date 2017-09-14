@@ -412,6 +412,9 @@ my %software_config = (
     pip3 => {
         with_guix_config('python-pip'),
     },
+    recutils => {
+        with_guix_config('recutils'),
+    },
     ruby_stable => {
         with_guix_config('ruby'),
     },

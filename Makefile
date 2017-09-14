@@ -9,7 +9,11 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 
 # Full Configuration
 .PHONY: configure_all
-configure_all : configure_dev_all configure_user_all
+configure_all : bootstrap configure_dev_all configure_user_all
+
+# Configure programs required (or recommended) for configuration of the installer
+.PHONY: bootstrap
+bootstrap : configure_recutils
 
 # Full development configuration
 .PHONY: configure_dev_all
@@ -175,6 +179,13 @@ install_owncloud_desktop :
 install_pip :
 	$(call install_prog,pip2)
 	$(call install_prog,pip3)
+
+.PHONY: configure_recutils
+configure_recutils : install_recutils
+
+.PHONY: install_recutils
+install_recutils :
+	$(call install_prog,recutils)
 
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
