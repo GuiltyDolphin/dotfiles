@@ -11,7 +11,7 @@ PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 # Guix #
 ########
 
-GUIX_PROFILE="$HOME/.guix-profile"
+export GUIX_PROFILE="$HOME/.guix-profile"
 export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
 GUIX_CERTS_DIR="$GUIX_PROFILE/etc/ssl/certs"
 if [[ -d $GUIX_CERTS_DIR ]]; then

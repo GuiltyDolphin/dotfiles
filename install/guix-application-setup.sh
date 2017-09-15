@@ -23,8 +23,8 @@ setupFonts() {
     echo "Installing $fontPackage"
     guix package -i $fontPackage
   done
-  mkdir -p ~/.guix-profile/share/fonts/truetype
-  xset +fp ~/.guix-profile/share/fonts/truetype
+  mkdir -p $GUIX_PROFILE/share/fonts/truetype
+  xset +fp $GUIX_PROFILE/share/fonts/truetype
 }
 
 setupCertificates() {
