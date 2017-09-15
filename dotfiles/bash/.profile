@@ -51,11 +51,6 @@ fi
 HISTIGNORE="&"
 EDITOR="vim"
 
-# Force Dropbox to start if it is installed
-if [[ $(which dropbox) ]]; then
-  dropbox start &>/dev/null
-fi
-
 # Add ruby gems to path
 [[ -d "$HOME/.gem/ruby/1.9.1/bin" ]] \
   && PATH=$PATH:~/.gem/ruby/1.9.1/bin
