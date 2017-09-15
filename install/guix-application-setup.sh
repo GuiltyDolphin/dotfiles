@@ -24,7 +24,6 @@ setupFonts() {
     guix package -i $fontPackage
   done
   mkdir -p $GUIX_PROFILE/share/fonts/truetype
-  xset +fp $GUIX_PROFILE/share/fonts/truetype
 }
 
 setupCertificates() {

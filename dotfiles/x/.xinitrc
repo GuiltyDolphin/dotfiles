@@ -16,6 +16,14 @@ if [ $(which setxkbmap) ]; then
   fi
 fi
 
+# Add truetype fonts installed with Guix to path (if available)
+GUIX_TRUETYPE_PATH="$GUIX_PROFILE/share/fonts/truetype"
+if [ -d $GUIX_TRUETYPE_PATH ]; then
+  # First remove it from the path, so we don't get duplicates.
+  xset -fp $GUIX_TRUETYPE_PATH 2>/dev/null
+  xset +fp $GUIX_TRUETYPE_PATH
+fi
+
 # Key repeat delay: 500ms delay with 33Hz repeat rate.
 xset r rate 500 33
 
