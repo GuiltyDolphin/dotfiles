@@ -593,6 +593,7 @@ sub link_program {
 
 sub link_contents {
     my ($search_dir, $target_dir) = @_;
+    make_path($target_dir);
     foreach my $file (glob "$search_dir/*") {
         chomp (my $basename = `basename $file`);
         link_program($file, "$target_dir/$basename");
