@@ -1,4 +1,13 @@
-# Use programmer dvorak if available
+################################################
+#               Keyboard Layout                #
+#                                              #
+#  Capslock->Ctrl                              #
+#  Default layout: Programmer Dvorak           #
+#  Secondary layout: US Qwerty                 #
+#  Both shifts together toggles layout         #
+#                                              #
+################################################
+
 if [ $(which setxkbmap) ]; then
   setxkbmap -layout "us,us" -variant "dvp," \
     -option "ctrl:nocaps,grp:shifts_toggle"
