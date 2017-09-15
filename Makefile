@@ -241,6 +241,18 @@ install_vundle : install_git
 	@[ -e "$(vundle_dir)/Vundle.vim" ] \
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
+.PHONY: configure_xmonad
+configure_xmonad : link_xmonad
+
+.PHONY: install_xmonad
+install_xmonad :
+	$(call install_prog,xmonad)
+	$(call install_prog,xmonad_contrib)
+	$(call install_prog,xterm)
+
+.PHONY: link_xmonad
+link_xmonad : install_xmonad
+
 # Other
 
 .PHONY: setup_ycm

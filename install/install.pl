@@ -446,6 +446,15 @@ my %software_config = (
     vim => {
         with_guix_config('vim'),
     },
+    xmonad => {
+        with_guix_config('xmonad'),
+    },
+    xmonad_contrib => {
+        with_guix_config('ghc-xmonad-contrib'),
+    },
+    xterm => {
+        with_guix_config('xterm'),
+    },
 );
 
 sub get_config_generic {
