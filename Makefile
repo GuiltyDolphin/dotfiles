@@ -58,7 +58,7 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 .PHONY: configure_display
-configure_display : configure_x_keyboard configure_xmonad
+configure_display : configure_x_keyboard configure_xmonad configure_xset
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -256,6 +256,13 @@ install_xmonad :
 
 .PHONY: link_xmonad
 link_xmonad : install_xmonad
+
+.PHONY: configure_xset
+configure_xset : install_xset
+
+.PHONY: install_xset
+install_xset :
+	$(call install_prog,xset)
 
 # Other
 

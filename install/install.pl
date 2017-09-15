@@ -452,6 +452,9 @@ my %software_config = (
     xmonad_contrib => {
         with_guix_config('ghc-xmonad-contrib'),
     },
+    xset => {
+        with_guix_config('xset'),
+    },
     xterm => {
         with_guix_config('xterm'),
     },
