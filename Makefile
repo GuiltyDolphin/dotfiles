@@ -270,6 +270,7 @@ install_xmonad : configure_gcc configure_ghc7
 
 .PHONY: link_xmonad
 link_xmonad : install_xmonad
+	$(call linkf,x/.xmonad/xmonad.hs,.xmonad/xmonad.hs)
 
 .PHONY: configure_xset
 configure_xset : install_xset
