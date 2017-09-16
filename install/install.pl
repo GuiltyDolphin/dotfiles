@@ -397,6 +397,12 @@ my %software_config = (
     font_inconsolata => {
         with_guix_config('font-inconsolata'),
     },
+    gcc => {
+        with_guix_config('gcc'),
+    },
+    ghc7 => {
+        with_guix_config('ghc@7'),
+    },
     git => {
         with_guix_config('git'),
     },

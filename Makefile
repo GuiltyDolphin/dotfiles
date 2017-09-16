@@ -113,6 +113,20 @@ link_emacs : install_emacs
 	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
 	@$(call linkf,emacs/custom/config.org,.emacs.d/config.org)
 
+.PHONY: configure_gcc
+configure_gcc : install_gcc
+
+.PHONY: install_gcc
+install_gcc :
+	$(call install_prog,gcc)
+
+.PHONY: configure_ghc7
+configure_ghc7 : install_ghc7
+
+.PHONY: install_ghc7
+install_ghc7 :
+	$(call install_prog,ghc7)
+
 .PHONY : install_ghci
 install_ghci :
 	@[ $$(which ghci) ] || make install_haskell_platform
@@ -249,7 +263,7 @@ install_vundle : install_git
 configure_xmonad : link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad :
+install_xmonad : configure_gcc configure_ghc7
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 	$(call install_prog,xterm)
