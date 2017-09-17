@@ -406,6 +406,9 @@ my %software_config = (
     git => {
         with_guix_config('git'),
     },
+    glibc => {
+        with_guix_config('glibc'),
+    },
     icecat => {
         with_guix_config('icecat'),
     },
