@@ -150,6 +150,13 @@ link_git : install_git
 configure_git_autocomplete :
 	curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
+.PHONY: configure_glibc
+configure_glibc : install_glibc
+
+.PHONY: install_glibc
+install_glibc :
+	$(call install_prog,glibc)
+
 .PHONY: install_haskell_platform
 install_haskell_platform :
 	  @$(call install_prog,haskell-platform)
@@ -263,7 +270,7 @@ install_vundle : install_git
 configure_xmonad : link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad : configure_gcc configure_ghc7
+install_xmonad : configure_gcc configure_ghc7 configure_glibc
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 	$(call install_prog,xterm)
