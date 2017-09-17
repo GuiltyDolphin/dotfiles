@@ -1,3 +1,6 @@
 import XMonad
 
-main = xmonad def
+main =
+    xmonad def {
+        modMask = mod4Mask  -- Rebind Mod to the 'Windows' key
+        }
