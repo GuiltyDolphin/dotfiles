@@ -383,6 +383,9 @@ my %software_config = (
         installed => q_version('cpanm'),
         update    => \&cpanm_update,
     },
+    dmenu => {
+        with_guix_config('dmenu'),
+    },
     eclim => {
         install   => \&eclim_install,
         installed => query_noerr('eclimd', '-version'),

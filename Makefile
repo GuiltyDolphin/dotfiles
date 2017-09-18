@@ -97,6 +97,13 @@ link_bash :
 install_cpanm :
 	$(call install_prog,cpanm)
 
+.PHONY: configure_dmenu
+configure_dmenu : install_dmenu
+
+.PHONY: install_dmenu
+install_dmenu :
+	$(call install_prog,dmenu)
+
 .PHONY: install_emacs
 install_emacs :
 	@$(call install_prog,emacs)
@@ -270,7 +277,7 @@ install_vundle : install_git
 configure_xmonad : link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad : configure_gcc configure_ghc7 configure_glibc
+install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 	$(call install_prog,xterm)
