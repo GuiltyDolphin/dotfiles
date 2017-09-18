@@ -1,3 +1,8 @@
+# Load custom .Xresources settings
+if [ -f ~/.Xresources ]; then
+  xrdb -merge -I$HOME ~/.Xresources
+fi
+
 ################################################
 #               Keyboard Layout                #
 #                                              #

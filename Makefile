@@ -58,7 +58,7 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 .PHONY: configure_display
-configure_display : configure_x_keyboard configure_xmonad configure_xset
+configure_display : configure_x_keyboard configure_xmonad configure_xrdb configure_xset
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -285,6 +285,13 @@ install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc
 .PHONY: link_xmonad
 link_xmonad : install_xmonad
 	$(call linkf,x/.xmonad/xmonad.hs,.xmonad/xmonad.hs)
+
+.PHONY: configure_xrdb
+configure_xrdb : install_xrdb
+
+.PHONY: install_xrdb
+install_xrdb :
+	$(call install_prog,xrdb)
 
 .PHONY: configure_xset
 configure_xset : install_xset

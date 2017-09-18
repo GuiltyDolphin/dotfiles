@@ -464,6 +464,9 @@ my %software_config = (
     xmonad_contrib => {
         with_guix_config('ghc-xmonad-contrib'),
     },
+    xrdb => {
+        with_guix_config('xrdb'),
+    },
     xset => {
         with_guix_config('xset'),
     },
