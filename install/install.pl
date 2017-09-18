@@ -458,6 +458,9 @@ my %software_config = (
     vim => {
         with_guix_config('vim'),
     },
+    xinit => {
+        with_guix_config('xinit'),
+    },
     xmobar => {
         with_guix_config('xmobar'),
     },

@@ -58,7 +58,7 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 .PHONY: configure_display
-configure_display : configure_x_keyboard configure_xmonad configure_xrdb configure_xset
+configure_display : configure_x_keyboard configure_xinit configure_xmonad configure_xrdb configure_xset
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -272,6 +272,18 @@ install_vundle : install_git
 	@mkdir $(vundle_dir) -p
 	@[ -e "$(vundle_dir)/Vundle.vim" ] \
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
+
+.PHONY: configure_xinit
+configure_xinit : link_xinit
+
+.PHONY: install_xinit
+install_xinit :
+	$(call install_prog,xinit)
+
+.PHONY: link_xinit
+link_xinit : install_xinit
+	$(call linkf,x/.xserverrc,.xserverrc)
+	$(call linkf,x/.xinitrc,.xinitrc)
 
 .PHONY: configure_xmobar
 configure_xmobar : link_xmobar
