@@ -58,7 +58,7 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 .PHONY: configure_display
-configure_display : configure_x_keyboard configure_xinit configure_xmonad configure_xrdb configure_xset
+configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad configure_xrdb configure_xset
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -251,6 +251,13 @@ install_tmuxinator : install_ruby1.9.1
 link_tmuxinator : install_tmuxinator
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
 
+.PHONY: configure_urxvt
+configure_urxvt : install_urxvt
+
+.PHONY : install_urxvt
+install_urxvt :
+	$(call install_prog,urxvt)
+
 .PHONY: install_vim
 install_vim :
 	$(call install_prog,vim)
@@ -303,7 +310,6 @@ configure_xmonad : link_xmonad
 install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc configure_xmobar
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
-	$(call install_prog,xterm)
 
 .PHONY: link_xmonad
 link_xmonad : install_xmonad

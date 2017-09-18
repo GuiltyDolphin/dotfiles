@@ -7,5 +7,6 @@ main = xmonad =<< xmobar myConfig
 myConfig = def
     { manageHook = manageDocks <+> manageHook def
     , layoutHook = avoidStruts  $  layoutHook def
+    , terminal   = "urxvt"
     , modMask    = mod4Mask  -- Rebind Mod to the 'Windows' key
     }

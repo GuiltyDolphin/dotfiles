@@ -455,6 +455,9 @@ my %software_config = (
     tmuxinator => {
         with_gem_config('tmuxinator', version => '1.9.1'),
     },
+    urxvt => {
+        with_guix_config('rxvt-unicode'),
+    },
     vim => {
         with_guix_config('vim'),
     },
@@ -475,9 +478,6 @@ my %software_config = (
     },
     xset => {
         with_guix_config('xset'),
-    },
-    xterm => {
-        with_guix_config('xterm'),
     },
 );
 
