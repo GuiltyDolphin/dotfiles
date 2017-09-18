@@ -273,11 +273,22 @@ install_vundle : install_git
 	@[ -e "$(vundle_dir)/Vundle.vim" ] \
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
+.PHONY: configure_xmobar
+configure_xmobar : link_xmobar
+
+.PHONY: install_xmobar
+install_xmobar :
+	$(call install_prog,xmobar)
+
+.PHONY: link_xmobar
+link_xmobar : install_xmobar
+	$(call linkf,x/.xmobarrc,.xmobarrc)
+
 .PHONY: configure_xmonad
 configure_xmonad : link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc
+install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc configure_xmobar
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 	$(call install_prog,xterm)
