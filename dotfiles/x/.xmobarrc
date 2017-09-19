@@ -2,8 +2,9 @@ Config
     { position = TopW L 100
     , commands =
       [ Run Memory ["-t", "Mem: <usedratio>%"] 10
+      , Run Battery [] 10
       , Run StdinReader
       ]
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %date% %memory%"
+    , template = "%StdinReader% }{ %date% %memory% %battery%"
     }
