@@ -416,7 +416,7 @@ See `evil-set-initial-state'."
     "z" 'magit-jump-to-stashes)
   (evil-define-key '(motion normal) magit-mode-map
     (kbd "TAB") 'magit-section-toggle
-    (kbd "RET") 'magit-visit-item
+    (kbd "RET") 'magit-visit-thing
     (kbd "z o") 'magit-show-section
     (kbd "z c") 'magit-hide-section
     "{" 'magit-goto-previous-section
