@@ -821,9 +821,6 @@ made in that buffer."
   (evil-define-minor-mode-key 'motion 'eclim-mode
     "gd" 'eclim-java-find-declaration)
   (global-eclim-mode))
-
-(defvar my-jump-map (make-sparse-keymap)
-  "Keymap for jumping around.")
 #+END_SRC
 
 ** Erlang
@@ -840,13 +837,6 @@ made in that buffer."
 (use-package prolog
   :config
   (customize-set-variable 'prolog-system 'swi))
-
-(emaps-define-key my-jump-map
-  "p" 'evil-switch-to-windows-last-buffer
-  "t" 'eshell
-  "i" 'my-find-user-init-file)
-
-(evil-leader/set-key "g" my-jump-map)
 
 (defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
   "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
@@ -878,4 +868,20 @@ made in that buffer."
   (define-key keymap-from key nil))
 
 (my-move-key evil-motion-state-map evil-normal-state-map " ")
+#+END_SRC
+
+** Other Config
+
+*** Bindings
+
+#+BEGIN_SRC emacs-lisp
+(defvar my-jump-map (make-sparse-keymap)
+  "Keymap for jumping around.")
+
+(emaps-define-key my-jump-map
+  "p" 'evil-switch-to-windows-last-buffer
+  "t" 'eshell
+  "i" 'my-find-user-init-file)
+
+(evil-leader/set-key "g" my-jump-map)
 #+END_SRC
