@@ -153,9 +153,12 @@ install_git :
 link_git : install_git
 	$(call linkf,git/.gitconfig,.gitconfig)
 
+git_completion_target=~/.git-completion.bash
 .PHONY: configure_git_autocomplete
 configure_git_autocomplete :
-	curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+	@if [ ! -f $(git_completion_target) ]; then \
+	echo "Downloading git completion file" \
+		&& curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o $(git_completion_target); fi
 
 .PHONY: configure_glibc
 configure_glibc : install_glibc
