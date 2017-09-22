@@ -251,8 +251,9 @@ install_tmuxinator : install_ruby1.9.1
 link_tmuxinator : install_tmuxinator
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
 
+# Inconsolata is preferred terminal font.
 .PHONY: configure_urxvt
-configure_urxvt : install_urxvt
+configure_urxvt : install_font_inconsolata install_urxvt
 
 .PHONY : install_urxvt
 install_urxvt :
