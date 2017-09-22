@@ -58,7 +58,8 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 .PHONY: configure_display
-configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad configure_xrdb configure_xset
+configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
+	configure_xrdb configure_xset link_xresources
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -325,6 +326,10 @@ configure_xrdb : install_xrdb
 .PHONY: install_xrdb
 install_xrdb :
 	$(call install_prog,xrdb)
+
+.PHONY: link_xresources
+link_xresources :
+	$(call linkf,x/.Xresources,.Xresources)
 
 .PHONY: configure_xset
 configure_xset : install_xset
