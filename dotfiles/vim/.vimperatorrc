@@ -16,6 +16,12 @@ map , <leader>
 nnoremap H h
 nnoremap L l
 
+""""""""""""
+"  SEARCH  "
+""""""""""""
+
+" Use DuckDuckGo as default search engine
+set defsearch=duckduckgo
 
 """"""""""""""""""
 "  VIMPERATORRC  "
