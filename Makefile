@@ -88,6 +88,14 @@ configure_web : install_icecat link_vimperator
 
 # Individual Programs
 
+.PHONY: configure_aspell
+configure_aspell : install_aspell
+
+.PHONY: install_aspell
+install_aspell :
+	$(call install_prog,aspell)
+	$(call install_prog,aspell-dict-en)
+
 .PHONY: link_bash
 link_bash :
 	@$(call linkf,bash/.bash,.bash)
@@ -109,11 +117,12 @@ install_dmenu :
 install_emacs :
 	@$(call install_prog,emacs)
 
+# Requires aspell for spell checking
 # Requires mercurial for 'evil'
 # Requires mu for e-mail
 # Requires Inconsolata font (used as font in Emacs)
 .PHONY: configure_emacs
-configure_emacs : configure_mu install_font_inconsolata install_mercurial link_emacs
+configure_emacs : configure_aspell configure_mu install_font_inconsolata install_mercurial link_emacs
 
 .PHONY: link_emacs
 link_emacs : install_emacs

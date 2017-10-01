@@ -375,6 +375,12 @@ sub git_clone {
 #######################################################################
 
 my %software_config = (
+    aspell => {
+        with_guix_config('aspell'),
+    },
+    'aspell-dict-en' => {
+        with_guix_config('aspell-dict-en'),
+    },
     apache_ant => {
         with_guix_config('ant'),
     },
