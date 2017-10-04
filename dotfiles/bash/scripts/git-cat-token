@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# Script for producing a (locally-stored) personal access token
+# for use in Git authentication.
+
+# The following determines the resolution of the PAT:
+#
+# If the GIT_PAT environment variable exists (and is not empty)
+# then it is used as the value for the PAT.
+#
+# Otherwise, if the GIT_PAT_FILE environment variable exists
+# it is treated as a path to a file containing the PAT,
+# otherwise, the file '~/.auth/git/pat/token' is used.
+
+if [ -n "$GIT_PAT" ]; then
+  echo $GIT_PAT
+  exit 0
+fi
+
+PAT_FILE=$GIT_PAT_FILE
+if [ -n "$GIT_PAT_FILE" ]; then
+  PAT_FILE="$GIT_PAT_FILE"
+else
+  PAT_FILE=$HOME/.auth/git/pat/token
+fi
+
+cat $PAT_FILE

@@ -5,6 +5,7 @@
   editor = vim
   autocrlf = input
   safecrlf = true
+  askPass = git-cat-token
 [merge]
   tool = vimdiff
 [gc]
