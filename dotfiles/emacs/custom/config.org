@@ -476,37 +476,19 @@ See `evil-set-initial-state'."
 (use-package mu4e)
 #+END_SRC
 
-** Lisp
+** Programming Languages
+
+*** Erlang
 
 #+BEGIN_SRC emacs-lisp
-(setq inferior-lisp-program (executable-find "sbcl"))
-#+END_SRC
-
-*** eldoc
-
-#+BEGIN_SRC emacs-lisp
-(global-eldoc-mode)
-#+END_SRC
-
-*** slime
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/el-get/slime")
-(use-package slime-autoloads)
-(use-package slime
+(use-package erlang
   :config
-  (slime-setup '(slime-fancy)))
+  (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
 #+END_SRC
 
-** Python
+*** Haskell
 
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
-#+END_SRC
-
-** Haskell
-
-*** haskell-mode
+**** haskell-mode
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path (my-el-dir "ghc-mod/elisp"))
@@ -525,9 +507,9 @@ See `evil-set-initial-state'."
   (customize-set-variable 'haskell-interactive-popup-errors nil))
 #+END_SRC
 
-** Idris
+*** Idris
 
-*** idris-mode
+**** idris-mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package idris-mode
@@ -538,6 +520,99 @@ See `evil-set-initial-state'."
     "l" 'idris-make-lemma
     "p" 'idris-proof-search
     "t" 'idris-type-at-point))
+#+END_SRC
+
+*** Java
+
+**** eclim
+
+#+BEGIN_SRC emacs-lisp
+(defvar my-software-directory (file-name-as-directory (file-truename "~/software"))
+  "Directory under which custom software installations are located.")
+
+(defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
+  "Directory for eclipse installation.")
+
+(defun my-eclim-run-tests ()
+  "Run tests via Maven in an Eclim project."
+  (interactive)
+  (eclim-maven-run "test"))
+
+(use-package eclim
+  :init
+  (defvar my-eclim-find-map (make-sparse-keymap)
+    "Keymap for finding things in `eclim-mode'.")
+  (defvar my-eclim-refactor-map (make-sparse-keymap)
+    "Keymap for refactoring in `eclim-mode'.")
+  :config
+  (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
+  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
+  (emaps-define-key my-eclim-find-map
+    "d" 'eclim-java-find-declaration
+    "g" 'eclim-java-find-generic
+    "r" 'eclim-java-find-references
+    "t" 'eclim-java-find-type)
+  (emaps-define-key my-eclim-refactor-map
+    "r" 'eclim-java-refactor-rename-symbol-at-point)
+  (evil-local-leader/set-key-for-mode 'java-mode
+    "f" my-eclim-find-map
+    "r" my-eclim-refactor-map)
+  (evil-local-leader/set-key-for-mode 'java-mode
+    "rt" 'my-eclim-run-tests)
+  (evil-define-minor-mode-key 'motion 'eclim-mode
+    "gd" 'eclim-java-find-declaration)
+  (global-eclim-mode))
+#+END_SRC
+
+*** Lisp
+
+#+BEGIN_SRC emacs-lisp
+(setq inferior-lisp-program (executable-find "sbcl"))
+#+END_SRC
+
+**** eldoc
+
+#+BEGIN_SRC emacs-lisp
+(global-eldoc-mode)
+#+END_SRC
+
+**** slime
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/el-get/slime")
+(use-package slime-autoloads)
+(use-package slime
+  :config
+  (slime-setup '(slime-fancy)))
+#+END_SRC
+
+*** Prolog
+
+#+BEGIN_SRC emacs-lisp
+(use-package prolog
+  :config
+  (customize-set-variable 'prolog-system 'swi))
+
+(defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
+  "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
+  (let ((major-mode-map-symbol (intern (concat (symbol-name major-mode) "-map"))))
+    (when (boundp major-mode-map-symbol)
+      (let ((major-mode-map (symbol-value major-mode-map-symbol))
+            (local-major-bindings (evil-local-leader/bindings-for-mode major-mode)))
+        (map-keymap
+         (lambda (key def)
+           (-if-let (key (and (characterp key) (char-to-string key)))
+               (unless (and local-major-bindings (lookup-key local-major-bindings key))
+                 (evil-local-leader/set-key-for-mode major-mode key def))))
+         major-mode-map)))))
+
+(add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
+#+END_SRC
+
+*** Python
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
 #+END_SRC
 
 ** Completion
@@ -783,79 +858,6 @@ made in that buffer."
    'cperl-continued-statement-offset cperl-indent-level)
   (customize-set-variable 'cperl-indent-parens-as-block t
                           "Ensure nice indentation after parens."))
-#+END_SRC
-
-** Java
-
-*** eclim
-
-#+BEGIN_SRC emacs-lisp
-(defvar my-software-directory (file-name-as-directory (file-truename "~/software"))
-  "Directory under which custom software installations are located.")
-
-(defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
-  "Directory for eclipse installation.")
-
-(defun my-eclim-run-tests ()
-  "Run tests via Maven in an Eclim project."
-  (interactive)
-  (eclim-maven-run "test"))
-
-(use-package eclim
-  :init
-  (defvar my-eclim-find-map (make-sparse-keymap)
-    "Keymap for finding things in `eclim-mode'.")
-  (defvar my-eclim-refactor-map (make-sparse-keymap)
-    "Keymap for refactoring in `eclim-mode'.")
-  :config
-  (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
-  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
-  (emaps-define-key my-eclim-find-map
-    "d" 'eclim-java-find-declaration
-    "g" 'eclim-java-find-generic
-    "r" 'eclim-java-find-references
-    "t" 'eclim-java-find-type)
-  (emaps-define-key my-eclim-refactor-map
-    "r" 'eclim-java-refactor-rename-symbol-at-point)
-  (evil-local-leader/set-key-for-mode 'java-mode
-    "f" my-eclim-find-map
-    "r" my-eclim-refactor-map)
-  (evil-local-leader/set-key-for-mode 'java-mode
-    "rt" 'my-eclim-run-tests)
-  (evil-define-minor-mode-key 'motion 'eclim-mode
-    "gd" 'eclim-java-find-declaration)
-  (global-eclim-mode))
-#+END_SRC
-
-** Erlang
-
-#+BEGIN_SRC emacs-lisp
-(use-package erlang
-  :config
-  (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
-#+END_SRC
-
-** Prolog
-
-#+BEGIN_SRC emacs-lisp
-(use-package prolog
-  :config
-  (customize-set-variable 'prolog-system 'swi))
-
-(defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
-  "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
-  (let ((major-mode-map-symbol (intern (concat (symbol-name major-mode) "-map"))))
-    (when (boundp major-mode-map-symbol)
-      (let ((major-mode-map (symbol-value major-mode-map-symbol))
-            (local-major-bindings (evil-local-leader/bindings-for-mode major-mode)))
-        (map-keymap
-         (lambda (key def)
-           (-if-let (key (and (characterp key) (char-to-string key)))
-               (unless (and local-major-bindings (lookup-key local-major-bindings key))
-                 (evil-local-leader/set-key-for-mode major-mode key def))))
-         major-mode-map)))))
-
-(add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
 #+END_SRC
 
 ** Other Config
