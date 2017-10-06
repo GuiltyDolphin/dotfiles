@@ -6,5 +6,5 @@ Config
       , Run StdinReader
       ]
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %date% %memory% %battery%"
+    , template = "%StdinReader% }{ %date% | %memory% | %battery%"
     }
