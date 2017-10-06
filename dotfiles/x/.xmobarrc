@@ -2,9 +2,10 @@ Config
     { position = TopW L 100
     , commands =
       [ Run Memory ["-t", "Mem: <usedratio>%"] 10
+      , Run MultiCpu ["-t", "CPU: <autovbar>"] 10
       , Run Battery [] 10
       , Run StdinReader
       ]
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %date% | %memory% | %battery%"
+    , template = "%StdinReader% }{ %date% | %memory% | %multicpu% | %battery%"
     }
