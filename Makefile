@@ -32,8 +32,8 @@ configure_dev_heavy : configure_emacs
 
 # All language development
 .PHONY: configure_dev_language_all
-configure_dev_language_all : configure_dev_haskell configure_dev_idris \
-	configure_dev_perl configure_dev_ruby
+configure_dev_language_all : configure_dev_java configure_dev_haskell \
+	configure_dev_idris configure_dev_perl configure_dev_ruby
 
 # Haskell development
 .PHONY: configure_dev_haskell
@@ -42,6 +42,10 @@ configure_dev_haskell : configure_dev install_haskell_platform link_ghci
 # Idris development
 .PHONY: configure_dev_idris
 configure_dev_idris : install_idris
+
+# Java development
+.PHONY: configure_dev_java
+configure_dev_java : configure_eclim configure_emacs configure_jdk
 
 # Perl development
 .PHONY: configure_dev_perl
@@ -88,6 +92,13 @@ configure_web : install_icecat link_vimperator
 
 # Individual Programs
 
+.PHONY: configure_apache_ant
+configure_apache_ant : install_apache_ant
+
+.PHONY: install_apache_ant
+install_apache_ant :
+	$(call install_prog,apache_ant)
+
 .PHONY: configure_aspell
 configure_aspell : install_aspell
 
@@ -112,6 +123,20 @@ configure_dmenu : install_dmenu
 .PHONY: install_dmenu
 install_dmenu :
 	$(call install_prog,dmenu)
+
+.PHONY: configure_eclim
+configure_eclim : configure_apache_ant configure_eclipse install_eclim
+
+.PHONY: install_eclim
+install_eclim :
+	$(call install_prog,eclim)
+
+.PHONY: configure_eclipse
+configure_eclipse : install_eclipse
+
+.PHONY: install_eclipse
+install_eclipse :
+	$(call install_prog,eclipse)
 
 .PHONY: install_emacs
 install_emacs :
@@ -185,6 +210,10 @@ install_haskell_platform :
 install_icecat :
 	@$(call install_prog,icecat)
 
+.PHONY: install_icedtea_jdk
+install_icedtea_jdk :
+	$(call install_prog,icedtea_jdk)
+
 .PHONY: install_idris
 install_idris :
 	@$(call install_prog,idris)
@@ -192,6 +221,9 @@ install_idris :
 .PHONY: link_irb
 link_irb : install_ruby1.9.1
 	@$(call linkf,ruby/.irbrc,.irbrc)
+
+.PHONY: configure_jdk
+configure_jdk : install_icedtea_jdk
 
 .PHONY: install_mercurial
 install_mercurial : install_pip

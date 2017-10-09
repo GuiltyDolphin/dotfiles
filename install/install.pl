@@ -421,6 +421,9 @@ my %software_config = (
     icecat => {
         with_guix_config('icecat'),
     },
+    icedtea_jdk => {
+        with_guix_config('icedtea:jdk'),
+    },
     idris => {
         with_guix_config('idris'),
     },
