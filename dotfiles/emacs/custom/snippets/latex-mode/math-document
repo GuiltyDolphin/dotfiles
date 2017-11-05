@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: math-document
+# key: docmath
+# --
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{$1}
+\author{${2:`user-full-name`}}
+\maketitle
+
+$0
+
+\end{document}
