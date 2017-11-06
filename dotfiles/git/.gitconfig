@@ -16,6 +16,7 @@
   br = branch
   cb = checkout -b
   ci = commit
+  cia = commit --amend
   cian = commit --amend --no-edit
   cim = commit -m
   co = checkout
