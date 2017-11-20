@@ -80,6 +80,12 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
+(defvar my-el-get-custom-recipe-directory
+  (file-name-as-directory (locate-user-emacs-file "custom/el-get/recipes/"))
+  "Directory containing custom el-get recipes.")
+
+(add-to-list 'el-get-recipe-path my-el-get-custom-recipe-directory)
+
 (setq my:el-get-packages
   '(auto-complete
     color-theme-solarized
