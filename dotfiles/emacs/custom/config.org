@@ -113,6 +113,7 @@
     prompts
     slime
     use-package
+    web-mode
     yasnippet))
 
 (el-get 'sync my:el-get-packages)
@@ -475,6 +476,20 @@ See `evil-set-initial-state'."
 (emaps-define-key help-map
   (kbd "C-e") 'evil-scroll-line-down
   (kbd "C-y") 'evil-scroll-line-up)
+#+END_SRC
+
+*** web-mode
+
+#+BEGIN_SRC emacs-lisp
+(defvar my-web-mode-extensions
+  (--map (format "\\.%s\\'" it)
+         '("phtml" "tpl\\.php" "[agj]sp" "as[cp]x" "erb" "mustache" "djhtml" "html?"))
+  "Extensions that should use 'web-mode.")
+
+(use-package web-mode
+  :init
+  (dolist (extension my-web-mode-extensions)
+    (add-to-list 'auto-mode-alist (cons extension 'web-mode))))
 #+END_SRC
 
 ** Email
