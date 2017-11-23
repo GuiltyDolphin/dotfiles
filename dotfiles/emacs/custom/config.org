@@ -33,9 +33,9 @@
 
 (display-time-mode t) ; Allow displaying of time in mode line
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default tab-stop-list '(4 8 12))
+(customize-set-variable 'indent-tabs-mode nil)
+(customize-set-variable 'tab-width 4)
+(customize-set-variable 'tab-stop-list '(4 8 12))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
