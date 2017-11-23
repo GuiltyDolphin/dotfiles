@@ -34,6 +34,7 @@
 (display-time-mode t) ; Allow displaying of time in mode line
 
 (customize-set-variable 'indent-tabs-mode nil)
+(customize-set-variable 'standard-indent 4)
 (customize-set-variable 'tab-width 4)
 (customize-set-variable 'tab-stop-list '(4 8 12))
 
