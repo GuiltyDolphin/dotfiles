@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: aligned
+# key: aligned
+# group: math
+# --
+\begin{aligned}
+	$0
+\end{aligned}
