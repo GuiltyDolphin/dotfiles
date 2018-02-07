@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Fetch a webpage recursively, converting links suitable for local viewing.
+
+wget -rkl 50 $1
