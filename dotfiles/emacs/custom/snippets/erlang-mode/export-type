@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: -export_type([]).
+# key: expt
+# group: export
+# --
+-export_type([${1:type/0}]).
+$0
