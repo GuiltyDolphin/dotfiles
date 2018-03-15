@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: spawn/3
+# key: spawn
+# group: function
+# --
+spawn(${1:?MODULE}, ${2:function}, [$3])$0
