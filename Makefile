@@ -237,6 +237,10 @@ install_mu :
 .PHONY: configure_mu
 configure_mu : configure_offlineimap install_mu
 
+.PHONY: link_npm
+link_npm :
+	@$(call linkf,node/.npmrc,.npmrc)
+
 .PHONY: install_offlineimap
 install_offlineimap :
 	@$(call install_prog,offlineimap)
