@@ -32,8 +32,13 @@ configure_dev_heavy : configure_emacs
 
 # All language development
 .PHONY: configure_dev_language_all
-configure_dev_language_all : configure_dev_java configure_dev_haskell \
-	configure_dev_idris configure_dev_perl configure_dev_ruby
+configure_dev_language_all : \
+	configure_dev_haskell \
+	configure_dev_idris \
+	configure_dev_java \
+	configure_dev_javascript \
+	configure_dev_perl \
+	configure_dev_ruby
 
 # Haskell development
 .PHONY: configure_dev_haskell
@@ -46,6 +51,10 @@ configure_dev_idris : install_idris
 # Java development
 .PHONY: configure_dev_java
 configure_dev_java : configure_eclim configure_emacs configure_jdk
+
+# JavaScript development
+.PHONY: configure_dev_javascript
+configure_dev_javascript : configure_node
 
 # Perl development
 .PHONY: configure_dev_perl
