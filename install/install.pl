@@ -436,6 +436,9 @@ my %software_config = (
     mu => {
         with_guix_config('mu'),
     },
+    node => {
+        with_guix_config('node'),
+    },
     offlineimap => {
         with_guix_config('offlineimap'),
     },
