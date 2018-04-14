@@ -427,6 +427,9 @@ my %software_config = (
     idris => {
         with_guix_config('idris'),
     },
+    libreoffice => {
+        with_guix_config('libreoffice'),
+    },
     mercurial => {
         with_guix_config('mercurial'),
     },

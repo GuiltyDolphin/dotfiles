@@ -74,11 +74,16 @@ configure_keyboard : install_setxkbmap
 configure_scripts : link_scripts
 
 # Misc tools
+# libreoffice as an office suite
 # Owncloud-desktop for file backup and syncing.
 # Shutter for screenshots.
 # Tmuxinator for Tmux session config.
 .PHONY: configure_tools
-configure_tools : install_owncloud_desktop install_shutter link_tmuxinator
+configure_tools : \
+	configure_libreoffice \
+	install_owncloud_desktop \
+	install_shutter \
+	link_tmuxinator
 
 # Better user experience (personal tools)
 .PHONY: configure_user_all
@@ -224,6 +229,13 @@ link_irb : install_ruby1.9.1
 
 .PHONY: configure_jdk
 configure_jdk : install_icedtea_jdk
+
+.PHONY: configure_libreoffice
+configure_libreoffice : install_libreoffice
+
+.PHONY: install_libreoffice
+install_libreoffice :
+	@$(call install_prog,libreoffice)
 
 .PHONY: install_mercurial
 install_mercurial : install_pip
