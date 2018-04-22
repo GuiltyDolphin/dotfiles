@@ -26,6 +26,12 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
+
+;;; This needs to be before loading config.org so I don't have to give
+;;; permission to load the file when it is symlinked.
+(customize-set-variable
+ 'vc-follow-symlinks t "Follow Symlinks without asking")
+
 (org-babel-load-file (locate-user-emacs-file "config.org"))
 
 ;;; init.el ends here
