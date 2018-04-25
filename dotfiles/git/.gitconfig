@@ -6,6 +6,8 @@
   autocrlf = input
   safecrlf = true
   askPass = git-cat-token
+[log]
+  date = iso
 [merge]
   tool = vimdiff
 [gc]
