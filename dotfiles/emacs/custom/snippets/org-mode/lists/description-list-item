@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: description-list-item
+# group: lists
+# key: +:
+# --
++ $1 :: $0
