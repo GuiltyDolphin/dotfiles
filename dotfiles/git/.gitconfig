@@ -30,5 +30,7 @@
   qlog = log --pretty=oneline
   ri = rebase -i
   st = status
+  swords = diff --staged --word-diff
   type = cat-file -t
   unstage = reset HEAD --
+  words = diff --word-diff
