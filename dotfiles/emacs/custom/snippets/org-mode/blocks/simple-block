@@ -3,6 +3,6 @@
 # group: blocks
 # key: begin
 # --
-#+BEGIN_${1:block$(upcase yas-text)} $2
+#+BEGIN${1:$(unless (string-empty-p yas-text) "_")}${1:$$(upcase yas-text)} $2
 $0
 #+END_$1
