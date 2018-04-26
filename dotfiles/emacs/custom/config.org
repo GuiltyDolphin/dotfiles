@@ -419,6 +419,7 @@ See `evil-set-initial-state'."
   (emaps-define-key my-evil-leader-magit-map
     "b" 'magit-branch-manager
     "d" 'magit-diff-working-tree
+    "l" 'magit-log
     "s" 'magit-status)
   (emaps-define-key my-magit-section-jump-map
     "s" 'magit-jump-to-staged
