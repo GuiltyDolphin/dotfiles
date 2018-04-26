@@ -1,0 +1,139 @@
+#!/usr/bin/env perl
+
+# Rename music files to the format
+# artist/album/part--track--name.ext
+
+use Path::Tiny;
+
+############
+# Printing #
+############
+
+my $DEBUG;
+
+sub info {
+    my ($info) = @_;
+    print "$info\n";
+}
+
+sub debug {
+    my ($debug) = @_;
+    print "DEBUG: $debug\n" if $DEBUG;
+}
+
+sub error {
+    my ($error, $code) = @_;
+    print "ERROR: $error\n" and exit ($code // 1);
+}
+
+######################
+# Main Functionality #
+######################
+
+sub get_exif_tag {
+    my ($file, $tag) = @_;
+    chomp (my $tagval = `exiftool -T -$tag '$file'`);
+    $tagval;
+}
+
+sub get_track_meta {
+    my ($file) = @_;
+
+    my $get_tag = sub {
+        my ($tag) = @_;
+        get_exif_tag($file, $tag)
+            or die "Could not retrieve '$tag' for '$file'\n";
+    };
+    return (
+        title     => $get_tag->('title'),
+        artist    => $get_tag->('artist'),
+        album     => $get_tag->('album'),
+        track_no  => $get_tag->('track') =~ s/\/.*$//r,
+        part      => $get_tag->('partOfSet') =~ s/\/.*$//r,
+        extension => $get_tag->('fileTypeExtension'),
+    );
+}
+
+sub get_final_track_path {
+    my ($pdir, %meta) = @_;
+    debug "artist: $meta{artist}, album: $meta{album}";
+    my $album_path = path($pdir, $meta{artist}, $meta{album});
+    my $name =
+        "$meta{part}--$meta{track_no}--" .
+        "$meta{title}.$meta{extension}";
+    return path($album_path, $name);
+}
+
+sub move_track {
+    my ($pdir, $track_file, $do_copy) = @_;
+    my $destination = get_final_track_path(
+        $pdir, get_track_meta($track_file)
+    ) or error("Could not determine destination path for " .
+               "'$track_file'");
+    info "$track_file -> $destination";
+    $destination->parent->mkpath;
+    if ($do_copy) {
+        path($track_file)->copy($destination);
+    } else {
+        path($track_file)->move($destination);
+    }
+}
+
+sub get_files {
+    my @args = @_;
+    my @files = @args;
+
+    @files = glob "'$args[0]'" if @files == 1;
+    return @files;
+}
+
+###########
+# Program #
+###########
+
+use Getopt::Long::Descriptive;
+
+my ($opt, $usage) = describe_options(
+    'correct-track %o',
+    [ "target-dir|t=s",
+      "directory to keep artist subdirectories", {
+          default => $ENV{PWD},
+      } ],
+    [ 'copy|c', "copy files only, don't move" ],
+    [],
+    [ 'debug', 'print debugging information' ],
+    [ 'help', 'print usage information' ],
+);
+
+sub help {
+    info $usage->text and exit;
+}
+
+help if $opt->help;
+
+$DEBUG = $opt->{debug};
+
+sub usage_err {
+    info $usage->text and exit 1;
+}
+
+my @files = get_files(@ARGV)
+    or usage_err;
+
+my $dest_dir = path($opt->{target_dir})->realpath;
+
+my $COPY = $opt->{copy}
+    and debug "Copy flag set";
+
+debug "Target directory: $dest_dir";
+
+my $mover = sub {
+    my ($file) = @_;
+    move_track($dest_dir, $file, $COPY);
+};
+
+foreach my $file (@files) {
+    debug "Correcting track path for: $file";
+    -f $file or error "No such file: $file";
+    $mover->($file);
+}
