@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: simple block
+# name: simple-block
+# group: blocks
 # key: begin
 # --
 #+BEGIN_${1:block$(upcase yas-text)} $2
