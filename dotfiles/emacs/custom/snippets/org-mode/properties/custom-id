@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: custom-id
+# key: custid
+# group: properties
+# --
+:PROPERTIES:
+:CUSTOM_ID:	$1
+:END:
+
+$0
