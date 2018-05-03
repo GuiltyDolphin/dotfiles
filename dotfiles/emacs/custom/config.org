@@ -417,7 +417,7 @@ See `evil-set-initial-state'."
     "m" my-evil-leader-magit-map)
   :config
   (emaps-define-key my-evil-leader-magit-map
-    "b" 'magit-branch-manager
+    "b" 'magit-show-refs-popup
     "d" 'magit-diff-working-tree
     "l" 'magit-log
     "s" 'magit-status)
@@ -428,19 +428,19 @@ See `evil-set-initial-state'."
   (evil-define-key '(motion normal) magit-mode-map
     (kbd "TAB") 'magit-section-toggle
     (kbd "RET") 'magit-visit-thing
-    (kbd "z o") 'magit-show-section
-    (kbd "z c") 'magit-hide-section
-    "{" 'magit-goto-previous-section
-    "}" 'magit-goto-next-section)
+    (kbd "z o") 'magit-section-show
+    (kbd "z c") 'magit-section-hide
+    "{" 'magit-section-backward
+    "}" 'magit-section-forward)
   (evil-define-key 'visual magit-mode-map
-    "s" 'magit-stage-item
-    "u" 'magit-unstage-item)
+    "s" 'magit-stage
+    "u" 'magit-unstage)
   (evil-define-key 'motion magit-status-mode-map
     "g" my-magit-section-jump-map)
   (my-evil-set-initial-state-modes 'motion
-    'magit-branch-manager-mode
+    'magit-refs-mode
     'magit-status-mode
-    'magit-commit-mode
+    'magit-revision-mode
     'magit-diff-mode
     'magit-log-mode))
 
