@@ -787,7 +787,7 @@ See `evil-set-initial-state'."
           ("c" "Calendar")
           ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
            "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
-          ("j" "Journal" entry (file+datetree ,(my-org-subdir "journal.org"))
+          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
            "* %? %^G\n\nEntered on %U\n%i")
           ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
            "* %? :NOTE:\n%U\n%a")))
