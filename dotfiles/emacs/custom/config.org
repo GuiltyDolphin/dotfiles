@@ -213,10 +213,12 @@ BGMODE should be one of 'light or 'dark."
   (load-theme 'solarized t))
 
 (defun my-background-set-dark ()
+  (interactive)
   "Set the current background mode to 'dark."
   (my-background-set 'dark))
 
 (defun my-background-set-light ()
+  (interactive)
   "Set the current background mode to 'light."
   (my-background-set 'light))
 
