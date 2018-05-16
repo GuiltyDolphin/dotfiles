@@ -61,6 +61,15 @@
   (interactive)
   (find-file user-init-file))
 
+(defvar my-config-org-file
+  (locate-user-emacs-file "config.org")
+  "File name, including directory, of user's additional configuration file.")
+
+(defun my-find-user-config-file ()
+  "Find config file."
+  (interactive)
+  (find-file my-config-org-file))
+
 (defun my-reload-user-init-file ()
   "Evaluate the user's init.el file"
   (interactive)
@@ -893,13 +902,20 @@ made in that buffer."
 *** Bindings
 
 #+BEGIN_SRC emacs-lisp
+(defvar my-jump-init-files-map (make-sparse-keymap)
+  "Keymap for jumping to init files.")
+
+(emaps-define-key my-jump-init-files-map
+  "c" 'my-find-user-config-file
+  "i" 'my-find-user-init-file)
+
 (defvar my-jump-map (make-sparse-keymap)
   "Keymap for jumping around.")
 
 (emaps-define-key my-jump-map
+  "i" my-jump-init-files-map
   "p" 'evil-switch-to-windows-last-buffer
-  "t" 'eshell
-  "i" 'my-find-user-init-file)
+  "t" 'eshell)
 
 (evil-leader/set-key "g" my-jump-map)
 #+END_SRC
