@@ -28,6 +28,8 @@ my $user_distro;
 
 my $dotted_version_re = qr/(?:[0-9]+\.?)+/;
 
+my $semver_simple_re = qr/(?:(?:[0-9]+\.){2}(?:[0-9]+))/;
+
 sub dot_file { join '/', ($DOT_DIR, shift); }
 
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
@@ -296,6 +298,13 @@ sub version_latest_from_directory_url {
     return (sort @versions)[$#versions];
 }
 
+sub github_version_latest_from_tags {
+    my ($repo, $version_re) = @_;
+    return version_latest_from_directory_url(
+        "https://github.com/$repo/tags", $version_re,
+    );
+}
+
 ##########
 #  Guix  #
 ##########
@@ -386,6 +395,20 @@ my %software_config = (
     },
     apache_ant => {
         with_guix_config('ant'),
+    },
+    cask => {
+        install   => \&cask_install,
+        installed => q_which('cask'),
+        update    => \&cask_update,
+        version   => {
+            current => q_version('cask'),
+            latest  => sub {
+                github_version_latest_from_tags(
+                    'cask/cask',
+                    qr/v($semver_simple_re)/,
+                );
+            },
+        },
     },
     cpanm   => {
         install   => \&cpanm_install,
@@ -549,6 +572,23 @@ sub is_up_to_date {
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
     return ($comp >= 0);
+}
+
+########
+# Cask #
+########
+
+sub cask_install {
+    with_directory home() => sub {
+        sequence(
+            'curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python',
+        );
+        link_script_local(abs_path('.cask/bin/cask'), 'cask');
+    };
+}
+
+sub cask_update {
+    system('cask update-cask');
 }
 
 ###############

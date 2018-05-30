@@ -129,6 +129,17 @@ link_bash :
 	@$(call linkf,bash/.profile,.profile)
 	@$(call linkf,bash/.bash/.bashrc,.bashrc)
 
+.PHONY: configure_cask
+configure_cask : link_cask
+
+.PHONY: install_cask
+install_cask :
+	@$(call install_prog,cask)
+
+.PHONY: link_cask
+link_cask : install_cask
+	@$(call linkf,emacs/custom/Cask,.emacs.d/Cask)
+
 .PHONY: install_cpanm
 install_cpanm :
 	$(call install_prog,cpanm)
@@ -159,11 +170,12 @@ install_emacs :
 	@$(call install_prog,emacs)
 
 # Requires aspell for spell checking
+# Requires cask for some dependency management
 # Requires mercurial for 'evil'
 # Requires mu for e-mail
 # Requires Inconsolata font (used as font in Emacs)
 .PHONY: configure_emacs
-configure_emacs : configure_aspell configure_mu install_font_inconsolata install_mercurial link_emacs
+configure_emacs : configure_aspell configure_cask configure_mu install_font_inconsolata install_mercurial link_emacs
 
 .PHONY: link_emacs
 link_emacs : install_emacs
