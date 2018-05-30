@@ -121,6 +121,9 @@ pdfmkv() {
 #  Options  #
 #############
 
+# Support extended glob patterns
+shopt -s extglob
+
 # Allow ** to expand recursively.
 shopt -s globstar
 
