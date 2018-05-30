@@ -464,6 +464,18 @@ See `evil-set-initial-state'."
 (evil-set-initial-state 'git-commit-mode 'insert)
 #+END_SRC
 
+*** man
+
+#+BEGIN_SRC emacs-lisp
+  (use-package man
+    :config
+    (evil-set-initial-state 'Man-mode 'motion)
+
+    (evil-define-key 'motion Man-mode-map
+      "{" 'Man-previous-section
+      "}" 'Man-next-section))
+#+END_SRC
+
 *** flycheck
 
 #+BEGIN_SRC emacs-lisp
