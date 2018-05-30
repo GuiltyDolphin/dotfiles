@@ -26,7 +26,6 @@ sub success { $_[0] eq $OK }
 
 my $user_distro;
 
-my $software_directory = "$ENV{HOME}/software";
 
 my $dotted_version_re = qr/(?:[0-9]+\.?)+/;
 
@@ -35,6 +34,8 @@ sub dot_file { join '/', ($DOT_DIR, shift); }
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
 
 sub home { join '/', ($ENV{HOME}, shift); }
+
+my $software_directory = home('software');
 
 #######################################################################
 #                                DEBUG                                #
@@ -94,7 +95,7 @@ sub with_temp_dir (&) {
     with_directory $dir => $to_execute;
 }
 
-my $local_bin = "$ENV{HOME}/.local/bin";
+my $local_bin = home('.local/bin');
 
 sub link_script_local {
     my ($path, $name) = @_;
