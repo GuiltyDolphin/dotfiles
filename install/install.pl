@@ -26,14 +26,15 @@ sub success { $_[0] eq $OK }
 
 my $user_distro;
 
-
 my $dotted_version_re = qr/(?:[0-9]+\.?)+/;
 
 sub dot_file { join '/', ($DOT_DIR, shift); }
 
 sub un_dot { shift =~ s/^$DOT_DIR\/?//r }
 
-sub home { join '/', ($ENV{HOME}, shift); }
+my $HOME = $ENV{HOME};
+
+sub home { defined $_[0] ? join '/', ($HOME, $_[0]) : $HOME }
 
 my $software_directory = home('software');
 
