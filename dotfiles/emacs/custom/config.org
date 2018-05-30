@@ -78,6 +78,15 @@
 
 ** Packages
 
+*** cask
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (locate-user-emacs-file "cask/elpa"))
+
+  (require 'cask "~/.cask/cask.el")
+  (cask-initialize)
+#+END_SRC
+
 *** el-get
 
 #+BEGIN_SRC emacs-lisp
