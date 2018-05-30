@@ -83,12 +83,14 @@ configure_keyboard : install_setxkbmap
 configure_scripts : link_scripts
 
 # Misc tools
+# freemind for mind mapping
 # libreoffice as an office suite
 # Owncloud-desktop for file backup and syncing.
 # Shutter for screenshots.
 # Tmuxinator for Tmux session config.
 .PHONY: configure_tools
 configure_tools : \
+	configure_freemind \
 	configure_libreoffice \
 	install_owncloud_desktop \
 	install_shutter \
@@ -168,6 +170,14 @@ link_emacs : install_emacs
 	@$(call linkf,emacs/custom,.emacs.d/custom)
 	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
 	@$(call linkf,emacs/custom/config.org,.emacs.d/config.org)
+
+.PHONY: configure_freemind
+configure_freemind : link_freemind
+
+.PHONY: link_freemind
+link_freemind :
+	@$(call linkf,freemind/patterns.xml,.freemind/patterns.xml)
+	@$(call linkf,freemind/user.properties,.freemind/user.properties)
 
 .PHONY: configure_gcc
 configure_gcc : install_gcc
