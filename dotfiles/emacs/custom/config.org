@@ -87,60 +87,10 @@
   (cask-initialize)
 #+END_SRC
 
-*** el-get
+*** cl-lib
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-
-(unless (require 'el-get nil t) ; t -> 'noerror
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(defvar my-el-get-custom-recipe-directory
-  (file-name-as-directory (locate-user-emacs-file "custom/el-get/recipes/"))
-  "Directory containing custom el-get recipes.")
-
-(add-to-list 'el-get-recipe-path my-el-get-custom-recipe-directory)
-
-(setq my:el-get-packages
-  '(auto-complete
-    color-theme-solarized
-    company-mode
-    duckpan
-    eclim
-    el-get
-    emaps
-    evil
-    evil-leader
-    evil-remap
-    evil-surround
-    flycheck
-    flx
-    git-modes
-    haskell-mode
-    helm
-    idris-mode
-    magit
-    monitor
-    org-evil
-    org-ref
-    projectile
-    prompts
-    slime
-    use-package
-    web-mode
-    yasnippet))
-
-(el-get 'sync my:el-get-packages)
-
-(use-package cl-lib)
-
-(defun my-el-dir (&optional path)
-  "Return the user's `el-get' directory with PATH optionally appended."
-  (concat el-get-dir "/" path))
+  (use-package cl-lib)
 #+END_SRC
 
 ** Time & Colorscheme
@@ -496,7 +446,6 @@ See `evil-set-initial-state'."
 *** flycheck
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "el-get/flycheck"))
 (use-package flycheck
   :config
   (global-flycheck-mode 1)
@@ -556,9 +505,6 @@ See `evil-set-initial-state'."
 **** haskell-mode
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (my-el-dir "ghc-mod/elisp"))
-(add-to-list 'load-path (my-el-dir "haskell-mode"))
-
 (use-package haskell-mode
   :config
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
@@ -644,7 +590,6 @@ See `evil-set-initial-state'."
 **** slime
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/el-get/slime")
 (use-package slime-autoloads)
 (use-package slime
   :config
@@ -677,7 +622,7 @@ See `evil-set-initial-state'."
 *** Python
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "el-get/python"))
+  (use-package python)
 #+END_SRC
 
 ** Completion
@@ -698,7 +643,6 @@ See `evil-set-initial-state'."
   `(eval-after-load ,mode
      '(progn ,@body)))
 
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get/yasnippet"))
 (use-package yasnippet
   :config
   (add-to-list 'yas-snippet-dirs
