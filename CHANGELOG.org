@@ -1,0 +1,72 @@
+#+TITLE: Changelog
+
+* Unreleased
+
+** Added
+
++ enabled =extglob= shell option
+
++ git alias for word diffs
+
++ script for fixing paths of music files
+
+*** Emacs
+
++ =Cask= file for dependency management
+
++ ~my-background-set-*~ functions are now interactive
+
+**** Keybindings
+
++ binding for navigating to =config.org=
+
++ bindings for navigating sections in ~Man-mode~
+
++ leader binding for ~magit-log~
+
+**** New Snippets
+
+ + =custom-id=
+
+ + =description-list-item=
+
+ + =properties=
+
+*** FreeMind
+
++ new FreeMind configuration
+
+  + =patterns.xml=
+
+  + =user.properties=
+
+** Changed
+
+*** Emacs
+
++ =el-get= replaced with =Cask= for package management
+
++ ~M-u~ now maps to ~universal-argument~ in insert state
+
+**** Dependency Updates
+
++ Magit bindings updated to reflect changes to Magit
+
++ Org capture templates updated based on deprecation warnings
+
+** Fixed
+
+*** Emacs
+
++ issue with =simple-block= snippet not expanding
+
++ tags are now positioned correctly in org capture templates
+
++ =helm= would sometimes not enable on load
+
++ =evil-surround= would sometimes not enable on load
+
+*** Installer
+
++ =version current= printing an additional newline for some
+  packages
