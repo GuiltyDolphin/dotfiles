@@ -391,6 +391,14 @@ Ask again if the buffer is modified."
   (evil-mode 1))
 #+END_SRC
 
+*** evil-surround
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+#+END_SRC
+
 *** org-evil
 
 #+BEGIN_SRC emacs-lisp
