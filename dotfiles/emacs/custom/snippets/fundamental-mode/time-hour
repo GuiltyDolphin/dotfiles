@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: time-hour
+# key: timeh
+# --
+`(format-time-string "%FT%H:00:00")`

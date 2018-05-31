@@ -8,13 +8,17 @@
 (depends-on "company")
 (depends-on "dash")
 (depends-on "drag-stuff")
-(depends-on "duckpan")
+(depends-on "duckpan"
+            :git "git://github.com/GuiltyDolphin/duckpan-emacs"
+            :files ("*.el"))
 (depends-on "eclim")
 (depends-on "el-get")
 (depends-on "emaps")
 (depends-on "evil")
 (depends-on "evil-leader")
-(depends-on "evil-remap")
+(depends-on "evil-remap"
+            :git "git://github.com/GuiltyDolphin/evil-remap"
+            :files ("*.el"))
 (depends-on "evil-surround")
 (depends-on "exec-path-from-shell")
 (depends-on "expand-region")
@@ -22,7 +26,9 @@
 (depends-on "flx")
 (depends-on "flycheck")
 (depends-on "flycheck-cask")
-(depends-on "git-modes")
+(depends-on "git-modes"
+            :git "git://github.com/magit/git-modes"
+            :files ("*.el"))
 (depends-on "haskell-mode")
 (depends-on "helm")
 (depends-on "htmlize")
