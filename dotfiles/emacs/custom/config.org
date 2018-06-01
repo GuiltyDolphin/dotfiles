@@ -325,9 +325,9 @@ Ask again if the buffer is modified."
   (customize-set-variable 'evil-want-C-w-in-emacs-state t)
   ; * and # search for full symbols.
   (customize-set-variable 'evil-symbol-word-search t)
-  (evil-define-key '(insert replace) my-global-mode-map
+  (evil-define-minor-mode-key '(insert replace) 'my-global-mode
     (kbd "C-c") 'evil-normal-state)
-  (evil-define-key '(emacs insert motion normal visual) my-global-mode-map
+  (evil-define-minor-mode-key '(emacs insert motion normal visual) 'my-global-mode
     (kbd "C-t") evil-window-map)
   (emaps-define-key evil-window-map
     (kbd "C-h") 'previous-buffer
