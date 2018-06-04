@@ -2,6 +2,14 @@
 
 * Unreleased
 
+** Added
+
+*** FreeMind
+
++ binding for =Down= icon
+
++ binding for =Up= icon
+
 ** Changed
 
 *** Emacs
