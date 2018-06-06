@@ -27,6 +27,7 @@
   dump = cat-file -p
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   last = log -1 HEAD
+  list-ignored = ls-files -coi --exclude-standard
   qlog = log --pretty=oneline
   ri = rebase -i
   st = status

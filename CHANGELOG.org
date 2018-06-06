@@ -4,6 +4,8 @@
 
 ** Added
 
++ git alias for listing ignored files
+
 *** FreeMind
 
 + binding for =Down= icon
