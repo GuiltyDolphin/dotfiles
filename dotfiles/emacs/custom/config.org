@@ -742,7 +742,7 @@ See `evil-set-initial-state'."
     "s" 'org-switchb)
   :config
   (defun my-org-subdir (path)
-    "Return PATH under ORG-DIRECTORY"
+    "Return PATH under `org-directory'."
     (concat org-directory "/" path))
 
   (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
