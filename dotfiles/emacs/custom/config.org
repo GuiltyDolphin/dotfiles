@@ -7,73 +7,73 @@
 *** NO FRILLS
 
 #+BEGIN_SRC emacs-lisp
-(customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
-(tool-bar-mode -1)   ; no tool bar with icons
-(scroll-bar-mode -1) ; no scroll bars
-(menu-bar-mode -1)   ; no menu bar
+  (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+  (tool-bar-mode -1)   ; no tool bar with icons
+  (scroll-bar-mode -1) ; no scroll bars
+  (menu-bar-mode -1)   ; no menu bar
 #+END_SRC
 
 *** NO JUNK
 
 #+BEGIN_SRC emacs-lisp
-(customize-set-variable 'auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-(customize-set-variable 'backup-directory-alist `((".*" . ,temporary-file-directory)))
+  (customize-set-variable 'auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+  (customize-set-variable 'backup-directory-alist `((".*" . ,temporary-file-directory)))
 #+END_SRC
 
 *** Other
 
 #+BEGIN_SRC emacs-lisp
-(line-number-mode 1) ; column number in mode line
-(column-number-mode 1) ; line number in mode line
+  (line-number-mode 1) ; column number in mode line
+  (column-number-mode 1) ; line number in mode line
 
-(global-linum-mode 1) ; line number in margin
-(global-hl-line-mode 1) ; highlight current line
+  (global-linum-mode 1) ; line number in margin
+  (global-hl-line-mode 1) ; highlight current line
 
-(customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
+  (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
 
-(display-time-mode t) ; Allow displaying of time in mode line
+  (display-time-mode t) ; Allow displaying of time in mode line
 
-(customize-set-variable 'indent-tabs-mode nil)
-(customize-set-variable 'standard-indent 4)
-(customize-set-variable 'tab-width 4)
-(customize-set-variable 'tab-stop-list '(4 8 12))
+  (customize-set-variable 'indent-tabs-mode nil)
+  (customize-set-variable 'standard-indent 4)
+  (customize-set-variable 'tab-width 4)
+  (customize-set-variable 'tab-stop-list '(4 8 12))
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
 
 *** Execution Path
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'exec-path "~/.cabal/bin")
+  (add-to-list 'exec-path "~/.cabal/bin")
 #+END_SRC
 
 *** Folder with own content
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "custom"))
+  (add-to-list 'load-path (locate-user-emacs-file "custom"))
 #+END_SRC
 
 *** Custom functions
 
 #+BEGIN_SRC emacs-lisp
-(defun my-find-user-init-file ()
-  "Find the user's init.el file"
-  (interactive)
-  (find-file user-init-file))
+  (defun my-find-user-init-file ()
+    "Find the user's init.el file"
+    (interactive)
+    (find-file user-init-file))
 
-(defvar my-config-org-file
-  (locate-user-emacs-file "config.org")
-  "File name, including directory, of user's additional configuration file.")
+  (defvar my-config-org-file
+    (locate-user-emacs-file "config.org")
+    "File name, including directory, of user's additional configuration file.")
 
-(defun my-find-user-config-file ()
-  "Find config file."
-  (interactive)
-  (find-file my-config-org-file))
+  (defun my-find-user-config-file ()
+    "Find config file."
+    (interactive)
+    (find-file my-config-org-file))
 
-(defun my-reload-user-init-file ()
-  "Evaluate the user's init.el file"
-  (interactive)
-  (load-file user-init-file))
+  (defun my-reload-user-init-file ()
+    "Evaluate the user's init.el file"
+    (interactive)
+    (load-file user-init-file))
 #+END_SRC
 
 ** Packages
@@ -96,140 +96,140 @@
 ** Time & Colorscheme
 
 #+BEGIN_SRC emacs-lisp
-(require 'calendar)
+  (require 'calendar)
 
-(defvar my-location-name "London"
-  "Name of major location for use in calendar calculations.")
+  (defvar my-location-name "London"
+    "Name of major location for use in calendar calculations.")
 
-(defvar my-location-longitude [0 5 west]
-  "Longitude of major location.")
+  (defvar my-location-longitude [0 5 west]
+    "Longitude of major location.")
 
-(defvar my-location-latitude [51 32 north]
-  "Latitude of major location.")
+  (defvar my-location-latitude [51 32 north]
+    "Latitude of major location.")
 
-(defvar my-location-loc (list my-location-name my-location-latitude my-location-longitude)
-  "Preferred location information in the form '(NAME LATITUDE LONGITUDE).")
+  (defvar my-location-loc (list my-location-name my-location-latitude my-location-longitude)
+    "Preferred location information in the form '(NAME LATITUDE LONGITUDE).")
 
-(require 'solar)
+  (require 'solar)
 
-(defun my-sunrise-sunset-times (loc-name loc-lat loc-lon)
-  "Get the sunrise, sunset and hours of daylight in the form (SUNRISE SUNSET HOURS).
+  (defun my-sunrise-sunset-times (loc-name loc-lat loc-lon)
+    "Get the sunrise, sunset and hours of daylight in the form (SUNRISE SUNSET HOURS).
 
-LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
-which sunrise/sunset times should be retrieved. They should be in a form acceptable to
-calendar-location-name, calendar-longitude, and calendar-latitude respectively."
-  (let* ((calendar-location-name loc-name)
-        (calendar-longitude loc-lon)
-        (calendar-latitude loc-lat)
-        (times (solar-sunrise-sunset (calendar-current-date)))
-        (sunrise-time (solar-daylight (caar times)))
-        (sunset-time (solar-daylight (cl-caadr times)))
-        (wrap-start (format-time-string "%FT"))
-        (wrap-end (format-time-string "%Z")))
-    (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
-            (list sunrise-time sunset-time))))
+  LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
+  which sunrise/sunset times should be retrieved. They should be in a form acceptable to
+  calendar-location-name, calendar-longitude, and calendar-latitude respectively."
+    (let* ((calendar-location-name loc-name)
+          (calendar-longitude loc-lon)
+          (calendar-latitude loc-lat)
+          (times (solar-sunrise-sunset (calendar-current-date)))
+          (sunrise-time (solar-daylight (caar times)))
+          (sunset-time (solar-daylight (cl-caadr times)))
+          (wrap-start (format-time-string "%FT"))
+          (wrap-end (format-time-string "%Z")))
+      (mapcar (lambda (x) (date-to-time (concat wrap-start x wrap-end)))
+              (list sunrise-time sunset-time))))
 
-(defun my-time-greater-p (time1 time2)
-  "Return non-nil if TIME1 is later than TIME2."
-  (not (or (time-less-p time1 time2) (eq time1 time2))))
+  (defun my-time-greater-p (time1 time2)
+    "Return non-nil if TIME1 is later than TIME2."
+    (not (or (time-less-p time1 time2) (eq time1 time2))))
 
-(defun my-location-sunrise-sunset (location)
-  "Get the '(SUNRISE SUNSET) times for LOCATION."
-  (let ((loc-name (car location))
-        (loc-lat (cadr location))
-        (loc-lon  (cl-caddr location)))
-    (my-sunrise-sunset-times loc-name loc-lat loc-lon)))
+  (defun my-location-sunrise-sunset (location)
+    "Get the '(SUNRISE SUNSET) times for LOCATION."
+    (let ((loc-name (car location))
+          (loc-lat (cadr location))
+          (loc-lon  (cl-caddr location)))
+      (my-sunrise-sunset-times loc-name loc-lat loc-lon)))
 
-(defun my-date-in-daylight-hours (date)
-  "Return non-nil if DATE is within the daylight hours for the current location.
+  (defun my-date-in-daylight-hours (date)
+    "Return non-nil if DATE is within the daylight hours for the current location.
 
-Default to NIL if daylight times cannot be retrieved."
-  (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
-         (sunrise-time (car sunrise-sunset))
-         (sunset-time (cadr sunrise-sunset))
-         (curr-time (or date (current-time))))
-    (and sunrise-time sunset-time
-         (my-time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
+  Default to NIL if daylight times cannot be retrieved."
+    (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
+           (sunrise-time (car sunrise-sunset))
+           (sunset-time (cadr sunrise-sunset))
+           (curr-time (or date (current-time))))
+      (and sunrise-time sunset-time
+           (my-time-greater-p curr-time sunrise-time) (time-less-p curr-time sunset-time))))
 
-(defvar my-background-timers nil
-  "Timers for changing the background mode.")
+  (defvar my-background-timers nil
+    "Timers for changing the background mode.")
 
-(defun my-background-clear-timers ()
-  "Clear the current background timers."
-  (dolist (timer my-background-timers)
-    (cancel-timer timer))
-  (setq my-background-timers nil))
+  (defun my-background-clear-timers ()
+    "Clear the current background timers."
+    (dolist (timer my-background-timers)
+      (cancel-timer timer))
+    (setq my-background-timers nil))
 
-(defun my-background-set (bgmode)
-  "Set the current background mode to BGMODE.
-BGMODE should be one of 'light or 'dark."
-  (set-frame-parameter nil 'background-mode bgmode)
-  (set-terminal-parameter nil 'background-mode bgmode)
-  (my-background-clear-timers)
-  ; give it time to sort itself out
-  (push (run-at-time "2 minutes" nil 'my-background-initialize-timers)
-        my-background-timers)
-  (load-theme 'solarized t))
+  (defun my-background-set (bgmode)
+    "Set the current background mode to BGMODE.
+  BGMODE should be one of 'light or 'dark."
+    (set-frame-parameter nil 'background-mode bgmode)
+    (set-terminal-parameter nil 'background-mode bgmode)
+    (my-background-clear-timers)
+    ; give it time to sort itself out
+    (push (run-at-time "2 minutes" nil 'my-background-initialize-timers)
+          my-background-timers)
+    (load-theme 'solarized t))
 
-(defun my-background-set-dark ()
-  (interactive)
-  "Set the current background mode to 'dark."
-  (my-background-set 'dark))
+  (defun my-background-set-dark ()
+    (interactive)
+    "Set the current background mode to 'dark."
+    (my-background-set 'dark))
 
-(defun my-background-set-light ()
-  (interactive)
-  "Set the current background mode to 'light."
-  (my-background-set 'light))
+  (defun my-background-set-light ()
+    (interactive)
+    "Set the current background mode to 'light."
+    (my-background-set 'light))
 
-(defun my-current-background-mode ()
-  "Get the current background mode (light or dark)."
-  (frame-parameter nil 'background-mode))
+  (defun my-current-background-mode ()
+    "Get the current background mode (light or dark)."
+    (frame-parameter nil 'background-mode))
 
-(defun my-background-initialize-timers ()
-  (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
-         (sunrise-time (car sunrise-sunset))
-         (sunset-time (cadr sunrise-sunset))
-         (current-time (current-time))
-         (time-format "%F %T %Z")
-         (add-bg-timer (lambda (mode time)
-                         (push (run-at-time time nil (intern (format "my-background-set-%s" mode)))
-                               my-background-timers))))
-  (if (my-date-in-daylight-hours current-time)
-      (if (eq (my-current-background-mode) 'dark) (my-background-set-light)
-        (funcall add-bg-timer 'dark sunset-time))
-    (if (eq (my-current-background-mode) 'light) (my-background-set-dark)
-      (let ((sunrise-today-or-next (if (time-less-p current-time sunrise-time)
-                                       sunrise-time
-                                     (time-add (days-to-time 1) sunrise-time)))) ; close enough
-        (funcall add-bg-timer 'light sunrise-today-or-next))))))
+  (defun my-background-initialize-timers ()
+    (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
+           (sunrise-time (car sunrise-sunset))
+           (sunset-time (cadr sunrise-sunset))
+           (current-time (current-time))
+           (time-format "%F %T %Z")
+           (add-bg-timer (lambda (mode time)
+                           (push (run-at-time time nil (intern (format "my-background-set-%s" mode)))
+                                 my-background-timers))))
+    (if (my-date-in-daylight-hours current-time)
+        (if (eq (my-current-background-mode) 'dark) (my-background-set-light)
+          (funcall add-bg-timer 'dark sunset-time))
+      (if (eq (my-current-background-mode) 'light) (my-background-set-dark)
+        (let ((sunrise-today-or-next (if (time-less-p current-time sunrise-time)
+                                         sunrise-time
+                                       (time-add (days-to-time 1) sunrise-time)))) ; close enough
+          (funcall add-bg-timer 'light sunrise-today-or-next))))))
 #+END_SRC
 
 *** Color theme
 
 #+BEGIN_SRC emacs-lisp
-(if (my-date-in-daylight-hours (current-time))
-    (my-background-set-light)
-  (my-background-set-dark))
+  (if (my-date-in-daylight-hours (current-time))
+      (my-background-set-light)
+    (my-background-set-dark))
 #+END_SRC
 
 *** Font
 
 #+BEGIN_SRC emacs-lisp
-(set-face-font 'default "Inconsolata-14")
+  (set-face-font 'default "Inconsolata-14")
 
-(defvar my-user-preferred-license "GPL-3"
-  "License to use by default with some modes")
+  (defvar my-user-preferred-license "GPL-3"
+    "License to use by default with some modes")
 
-(customize-set-variable 'user-mail-address "software@guiltydolphin.com")
+  (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
 
-(define-minor-mode my-global-mode
-  "Personal configuration without changing the default global settings."
-  :keymap (make-sparse-keymap))
+  (define-minor-mode my-global-mode
+    "Personal configuration without changing the default global settings."
+    :keymap (make-sparse-keymap))
 
-(define-globalized-minor-mode my-global-global-mode my-global-mode
-  (lambda () (my-global-mode)))
+  (define-globalized-minor-mode my-global-global-mode my-global-mode
+    (lambda () (my-global-mode)))
 
-(my-global-global-mode)
+  (my-global-global-mode)
 #+END_SRC
 
 ** Misc Packages
@@ -237,108 +237,108 @@ BGMODE should be one of 'light or 'dark."
 *** dash
 
 #+BEGIN_SRC emacs-lisp
-(use-package dash)
+  (use-package dash)
 #+END_SRC
 
 *** emaps
 
 #+BEGIN_SRC emacs-lisp
-(use-package emaps
-  :config
-  (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
+  (use-package emaps
+    :config
+    (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
 #+END_SRC
 
 *** auto-complete
 
 #+BEGIN_SRC emacs-lisp
-(use-package auto-complete
-  :config
-  (global-auto-complete-mode))
+  (use-package auto-complete
+    :config
+    (global-auto-complete-mode))
 #+END_SRC
 
 *** evil-leader
 
 #+BEGIN_SRC emacs-lisp
-(use-package evil-leader
-  :config
-  (global-evil-leader-mode 1))
+  (use-package evil-leader
+    :config
+    (global-evil-leader-mode 1))
 
-;; Use the space key as leader
-(evil-leader/set-leader "<SPC>")
-(evil-leader/set-key
-  "ex" 'eval-expression
-  "ir" 'align-regexp
-  "sv" 'my-reload-user-init-file
-  "ns" 'my-scratch-buffer
-  "nS" 'my-new-scratch
-  ","  'helm-M-x)
+  ;; Use the space key as leader
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+    "ex" 'eval-expression
+    "ir" 'align-regexp
+    "sv" 'my-reload-user-init-file
+    "ns" 'my-scratch-buffer
+    "nS" 'my-new-scratch
+    ","  'helm-M-x)
 #+END_SRC
 
 *** evil-local-leader
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (locate-user-emacs-file "custom/evil"))
-(use-package evil-local-leader ; Merely a modification of `evil-leader'
-  :config
-  (global-evil-local-leader-mode 1)
-  (evil-local-leader/set-local-leader ","))
+  (add-to-list 'load-path (locate-user-emacs-file "custom/evil"))
+  (use-package evil-local-leader ; Merely a modification of `evil-leader'
+    :config
+    (global-evil-local-leader-mode 1)
+    (evil-local-leader/set-local-leader ","))
 
-(setq lisp-modes '(emacs-lisp-mode
-                   lisp-interaction-mode
-                   lisp-mode slime-mode))
+  (setq lisp-modes '(emacs-lisp-mode
+                     lisp-interaction-mode
+                     lisp-mode slime-mode))
 
-(dolist (mode lisp-modes)
-  (evil-local-leader/set-key-for-mode mode
-    "er" 'eval-region
-    "eb" 'eval-buffer
-    "ed" 'eval-defun))
+  (dolist (mode lisp-modes)
+    (evil-local-leader/set-key-for-mode mode
+      "er" 'eval-region
+      "eb" 'eval-buffer
+      "ed" 'eval-defun))
 
-(evil-local-leader/set-key-for-mode 'haskell-mode
-  "en" 'ghc-goto-next-error
-  "eN" 'ghc-goto-prev-error
-  "t"  'ghc-show-type
-  "i"  'ghc-show-info
-  "sd" 'inferior-haskell-send-decl)
+  (evil-local-leader/set-key-for-mode 'haskell-mode
+    "en" 'ghc-goto-next-error
+    "eN" 'ghc-goto-prev-error
+    "t"  'ghc-show-type
+    "i"  'ghc-show-info
+    "sd" 'inferior-haskell-send-decl)
 
-(evil-local-leader/set-key-for-mode 'latex-mode
-  "ib" 'latex-insert-block
-  "ir" 'tex-region
-  "cb" 'latex-close-block)
+  (evil-local-leader/set-key-for-mode 'latex-mode
+    "ib" 'latex-insert-block
+    "ir" 'tex-region
+    "cb" 'latex-close-block)
 #+END_SRC
 
 *** evil
 
 #+BEGIN_SRC emacs-lisp
-(defun my-kill-buffer-and-window-ask ()
-  "Kill the current buffer and window if user responds in the affirmative.
+  (defun my-kill-buffer-and-window-ask ()
+    "Kill the current buffer and window if user responds in the affirmative.
 
-Ask again if the buffer is modified."
-  (interactive)
-  (when (y-or-n-p "Kill current buffer and window?: ")
-    (when (or
-           (not (buffer-modified-p))
-           (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
-      (kill-buffer-and-window))))
+  Ask again if the buffer is modified."
+    (interactive)
+    (when (y-or-n-p "Kill current buffer and window?: ")
+      (when (or
+             (not (buffer-modified-p))
+             (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
+        (kill-buffer-and-window))))
 
-(use-package evil
-  :config
-  (customize-set-variable 'evil-want-C-w-in-emacs-state t)
-  ; * and # search for full symbols.
-  (customize-set-variable 'evil-symbol-word-search t)
-  (evil-define-minor-mode-key '(insert replace) 'my-global-mode
-    (kbd "C-c") 'evil-normal-state)
-  (evil-define-minor-mode-key '(emacs insert motion normal visual) 'my-global-mode
-    (kbd "C-t") evil-window-map)
-  (emaps-define-key evil-window-map
-    (kbd "C-h") 'previous-buffer
-    (kbd "C-l") 'next-buffer
-    (kbd "C-t") 'evil-window-next
-    "t" 'evil-window-right ; Replaces evil-window-top-left
-    "-" 'evil-window-split ; Replaces evil-window-set-width
-    "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
-    "x" 'my-kill-buffer-and-window-ask
-    "s" 'helm-buffers-list)
-  (evil-mode 1))
+  (use-package evil
+    :config
+    (customize-set-variable 'evil-want-C-w-in-emacs-state t)
+    ; * and # search for full symbols.
+    (customize-set-variable 'evil-symbol-word-search t)
+    (evil-define-minor-mode-key '(insert replace) 'my-global-mode
+      (kbd "C-c") 'evil-normal-state)
+    (evil-define-minor-mode-key '(emacs insert motion normal visual) 'my-global-mode
+      (kbd "C-t") evil-window-map)
+    (emaps-define-key evil-window-map
+      (kbd "C-h") 'previous-buffer
+      (kbd "C-l") 'next-buffer
+      (kbd "C-t") 'evil-window-next
+      "t" 'evil-window-right ; Replaces evil-window-top-left
+      "-" 'evil-window-split ; Replaces evil-window-set-width
+      "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
+      "x" 'my-kill-buffer-and-window-ask
+      "s" 'helm-buffers-list)
+    (evil-mode 1))
 #+END_SRC
 
 *** evil-surround
@@ -352,83 +352,83 @@ Ask again if the buffer is modified."
 *** org-evil
 
 #+BEGIN_SRC emacs-lisp
-(use-package org-evil)
+  (use-package org-evil)
 #+END_SRC
 
 *** evil-remap
 
 #+BEGIN_SRC emacs-lisp
-(use-package evil-remap
-  :config
-  (evil-nnoremap! ";" 'evil-ex)
-  (evil-nnoremap! ":" 'evil-repeat-find-char)
-  (global-set-key (kbd "C-t") 'nil)
+  (use-package evil-remap
+    :config
+    (evil-nnoremap! ";" 'evil-ex)
+    (evil-nnoremap! ":" 'evil-repeat-find-char)
+    (global-set-key (kbd "C-t") 'nil)
 
-  (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
-  (global-set-key (kbd "C-w") 'nil)
+    (evil-vnoremap (kbd "C-c") 'evil-exit-visual-state)
+    (global-set-key (kbd "C-w") 'nil)
 
-  (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
-  (evil-nnoremap! (kbd "M-u") 'universal-argument)
-  ;; originally mapped to `upcase-word'
-  (evil-inoremap (kbd "M-u") 'universal-argument)
+    (evil-nnoremap! (kbd "C-u") 'evil-scroll-up)
+    (evil-nnoremap! (kbd "M-u") 'universal-argument)
+    ;; originally mapped to `upcase-word'
+    (evil-inoremap (kbd "M-u") 'universal-argument)
 
-  (evil-nnoremap! (kbd "Q") 'quit-window)) ; So we can *always* quit
+    (evil-nnoremap! (kbd "Q") 'quit-window)) ; So we can *always* quit
 #+END_SRC
 
 *** Magit
 
 #+BEGIN_SRC emacs-lisp
-(defun my-evil-set-initial-state-modes (state &rest modes)
-  "Set STATE as the initial state for each of MODES.
+  (defun my-evil-set-initial-state-modes (state &rest modes)
+    "Set STATE as the initial state for each of MODES.
 
-See `evil-set-initial-state'."
-  (--map (evil-set-initial-state it state) modes))
-(put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
+  See `evil-set-initial-state'."
+    (--map (evil-set-initial-state it state) modes))
+  (put 'my-evil-set-initial-state-modes 'lisp-indent-function 'defun)
 
-(use-package magit
-  :init
-  (defvar my-evil-leader-magit-map (make-sparse-keymap)
-    "Keymap for magit bindings under leader key.")
-  (defvar my-magit-section-jump-map (make-sparse-keymap)
-    "Keymap for jumping around magit sections.")
-  (evil-leader/set-key
-    "m" my-evil-leader-magit-map)
-  :config
-  (emaps-define-key my-evil-leader-magit-map
-    "b" 'magit-show-refs-popup
-    "d" 'magit-diff-working-tree
-    "l" 'magit-log
-    "s" 'magit-status)
-  (emaps-define-key my-magit-section-jump-map
-    "s" 'magit-jump-to-staged
-    "u" 'magit-jump-to-unstaged
-    "z" 'magit-jump-to-stashes)
-  (evil-define-key '(motion normal) magit-mode-map
-    (kbd "TAB") 'magit-section-toggle
-    (kbd "RET") 'magit-visit-thing
-    (kbd "z o") 'magit-section-show
-    (kbd "z c") 'magit-section-hide
-    "{" 'magit-section-backward
-    "}" 'magit-section-forward)
-  (evil-define-key 'visual magit-mode-map
-    "s" 'magit-stage
-    "u" 'magit-unstage)
-  (evil-define-key 'motion magit-status-mode-map
-    "g" my-magit-section-jump-map)
-  (my-evil-set-initial-state-modes 'motion
-    'magit-refs-mode
-    'magit-status-mode
-    'magit-revision-mode
-    'magit-diff-mode
-    'magit-log-mode))
+  (use-package magit
+    :init
+    (defvar my-evil-leader-magit-map (make-sparse-keymap)
+      "Keymap for magit bindings under leader key.")
+    (defvar my-magit-section-jump-map (make-sparse-keymap)
+      "Keymap for jumping around magit sections.")
+    (evil-leader/set-key
+      "m" my-evil-leader-magit-map)
+    :config
+    (emaps-define-key my-evil-leader-magit-map
+      "b" 'magit-show-refs-popup
+      "d" 'magit-diff-working-tree
+      "l" 'magit-log
+      "s" 'magit-status)
+    (emaps-define-key my-magit-section-jump-map
+      "s" 'magit-jump-to-staged
+      "u" 'magit-jump-to-unstaged
+      "z" 'magit-jump-to-stashes)
+    (evil-define-key '(motion normal) magit-mode-map
+      (kbd "TAB") 'magit-section-toggle
+      (kbd "RET") 'magit-visit-thing
+      (kbd "z o") 'magit-section-show
+      (kbd "z c") 'magit-section-hide
+      "{" 'magit-section-backward
+      "}" 'magit-section-forward)
+    (evil-define-key 'visual magit-mode-map
+      "s" 'magit-stage
+      "u" 'magit-unstage)
+    (evil-define-key 'motion magit-status-mode-map
+      "g" my-magit-section-jump-map)
+    (my-evil-set-initial-state-modes 'motion
+      'magit-refs-mode
+      'magit-status-mode
+      'magit-revision-mode
+      'magit-diff-mode
+      'magit-log-mode))
 
-(add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
+  (add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
 
-(use-package git-commit
-  :config
-  (customize-set-variable 'git-commit-summary-max-length 50))
+  (use-package git-commit
+    :config
+    (customize-set-variable 'git-commit-summary-max-length 50))
 
-(evil-set-initial-state 'git-commit-mode 'insert)
+  (evil-set-initial-state 'git-commit-mode 'insert)
 #+END_SRC
 
 *** man
@@ -446,48 +446,48 @@ See `evil-set-initial-state'."
 *** flycheck
 
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :config
-  (global-flycheck-mode 1)
-  (evil-leader/set-key
-    "f" flycheck-command-map))
+  (use-package flycheck
+    :config
+    (global-flycheck-mode 1)
+    (evil-leader/set-key
+      "f" flycheck-command-map))
 #+END_SRC
 
 *** flx-ido
 
 #+BEGIN_SRC emacs-lisp
-(use-package flx-ido
-  :config
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (flx-ido-mode 1)
-  (customize-set-variable 'ido-enable-flex-matching t)
-  (customize-set-variable 'ido-use-faces nil))
+  (use-package flx-ido
+    :config
+    (ido-mode 1)
+    (ido-everywhere 1)
+    (flx-ido-mode 1)
+    (customize-set-variable 'ido-enable-flex-matching t)
+    (customize-set-variable 'ido-use-faces nil))
 
-(define-key my-global-mode-map (kbd "C-h h") 'help)
-(emaps-define-key help-map
-  (kbd "C-e") 'evil-scroll-line-down
-  (kbd "C-y") 'evil-scroll-line-up)
+  (define-key my-global-mode-map (kbd "C-h h") 'help)
+  (emaps-define-key help-map
+    (kbd "C-e") 'evil-scroll-line-down
+    (kbd "C-y") 'evil-scroll-line-up)
 #+END_SRC
 
 *** web-mode
 
 #+BEGIN_SRC emacs-lisp
-(defvar my-web-mode-extensions
-  (--map (format "\\.%s\\'" it)
-         '("phtml" "tpl\\.php" "[agj]sp" "as[cp]x" "erb" "mustache" "djhtml" "html?"))
-  "Extensions that should use 'web-mode.")
+  (defvar my-web-mode-extensions
+    (--map (format "\\.%s\\'" it)
+           '("phtml" "tpl\\.php" "[agj]sp" "as[cp]x" "erb" "mustache" "djhtml" "html?"))
+    "Extensions that should use 'web-mode.")
 
-(use-package web-mode
-  :init
-  (dolist (extension my-web-mode-extensions)
-    (add-to-list 'auto-mode-alist (cons extension 'web-mode))))
+  (use-package web-mode
+    :init
+    (dolist (extension my-web-mode-extensions)
+      (add-to-list 'auto-mode-alist (cons extension 'web-mode))))
 #+END_SRC
 
 ** Email
 
 #+BEGIN_SRC emacs-lisp
-(use-package mu4e)
+  (use-package mu4e)
 #+END_SRC
 
 ** Programming Languages
@@ -495,9 +495,9 @@ See `evil-set-initial-state'."
 *** Erlang
 
 #+BEGIN_SRC emacs-lisp
-(use-package erlang
-  :config
-  (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
+  (use-package erlang
+    :config
+    (add-to-list 'auto-mode-alist (cons erlang-file-name-extension-regexp 'erlang-mode)))
 #+END_SRC
 
 *** Haskell
@@ -505,17 +505,17 @@ See `evil-set-initial-state'."
 **** haskell-mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode
-  :config
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (customize-set-variable 'haskell-process-type 'stack-ghci)
-  (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
-                                                  ; Flycheck seems to handle errors well, and the
-                                                  ; cably-repl doesn't seem to be broken.
-                                                  ; Not sure what the issue was before.
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-  (customize-set-variable 'haskell-interactive-popup-errors nil))
+  (use-package haskell-mode
+    :config
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+    (customize-set-variable 'haskell-process-type 'stack-ghci)
+    (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
+                                                    ; Flycheck seems to handle errors well, and the
+                                                    ; cably-repl doesn't seem to be broken.
+                                                    ; Not sure what the issue was before.
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+    (customize-set-variable 'haskell-interactive-popup-errors nil))
 #+END_SRC
 
 *** Idris
@@ -523,14 +523,14 @@ See `evil-set-initial-state'."
 **** idris-mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package idris-mode
-  :config
-  (evil-local-leader/set-key-for-mode 'idris-mode
-    "a" 'idris-add-clause
-    "c" 'idris-case-dwim
-    "l" 'idris-make-lemma
-    "p" 'idris-proof-search
-    "t" 'idris-type-at-point))
+  (use-package idris-mode
+    :config
+    (evil-local-leader/set-key-for-mode 'idris-mode
+      "a" 'idris-add-clause
+      "c" 'idris-case-dwim
+      "l" 'idris-make-lemma
+      "p" 'idris-proof-search
+      "t" 'idris-type-at-point))
 #+END_SRC
 
 *** Java
@@ -538,85 +538,85 @@ See `evil-set-initial-state'."
 **** eclim
 
 #+BEGIN_SRC emacs-lisp
-(defvar my-software-directory (file-name-as-directory (file-truename "~/software"))
-  "Directory under which custom software installations are located.")
+  (defvar my-software-directory (file-name-as-directory (file-truename "~/software"))
+    "Directory under which custom software installations are located.")
 
-(defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
-  "Directory for eclipse installation.")
+  (defvar my-eclipse-directory (file-name-as-directory (concat my-software-directory "eclipse"))
+    "Directory for eclipse installation.")
 
-(defun my-eclim-run-tests ()
-  "Run tests via Maven in an Eclim project."
-  (interactive)
-  (eclim-maven-run "test"))
+  (defun my-eclim-run-tests ()
+    "Run tests via Maven in an Eclim project."
+    (interactive)
+    (eclim-maven-run "test"))
 
-(use-package eclim
-  :init
-  (defvar my-eclim-find-map (make-sparse-keymap)
-    "Keymap for finding things in `eclim-mode'.")
-  (defvar my-eclim-refactor-map (make-sparse-keymap)
-    "Keymap for refactoring in `eclim-mode'.")
-  :config
-  (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
-  (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
-  (emaps-define-key my-eclim-find-map
-    "d" 'eclim-java-find-declaration
-    "g" 'eclim-java-find-generic
-    "r" 'eclim-java-find-references
-    "t" 'eclim-java-find-type)
-  (emaps-define-key my-eclim-refactor-map
-    "r" 'eclim-java-refactor-rename-symbol-at-point)
-  (evil-local-leader/set-key-for-mode 'java-mode
-    "f" my-eclim-find-map
-    "r" my-eclim-refactor-map)
-  (evil-local-leader/set-key-for-mode 'java-mode
-    "rt" 'my-eclim-run-tests)
-  (evil-define-minor-mode-key 'motion 'eclim-mode
-    "gd" 'eclim-java-find-declaration)
-  (global-eclim-mode))
+  (use-package eclim
+    :init
+    (defvar my-eclim-find-map (make-sparse-keymap)
+      "Keymap for finding things in `eclim-mode'.")
+    (defvar my-eclim-refactor-map (make-sparse-keymap)
+      "Keymap for refactoring in `eclim-mode'.")
+    :config
+    (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
+    (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
+    (emaps-define-key my-eclim-find-map
+      "d" 'eclim-java-find-declaration
+      "g" 'eclim-java-find-generic
+      "r" 'eclim-java-find-references
+      "t" 'eclim-java-find-type)
+    (emaps-define-key my-eclim-refactor-map
+      "r" 'eclim-java-refactor-rename-symbol-at-point)
+    (evil-local-leader/set-key-for-mode 'java-mode
+      "f" my-eclim-find-map
+      "r" my-eclim-refactor-map)
+    (evil-local-leader/set-key-for-mode 'java-mode
+      "rt" 'my-eclim-run-tests)
+    (evil-define-minor-mode-key 'motion 'eclim-mode
+      "gd" 'eclim-java-find-declaration)
+    (global-eclim-mode))
 #+END_SRC
 
 *** Lisp
 
 #+BEGIN_SRC emacs-lisp
-(setq inferior-lisp-program (executable-find "sbcl"))
+  (setq inferior-lisp-program (executable-find "sbcl"))
 #+END_SRC
 
 **** eldoc
 
 #+BEGIN_SRC emacs-lisp
-(global-eldoc-mode)
+  (global-eldoc-mode)
 #+END_SRC
 
 **** slime
 
 #+BEGIN_SRC emacs-lisp
-(use-package slime-autoloads)
-(use-package slime
-  :config
-  (slime-setup '(slime-fancy)))
+  (use-package slime-autoloads)
+  (use-package slime
+    :config
+    (slime-setup '(slime-fancy)))
 #+END_SRC
 
 *** Prolog
 
 #+BEGIN_SRC emacs-lisp
-(use-package prolog
-  :config
-  (customize-set-variable 'prolog-system 'swi))
+  (use-package prolog
+    :config
+    (customize-set-variable 'prolog-system 'swi))
 
-(defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
-  "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
-  (let ((major-mode-map-symbol (intern (concat (symbol-name major-mode) "-map"))))
-    (when (boundp major-mode-map-symbol)
-      (let ((major-mode-map (symbol-value major-mode-map-symbol))
-            (local-major-bindings (evil-local-leader/bindings-for-mode major-mode)))
-        (map-keymap
-         (lambda (key def)
-           (-if-let (key (and (characterp key) (char-to-string key)))
-               (unless (and local-major-bindings (lookup-key local-major-bindings key))
-                 (evil-local-leader/set-key-for-mode major-mode key def))))
-         major-mode-map)))))
+  (defun my-evil-local-leader/subsume-keys-for-major-mode (major-mode)
+    "Bind keys in MAJOR-MODE under `evil-local-leader' without overwriting bindings."
+    (let ((major-mode-map-symbol (intern (concat (symbol-name major-mode) "-map"))))
+      (when (boundp major-mode-map-symbol)
+        (let ((major-mode-map (symbol-value major-mode-map-symbol))
+              (local-major-bindings (evil-local-leader/bindings-for-mode major-mode)))
+          (map-keymap
+           (lambda (key def)
+             (-if-let (key (and (characterp key) (char-to-string key)))
+                 (unless (and local-major-bindings (lookup-key local-major-bindings key))
+                   (evil-local-leader/set-key-for-mode major-mode key def))))
+           major-mode-map)))))
 
-(add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
+  (add-hook 'after-change-major-mode-hook (lambda () (my-evil-local-leader/subsume-keys-for-major-mode major-mode)))
 #+END_SRC
 
 *** Python
@@ -630,97 +630,97 @@ See `evil-set-initial-state'."
 *** company
 
 #+BEGIN_SRC emacs-lisp
-(use-package company
-  :config
-  (global-company-mode 1))
+  (use-package company
+    :config
+    (global-company-mode 1))
 #+END_SRC
 
 *** yasnippet
 
 #+BEGIN_SRC emacs-lisp
-(defmacro after (mode &rest body)
-  (declare (indent defun))
-  `(eval-after-load ,mode
-     '(progn ,@body)))
+  (defmacro after (mode &rest body)
+    (declare (indent defun))
+    `(eval-after-load ,mode
+       '(progn ,@body)))
 
-(use-package yasnippet
-  :config
-  (add-to-list 'yas-snippet-dirs
-               (locate-user-emacs-file "custom/snippets"))
+  (use-package yasnippet
+    :config
+    (add-to-list 'yas-snippet-dirs
+                 (locate-user-emacs-file "custom/snippets"))
 
-  (add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
-  (yas-global-mode 1)
+    (add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
+    (yas-global-mode 1)
 
-  (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
+    (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
 
-  (add-hook 'yas-before-expand-snippet-hook
-            (lambda ()
-              (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
+    (add-hook 'yas-before-expand-snippet-hook
+              (lambda ()
+                (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
 
-  (add-hook 'yas-after-exit-snippet-hook
-            (lambda ()
-              (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
+    (add-hook 'yas-after-exit-snippet-hook
+              (lambda ()
+                (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
 
-  (add-hook 'yas-minor-mode-hook
-            (lambda ()
-              (yas-activate-extra-mode 'fundamental-mode)))
+    (add-hook 'yas-minor-mode-hook
+              (lambda ()
+                (yas-activate-extra-mode 'fundamental-mode)))
 
-  (after 'yasnippet
-    (yas/reload-all)
-    (customize-set-variable 'yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
+    (after 'yasnippet
+      (yas/reload-all)
+      (customize-set-variable 'yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
 
-  (after "yasnippet-autoloads"
-    (add-hook 'prog-mode-hook 'yas-minor-mode)))
+    (after "yasnippet-autoloads"
+      (add-hook 'prog-mode-hook 'yas-minor-mode)))
 #+END_SRC
 
 *** helm
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm
-  :init
-  (defvar my-helm-leader-map (make-sparse-keymap)
-    "Helm leader map.")
-  (defvar my-helm-web-search-map (make-sparse-keymap)
-    "Helm web search map.")
-  (evil-leader/set-key "h" my-helm-leader-map)
-  :config
-  (emaps-define-key my-helm-leader-map
-    "i" 'helm-imenu
-    "o" 'helm-occur
-    "s" my-helm-web-search-map)
-  (customize-set-variable 'helm-google-suggest-search-url
-                          "https://duckduckgo.com/?q=%s")
-  (emaps-define-key my-helm-web-search-map
-    "d" 'helm-google-suggest
-    "w" 'helm-wikipedia-suggest)
-  (evil-leader/set-key "b" 'helm-imenu)
-  (evil-nnoremap! "/" 'helm-occur)
-  (evil-nnoremap! (kbd "C-p") 'helm-find-files)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (helm-mode 1))
+  (use-package helm
+    :init
+    (defvar my-helm-leader-map (make-sparse-keymap)
+      "Helm leader map.")
+    (defvar my-helm-web-search-map (make-sparse-keymap)
+      "Helm web search map.")
+    (evil-leader/set-key "h" my-helm-leader-map)
+    :config
+    (emaps-define-key my-helm-leader-map
+      "i" 'helm-imenu
+      "o" 'helm-occur
+      "s" my-helm-web-search-map)
+    (customize-set-variable 'helm-google-suggest-search-url
+                            "https://duckduckgo.com/?q=%s")
+    (emaps-define-key my-helm-web-search-map
+      "d" 'helm-google-suggest
+      "w" 'helm-wikipedia-suggest)
+    (evil-leader/set-key "b" 'helm-imenu)
+    (evil-nnoremap! "/" 'helm-occur)
+    (evil-nnoremap! (kbd "C-p") 'helm-find-files)
+    (global-set-key (kbd "C-x C-f") 'helm-find-files)
+    (helm-mode 1))
 #+END_SRC
 
 *** hippie-expand
 
 #+BEGIN_SRC emacs-lisp
-(global-unset-key (kbd "C-SPC"))
-(global-set-key (kbd "C-SPC") 'hippie-expand)
+  (global-unset-key (kbd "C-SPC"))
+  (global-set-key (kbd "C-SPC") 'hippie-expand)
 #+END_SRC
 
 *** monitor
 
 #+BEGIN_SRC emacs-lisp
-(use-package monitor)
+  (use-package monitor)
 #+END_SRC
 
 *** projectile
 
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :config
-  (projectile-global-mode 1)
-  (evil-leader/set-key
-    "p" 'projectile-command-map))
+  (use-package projectile
+    :config
+    (projectile-global-mode 1)
+    (evil-leader/set-key
+      "p" 'projectile-command-map))
 #+END_SRC
 
 ** Org
@@ -728,149 +728,149 @@ See `evil-set-initial-state'."
 *** org
 
 #+BEGIN_SRC emacs-lisp
-(defvar my-sync-directory (file-name-as-directory (file-truename "~/ownCloud"))
-  "Directory under which files are synced with cloud.")
+  (defvar my-sync-directory (file-name-as-directory (file-truename "~/ownCloud"))
+    "Directory under which files are synced with cloud.")
 
-(use-package org
-  :init
-  (defvar my-evil-leader-org-map (make-sparse-keymap)
-     "Leader org-mode map.")
-  (emaps-define-key my-evil-leader-org-map
-    "a" 'org-agenda
-    "c" 'org-capture
-    "l" 'org-store-link
-    "s" 'org-switchb)
-  :config
-  (defun my-org-subdir (path)
-    "Return PATH under `org-directory'."
-    (concat org-directory "/" path))
+  (use-package org
+    :init
+    (defvar my-evil-leader-org-map (make-sparse-keymap)
+       "Leader org-mode map.")
+    (emaps-define-key my-evil-leader-org-map
+      "a" 'org-agenda
+      "c" 'org-capture
+      "l" 'org-store-link
+      "s" 'org-switchb)
+    :config
+    (defun my-org-subdir (path)
+      "Return PATH under `org-directory'."
+      (concat org-directory "/" path))
 
-  (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
+    (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
 
-  (customize-set-variable 'org-agenda-files `(,(my-org-subdir "todo.org")
-                                              ,(my-org-subdir "homework.org")
-                                              ,(my-org-subdir "uni-calendar.org")))
+    (customize-set-variable 'org-agenda-files `(,(my-org-subdir "todo.org")
+                                                ,(my-org-subdir "homework.org")
+                                                ,(my-org-subdir "uni-calendar.org")))
 
-  (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
+    (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
-  (evil-leader/set-key
-    "o" my-evil-leader-org-map)
-  (setq org-capture-templates
-        `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
-           "* TODO %? %^G\n\nEntered on: %U\n%i")
-          ("c" "Calendar")
-          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
-           "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
-          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
-           "* %? %^G\n\nEntered on %U\n%i")
-          ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
-           "* %? :NOTE:\n%U\n%a")))
+    (evil-leader/set-key
+      "o" my-evil-leader-org-map)
+    (setq org-capture-templates
+          `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
+             "* TODO %? %^G\n\nEntered on: %U\n%i")
+            ("c" "Calendar")
+            ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
+             "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
+            ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
+             "* %? %^G\n\nEntered on %U\n%i")
+            ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
+             "* %? :NOTE:\n%U\n%a")))
 
-  ;; source blocks
+    ;; source blocks
 
-  (customize-set-variable 'org-src-fontify-natively t)
+    (customize-set-variable 'org-src-fontify-natively t)
 
-  (customize-set-variable
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t))))
+    (customize-set-variable
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (python . t))))
 #+END_SRC
 
 *** org-ref
 
 #+BEGIN_SRC emacs-lisp
-(use-package org-ref)
+  (use-package org-ref)
 #+END_SRC
 
 *** comint
 
 #+BEGIN_SRC emacs-lisp
-(evil-define-key '(motion normal) comint-mode-map
-  (kbd "C-d") 'evil-scroll-down)
+  (evil-define-key '(motion normal) comint-mode-map
+    (kbd "C-d") 'evil-scroll-down)
 #+END_SRC
 
 ** Other commands
 
 #+BEGIN_SRC emacs-lisp
-(defun my-scratch-buffer ()
-  "Switch to the *scratch* buffer, making a new
-one if necessary."
-  (interactive)
-  (switch-to-buffer "*scratch*"))
+  (defun my-scratch-buffer ()
+    "Switch to the *scratch* buffer, making a new
+  one if necessary."
+    (interactive)
+    (switch-to-buffer "*scratch*"))
 
-(defun my-clear-buffer (&optional buffer)
-  "Clear all the text in BUFFER without modifying the kill ring"
-  (interactive "b")
-  (let ((buffer (or buffer (current-buffer))))
-       (with-current-buffer buffer
-            (kill-region (point-min) (point-max)))))
+  (defun my-clear-buffer (&optional buffer)
+    "Clear all the text in BUFFER without modifying the kill ring"
+    (interactive "b")
+    (let ((buffer (or buffer (current-buffer))))
+         (with-current-buffer buffer
+              (kill-region (point-min) (point-max)))))
 
-(defun my-new-scratch ()
-  "Opens a clean *scratch* buffer.
+  (defun my-new-scratch ()
+    "Opens a clean *scratch* buffer.
 
-If a *scratch* buffer exists, this will undo any changes
-made in that buffer."
-  (interactive)
-  (my-scratch-buffer)
-  (my-clear-buffer))
+  If a *scratch* buffer exists, this will undo any changes
+  made in that buffer."
+    (interactive)
+    (my-scratch-buffer)
+    (my-clear-buffer))
 
-(global-unset-key (kbd "C-s"))
+  (global-unset-key (kbd "C-s"))
 
-(defvar my-state-switch-map (make-sparse-keymap)
-  "Map for switching evil states.")
-(emaps-define-key my-state-switch-map
-  "n" 'evil-normal-state
-  "m" 'evil-motion-state
-  "e" 'evil-emacs-state)
+  (defvar my-state-switch-map (make-sparse-keymap)
+    "Map for switching evil states.")
+  (emaps-define-key my-state-switch-map
+    "n" 'evil-normal-state
+    "m" 'evil-motion-state
+    "e" 'evil-emacs-state)
 
-(emaps-define-key my-global-mode-map (kbd "C-s") my-state-switch-map)
+  (emaps-define-key my-global-mode-map (kbd "C-s") my-state-switch-map)
 #+END_SRC
 
 *** spelling
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
+  (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
-(evil-set-initial-state 'Custom-mode 'normal)
-(evil-set-initial-state 'finder-mode 'motion)
+  (evil-set-initial-state 'Custom-mode 'normal)
+  (evil-set-initial-state 'finder-mode 'motion)
 #+END_SRC
 
 *** irc
 
 #+BEGIN_SRC emacs-lisp
-(evil-set-initial-state 'rcirc-mode 'normal)
+  (evil-set-initial-state 'rcirc-mode 'normal)
 
-(defvar my-rcirc-cmd-list-map (make-sparse-keymap)
-  "Keymap for rcirc listing commands.")
+  (defvar my-rcirc-cmd-list-map (make-sparse-keymap)
+    "Keymap for rcirc listing commands.")
 
-(customize-set-variable 'rcirc-log-flag t "log IRC messages")
+  (customize-set-variable 'rcirc-log-flag t "log IRC messages")
 
-(emaps-define-key my-rcirc-cmd-list-map
-  "n" 'rcirc-cmd-names)
+  (emaps-define-key my-rcirc-cmd-list-map
+    "n" 'rcirc-cmd-names)
 
-(evil-local-leader/set-key-for-mode 'rcirc-mode
-  "j" 'rcirc-cmd-join
-  "m" 'rcirc-cmd-msg
-  "n" 'rcirc-cmd-nick
-  "l" my-rcirc-cmd-list-map)
+  (evil-local-leader/set-key-for-mode 'rcirc-mode
+    "j" 'rcirc-cmd-join
+    "m" 'rcirc-cmd-msg
+    "n" 'rcirc-cmd-nick
+    "l" my-rcirc-cmd-list-map)
 
-(customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
+  (customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
 #+END_SRC
 
 *** cperl
 
 #+BEGIN_SRC emacs-lisp
-(use-package cperl-mode
-  :init
-  (defalias 'perl-mode 'cperl-mode)
-  :config
-  (customize-set-variable 'cperl-indent-level 4)
-  (customize-set-variable
-   'cperl-close-paren-offset (- cperl-indent-level))
-  (customize-set-variable
-   'cperl-continued-statement-offset cperl-indent-level)
-  (customize-set-variable 'cperl-indent-parens-as-block t
-                          "Ensure nice indentation after parens."))
+  (use-package cperl-mode
+    :init
+    (defalias 'perl-mode 'cperl-mode)
+    :config
+    (customize-set-variable 'cperl-indent-level 4)
+    (customize-set-variable
+     'cperl-close-paren-offset (- cperl-indent-level))
+    (customize-set-variable
+     'cperl-continued-statement-offset cperl-indent-level)
+    (customize-set-variable 'cperl-indent-parens-as-block t
+                            "Ensure nice indentation after parens."))
 #+END_SRC
 
 ** Other Config
@@ -878,36 +878,36 @@ made in that buffer."
 *** Bindings
 
 #+BEGIN_SRC emacs-lisp
-(defvar my-jump-init-files-map (make-sparse-keymap)
-  "Keymap for jumping to init files.")
+  (defvar my-jump-init-files-map (make-sparse-keymap)
+    "Keymap for jumping to init files.")
 
-(emaps-define-key my-jump-init-files-map
-  "c" 'my-find-user-config-file
-  "i" 'my-find-user-init-file)
+  (emaps-define-key my-jump-init-files-map
+    "c" 'my-find-user-config-file
+    "i" 'my-find-user-init-file)
 
-(defvar my-jump-map (make-sparse-keymap)
-  "Keymap for jumping around.")
+  (defvar my-jump-map (make-sparse-keymap)
+    "Keymap for jumping around.")
 
-(emaps-define-key my-jump-map
-  "i" my-jump-init-files-map
-  "p" 'evil-switch-to-windows-last-buffer
-  "t" 'eshell)
+  (emaps-define-key my-jump-map
+    "i" my-jump-init-files-map
+    "p" 'evil-switch-to-windows-last-buffer
+    "t" 'eshell)
 
-(evil-leader/set-key "g" my-jump-map)
+  (evil-leader/set-key "g" my-jump-map)
 #+END_SRC
 
 *** Helpers
 
 #+BEGIN_SRC emacs-lisp
-(defun my-java-args-to-param-doc-list (text)
-  "Split text into Java parameter names."
-  (let ((params (split-string text ",")))
-    (--filter it (--map (progn (string-match "\\w+ \\(\\w+\\)$" it) (ignore-errors (match-string 1 it))) params))))
+  (defun my-java-args-to-param-doc-list (text)
+    "Split text into Java parameter names."
+    (let ((params (split-string text ",")))
+      (--filter it (--map (progn (string-match "\\w+ \\(\\w+\\)$" it) (ignore-errors (match-string 1 it))) params))))
 
-(defun my-move-key (keymap-from keymap-to key)
-  "Moves a keybinding from one keymap to another, removing previous binding"
-  (define-key keymap-to key (lookup-key keymap-from key))
-  (define-key keymap-from key nil))
+  (defun my-move-key (keymap-from keymap-to key)
+    "Moves a keybinding from one keymap to another, removing previous binding"
+    (define-key keymap-to key (lookup-key keymap-from key))
+    (define-key keymap-from key nil))
 
-(my-move-key evil-motion-state-map evil-normal-state-map " ")
+  (my-move-key evil-motion-state-map evil-normal-state-map " ")
 #+END_SRC
