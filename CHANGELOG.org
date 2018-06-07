@@ -14,6 +14,9 @@
 
 **** Org
 
++ todo keywords (=TODO=, =NEXT=, =WAITING=, =DONE=,
+  =CANCELLED=)
+
 + updated agenda files to better reflect a GTD workflow
 
 ***** Bindings for Org under local-leader

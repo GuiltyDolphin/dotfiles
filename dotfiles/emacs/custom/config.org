@@ -765,6 +765,11 @@
 
     (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
 
+    (customize-set-variable
+     'org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
+                 "DONE(d)" "CANCELLED(c)")))
+
     (customize-set-variable 'org-agenda-files
                             `(,(my-gtd-subdir "inbox.org")
                               ,(my-gtd-subdir "projects.org")
