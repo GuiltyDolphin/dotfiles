@@ -12,7 +12,11 @@
 
 + enabled =rec-mode=
 
-**** Bindings for Org under local-leader
+**** Org
+
++ updated agenda files to better reflect a GTD workflow
+
+***** Bindings for Org under local-leader
 
 + binding for editing source block
 

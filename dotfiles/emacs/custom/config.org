@@ -753,9 +753,19 @@
       "Return PATH under `org-directory'."
       (concat org-directory "/" path))
 
+    (defvar my-org-gtd-directory (my-org-subdir "gtd")
+      "Directory under which org files for GTD are kept.")
+
+    (defun my-gtd-subdir (path)
+      "Return PATH under `my-org-gtd-directory'."
+      (concat my-org-gtd-directory "/" path))
+
     (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
 
-    (customize-set-variable 'org-agenda-files `(,(my-org-subdir "uni-calendar.org")))
+    (customize-set-variable 'org-agenda-files
+                            `(,(my-gtd-subdir "inbox.org")
+                              ,(my-gtd-subdir "projects.org")
+                              ,(my-org-subdir "uni-calendar.org")))
 
     (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
