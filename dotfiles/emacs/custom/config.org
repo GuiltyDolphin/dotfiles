@@ -753,6 +753,12 @@
 
     (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 
+    (evil-local-leader/set-key-for-mode 'org-mode
+      "T" 'org-set-tags
+      "e" 'org-edit-src-code
+      "r" 'org-refile
+      "t" 'org-todo)
+
     (evil-leader/set-key
       "o" my-evil-leader-org-map)
     (setq org-capture-templates

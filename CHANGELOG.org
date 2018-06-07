@@ -10,6 +10,16 @@
 
 + battery status now displays in mode line
 
+**** Bindings for Org under local-leader
+
++ binding for editing source block
+
++ binding for refiling
+
++ binding for setting heading tags
+
++ binding for setting todo status
+
 *** FreeMind
 
 + binding for =Down= icon
