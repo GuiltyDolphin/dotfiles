@@ -75,11 +75,11 @@
 
 **** New Snippets
 
- + =custom-id=
++ =custom-id=
 
- + =description-list-item=
++ =description-list-item=
 
- + =properties=
++ =properties=
 
 *** FreeMind
 
