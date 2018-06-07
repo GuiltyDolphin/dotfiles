@@ -30,6 +30,8 @@
 
 *** Emacs
 
++ directory for cloud sync is now =~/cloud=
+
 + =link= snippet now keeps cursor on same line after exiting
   snippet
 

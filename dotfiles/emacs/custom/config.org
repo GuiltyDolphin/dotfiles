@@ -730,7 +730,7 @@
 *** org
 
 #+BEGIN_SRC emacs-lisp
-  (defvar my-sync-directory (file-name-as-directory (file-truename "~/ownCloud"))
+  (defvar my-sync-directory (file-name-as-directory (file-truename "~/cloud"))
     "Directory under which files are synced with cloud.")
 
   (use-package org
