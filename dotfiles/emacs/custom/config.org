@@ -749,6 +749,9 @@
       "l" 'org-store-link
       "s" 'org-switchb)
     :config
+    (customize-set-variable 'org-adapt-indentation nil
+                            "Don't indent node content.")
+
     (defun my-org-subdir (path)
       "Return PATH under `org-directory'."
       (concat org-directory "/" path))

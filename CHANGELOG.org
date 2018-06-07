@@ -41,6 +41,14 @@
 + =link= snippet now keeps cursor on same line after exiting
   snippet
 
+** Fixed
+
+*** Emacs
+
+**** Org
+
++ prevent node content from indenting based on heading level
+
 * 0.3.1 - 2018-06-01
 
 ** Fixed
