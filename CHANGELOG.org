@@ -6,6 +6,10 @@
 
 + git alias for listing ignored files
 
+*** Emacs
+
++ battery status now displays in mode line
+
 *** FreeMind
 
 + binding for =Down= icon
