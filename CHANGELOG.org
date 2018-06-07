@@ -10,6 +10,8 @@
 
 + battery status now displays in mode line
 
++ enabled =rec-mode=
+
 **** Bindings for Org under local-leader
 
 + binding for editing source block

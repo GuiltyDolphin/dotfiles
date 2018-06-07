@@ -472,6 +472,12 @@
     (kbd "C-y") 'evil-scroll-line-up)
 #+END_SRC
 
+*** rec
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rec-mode)
+#+END_SRC
+
 *** web-mode
 
 #+BEGIN_SRC emacs-lisp
