@@ -44,6 +44,14 @@
 + =link= snippet now keeps cursor on same line after exiting
   snippet
 
+**** Org
+
++ reworked =Todo= capture
+  + includes file and location information
+  + no longer prompts for tag
+  + now called =Inbox=
+  + stores capture in (GTD) =inbox.org=
+
 ** Fixed
 
 *** Emacs

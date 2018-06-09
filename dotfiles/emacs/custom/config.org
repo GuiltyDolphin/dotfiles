@@ -787,8 +787,8 @@
     (evil-leader/set-key
       "o" my-evil-leader-org-map)
     (setq org-capture-templates
-          `(("t" "Todo" entry (file+headline ,(my-org-subdir "todo.org") "Tasks")
-             "* TODO %? %^G\n\nEntered on: %U\n%i")
+          `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
+             "* TODO %?\n\n%i\n\nEntered on: %U\nFile: [[%F]]\nLocation: %a")
             ("c" "Calendar")
             ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
              "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
