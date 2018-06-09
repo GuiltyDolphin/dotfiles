@@ -168,7 +168,7 @@
     (set-frame-parameter nil 'background-mode bgmode)
     (set-terminal-parameter nil 'background-mode bgmode)
     (my-background-clear-timers)
-    ; give it time to sort itself out
+    ;; give it time to sort itself out
     (push (run-at-time "2 minutes" nil 'my-background-initialize-timers)
           my-background-timers)
     (load-theme 'solarized t))
@@ -325,7 +325,7 @@
   (use-package evil
     :config
     (customize-set-variable 'evil-want-C-w-in-emacs-state t)
-    ; * and # search for full symbols.
+    ;; * and # search for full symbols.
     (customize-set-variable 'evil-symbol-word-search t)
     (evil-define-minor-mode-key '(insert replace) 'my-global-mode
       (kbd "C-c") 'evil-normal-state)
@@ -517,10 +517,11 @@
     :config
     (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
     (customize-set-variable 'haskell-process-type 'stack-ghci)
-    (add-hook 'haskell-mode-hook 'flymake-mode-off) ; This seems to have fixed the flymake issue.
-                                                    ; Flycheck seems to handle errors well, and the
-                                                    ; cably-repl doesn't seem to be broken.
-                                                    ; Not sure what the issue was before.
+    ;; This seems to have fixed the flymake issue.
+    ;; Flycheck seems to handle errors well, and the
+    ;; cably-repl doesn't seem to be broken.
+    ;; Not sure what the issue was before.
+    (add-hook 'haskell-mode-hook 'flymake-mode-off)
     (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
     (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
     (customize-set-variable 'haskell-interactive-popup-errors nil))
