@@ -597,7 +597,9 @@
 **** eldoc
 
 #+BEGIN_SRC emacs-lisp
-  (global-eldoc-mode)
+  (use-package eldoc
+    :config
+    (global-eldoc-mode))
 #+END_SRC
 
 **** slime
@@ -717,8 +719,10 @@
 *** hippie-expand
 
 #+BEGIN_SRC emacs-lisp
-  (global-unset-key (kbd "C-SPC"))
-  (global-set-key (kbd "C-SPC") 'hippie-expand)
+  (use-package hippie-exp
+    :config
+    (global-unset-key (kbd "C-SPC"))
+    (global-set-key (kbd "C-SPC") 'hippie-expand))
 #+END_SRC
 
 *** monitor
@@ -838,8 +842,10 @@
 *** comint
 
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key '(motion normal) comint-mode-map
-    (kbd "C-d") 'evil-scroll-down)
+  (use-package comint
+    :config
+    (evil-define-key '(motion normal) comint-mode-map
+      (kbd "C-d") 'evil-scroll-down))
 #+END_SRC
 
 ** Other commands
@@ -880,7 +886,9 @@
 *** spelling
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
+  (use-package flyspell
+    :config
+    (add-hook 'text-mode-hook (lambda () (flyspell-mode t))))
 
   (evil-set-initial-state 'Custom-mode 'normal)
   (evil-set-initial-state 'finder-mode 'motion)
@@ -889,23 +897,25 @@
 *** irc
 
 #+BEGIN_SRC emacs-lisp
-  (evil-set-initial-state 'rcirc-mode 'normal)
+  (use-package rcirc
+    :init
+    (defvar my-rcirc-cmd-list-map (make-sparse-keymap)
+      "Keymap for rcirc listing commands.")
 
-  (defvar my-rcirc-cmd-list-map (make-sparse-keymap)
-    "Keymap for rcirc listing commands.")
+    (emaps-define-key my-rcirc-cmd-list-map
+      "n" 'rcirc-cmd-names)
 
-  (customize-set-variable 'rcirc-log-flag t "log IRC messages")
+    (evil-local-leader/set-key-for-mode 'rcirc-mode
+      "j" 'rcirc-cmd-join
+      "m" 'rcirc-cmd-msg
+      "n" 'rcirc-cmd-nick
+      "l" my-rcirc-cmd-list-map)
 
-  (emaps-define-key my-rcirc-cmd-list-map
-    "n" 'rcirc-cmd-names)
+    (evil-set-initial-state 'rcirc-mode 'normal)
 
-  (evil-local-leader/set-key-for-mode 'rcirc-mode
-    "j" 'rcirc-cmd-join
-    "m" 'rcirc-cmd-msg
-    "n" 'rcirc-cmd-nick
-    "l" my-rcirc-cmd-list-map)
-
-  (customize-set-variable 'rcirc-default-nick "GuiltyDolphin")
+    :config
+    (customize-set-variable 'rcirc-log-flag t "log IRC messages")
+    (customize-set-variable 'rcirc-default-nick "GuiltyDolphin"))
 #+END_SRC
 
 *** cperl
