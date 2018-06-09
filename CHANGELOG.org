@@ -41,6 +41,8 @@
 
 + directory for cloud sync is now =~/cloud=
 
++ documentation improvements
+
 + =link= snippet now keeps cursor on same line after exiting
   snippet
 

@@ -59,7 +59,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (defun my-find-user-init-file ()
-    "Find the user's init.el file"
+    "Find the user's init file."
     (interactive)
     (find-file user-init-file))
 
@@ -73,7 +73,7 @@
     (find-file my-config-org-file))
 
   (defun my-reload-user-init-file ()
-    "Evaluate the user's init.el file"
+    "Evaluate the user's init file."
     (interactive)
     (load-file user-init-file))
 #+END_SRC
@@ -115,11 +115,14 @@
   (require 'solar)
 
   (defun my-sunrise-sunset-times (loc-name loc-lat loc-lon)
-    "Get the sunrise, sunset and hours of daylight in the form (SUNRISE SUNSET HOURS).
+    "Get the sunrise, sunset, and hours of daylight for a location.
 
-  LOC-NAME, LOC-LON, and LOC-LAT should be the name, longitude, and latitude of the location for
-  which sunrise/sunset times should be retrieved. They should be in a form acceptable to
-  calendar-location-name, calendar-longitude, and calendar-latitude respectively."
+  LOC-NAME, LOC-LAT, and LOC-LON should be the name, latitude, and longitude
+  of the location for which sunrise/sunset times should be retrieved.
+  They should be in a form acceptable to `calendar-location-name',
+  `calendar-latitude', and `calendar-longitude' respectively.
+
+  The result is in the form (SUNRISE SUNSET HOURS)."
     (let* ((calendar-location-name loc-name)
           (calendar-longitude loc-lon)
           (calendar-latitude loc-lat)
@@ -174,13 +177,13 @@
     (load-theme 'solarized t))
 
   (defun my-background-set-dark ()
-    (interactive)
     "Set the current background mode to 'dark."
+    (interactive)
     (my-background-set 'dark))
 
   (defun my-background-set-light ()
-    (interactive)
     "Set the current background mode to 'light."
+    (interactive)
     (my-background-set 'light))
 
   (defun my-current-background-mode ()
@@ -188,6 +191,7 @@
     (frame-parameter nil 'background-mode))
 
   (defun my-background-initialize-timers ()
+    "Initialise timers used to change background at the appropriate time of day."
     (let* ((sunrise-sunset (my-location-sunrise-sunset my-location-loc))
            (sunrise-time (car sunrise-sunset))
            (sunset-time (cadr sunrise-sunset))
@@ -220,7 +224,7 @@
   (set-face-font 'default "Inconsolata-14")
 
   (defvar my-user-preferred-license "GPL-3"
-    "License to use by default with some modes")
+    "License to use by default with some modes.")
 
   (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
 
@@ -554,7 +558,7 @@
     "Directory for eclipse installation.")
 
   (defun my-eclim-run-tests ()
-    "Run tests via Maven in an Eclim project."
+    "Run test suite for an Eclim project using Maven."
     (interactive)
     (eclim-maven-run "test"))
 
@@ -648,6 +652,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (defmacro after (mode &rest body)
+    "After loading MODE, run BODY."
     (declare (indent defun))
     `(eval-after-load ,mode
        '(progn ,@body)))
@@ -824,23 +829,21 @@
 
 #+BEGIN_SRC emacs-lisp
   (defun my-scratch-buffer ()
-    "Switch to the *scratch* buffer, making a new
-  one if necessary."
+    "Switch to the *scratch* buffer, making a new one if necessary."
     (interactive)
     (switch-to-buffer "*scratch*"))
 
   (defun my-clear-buffer (&optional buffer)
-    "Clear all the text in BUFFER without modifying the kill ring"
+    "Clear all the text in BUFFER without modifying the kill ring."
     (interactive "b")
     (let ((buffer (or buffer (current-buffer))))
          (with-current-buffer buffer
               (kill-region (point-min) (point-max)))))
 
   (defun my-new-scratch ()
-    "Opens a clean *scratch* buffer.
+    "Open a clean *scratch* buffer.
 
-  If a *scratch* buffer exists, this will undo any changes
-  made in that buffer."
+  If a *scratch* buffer exists, this will undo any changes made in that buffer."
     (interactive)
     (my-scratch-buffer)
     (my-clear-buffer))
@@ -931,12 +934,16 @@
 
 #+BEGIN_SRC emacs-lisp
   (defun my-java-args-to-param-doc-list (text)
-    "Split text into Java parameter names."
+    "Identify a list of Java parameters from TEXT."
     (let ((params (split-string text ",")))
       (--filter it (--map (progn (string-match "\\w+ \\(\\w+\\)$" it) (ignore-errors (match-string 1 it))) params))))
 
   (defun my-move-key (keymap-from keymap-to key)
-    "Moves a keybinding from one keymap to another, removing previous binding"
+    "Move a keybinding from KEYMAP-FROM to KEYMAP-TO.
+
+  KEY is the binding to be moved.
+
+  This removes the binding from KEYMAP-FROM."
     (define-key keymap-to key (lookup-key keymap-from key))
     (define-key keymap-from key nil))
 
