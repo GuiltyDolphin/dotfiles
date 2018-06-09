@@ -818,6 +818,23 @@
   (use-package org-ref)
 #+END_SRC
 
+*** Line Wrapping
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-fill-column
+    ;; two side-by-side panes on my laptop
+    63
+    "Fill column to use in `org-mode'.")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-initialise-fill-column ()
+    "Initialise `auto-fill-mode' with my preferences for `org-mode'."
+    (set-fill-column my-org-fill-column)
+    (turn-on-auto-fill))
+  (add-hook 'org-mode-hook 'my-org-initialise-fill-column)
+#+END_SRC
+
 *** comint
 
 #+BEGIN_SRC emacs-lisp
