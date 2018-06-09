@@ -320,10 +320,10 @@
 
   Ask again if the buffer is modified."
     (interactive)
-    (when (y-or-n-p "Kill current buffer and window?: ")
+    (when (y-or-n-p "Kill current buffer and window? ")
       (when (or
              (not (buffer-modified-p))
-             (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure?: ")))
+             (and (buffer-modified-p) (y-or-n-p "Buffer is modified, are you sure? ")))
         (kill-buffer-and-window))))
 
   (use-package evil
