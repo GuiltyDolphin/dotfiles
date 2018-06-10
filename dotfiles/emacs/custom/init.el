@@ -27,6 +27,12 @@
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
+;; set file for custom variables
+(setq custom-file (locate-user-emacs-file ".emacs-custom.el"))
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
+(load custom-file)
+
 ;; This needs to be before loading config.org so I don't have to give
 ;; permission to load the file when it is symlinked.
 (customize-set-variable
