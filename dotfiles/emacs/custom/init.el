@@ -1,5 +1,5 @@
 ;; Emacs Configuration File
-;; Copyright (C) 2017 Ben Moon
+;; Copyright (C) 2015-2018 Ben Moon
 ;;
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
