@@ -590,10 +590,6 @@
 
 *** Lisp
 
-#+BEGIN_SRC emacs-lisp
-  (setq inferior-lisp-program (executable-find "sbcl"))
-#+END_SRC
-
 **** eldoc
 
 #+BEGIN_SRC emacs-lisp
@@ -607,6 +603,16 @@
 #+BEGIN_SRC emacs-lisp
   (use-package slime-autoloads)
   (use-package slime
+    :init
+    ;; set up lisp executable for slime
+    (defvar my-slime-preferred-lisp-program "sbcl"
+      "Name of preferred lisp program to use with SLIME.")
+    (defvar my-slime-inferior-lisp-program-variable 'inferior-lisp-program
+      "Symbol `slime-mode' uses to hold the lisp program.")
+    (-if-let (lisp-executable (executable-find my-slime-preferred-lisp-program))
+        (eval `(setq ,my-slime-preferred-lisp-program lisp-executable))
+      (warn "(init - slime) Could not find \"%s\" executable, not setting `%s'"
+            my-slime-preferred-lisp-program my-slime-inferior-lisp-program-variable))
     :config
     (slime-setup '(slime-fancy)))
 #+END_SRC
