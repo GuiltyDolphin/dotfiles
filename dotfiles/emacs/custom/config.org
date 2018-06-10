@@ -289,11 +289,11 @@
     (global-evil-local-leader-mode 1)
     (evil-local-leader/set-local-leader ","))
 
-  (setq lisp-modes '(emacs-lisp-mode
-                     lisp-interaction-mode
-                     lisp-mode slime-mode))
+  (defvar my-lisp-modes
+    '(emacs-lisp-mode lisp-interaction-mode lisp-mode slime-mode)
+    "Major modes for editing Lisp files.")
 
-  (dolist (mode lisp-modes)
+  (dolist (mode my-lisp-modes)
     (evil-local-leader/set-key-for-mode mode
       "er" 'eval-region
       "eb" 'eval-buffer
