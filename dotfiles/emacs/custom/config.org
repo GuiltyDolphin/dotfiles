@@ -614,6 +614,11 @@
       (warn "(init - slime) Could not find \"%s\" executable, not setting `%s'"
             my-slime-preferred-lisp-program my-slime-inferior-lisp-program-variable))
     :config
+    ;; connect to SLIME whenever a lisp file is visited
+    (add-hook 'slime-mode-hook
+              (lambda ()
+                (unless (slime-connected-p)
+                  (save-excursion (slime)))))
     (slime-setup '(slime-fancy)))
 #+END_SRC
 

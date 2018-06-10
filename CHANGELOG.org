@@ -12,6 +12,8 @@
 
 + enabled =rec-mode=
 
++ ~slime~ will activate when visiting a lisp file
+
 **** Org
 
 + line wrapping
