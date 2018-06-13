@@ -14,6 +14,8 @@
 
 + enabled =rec-mode=
 
++ ~my-background-set*~ functions now accept a timeout
+
 + ~slime~ will activate when visiting a lisp file
 
 **** Org

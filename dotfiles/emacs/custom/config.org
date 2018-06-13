@@ -165,25 +165,33 @@
       (cancel-timer timer))
     (setq my-background-timers nil))
 
-  (defun my-background-set (bgmode)
+  (defun my-background-set (bgmode &optional timeout)
     "Set the current background mode to BGMODE.
-  BGMODE should be one of 'light or 'dark."
+  BGMODE should be one of 'light or 'dark.
+
+  TIMEOUT, if non-NIL, specifies how long to wait before triggering the next
+  background check."
     (set-frame-parameter nil 'background-mode bgmode)
     (set-terminal-parameter nil 'background-mode bgmode)
     (my-background-clear-timers)
     ;; give it time to sort itself out
-    (push (run-at-time "2 minutes" nil 'my-background-initialize-timers)
-          my-background-timers)
+    (let ((timeout (or timeout "2 minutes")))
+      (push (run-at-time timeout nil 'my-background-initialize-timers)
+            my-background-timers))
     (load-theme 'solarized t))
 
-  (defun my-background-set-dark ()
-    "Set the current background mode to 'dark."
-    (interactive)
-    (my-background-set 'dark))
+  (defun my-background-set-dark (&optional timeout)
+    "Set the current background mode to 'dark.
 
-  (defun my-background-set-light ()
-    "Set the current background mode to 'light."
-    (interactive)
+  For the meaning of TIMEOUT, see `my-background-set'."
+    (interactive "sBackground timeout: ")
+    (my-background-set 'dark timeout))
+
+  (defun my-background-set-light (&optional timeout)
+    "Set the current background mode to 'light.
+
+  For the meaning of TIMEOUT, see `my-background-set'."
+    (interactive "sBackground timeout: ")
     (my-background-set 'light))
 
   (defun my-current-background-mode ()
