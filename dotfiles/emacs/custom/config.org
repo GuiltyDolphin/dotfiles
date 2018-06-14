@@ -846,7 +846,7 @@ The following function is inspired by
 ~helm-org-completing-read-tags~, which was promising, but
 (rather unfortunately) over complicates and restricts the
 ability to match on tags (at the time, it was hard-coded to
-only work when the prompt was the (exact) string ="Tags: "=).
+only work when the prompt was the (exact) string ~"Tags: "~).
 
 #+BEGIN_SRC emacs-lisp
   (defun my-org--completing-read-tags
