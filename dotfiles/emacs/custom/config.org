@@ -771,7 +771,7 @@
   (use-package org
     :init
     (defvar my-evil-leader-org-map (make-sparse-keymap)
-       "Leader org-mode map.")
+      "Leader org-mode map.")
     (emaps-define-key my-evil-leader-org-map
       "a" 'org-agenda
       "c" 'org-capture
