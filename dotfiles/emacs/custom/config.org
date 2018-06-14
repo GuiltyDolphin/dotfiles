@@ -910,40 +910,40 @@ action headings:
 **** Remaining Config
 
 #+BEGIN_SRC emacs-lisp
-    (defvar my-org-gtd-new-map (make-keymap)
-      "Keymap for creating new things in (GTD) `org-mode'.")
+  (defvar my-org-gtd-new-map (make-keymap)
+    "Keymap for creating new things in (GTD) `org-mode'.")
 
-    (emaps-define-key my-org-gtd-new-map
-      "a" 'my-org-gtd-insert-next-action-heading)
+  (emaps-define-key my-org-gtd-new-map
+    "a" 'my-org-gtd-insert-next-action-heading)
 
-    (evil-local-leader/set-key-for-mode 'org-mode
-      "T" 'org-set-tags
-      "e" 'org-edit-src-code
-      "n" my-org-gtd-new-map
-      "r" 'org-refile
-      "t" 'org-todo)
+  (evil-local-leader/set-key-for-mode 'org-mode
+    "T" 'org-set-tags
+    "e" 'org-edit-src-code
+    "n" my-org-gtd-new-map
+    "r" 'org-refile
+    "t" 'org-todo)
 
-    (evil-leader/set-key
-      "o" my-evil-leader-org-map)
-    (setq org-capture-templates
-          `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
-             "* TODO %?\n\n%i\n\nEntered on: %U\nFile: [[%F]]\nLocation: %a")
-            ("c" "Calendar")
-            ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
-             "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
-            ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
-             "* %? %^G\n\nEntered on %U\n%i")
-            ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
-             "* %? :NOTE:\n%U\n%a")))
+  (evil-leader/set-key
+    "o" my-evil-leader-org-map)
+  (setq org-capture-templates
+        `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
+           "* TODO %?\n\n%i\n\nEntered on: %U\nFile: [[%F]]\nLocation: %a")
+          ("c" "Calendar")
+          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
+           "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
+          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
+           "* %? %^G\n\nEntered on %U\n%i")
+          ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
+           "* %? :NOTE:\n%U\n%a")))
 
-    ;; source blocks
+  ;; source blocks
 
-    (customize-set-variable 'org-src-fontify-natively t)
+  (customize-set-variable 'org-src-fontify-natively t)
 
-    (customize-set-variable
-     'org-babel-load-languages
-     '((emacs-lisp . t)
-       (python . t))))
+  (customize-set-variable
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t))))
 #+END_SRC
 
 *** org-ref
