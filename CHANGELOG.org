@@ -29,6 +29,8 @@
 
 ***** Bindings for Org under local-leader
 
++ binding for creating new action headings
+
 + binding for editing source block
 
 + binding for refiling

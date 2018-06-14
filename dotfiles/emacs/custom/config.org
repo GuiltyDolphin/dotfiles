@@ -805,10 +805,121 @@
                               ,(my-org-subdir "uni-calendar.org")))
 
     (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
+#+END_SRC
+
+**** Next Action Helpers
+
+As it is so common to create next actions, it is helpful to set
+up a system for doing the following:
+
+1. Prompting for the next action title and contexts
+2. Creating a subheading with the appropriate todo keyword,
+   title, and tags
+
+
+Starting simply, we can define a wrapper to allow setting the
+todo keyword for the current heading based on its name:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org--get-todo-keywords ()
+    "Return a list of todo keywords for the current buffer."
+    (car org-todo-sets))
+
+  (defun my-org-heading--set-todo (todo)
+    "Set the todo state of the current heading to TODO."
+    (org-todo (1+ (-elem-index todo (my-org--get-todo-keywords)))))
+#+END_SRC
+
+And a wrapper for inserting the correct type of subheading:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-heading-insert-subheading-respect-content ()
+    "Like `org-insert-subheading', but insert the heading after current tree."
+    (interactive)
+    (org-insert-subheading '(4)))
+#+END_SRC
+
+To allow completing multiple tags, a new completion function
+needs to be defined.
+
+The following function is inspired by
+~helm-org-completing-read-tags~, which was promising, but
+(rather unfortunately) over complicates and restricts the
+ability to match on tags (at the time, it was hard-coded to
+only work when the prompt was the (exact) string ="Tags: "=).
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org--completing-read-tags
+      (prompt &optional tags predicate require-match
+              initial-input hist
+              def inherit-input-method)
+    "Read a list of tags from the minibuffer, with completion.
+
+  If TAGS is supplied, it should be a list of tags to complete,
+  otherwise, `org-last-tags-completion-table' is used instead.
+
+  The remaining arguments are the same as for `completing-read'."
+    (let ((crm-separator ":\\|,\\|\\s-")
+          (table (mapcar 'car (or tags org-last-tags-completion-table))))
+      (org-uniquify
+       (completing-read-multiple prompt table predicate
+                                 require-match initial-input
+                                 hist def inherit-input-method))))
+#+END_SRC
+
+Now some helpers for retrieving the available contexts:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org--get-agenda-tags-list ()
+    "Return a list of all known agenda tags."
+    (org-global-tags-completion-table
+     (org-agenda-files)))
+
+  (defun my-org-gtd--get-contexts ()
+    "Return a list of known context tags."
+    (--filter (string-match-p "^@" (car it)) (my-org--get-agenda-tags-list)))
+#+END_SRC
+
+And finally we can define the desired functions for creating
+action headings:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd--next-action-todo-keyword "NEXT"
+    "Todo keyword to indicate next actions.")
+
+  (defun my-org-gtd--prompt-next-action-title-context ()
+    "Prompt for the title and contexts for a next action."
+    (let ((org-add-colon-after-tag-completion t))
+      (let ((title (read-string "Action: "))
+            (tags (my-org--completing-read-tags "Context: " (my-org-gtd--get-contexts))))
+        (list title tags))))
+
+  (defun my-org-gtd-insert-next-action-heading (text tags)
+    "Insert TEXT as a new action heading below the current heading.
+
+  TAGS specifies a list of tags to apply to the heading."
+    (interactive (my-org-gtd--prompt-next-action-title-context))
+    (save-excursion
+      (org-end-of-line)
+      (my-org-heading-insert-subheading-respect-content)
+      (insert text)
+      (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
+      (org-set-tags-to tags)))
+#+END_SRC
+
+**** Remaining Config
+
+#+BEGIN_SRC emacs-lisp
+    (defvar my-org-gtd-new-map (make-keymap)
+      "Keymap for creating new things in (GTD) `org-mode'.")
+
+    (emaps-define-key my-org-gtd-new-map
+      "a" 'my-org-gtd-insert-next-action-heading)
 
     (evil-local-leader/set-key-for-mode 'org-mode
       "T" 'org-set-tags
       "e" 'org-edit-src-code
+      "n" my-org-gtd-new-map
       "r" 'org-refile
       "t" 'org-todo)
 
