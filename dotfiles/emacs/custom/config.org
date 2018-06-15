@@ -918,7 +918,7 @@ action headings:
 
   (evil-local-leader/set-key-for-mode 'org-mode
     "T" 'org-set-tags
-    "e" 'org-edit-src-code
+    "e" 'org-edit-special
     "n" my-org-gtd-new-map
     "r" 'org-refile
     "t" 'org-todo)
