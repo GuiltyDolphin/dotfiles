@@ -964,7 +964,7 @@ action headings:
 #+BEGIN_SRC emacs-lisp
   (defun my-org-initialise-fill-column ()
     "Initialise `auto-fill-mode' with my preferences for `org-mode'."
-    (set-fill-column my-org-fill-column)
+    (setq fill-column my-org-fill-column)
     (turn-on-auto-fill))
   (add-hook 'org-mode-hook 'my-org-initialise-fill-column)
 #+END_SRC
