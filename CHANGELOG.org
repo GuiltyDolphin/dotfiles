@@ -63,6 +63,7 @@
   + no longer prompts for tag
   + now called =Inbox=
   + stores capture in (GTD) =inbox.org=
+  + uses property drawer for meta information
 
 ** Fixed
 
