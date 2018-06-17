@@ -798,10 +798,55 @@
     (concat my-org-gtd-directory "/" path))
 
   (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
+#+END_SRC
+
+***** GTD Files
+
+To support a GTD workflow, I use the following org files:
+
++ general.org :: general reference information
+
++ inbox.org :: unprocessed items
+
++ project.org :: active projects and actions
+
++ someday.org :: inactive/potential projects, ideas, etc.
+
++ tickler.org :: for remind-me-later items
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-define-org-gtd-file (name keeps-what)
+    "Define a new GTD file variable for NAME, containing KEEPS-WHAT items.
+
+  KEEPS-WHAT is used to define a documentation string describing the
+  variable \"Org file in which to keep KEEPS-WHAT.\".
+
+  For example, (my-define-org-gtd-file \"test\" \"test items\")
+  would result in the following variable definition:
+
+  \(defvar my-org-gtd-test-file
+    (my-org-gtd-subdir (concat name \".org\"))
+    \"Org file in which to keep test items.\")"
+    (eval
+     `(defvar ,(intern (format "my-org-gtd-%s-file" name))
+        (my-gtd-subdir (concat ,name ".org"))
+        ,(format "Org file in which to keep %s." keeps-what))))
+
+  (let ((gtd-files
+         '(("general" . "general reference items")
+           ("inbox"   . "unprocessed items")
+           ("project" . "active projects")
+           ("someday" . "inactive projects and ideas")
+           ("tickler" . "tickled items"))))
+    (mapc (lambda (spec)
+            (-let [(name . keeps-what) spec]
+              `,@(my-define-org-gtd-file name keeps-what)))
+          gtd-files))
+#+END_SRC
 
   (customize-set-variable 'org-agenda-files
-                          `(,(my-gtd-subdir "inbox.org")
-                            ,(my-gtd-subdir "projects.org")
+                          `(,my-org-gtd-inbox-file
+                            ,my-org-gtd-project-file
                             ,(my-org-subdir "uni-calendar.org")))
 
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
