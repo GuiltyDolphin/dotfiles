@@ -781,31 +781,30 @@
     :config
     (customize-set-variable 'org-adapt-indentation nil
                             "Don't indent node content.")
+#+END_SRC
 
-    (defun my-org-subdir (path)
-      "Return PATH under `org-directory'."
-      (concat org-directory "/" path))
+**** Files
 
-    (defvar my-org-gtd-directory (my-org-subdir "gtd")
-      "Directory under which org files for GTD are kept.")
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-subdir (path)
+    "Return PATH under `org-directory'."
+    (concat org-directory "/" path))
 
-    (defun my-gtd-subdir (path)
-      "Return PATH under `my-org-gtd-directory'."
-      (concat my-org-gtd-directory "/" path))
+  (defvar my-org-gtd-directory (my-org-subdir "gtd")
+    "Directory under which org files for GTD are kept.")
 
-    (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
+  (defun my-gtd-subdir (path)
+    "Return PATH under `my-org-gtd-directory'."
+    (concat my-org-gtd-directory "/" path))
 
-    (customize-set-variable
-     'org-todo-keywords
-     '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
-                 "DONE(d)" "CANCELLED(c)")))
+  (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
 
-    (customize-set-variable 'org-agenda-files
-                            `(,(my-gtd-subdir "inbox.org")
-                              ,(my-gtd-subdir "projects.org")
-                              ,(my-org-subdir "uni-calendar.org")))
+  (customize-set-variable 'org-agenda-files
+                          `(,(my-gtd-subdir "inbox.org")
+                            ,(my-gtd-subdir "projects.org")
+                            ,(my-org-subdir "uni-calendar.org")))
 
-    (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
+  (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 #+END_SRC
 
 **** Next Action Helpers
@@ -908,7 +907,29 @@ action headings:
       (org-set-tags-to tags)))
 #+END_SRC
 
-**** Remaining Config
+**** Todo and Capture
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable
+   'org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
+               "DONE(d)" "CANCELLED(c)")))
+
+  (evil-leader/set-key
+    "o" my-evil-leader-org-map)
+  (setq org-capture-templates
+        `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
+           "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :FILE: [[%F]]\n  :LOCATION:  %a\n  :END:\n\n  %i")
+          ("c" "Calendar")
+          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
+           "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
+          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
+           "* %? %^G\n\nEntered on %U\n%i")
+          ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
+           "* %? :NOTE:\n%U\n%a")))
+#+END_SRC
+
+**** Bindings
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-gtd-new-map (make-keymap)
@@ -923,22 +944,11 @@ action headings:
     "n" my-org-gtd-new-map
     "r" 'org-refile
     "t" 'org-todo)
+#+END_SRC
 
-  (evil-leader/set-key
-    "o" my-evil-leader-org-map)
-  (setq org-capture-templates
-        `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
-           "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :FILE: [[%F]]\n  :LOCATION:  %a\n  :END:\n\n  %i")
-          ("c" "Calendar")
-          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
-           "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
-          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
-           "* %? %^G\n\nEntered on %U\n%i")
-          ("n" "Note" entry (file ,(my-org-subdir "refile.org"))
-           "* %? :NOTE:\n%U\n%a")))
+**** Source Blocks
 
-  ;; source blocks
-
+#+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-src-fontify-natively t)
 
   (customize-set-variable
