@@ -1,5 +1,6 @@
 #+TITLE: Changelog
 #+OPTIONS: H:10
+#+OPTIONS: num:nil
 
 * Unreleased
 
