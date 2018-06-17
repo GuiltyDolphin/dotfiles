@@ -1,4 +1,5 @@
 #+TITLE: Changelog
+#+OPTIONS: H:10
 
 * Unreleased
 
