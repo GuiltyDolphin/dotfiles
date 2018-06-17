@@ -1,4 +1,5 @@
 #+TITLE: GuiltyDolphin's Emacs Configuration
+#+OPTIONS: H:10
 
 * Emacs Configuration
 
