@@ -847,6 +847,7 @@ To support a GTD workflow, I use the following org files:
   (customize-set-variable 'org-agenda-files
                           `(,my-org-gtd-inbox-file
                             ,my-org-gtd-project-file
+                            ,my-org-gtd-tickler-file
                             ,(my-org-subdir "uni-calendar.org")))
 
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
