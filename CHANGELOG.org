@@ -23,6 +23,8 @@
 
 **** Org
 
++ initial refiling configuration
+
 + line wrapping
 
 + todo keywords (=TODO=, =NEXT=, =WAITING=, =DONE=,

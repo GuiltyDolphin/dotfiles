@@ -853,6 +853,39 @@ To support a GTD workflow, I use the following org files:
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 #+END_SRC
 
+**** Refiling
+
+The following files can be refiled to:
+
++ general.org :: for filing reference items
+
++ project.org :: for activating projects and actions
+
+=project.org= is structured as follows:
+
+  : Area of Focus / Project / Action
+
++ someday.org :: for filing items away to potentially be done
+                 at some point in the future
+
+Anything explicitly tagged with =category= is assumed to be an
+intended refile target.
+
++ tickler.org :: for filing items that should remain inactive
+                 until a specific time in the future
+
+=tickler.org= is structured as follows:
+
+  : Tickle / Item
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-refile-targets
+                          `((,my-org-gtd-general-file :maxlevel . 3)
+                            (,my-org-gtd-project-file :maxlevel . 3)
+                            (,my-org-gtd-someday-file :tag . "category")
+                            (,my-org-gtd-tickler-file :level . 2)))
+#+END_SRC
+
 **** Next Action Helpers
 
 As it is so common to create next actions, it is helpful to set
