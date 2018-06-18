@@ -854,6 +854,8 @@ To support a GTD workflow, I use the following org files:
                             ,my-org-gtd-project-file
                             ,my-org-gtd-tickler-file
                             ,(my-org-subdir "uni-calendar.org")))
+
+  (evil-set-initial-state 'org-agenda-mode 'motion)
 #+END_SRC
 
 **** Refiling

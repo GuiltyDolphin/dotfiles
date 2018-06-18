@@ -70,6 +70,10 @@
   + stores capture in (GTD) =inbox.org=
   + uses property drawer for meta information
 
+***** Agenda
+
++ initial state for ~org-agenda-mode~ is now =motion=
+
 ** Fixed
 
 *** Emacs
