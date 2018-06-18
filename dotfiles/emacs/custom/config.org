@@ -798,6 +798,8 @@
     (concat my-org-gtd-directory "/" path))
 
   (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
+
+  (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 #+END_SRC
 
 ***** GTD Files
@@ -844,13 +846,14 @@ To support a GTD workflow, I use the following org files:
           gtd-files))
 #+END_SRC
 
+**** Agenda
+
+#+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-agenda-files
                           `(,my-org-gtd-inbox-file
                             ,my-org-gtd-project-file
                             ,my-org-gtd-tickler-file
                             ,(my-org-subdir "uni-calendar.org")))
-
-  (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
 #+END_SRC
 
 **** Refiling
