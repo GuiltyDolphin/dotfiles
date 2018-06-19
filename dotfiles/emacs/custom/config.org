@@ -854,8 +854,27 @@ To support a GTD workflow, I use the following org files:
                             ,my-org-gtd-project-file
                             ,my-org-gtd-tickler-file
                             ,(my-org-subdir "uni-calendar.org")))
+#+END_SRC
 
+***** Bindings
+
+#+BEGIN_SRC emacs-lisp
   (evil-set-initial-state 'org-agenda-mode 'motion)
+
+  (defvar my-org-agenda-filter-map (make-keymap)
+    "Keymap for filter bindings in `org-agenda-mode'.")
+
+  (emaps-define-key my-org-agenda-filter-map
+    "/" 'helm-occur
+    "^" 'org-agenda-filter-by-top-headline
+    "c" 'org-agenda-filter-by-category
+    "e" 'org-agenda-filter-by-effort
+    "g" 'org-agenda-filter-by-regexp
+    "k" 'org-agenda-filter-remove-all
+    "t" 'org-agenda-filter-by-tag)
+
+  (evil-define-key 'motion org-agenda-mode-map
+    "/" my-org-agenda-filter-map)
 #+END_SRC
 
 **** Refiling

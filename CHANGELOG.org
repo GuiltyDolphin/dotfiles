@@ -44,6 +44,16 @@
 
 + binding for setting todo status
 
+***** Agenda
+
++ bindings for filters
+  + by category
+  + by effort
+  + by regexp
+  + by tag
+  + by top headline
+  + for removing filters
+
 *** FreeMind
 
 + binding for =Down= icon
