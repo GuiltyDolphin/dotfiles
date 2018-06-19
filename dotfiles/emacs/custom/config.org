@@ -856,6 +856,40 @@ To support a GTD workflow, I use the following org files:
                             ,(my-org-subdir "uni-calendar.org")))
 #+END_SRC
 
+***** Projects
+
+I provide variables for defining which headlines should be
+considered as projects.
+
+A project is:
+
++ in the projects file
++ a level two heading (see [[project-file-structure][structure of the project file]])
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-match-project
+    (format "+FILE=\"%s\"&+LEVEL=2" (expand-file-name my-org-gtd-project-file))
+    "Tags/P/T query for projects.")
+#+END_SRC
+
+Then an active project is any project which isn't marked
+complete.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-match-project-active
+    (format "%s/-DONE" my-org-gtd-match-project)
+    "Tags/P/T query for active projects.")
+#+END_SRC
+
+An active project is stuck if it has no (incomplete) action
+subheading.
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-stuck-projects
+                          `(,my-org-gtd-match-project-active
+                            ("NEXT" "WAITING") nil ""))
+#+END_SRC
+
 ***** Bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -891,7 +925,7 @@ The following files can be refiled to:
 
 + project.org :: for activating projects and actions
 
-=project.org= is structured as follows:
+=project.org= is structured as follows: <<project-file-structure>>
 
   : Area of Focus / Project / Action
 

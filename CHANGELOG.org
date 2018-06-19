@@ -44,7 +44,11 @@
 
 + binding for setting todo status
 
-***** Agenda Bindings
+***** Agenda
+
++ definition of stuck projects
+
+****** Bindings
 
 + bindings for filters
   + by category
@@ -54,7 +58,7 @@
   + by top headline
   + for removing filters
 
-****** Under local-leader
+******* Under local-leader
 
 + change todo status
 
