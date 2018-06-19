@@ -5,6 +5,8 @@
 
 * Unreleased
 
+* 0.4.0 -  2018-06-19
+
 ** Added
 
 + git alias for listing ignored files
