@@ -44,7 +44,7 @@
 
 + binding for setting todo status
 
-***** Agenda
+***** Agenda Bindings
 
 + bindings for filters
   + by category
@@ -53,6 +53,14 @@
   + by tag
   + by top headline
   + for removing filters
+
+****** Under local-leader
+
++ change todo status
+
++ refile
+
++ set tags
 
 *** FreeMind
 

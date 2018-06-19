@@ -876,6 +876,11 @@ To support a GTD workflow, I use the following org files:
   (evil-define-key 'motion org-agenda-mode-map
     "/" my-org-agenda-filter-map
     (kbd "RET") 'org-agenda-switch-to)
+
+  (evil-local-leader/set-key-for-mode 'org-agenda-mode
+    "T" 'org-agenda-set-tags
+    "r" 'org-agenda-refile
+    "t" 'org-agenda-todo)
 #+END_SRC
 
 **** Refiling
