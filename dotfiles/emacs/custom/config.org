@@ -932,8 +932,8 @@ The following files can be refiled to:
 + someday.org :: for filing items away to potentially be done
                  at some point in the future
 
-Anything explicitly tagged with =category= is assumed to be an
-intended refile target.
+Anything explicitly tagged with =category= or =aof= is assumed
+to be an intended refile target.
 
 + tickler.org :: for filing items that should remain inactive
                  until a specific time in the future
@@ -946,6 +946,7 @@ intended refile target.
   (customize-set-variable 'org-refile-targets
                           `((,my-org-gtd-general-file :maxlevel . 3)
                             (,my-org-gtd-project-file :maxlevel . 3)
+                            (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
                             (,my-org-gtd-tickler-file :level . 2)))
 #+END_SRC

@@ -5,6 +5,13 @@
 
 * Unreleased
 
+** Changed
+
+*** Org
+
++ entries tagged with =aof= in someday file are now valid
+  refile targets
+
 ** Removed
 
 *** Org
