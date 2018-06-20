@@ -953,7 +953,7 @@ to be an intended refile target.
                             (,my-org-gtd-project-file :maxlevel . 3)
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
-                            (,my-org-gtd-tickler-file :level . 2)))
+                            (,my-org-gtd-tickler-file :level . 1)))
 #+END_SRC
 
 ***** Completion

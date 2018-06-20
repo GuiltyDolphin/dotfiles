@@ -22,6 +22,12 @@
 + entries tagged with =aof= in someday file are now valid
   refile targets
 
+** Fixed
+
+*** Org
+
++ level of refile targets for tickler
+
 ** Removed
 
 *** Org
