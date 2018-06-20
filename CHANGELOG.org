@@ -9,6 +9,8 @@
 
 *** Org
 
++ fuzzy matching can now be used for refile paths
+
 + initial archiving configuration
 
 + mobile inbox now included in agenda files

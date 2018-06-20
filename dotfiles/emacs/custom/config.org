@@ -956,6 +956,20 @@ to be an intended refile target.
                             (,my-org-gtd-tickler-file :level . 2)))
 #+END_SRC
 
+***** Completion
+
+When refiling, it is convenient to be able to fuzzily complete
+the refile location in its entirety. Changing a few Org
+settings, and using helm, lets us achieve this.
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-refile-use-outline-path 'file
+                          "Allow specifying refile target in a \"l1/l2/l3\" fashion.")
+
+  (customize-set-variable 'org-outline-path-complete-in-steps nil
+                          "Don't complete outline path in steps.")
+#+END_SRC
+
 **** Archiving
 
 Archived entries are catalogued by datetree within files that
