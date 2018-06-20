@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Added
+
+*** Org
+
++ initial archiving configuration
+
 ** Changed
 
 *** Org

@@ -951,6 +951,19 @@ to be an intended refile target.
                             (,my-org-gtd-tickler-file :level . 2)))
 #+END_SRC
 
+**** Archiving
+
+Archived entries are catalogued by datetree within files that
+are grouped by year.
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable
+   'org-archive-location
+   (let ((current-year (format-time-string "%Y")))
+     (format "%s_archive::datetree/"
+             (f-join (my-gtd-subdir "archive") current-year "%s"))))
+#+END_SRC
+
 **** Next Action Helpers
 
 As it is so common to create next actions, it is helpful to set
