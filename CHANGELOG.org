@@ -11,6 +11,8 @@
 
 + initial archiving configuration
 
++ mobile inbox now included in agenda files
+
 ** Changed
 
 *** Org

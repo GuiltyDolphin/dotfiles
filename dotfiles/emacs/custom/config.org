@@ -830,13 +830,14 @@ To support a GTD workflow, I use the following org files:
     (my-org-gtd-subdir (concat name \".org\"))
     \"Org file in which to keep test items.\")"
     (eval
-     `(defvar ,(intern (format "my-org-gtd-%s-file" name))
+     `(defvar ,(intern (format "my-org-gtd-%s-file" (replace-regexp-in-string "\/" "-" name)))
         (my-gtd-subdir (concat ,name ".org"))
         ,(format "Org file in which to keep %s." keeps-what))))
 
   (let ((gtd-files
          '(("general" . "general reference items")
            ("inbox"   . "unprocessed items")
+           ("mobile/inbox" . "unprocessed items from phone")
            ("project" . "active projects")
            ("someday" . "inactive projects and ideas")
            ("tickler" . "tickled items"))))
@@ -844,13 +845,17 @@ To support a GTD workflow, I use the following org files:
             (-let [(name . keeps-what) spec]
               `,@(my-define-org-gtd-file name keeps-what)))
           gtd-files))
+
+  (defvar my-org-gtd-inbox-files
+    (list my-org-gtd-inbox-file my-org-gtd-mobile-inbox-file)
+    "List of GTD org inbox files.")
 #+END_SRC
 
 **** Agenda
 
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-agenda-files
-                          `(,my-org-gtd-inbox-file
+                          `(,@my-org-gtd-inbox-files
                             ,my-org-gtd-project-file
                             ,my-org-gtd-tickler-file
                             ,(my-org-subdir "uni-calendar.org")))
