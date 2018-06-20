@@ -1061,7 +1061,7 @@ action headings:
   (evil-leader/set-key
     "o" my-evil-leader-org-map)
   (setq org-capture-templates
-        `(("t" "Inbox" entry (file+headline ,(my-gtd-subdir "inbox.org") "Inbox")
+        `(("t" "Inbox" entry (file+headline ,my-org-gtd-inbox-file "Inbox")
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
           ("c" "Calendar")
           ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
