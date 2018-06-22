@@ -853,6 +853,8 @@ To support a GTD workflow, I use the following org files:
 
 **** Agenda
 
+***** Files
+
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-agenda-files
                           `(,@my-org-gtd-inbox-files
