@@ -853,6 +853,16 @@ To support a GTD workflow, I use the following org files:
 
 **** Agenda
 
+***** Custom Commands and Views
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable
+   'org-agenda-custom-commands
+   `(("T" "Unprocessed" todo "TODO"
+      ((org-agenda-overriding-header "Unprocessed Items")
+       (org-agenda-files ',my-org-gtd-inbox-files)))))
+#+END_SRC
+
 ***** Files
 
 #+BEGIN_SRC emacs-lisp
