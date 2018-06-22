@@ -21,6 +21,10 @@
   + active projects
   + unprocessed items
 
++ new bindings
+  + ~j~ :: ~org-agenda-next-line~
+  + ~k~ :: ~org-agenda-previous-line~
+
 ** Changed
 
 *** Org

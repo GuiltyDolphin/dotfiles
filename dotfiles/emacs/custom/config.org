@@ -928,6 +928,8 @@ subheading.
 
   (evil-define-key 'motion org-agenda-mode-map
     "/" my-org-agenda-filter-map
+    "j" 'org-agenda-next-line
+    "k" 'org-agenda-previous-line
     (kbd "RET") 'org-agenda-switch-to)
 
   (evil-local-leader/set-key-for-mode 'org-agenda-mode
