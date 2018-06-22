@@ -17,7 +17,9 @@
 
 + mobile inbox now included in agenda files
 
-+ new agenda view for unprocessed items
++ new agenda views
+  + active projects
+  + unprocessed items
 
 ** Changed
 
