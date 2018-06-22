@@ -15,8 +15,6 @@
 
 **** Agenda
 
-+ mobile inbox now included in agenda files
-
 + new agenda views
   + =@home= actions
   + active projects
@@ -26,6 +24,11 @@
 + new bindings
   + ~j~ :: ~org-agenda-next-line~
   + ~k~ :: ~org-agenda-previous-line~
+
++ new files included in agenda
+  + general
+  + mobile inbox
+  + someday
 
 ** Changed
 

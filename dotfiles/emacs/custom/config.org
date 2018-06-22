@@ -876,8 +876,10 @@ To support a GTD workflow, I use the following org files:
 
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-agenda-files
-                          `(,@my-org-gtd-inbox-files
+                          `(,my-org-gtd-general-file
+                            ,@my-org-gtd-inbox-files
                             ,my-org-gtd-project-file
+                            ,my-org-gtd-someday-file
                             ,my-org-gtd-tickler-file))
 #+END_SRC
 
