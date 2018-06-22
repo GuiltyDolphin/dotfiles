@@ -34,6 +34,8 @@
 
 + =FILE= and =LOCATION= properties in =Inbox= capture
 
++ =uni-calendar.org= is no longer an agenda file
+
 * 0.4.0 -  2018-06-19
 
 ** Added
