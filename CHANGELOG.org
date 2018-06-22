@@ -18,6 +18,7 @@
 + mobile inbox now included in agenda files
 
 + new agenda views
+  + =@home= actions
   + active projects
   + next actions
   + unprocessed items

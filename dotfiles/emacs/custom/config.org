@@ -858,7 +858,10 @@ To support a GTD workflow, I use the following org files:
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable
    'org-agenda-custom-commands
-   `(("n" "Actions" todo "NEXT"
+   `(("h" "At home" tags-todo "@home"
+      ((org-agenda-overriding-header "Home")
+       (org-agenda-files '(,my-org-gtd-project-file))))
+     ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
        (org-agenda-files '(,my-org-gtd-project-file))))
      ("p" "Active Projects" todo "TODO"
