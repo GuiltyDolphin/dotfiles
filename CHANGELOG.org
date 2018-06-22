@@ -19,6 +19,7 @@
 
 + new agenda views
   + active projects
+  + next actions
   + unprocessed items
 
 + new bindings
