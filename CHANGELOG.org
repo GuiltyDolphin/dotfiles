@@ -11,6 +11,8 @@
 
 + binding for creating "waiting for" headings
 
++ calendar syncing with =org-caldav=
+
 * 0.5.0 - 2018-06-22
 
 ** Added

@@ -1211,6 +1211,117 @@ re-evaluated.
   (add-hook 'org-mode-hook 'my-org-initialise-fill-column)
 #+END_SRC
 
+*** Calendar
+
+**** Calendar URLs
+
+Until I find a better alternative, I use the following for
+formatting URL paths:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-url-path-join (path &rest paths)
+    "Join PATH with PATHS as a URL."
+    (s-join "/" (cons path paths)))
+#+END_SRC
+
+=org-caldav= requires that we provide it with a calendar URL,
+the following function can do this for Nextcloud calendars:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar-nextcloud-calendars-url (server user)
+    "Return the URL for calendars stored in SERVER for USER.
+
+  SERVER should not end with a trailing slash."
+    (my-url-path-join server "remote.php/dav/calendars" user))
+#+END_SRC
+
+I use environment variables to store personal information about
+the calendars:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar--get-environment (varname)
+    "Return the value of the calendar environment variable ending with VARNAME."
+    (getenv (format "PERSONAL_CALENDAR_%s" varname)))
+
+  (defun my-calendar-get-calendar-id ()
+    "Return the personalised main calendar ID."
+    (my-calendar--get-environment "CALENDAR_ID"))
+#+END_SRC
+
+Which allows the definition of helpers to resolve the desired
+user calendar URLs:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar-nextcloud-get-personalised-calendars-url ()
+    "Return the personalised Nextcloud URL for calendars."
+    (let ((server (my-calendar--get-environment "SERVER"))
+          (userid (my-calendar--get-environment "USER_ID")))
+      (and server userid (my-calendar-nextcloud-calendars-url server userid))))
+
+  (defun my-calendar-nextcloud-get-personalised-calendar-url ()
+    "Return the personalised Nextcloud URL for main calendar."
+    (let ((calendars-url (my-calendar-nextcloud-get-personalised-calendars-url))
+          (calendar-id (my-calendar-get-calendar-id)))
+      (and calendars-url calendar-id (my-url-path-join calendars-url calendar-id))))
+#+END_SRC
+
+**** org-caldav
+
+I use =org-caldav= for syncing calendars.
+
+There's no point in loading =org-caldav= if a calendar URL
+cannot be generated, but the user should be warned that this is
+the case:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar--can-retrieve-calendar-url-or-warn ()
+    "Return t if a calendar URL can be formed, warn otherwise."
+    (or (my-calendar-nextcloud-get-personalised-calendar-url)
+        (and (warn (concat "my-calendar: could not retrieve calendar URL, "
+                           "please make sure all environment variables are initialised "
+                           "(see `my-calendar--get-environment' for more information)"))
+             nil)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-caldav
+    :if (my-calendar--can-retrieve-calendar-url-or-warn)
+    :init
+#+END_SRC
+
+***** Calendar Files
+
+There needs to be a file for storing new entries from the
+calendar:
+
+#+BEGIN_SRC emacs-lisp
+  (my-define-org-gtd-file "calendar/inbox" "unprocessed calendar items")
+#+END_SRC
+
+I use =calendar.org= to keep primary calendar items.
+
+#+BEGIN_SRC emacs-lisp
+  (my-define-org-gtd-file "calendar/calendar" "main calender items")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-calendar-files
+    (list my-org-gtd-calendar-inbox-file
+          my-org-gtd-calendar-calendar-file)
+    "List of GTD org calendar files.")
+#+END_SRC
+
+Then some variables must be customised for =org-caldav= to
+recognise the calendars and their files:
+
+#+BEGIN_SRC emacs-lisp
+  :config
+  (customize-set-variable 'org-caldav-url (my-calendar-nextcloud-get-personalised-calendars-url))
+  (customize-set-variable 'org-caldav-calendar-id (my-calendar-get-calendar-id))
+  (customize-set-variable 'org-caldav-inbox my-org-gtd-calendar-inbox-file)
+  (customize-set-variable 'org-caldav-files my-org-gtd-calendar-files))
+#+END_SRC
+
 *** comint
 
 #+BEGIN_SRC emacs-lisp

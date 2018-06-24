@@ -42,6 +42,7 @@
 (depends-on "multiple-cursors")
 (depends-on "nyan-mode")
 (depends-on "org")
+(depends-on "org-caldav")
 (depends-on "org-evil")
 (depends-on "org-ref")
 (depends-on "pallet")
