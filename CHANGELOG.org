@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Added
+
+*** Org
+
++ binding for creating "waiting for" headings
+
 * 0.5.0 - 2018-06-22
 
 ** Added

@@ -1107,6 +1107,36 @@ action headings:
       (org-set-tags-to tags)))
 #+END_SRC
 
+Additionally, it is useful to have a helper for creating
+"Waiting for" headings.
+
+Waiting for headings request a reminder time at which to be
+re-evaluated.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd--waiting-for-todo-keyword "WAITING"
+    "Todo keyword to indicate waiting fors.")
+
+  (defun my-org-gtd--prompt-waiting-for ()
+    "Prompt for information for building a waiting for heading."
+    (let ((wf-what (read-string "Waiting for what: "))
+          (remind-date (org-read-date nil nil nil "Reminder: ")))
+      (list wf-what remind-date)))
+
+  (defun my-org-gtd-insert-waiting-for-heading (text remind-date)
+    "Insert TEXT as a new waiting heading below the current heading.
+
+  REMIND-DATE specifies the date at which to re-evaluate the waiting for."
+    (interactive (my-org-gtd--prompt-waiting-for))
+    (save-excursion
+      (let ((wf-header (format "Waiting for %s" text)))
+        (org-end-of-line)
+        (my-org-heading-insert-subheading-respect-content)
+        (insert wf-header)
+        (my-org-heading--set-todo my-org-gtd--waiting-for-todo-keyword)
+        (org-schedule nil remind-date))))
+#+END_SRC
+
 **** Todo and Capture
 
 #+BEGIN_SRC emacs-lisp
@@ -1136,7 +1166,8 @@ action headings:
     "Keymap for creating new things in (GTD) `org-mode'.")
 
   (emaps-define-key my-org-gtd-new-map
-    "a" 'my-org-gtd-insert-next-action-heading)
+    "a" 'my-org-gtd-insert-next-action-heading
+    "w" 'my-org-gtd-insert-waiting-for-heading)
 
   (evil-local-leader/set-key-for-mode 'org-mode
     "T" 'org-set-tags
