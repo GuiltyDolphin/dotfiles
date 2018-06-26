@@ -1181,6 +1181,22 @@ re-evaluated.
 
 **** Bindings
 
+***** Navigation
+
+I find that ~helm-org-in-buffer-headings~ (with
+~helm-org-format-outline-path~ set to ~t~) provides a better
+alternative to ~helm-imenu~ when in Org:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'helm-org-format-outline-path t
+                          "Show all org levels as a path.")
+
+  (evil-leader/set-key-for-mode 'org-mode
+    "b" 'helm-org-in-buffer-headings)
+#+END_SRC
+
+***** Other Bindings
+
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-gtd-new-map (make-keymap)
     "Keymap for creating new things in (GTD) `org-mode'.")
