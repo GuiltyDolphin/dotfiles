@@ -994,6 +994,26 @@ settings, and using helm, lets us achieve this.
                           "Don't complete outline path in steps.")
 #+END_SRC
 
+***** Dealing with differing semantics in =org-capture-mode=
+
+When ~org-capture-mode~ is active, refiling has different
+semantics to when it is not, so it is useful to have a helper
+command to distinguish between these two cases:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-refile-dwim (&rest args)
+    "Refile the current heading.
+
+  See `org-refile' for the meaning of ARGS.
+
+  When `org-capture-mode' is active, this calls `org-capture-refile',
+  otherwise, `org-refile' is called."
+    (interactive "P")
+    (if org-capture-mode
+        (org-capture-refile)
+      (apply #'org-refile args)))
+#+END_SRC
+
 **** Archiving
 
 Archived entries are catalogued by datetree within files that
@@ -1173,7 +1193,7 @@ re-evaluated.
     "T" 'org-set-tags
     "e" 'org-edit-special
     "n" my-org-gtd-new-map
-    "r" 'org-refile
+    "r" 'my-org-refile-dwim
     "t" 'org-todo)
 #+END_SRC
 
