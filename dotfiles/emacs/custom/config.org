@@ -1338,14 +1338,19 @@ I use =calendar.org= to keep primary calendar items.
     "List of GTD org calendar files.")
 #+END_SRC
 
-Then some variables must be customised for =org-caldav= to
-recognise the calendars and their files:
+Some variables must be customised for =org-caldav= to
+recognise the calendars and their files, and the files need to
+be added to the agenda for =org-agenda= to recognise them:
 
 #+BEGIN_SRC emacs-lisp
   (defun my-calendar-files--configure ()
     "Configure `org-caldav' calendar files."
     (customize-set-variable 'org-caldav-inbox my-org-gtd-calendar-inbox-file)
-    (customize-set-variable 'org-caldav-files my-org-gtd-calendar-files))
+    (customize-set-variable 'org-caldav-files my-org-gtd-calendar-files)
+    (customize-set-variable 'org-agenda-files
+                            (-uniq (-concat
+                                    org-agenda-files
+                                    my-org-gtd-calendar-files))))
 #+END_SRC
 
 ***** Asynchronous Syncing

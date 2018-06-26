@@ -9,6 +9,8 @@
 
 *** Org
 
++ agenda files for calendars
+
 + binding for creating "waiting for" headings
 
 + calendar syncing with =org-caldav=
