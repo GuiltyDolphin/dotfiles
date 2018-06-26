@@ -1265,6 +1265,13 @@ user calendar URLs:
       (and calendars-url calendar-id (my-url-path-join calendars-url calendar-id))))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar-url--configure ()
+    "Configure `org-caldav' calendar URLs."
+    (customize-set-variable 'org-caldav-url (my-calendar-nextcloud-get-personalised-calendars-url))
+    (customize-set-variable 'org-caldav-calendar-id (my-calendar-get-calendar-id)))
+#+END_SRC
+
 **** org-caldav
 
 I use =org-caldav= for syncing calendars.
@@ -1315,11 +1322,77 @@ Then some variables must be customised for =org-caldav= to
 recognise the calendars and their files:
 
 #+BEGIN_SRC emacs-lisp
+  (defun my-calendar-files--configure ()
+    "Configure `org-caldav' calendar files."
+    (customize-set-variable 'org-caldav-inbox my-org-gtd-calendar-inbox-file)
+    (customize-set-variable 'org-caldav-files my-org-gtd-calendar-files))
+#+END_SRC
+
+***** Asynchronous Syncing
+
+I have a separate [[elisp:(org-open-link-from-string%20(format%20"file:%25s"%20(executable-find%20"sync-calendar")))][sync-calendar]] command for syncing the
+calendar with ~org-caldav-sync~, this can then be run
+asynchronously inside Emacs:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar-sync-in-background ()
+    "Sync calendars in the background."
+    (interactive)
+    (async-start-process "calendar sync" "sync-calendar"
+                         (lambda (proc)
+                           (unless (eq (process-exit-status proc) 0)
+                             (warn "Calendar sync failed")))))
+#+END_SRC
+
+Calendars should be synced every ten minutes:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-calendar-sync-interval 600
+    "Number of seconds to wait between calendar syncs.")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-calendar--sync-timer nil
+    "Timer for syncing calendars.")
+
+  (defun my-calendar-sync--initialise-timers ()
+    "Initialise timers necessary for syncing the calendars."
+    (when (timerp my-calendar--sync-timer)
+      (cancel-timer my-calendar--sync-timer))
+    (setq my-calendar--sync-timer
+          (run-at-time 0 my-calendar-sync-interval 'my-calendar-sync-in-background)))
+#+END_SRC
+
+And all we need to do when configuring is set up the timers:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-calendar-sync--configure ()
+    "Configure background syncing for calendars."
+    (my-calendar-sync--initialise-timers))
+#+END_SRC
+
+***** ~:config~ section
+
+#+BEGIN_SRC emacs-lisp
   :config
-  (customize-set-variable 'org-caldav-url (my-calendar-nextcloud-get-personalised-calendars-url))
-  (customize-set-variable 'org-caldav-calendar-id (my-calendar-get-calendar-id))
-  (customize-set-variable 'org-caldav-inbox my-org-gtd-calendar-inbox-file)
-  (customize-set-variable 'org-caldav-files my-org-gtd-calendar-files))
+#+END_SRC
+
++ configure the calendar URLs:
+
+#+BEGIN_SRC emacs-lisp
+  (my-calendar-url--configure)
+#+END_SRC
+
++ configure the calendar files:
+
+#+BEGIN_SRC emacs-lisp
+  (my-calendar-files--configure)
+#+END_SRC
+
++ configure background syncing:
+
+#+BEGIN_SRC emacs-lisp
+  (my-calendar-sync--configure))
 #+END_SRC
 
 *** comint

@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+# Sync calendars using org-caldav
+
+SYNC_SCRIPT=$(cat <<EOF
+(progn
+  (org-caldav-sync)
+  (switch-to-buffer "*org caldav sync result*")
+  (princ (buffer-string))
+  (terpri))
+EOF
+           )
+
+timestamp=$(date +%FT%H%M%S%z)
+
+tmp=$(mktemp sync-calendar-log-$timestamp-XXXXXX --tmpdir)
+
+echo "Begin sync ($timestamp)"
+
+emacs --batch -u $(whoami) --eval "$SYNC_SCRIPT" 2>$tmp
+
+if [ ! $? ]; then
+    echo "There were errors when performing the sync, please see '$tmp' for the full log"
+    exit 1
+else
+    echo "Sync complete"
+    rm $tmp
+    exit 0
+fi
