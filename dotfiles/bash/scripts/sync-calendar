@@ -9,6 +9,7 @@ SYNC_SCRIPT=$(cat <<EOF
   (switch-to-buffer "*org caldav sync result*")
   (princ (buffer-string))
   (terpri)
+  (save-some-buffers t)
   (kill-emacs 0))
 EOF
            )
