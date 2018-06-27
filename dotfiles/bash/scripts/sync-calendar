@@ -4,7 +4,8 @@
 
 SYNC_SCRIPT=$(cat <<EOF
 (progn
-  (org-caldav-sync)
+  (with-timeout (60 (warn "calendar sync timed out (60 seconds)") (kill-emacs 1))
+    (org-caldav-sync))
   (switch-to-buffer "*org caldav sync result*")
   (princ (buffer-string))
   (terpri))
