@@ -1409,10 +1409,13 @@ asynchronously inside Emacs:
   (defun my-calendar-sync-in-background ()
     "Sync calendars in the background."
     (interactive)
-    (async-start-process "calendar sync" "sync-calendar"
-                         (lambda (proc)
-                           (unless (eq (process-exit-status proc) 0)
-                             (warn "Calendar sync failed")))))
+    (if (--any (-when-let (cbuffer (get-file-buffer it)) (buffer-modified-p cbuffer))
+               org-caldav-files)
+        (warn "could not sync calendars, some calendar files are modified")
+      (async-start-process "calendar sync" "sync-calendar"
+                           (lambda (proc)
+                             (unless (eq (process-exit-status proc) 0)
+                               (warn "Calendar sync failed"))))))
 #+END_SRC
 
 Calendars should be synced every ten minutes:
