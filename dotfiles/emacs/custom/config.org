@@ -1439,7 +1439,8 @@ And all we need to do when configuring is set up the timers:
 #+BEGIN_SRC emacs-lisp
   (defun my-calendar-sync--configure ()
     "Configure background syncing for calendars."
-    (my-calendar-sync--initialise-timers))
+    (unless noninteractive
+      (my-calendar-sync--initialise-timers)))
 #+END_SRC
 
 ***** ~:config~ section
