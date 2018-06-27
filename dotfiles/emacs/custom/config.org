@@ -934,6 +934,15 @@ A completed project is any project marked as =DONE=:
     "Tags/P/T query for completed projects.")
 #+END_SRC
 
+***** Following (~org-agenda-follow-mode~)
+
+I prefer for ~org-agenda-follow-mode~ to display the tree on
+its own in an indirect buffer:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-agenda-follow-indirect t)
+#+END_SRC
+
 ***** Bindings
 
 #+BEGIN_SRC emacs-lisp

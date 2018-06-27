@@ -24,6 +24,9 @@
 + binding for refiling now accounts for differing refile
   semantics when capturing
 
++ ~org-agenda-follow-mode~ now displays only current item's
+  tree in an indirect buffer
+
 + =project.org= now only supports refiling directly under an
   area of focus (i.e., cannot directly refile an action to a
   project)
