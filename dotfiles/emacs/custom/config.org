@@ -958,6 +958,10 @@ The following files can be refiled to:
 
   : Area of Focus / Project / Action
 
+  For the sake of not over-populating the refile targets, it is
+  assumed that only projects are being refiled (i.e., items are
+  refiled under an area of focus).
+
 + someday.org :: for filing items away to potentially be done
                  at some point in the future
 
@@ -974,7 +978,7 @@ to be an intended refile target.
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-refile-targets
                           `((,my-org-gtd-general-file :maxlevel . 3)
-                            (,my-org-gtd-project-file :maxlevel . 3)
+                            (,my-org-gtd-project-file :level . 1)
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
                             (,my-org-gtd-tickler-file :level . 1)))

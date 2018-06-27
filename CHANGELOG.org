@@ -22,6 +22,10 @@
 + binding for refiling now accounts for differing refile
   semantics when capturing
 
++ =project.org= now only supports refiling directly under an
+  area of focus (i.e., cannot directly refile an action to a
+  project)
+
 ** Fixed
 
 *** Org
