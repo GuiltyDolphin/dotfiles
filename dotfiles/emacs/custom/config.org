@@ -858,7 +858,12 @@ To support a GTD workflow, I use the following org files:
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable
    'org-agenda-custom-commands
-   `(("h" "At home" tags-todo "@home"
+   `(("D" "Complete"
+      ((tags ,my-org-gtd-match-project-complete
+             ((org-agenda-overriding-header "Completed Projects")))
+       (tags "CATEGORY=\"tickler\"/DONE"
+             ((org-agenda-overriding-header "Completed Reminders")))))
+     ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
        (org-agenda-files '(,my-org-gtd-project-file))))
      ("n" "Actions" todo "NEXT"
@@ -917,6 +922,16 @@ subheading.
   (customize-set-variable 'org-stuck-projects
                           `(,my-org-gtd-match-project-active
                             ("NEXT" "WAITING") nil ""))
+#+END_SRC
+
+****** Completed Projects
+
+A completed project is any project marked as =DONE=:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-match-project-complete
+    (format "%s/+DONE" my-org-gtd-match-project)
+    "Tags/P/T query for completed projects.")
 #+END_SRC
 
 ***** Bindings

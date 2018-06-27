@@ -11,6 +11,8 @@
 
 + agenda files for calendars
 
++ agenda view for completed projects/reminders
+
 + binding for creating "waiting for" headings
 
 + calendar syncing with =org-caldav=
