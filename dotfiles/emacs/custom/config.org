@@ -1414,7 +1414,10 @@ asynchronously inside Emacs:
         (warn "could not sync calendars, some calendar files are modified")
       (async-start-process "calendar sync" "sync-calendar"
                            (lambda (proc)
-                             (unless (eq (process-exit-status proc) 0)
+                             (if (eq (process-exit-status proc) 0)
+                                 (let ((temp-buffer-show-function (lambda (buffer))))
+                                   (with-output-to-temp-buffer "*calendar sync result*"
+                                     (princ (buffer-string))))
                                (warn "Calendar sync failed"))))))
 #+END_SRC
 
