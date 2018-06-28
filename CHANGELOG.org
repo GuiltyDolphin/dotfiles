@@ -26,14 +26,18 @@
 + binding for refiling now accounts for differing refile
   semantics when capturing
 
-+ =Event= capture template now captures into calendar inbox
-
 + ~org-agenda-follow-mode~ now displays only current item's
   tree in an indirect buffer
 
 + =project.org= now only supports refiling directly under an
   area of focus (i.e., cannot directly refile an action to a
   project)
+
+**** =Event= capture template
+
++ no longer prompts for tags
+
++ now captures into calendar inbox
 
 ** Fixed
 
