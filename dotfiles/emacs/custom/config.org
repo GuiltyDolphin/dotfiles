@@ -1424,6 +1424,11 @@ asynchronously inside Emacs:
          (goto-char (point-max))
          (insert (format "[%s] %s\n" (format-time-string "%FT%T%z") msg))))))
 
+  (defun my-calendar-sync--log-with-warn (msg)
+    "Log MSG as with `my-calendar-sync--log', but additionally emit a warning."
+    (warn (format "%s: %s" my-calendar-sync--process-name msg))
+    (my-calendar-sync--log msg))
+
   (defun my-calendar-sync--sync-in-progress ()
     "Return t if a calendar sync is in progress."
     (--any (eq (process-name it)
@@ -1435,13 +1440,10 @@ asynchronously inside Emacs:
     (interactive)
     (my-calendar-sync--log "sync started")
     (if (my-calendar-sync--sync-in-progress)
-        (progn (warn "not syncing calendar: existing sync in progress")
-               (my-calendar-sync--log "sync aborted: sync already in progress"))
+        (my-calendar-sync--log-with-warn "sync aborted: sync already in progress")
       (if (--any (-when-let (cbuffer (get-file-buffer it)) (buffer-modified-p cbuffer))
                  org-caldav-files)
-          (progn
-            (warn "could not sync calendars, some calendar files are modified")
-            (my-calendar-sync--log "sync aborted: some calendar files are modified"))
+          (my-calendar-sync--log-with-warn "sync aborted: some calendar files are modified")
         (async-start-process my-calendar-sync--process-name "sync-calendar"
                              (lambda (proc)
                                (if (eq (process-exit-status proc) 0)
@@ -1450,8 +1452,7 @@ asynchronously inside Emacs:
                                      (let ((temp-buffer-show-function (lambda (buffer))))
                                        (with-output-to-temp-buffer "*calendar sync result*"
                                          (princ (buffer-string)))))
-                                 (warn "Calendar sync failed")
-                                 (my-calendar-sync--log "sync failed")))))))
+                                 (my-calendar-sync--log-with-warn "sync failed")))))))
 #+END_SRC
 
 Calendars should be synced every ten minutes:
