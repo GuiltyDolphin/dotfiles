@@ -37,6 +37,9 @@
 
 *** Org
 
++ =Event= capture template included an additional, active
+  timestamp that showed up in calendar
+
 + ~SPC b~ binding in ~org-mode~ did not allow selecting
   non-leaf headings
 
