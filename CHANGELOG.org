@@ -17,6 +17,8 @@
 
 + calendar syncing with =org-caldav=
 
++ refile target for calendar categories
+
 ** Changed
 
 + =projectile= will now use ~vc-git-grep~ in git projects

@@ -1028,6 +1028,12 @@ its own in an indirect buffer:
 
 The following files can be refiled to:
 
++ calendar/calendar.org :: for anything that should go on the
+     calendar
+
+Anything explicitly tagged with =category= is assumed to be an
+intended refile target.
+
 + general.org :: for filing reference items
 
 + project.org :: for activating projects and actions
@@ -1051,7 +1057,8 @@ to be an intended refile target.
 
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-refile-targets
-                          `((,my-org-gtd-general-file :maxlevel . 3)
+                          `((,my-org-gtd-calendar-calendar-file :tag . "category")
+                            (,my-org-gtd-general-file :maxlevel . 3)
                             (,my-org-gtd-project-file :level . 1)
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
