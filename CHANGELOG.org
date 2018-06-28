@@ -19,6 +19,8 @@
 
 ** Changed
 
++ =projectile= will now use ~vc-git-grep~ in git projects
+
 *** Org
 
 + binding for refiling now accounts for differing refile

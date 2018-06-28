@@ -758,7 +758,14 @@
     :config
     (projectile-global-mode 1)
     (evil-leader/set-key
-      "p" 'projectile-command-map))
+      "p" 'projectile-command-map)
+#+END_SRC
+
+To prevent files in =.gitignore= from showing up in search
+results, set ~projectile-use-git-grep~:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'projectile-use-git-grep t))
 #+END_SRC
 
 ** Org
