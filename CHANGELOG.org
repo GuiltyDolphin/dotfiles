@@ -38,6 +38,12 @@
 + ~SPC b~ binding in ~org-mode~ did not allow selecting
   non-leaf headings
 
+** Removed
+
+*** Org
+
++ =Note= capture template
+
 * 0.5.0 - 2018-06-22
 
 ** Added
