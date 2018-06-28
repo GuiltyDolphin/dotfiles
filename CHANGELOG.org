@@ -26,7 +26,12 @@
 + ~org-agenda-follow-mode~ now displays only current item's
   tree in an indirect buffer
 
-**** =Event= capture template
+**** Capture
+
++ =Inbox= capture template now files items as top-level
+  headings (previously under an =Inbox= heading)
+
+***** =Event= capture template
 
 + no longer prompts for tags
 
