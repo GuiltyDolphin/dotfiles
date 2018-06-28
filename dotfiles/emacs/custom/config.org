@@ -1441,15 +1441,12 @@ asynchronously inside Emacs:
       (setq buffer-read-only t)
       (current-buffer)))
 
-  (defvar my-calendar-sync--log-buffer (my-calendar-sync--get-log-buffer)
-    "Buffer used for logging information about calendar syncs.")
-
   (defvar my-calendar-sync--process-name "calendar sync"
     "Name used for calendar sync process.")
 
   (defun my-calendar-sync--log (msg)
     "Log MSG to the `my-calendar-sync--log-buffer' buffer with a timestamp."
-    (with-current-buffer my-calendar-sync--log-buffer
+    (with-current-buffer (my-calendar-sync--get-log-buffer)
       (let ((buffer-read-only nil))
         (with-buffer-modified-unmodified
          (goto-char (point-max))
