@@ -1211,12 +1211,18 @@ re-evaluated.
 
 **** Todo and Capture
 
+***** Todo Keywords
+
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable
    'org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
                "DONE(d)" "CANCELLED(c)")))
+#+END_SRC
 
+***** Capture Templates
+
+#+BEGIN_SRC emacs-lisp
   (evil-leader/set-key
     "o" my-evil-leader-org-map)
   (setq org-capture-templates
