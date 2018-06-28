@@ -24,6 +24,8 @@
 + binding for refiling now accounts for differing refile
   semantics when capturing
 
++ =Event= capture template now captures into calendar inbox
+
 + ~org-agenda-follow-mode~ now displays only current item's
   tree in an indirect buffer
 

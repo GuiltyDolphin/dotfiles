@@ -851,6 +851,28 @@ To support a GTD workflow, I use the following org files:
     "List of GTD org inbox files.")
 #+END_SRC
 
+****** Calendar Files<<Calendar File Definitions>>
+
+There needs to be a file for storing new entries from the
+calendar:
+
+#+BEGIN_SRC emacs-lisp
+  (my-define-org-gtd-file "calendar/inbox" "unprocessed calendar items")
+#+END_SRC
+
+I use =calendar.org= to keep primary calendar items:
+
+#+BEGIN_SRC emacs-lisp
+  (my-define-org-gtd-file "calendar/calendar" "main calender items")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-calendar-files
+    (list my-org-gtd-calendar-inbox-file
+          my-org-gtd-calendar-calendar-file)
+    "List of GTD org calendar files.")
+#+END_SRC
+
 **** Agenda
 
 ***** Projects
@@ -1201,7 +1223,7 @@ re-evaluated.
         `(("t" "Inbox" entry (file+headline ,my-org-gtd-inbox-file "Inbox")
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
           ("c" "Calendar")
-          ("ce" "Event" entry (file+headline (my-org-subdir "event.org") "Events")
+          ("ce" "Event" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title} %^G\n%?\n%^{Start}T--%^{End}T\n\n%T")
           ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
            "* %? %^G\n\nEntered on %U\n%i")))
@@ -1362,25 +1384,7 @@ the case:
 
 ***** Calendar Files
 
-There needs to be a file for storing new entries from the
-calendar:
-
-#+BEGIN_SRC emacs-lisp
-  (my-define-org-gtd-file "calendar/inbox" "unprocessed calendar items")
-#+END_SRC
-
-I use =calendar.org= to keep primary calendar items.
-
-#+BEGIN_SRC emacs-lisp
-  (my-define-org-gtd-file "calendar/calendar" "main calender items")
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defvar my-org-gtd-calendar-files
-    (list my-org-gtd-calendar-inbox-file
-          my-org-gtd-calendar-calendar-file)
-    "List of GTD org calendar files.")
-#+END_SRC
+See [[Calendar File Definitions]] for the definitions of calendar files.
 
 Some variables must be customised for =org-caldav= to
 recognise the calendars and their files, and the files need to
