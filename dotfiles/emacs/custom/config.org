@@ -771,16 +771,39 @@
 
   (use-package org
     :init
-    (defvar my-evil-leader-org-map (make-sparse-keymap)
-      "Leader org-mode map.")
-    (emaps-define-key my-evil-leader-org-map
-      "a" 'org-agenda
-      "c" 'org-capture
-      "l" 'org-store-link
-      "s" 'org-switchb)
-    :config
-    (customize-set-variable 'org-adapt-indentation nil
-                            "Don't indent node content.")
+#+END_SRC
+
+**** Leader Bindings
+
+Due to the use of various utilities that Org provides outside
+of ~org-mode~ itself, it is useful to have a dedicated set of
+bindings that you may wish to access anywhere in Emacs:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-evil-leader-org-map (make-sparse-keymap)
+    "Leader org-mode map.")
+
+  (emaps-define-key my-evil-leader-org-map
+    "a" 'org-agenda
+    "c" 'org-capture
+    "l" 'org-store-link
+    "s" 'org-switchb)
+#+END_SRC
+
+I use a [[evil-leader][leader key]], so I find it useful to group these bindings
+under that:
+
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key
+    "o" my-evil-leader-org-map)
+#+END_SRC
+
+**** Miscellaneous Configuration
+
+#+BEGIN_SRC emacs-lisp
+  :config
+  (customize-set-variable 'org-adapt-indentation nil
+                          "Don't indent node content.")
 #+END_SRC
 
 **** Files
@@ -1223,8 +1246,6 @@ re-evaluated.
 ***** Capture Templates
 
 #+BEGIN_SRC emacs-lisp
-  (evil-leader/set-key
-    "o" my-evil-leader-org-map)
   (setq org-capture-templates
         `(("t" "Inbox" entry (file+headline ,my-org-gtd-inbox-file "Inbox")
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
