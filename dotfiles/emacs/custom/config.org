@@ -1049,17 +1049,13 @@ to be an intended refile target.
 + tickler.org :: for filing items that should remain inactive
                  until a specific time in the future
 
-=tickler.org= is structured as follows:
-
-  : Tickle / Item
-
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-refile-targets
                           `((,my-org-gtd-general-file :maxlevel . 3)
                             (,my-org-gtd-project-file :level . 1)
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
-                            (,my-org-gtd-tickler-file :level . 1)))
+                            (,my-org-gtd-tickler-file :level . 0)))
 #+END_SRC
 
 ***** Completion
