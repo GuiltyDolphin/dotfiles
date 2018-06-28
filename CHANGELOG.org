@@ -25,8 +25,13 @@
 
 *** Org
 
+**** Agenda
+
 + ~org-agenda-follow-mode~ now displays only current item's
   tree in an indirect buffer
+
++ =Unprocessed= agenda view now shows calendar inbox in
+  addition to primary inboxes
 
 **** Capture
 
