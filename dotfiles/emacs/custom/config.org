@@ -1267,6 +1267,8 @@ re-evaluated.
         `(("t" "Inbox" entry (file ,my-org-gtd-inbox-file)
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
           ("e" "Calendar")
+          ("ed" "Event (single day)" entry (file ,my-org-gtd-calendar-inbox-file)
+           "* %^{Title}%?\n%^{Date}t")
           ("et" "Event (range)" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Start}t--%^{End}t")
           ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))

@@ -11,6 +11,8 @@
 
 + agenda view for calendar
 
++ capture template for single-day events
+
 ** Changed
 
 *** Org
