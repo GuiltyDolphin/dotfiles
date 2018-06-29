@@ -11,6 +11,13 @@
 
 + agenda view for calendar
 
+** Changed
+
+*** Org
+
++ =Event= capture template now triggered with ~e t~ (previously
+  ~c e~)
+
 * 0.6.0 - 2018-06-28
 
 ** Added

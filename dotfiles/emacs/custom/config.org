@@ -1266,8 +1266,8 @@ re-evaluated.
   (setq org-capture-templates
         `(("t" "Inbox" entry (file ,my-org-gtd-inbox-file)
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
-          ("c" "Calendar")
-          ("ce" "Event" entry (file ,my-org-gtd-calendar-inbox-file)
+          ("e" "Calendar")
+          ("et" "Event" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Start}T--%^{End}T")
           ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
            "* %? %^G\n\nEntered on %U\n%i")))
