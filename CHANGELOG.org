@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Added
+
+*** Org
+
++ agenda view for calendar
+
 * 0.6.0 - 2018-06-28
 
 ** Added
