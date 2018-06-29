@@ -15,8 +15,11 @@
 
 *** Org
 
-+ =Event= capture template now triggered with ~e t~ (previously
-  ~c e~)
+**** =Event= capture template
+
++ now triggered with ~e t~ (previously ~c e~)
+
++ renamed to =Event (range)=
 
 * 0.6.0 - 2018-06-28
 
