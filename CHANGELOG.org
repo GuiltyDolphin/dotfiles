@@ -17,6 +17,8 @@
 
 **** =Event= capture template
 
++ no longer requires a time to be specified
+
 + now triggered with ~e t~ (previously ~c e~)
 
 + renamed to =Event (range)=

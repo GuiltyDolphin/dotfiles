@@ -1268,7 +1268,7 @@ re-evaluated.
            "* TODO %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n  %i")
           ("e" "Calendar")
           ("et" "Event (range)" entry (file ,my-org-gtd-calendar-inbox-file)
-           "* %^{Title}%?\n%^{Start}T--%^{End}T")
+           "* %^{Title}%?\n%^{Start}t--%^{End}t")
           ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
            "* %? %^G\n\nEntered on %U\n%i")))
 #+END_SRC
