@@ -17,6 +17,9 @@
 
 *** Org
 
++ =Unprocessed= agenda view now triggered with ~u~ (previously
+  ~T~)
+
 **** =Event= capture template
 
 + no longer requires a time to be specified
