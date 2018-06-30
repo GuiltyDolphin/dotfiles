@@ -978,7 +978,10 @@ A completed project is any project marked as =DONE=:
               (org-agenda-files ',my-org-gtd-inbox-files)))
        (tags "LEVEL=1"
              ((org-agenda-overriding-header "Calendar Inbox")
-              (org-agenda-files '(,my-org-gtd-calendar-inbox-file))))))))
+              (org-agenda-files '(,my-org-gtd-calendar-inbox-file))))))
+     ("w" "Waiting" todo "WAITING"
+      ((org-agenda-overriding-header "Waiting For")
+       (org-agenda-files '(,my-org-gtd-project-file))))))
 #+END_SRC
 
 ***** Files

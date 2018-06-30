@@ -9,9 +9,13 @@
 
 *** Org
 
-+ agenda view for calendar
-
 + capture template for single-day events
+
+**** New Agenda Views
+
++ calendar
+
++ waiting for actions
 
 ** Changed
 
