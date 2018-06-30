@@ -32,6 +32,12 @@
 
 + renamed to =Event (range)=
 
+**** =Inbox= capture template
+
++ no longer includes a =CREATED= property
+
++ no longer includes current selection
+
 * 0.6.0 - 2018-06-28
 
 ** Added
