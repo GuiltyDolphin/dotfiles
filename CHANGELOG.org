@@ -21,6 +21,11 @@
 
 *** Org
 
+**** Agenda Views
+
++ =Complete= agenda view now includes completed items from
+  inbox
+
 + =Unprocessed= agenda view now triggered with ~u~ (previously
   ~T~)
 

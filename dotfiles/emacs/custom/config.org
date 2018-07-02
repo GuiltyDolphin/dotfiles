@@ -962,7 +962,9 @@ A completed project is any project marked as =DONE=:
       ((tags ,my-org-gtd-match-project-complete
              ((org-agenda-overriding-header "Completed Projects")))
        (tags "CATEGORY=\"tickler\"/DONE"
-             ((org-agenda-overriding-header "Completed Reminders")))))
+             ((org-agenda-overriding-header "Completed Reminders")))
+       (tags "CATEGORY=\"inbox\"/DONE"
+             ((org-agenda-overriding-header "Completed Inbox Items")))))
      ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
        (org-agenda-files '(,my-org-gtd-project-file))))
