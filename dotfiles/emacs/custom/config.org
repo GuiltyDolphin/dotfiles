@@ -956,8 +956,12 @@ A completed project is any project marked as =DONE=:
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable
    'org-agenda-custom-commands
-   `(("c" "Calendar" agenda ""
+   `(("C" "Calendar" agenda ""
       ((org-agenda-files ',my-org-gtd-calendar-files)))
+     ("c" . "Calendar (more)")
+     ("cd" "Deadlines" agenda ""
+      ((org-agenda-entry-types '(:deadline))
+       (org-deadline-warning-days 0)))
      ("D" "Complete"
       ((tags ,my-org-gtd-match-project-complete
              ((org-agenda-overriding-header "Completed Projects")))
