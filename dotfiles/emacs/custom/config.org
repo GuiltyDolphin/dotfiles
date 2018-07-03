@@ -1653,6 +1653,33 @@ And all we need to do when configuring is set up the timers:
                             "Ensure nice indentation after parens."))
 #+END_SRC
 
+*** Search
+
+[[https://duckduckgo.com][DuckDuckGo]] is a search engine that respects users' privacy.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-search-duckduckgo (query)
+    "Search DuckDuckGo for QUERY."
+    (interactive "sEnter query: ")
+    (browse-url (format "https://duckduckgo.com/html?q=%s"
+                        (url-hexify-string query))))
+
+  (defun my-search-duckduckgo-site (site query)
+    "Use DuckDuckGo to search SITE for QUERY."
+    (interactive "sEnter site: \nsEnter query: ")
+    (my-search-duckduckgo (format "%s site:%s" query site)))
+#+END_SRC
+
+I find it useful to have a quick way to search the [[https://forum.gettingthingsdone.com][Getting
+Things Done Forums]].
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-search-gtd-forum (query)
+    "Search the Getting Things Done forums for QUERY."
+    (interactive "sEnter query: ")
+    (my-search-duckduckgo-site "forum.gettingthingsdone.com" query))
+#+END_SRC
+
 ** Other Config
 
 *** Bindings

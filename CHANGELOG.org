@@ -7,11 +7,21 @@
 
 ** Added
 
-*** Org
+*** Emacs
+
+**** Commands
+
++ ~my-search-duckduckgo~
+
++ ~my-search-duckduckgo-site~
+
++ ~my-search-gtd-forum~
+
+**** Org
 
 + capture template for single-day events
 
-**** New Agenda Views
+***** New Agenda Views
 
 + calendar
 
