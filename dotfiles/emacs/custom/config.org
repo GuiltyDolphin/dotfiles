@@ -761,6 +761,35 @@
       "p" 'projectile-command-map)
 #+END_SRC
 
+**** Searching
+
+I prefer to use Helm for searching projects where possible:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-projectile-git-project-p ()
+    "Return t if the current project is under Git version control."
+    (eq 'git (projectile-project-vcs)))
+
+  (defun my-projectile-grep ()
+    "Grep the current project.
+
+  In a Git project this calls `helm-grep-do-git-grep',
+  otherwise it uses `projectile-grep'."
+    (interactive)
+    (if (my-projectile-git-project-p)
+        (helm-grep-do-git-grep nil)
+      (projectile-grep)))
+
+  (defun my-projectile-grep-ag ()
+    "Grep the current project with AG."
+    (interactive)
+    (helm-do-grep-ag nil))
+
+  (emaps-define-key projectile-command-map
+    "sg" 'my-projectile-grep
+    "ss" 'my-projectile-grep-ag)
+#+END_SRC
+
 To prevent files in =.gitignore= from showing up in search
 results, set ~projectile-use-git-grep~:
 

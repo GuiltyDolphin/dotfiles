@@ -31,20 +31,25 @@
 
 ** Changed
 
-*** Org
+*** Emacs
 
-**** Agenda Views
++ Helm grep variants are now used instead of Projectile
+  variants for Git grep and AG grep
+
+**** Org
+
+***** Agenda Views
 
 + =Unprocessed= agenda view now triggered with ~u~ (previously
   ~T~)
 
-***** =Complete= agenda view
+****** =Complete= agenda view
 
 + now includes completed items from inbox
 
 + now loads much faster
 
-**** =Event= capture template
+***** =Event= capture template
 
 + no longer requires a time to be specified
 
@@ -52,7 +57,7 @@
 
 + renamed to =Event (range)=
 
-**** =Inbox= capture template
+***** =Inbox= capture template
 
 + no longer includes a =CREATED= property
 
