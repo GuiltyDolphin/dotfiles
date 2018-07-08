@@ -96,7 +96,21 @@
   (use-package cl-lib)
 #+END_SRC
 
-** Time & Colorscheme
+** Calendar
+
+#+BEGIN_SRC emacs-lisp
+  (use-package calendar
+    :config
+#+END_SRC
+
+I prefer to use ISO date formats for ease-of-use and
+consistency:
+
+#+BEGIN_SRC emacs-lisp
+  (calendar-set-date-style 'iso)
+#+END_SRC
+
+*** Time & Colorscheme
 
 #+BEGIN_SRC emacs-lisp
   (require 'calendar)
@@ -219,7 +233,7 @@
           (funcall add-bg-timer 'light sunrise-today-or-next))))))
 #+END_SRC
 
-*** Color theme
+**** Color theme
 
 #+BEGIN_SRC emacs-lisp
   (if (my-date-in-daylight-hours (current-time))
@@ -227,7 +241,7 @@
     (my-background-set-dark))
 #+END_SRC
 
-*** Font
+**** Font
 
 #+BEGIN_SRC emacs-lisp
   (set-face-font 'default "Inconsolata-14")
@@ -245,6 +259,10 @@
     (lambda () (my-global-mode)))
 
   (my-global-global-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  )
 #+END_SRC
 
 ** Misc Packages

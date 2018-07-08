@@ -33,6 +33,8 @@
 
 *** Emacs
 
++ ~calendar-date-style~ is now ~iso~
+
 + Helm grep variants are now used instead of Projectile
   variants for Git grep and AG grep
 
