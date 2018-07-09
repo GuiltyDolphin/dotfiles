@@ -35,6 +35,9 @@
 
 + ~calendar-date-style~ is now ~iso~
 
++ ~display-line-numbers-mode~ is now used instead of
+  ~linum-mode~ for displaying line numbers
+
 + Helm grep variants are now used instead of Projectile
   variants for Git grep and AG grep
 

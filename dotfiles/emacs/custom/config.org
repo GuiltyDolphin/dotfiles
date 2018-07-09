@@ -27,7 +27,7 @@
   (line-number-mode 1) ; column number in mode line
   (column-number-mode 1) ; line number in mode line
 
-  (global-linum-mode 1) ; line number in margin
+  (global-display-line-numbers-mode 1) ; line number in margin
   (global-hl-line-mode 1) ; highlight current line
 
   (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
