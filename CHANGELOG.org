@@ -7,6 +7,8 @@
 
 ** Added
 
++ ~history~ command now displays timestamps
+
 *** Emacs
 
 **** Commands

@@ -143,6 +143,16 @@ export PERL5LIB=$HOME/perl5/lib/perl5
 
 source "$HOME/.bash/git_aliases.sh"
 
+###########
+# History #
+###########
+
+# Use ISO8601 format for history dates
+#
+# A space is included at the end to provide some separation
+# between the timestamp and the command
+export HISTTIMEFORMAT='%FT%T%z '
+
 # Autocompletion
 if [ -f ~/.git-completion.bash ]; then
   source ~/.git-completion.bash
