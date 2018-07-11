@@ -1061,6 +1061,48 @@ its own in an indirect buffer:
   (customize-set-variable 'org-agenda-follow-indirect t)
 #+END_SRC
 
+***** Bulk Commands
+
+The following macro facilitates acting upon headings when
+performing bulk agenda commands:
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro my-org-agenda-with-agenda-heading (&rest body)
+    "With the current agenda heading current, execute BODY."
+    (let ((marker-var (make-symbol "marker"))
+          (buffer-var (make-symbol "buffer")))
+      `(let* ((,marker-var (or (org-get-at-bol 'org-hd-marker)
+                               (org-agenda-error)))
+              (,buffer-var (marker-buffer ,marker-var)))
+         (with-current-buffer ,buffer-var
+           (save-excursion
+             (save-restriction
+               (widen)
+               (goto-char ,marker-var)
+               (org-back-to-heading t)
+               ,@body))))))
+#+END_SRC
+
+****** Cancel and Archive
+
+When going through old ideas, it is useful to be able to bulk
+cancel and archive the items:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-cancel-and-archive ()
+    "Achive the entry at point after setting its TODO state to CANCELLED."
+    (interactive)
+    (my-org-heading--set-todo "CANCELLED")
+    (org-archive-subtree))
+
+  (defun my-org-agenda--bulk-cancel-and-archive ()
+    "Execute `my-org-cancel-and-archive' in the context of a bulk agenda command."
+    (my-org-agenda-with-agenda-heading (my-org-cancel-and-archive)))
+
+  (customize-set-variable 'org-agenda-bulk-custom-functions
+                          '((?C my-org-agenda--bulk-cancel-and-archive)))
+#+END_SRC
+
 ***** Bindings
 
 #+BEGIN_SRC emacs-lisp

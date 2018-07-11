@@ -23,7 +23,11 @@
 
 + capture template for single-day events
 
-***** New Agenda Views
+***** Agenda
+
++ new bulk command for cancelling and archiving marked entries
+
+****** New Agenda Views
 
 + calendar
 
