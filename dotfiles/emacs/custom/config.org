@@ -1022,6 +1022,18 @@ A completed project is any project marked as =DONE=:
      ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
        (org-agenda-files '(,my-org-gtd-project-file))))
+     ("i" . "Someday/Maybe")
+     ("ia" "Areas of Focus" tags "aof"
+      ((org-agenda-overriding-header "Areas of Focus")
+       (org-agenda-files '(,my-org-gtd-someday-file))
+       (org-use-tag-inheritance nil)))
+     ("ic" "Categories" tags "category"
+      ((org-agenda-overriding-header "Categories")
+       (org-agenda-files '(,my-org-gtd-someday-file))
+       (org-use-tag-inheritance nil)))
+     ("ip" "Potential Projects" tags "CATEGORY=\"potential\"/TODO"
+      ((org-agenda-overriding-header "Potential Projects")
+       (org-agenda-files '(,my-org-gtd-someday-file))))
      ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
        (org-agenda-files '(,my-org-gtd-project-file))))

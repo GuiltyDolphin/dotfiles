@@ -33,6 +33,14 @@
 
 + deadlines
 
++ someday/maybe
+
+  + areas of focus
+
+  + categories
+
+  + potential projects
+
 + waiting for actions
 
 ** Changed
