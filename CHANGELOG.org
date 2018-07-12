@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Added
+
+*** Emacs
+
++ initial =org-brain= configuration
+
 * 0.7.0 - 2018-07-12
 
 ** Added

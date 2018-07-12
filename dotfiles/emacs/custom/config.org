@@ -817,7 +817,7 @@ results, set ~projectile-use-git-grep~:
 
 ** Org
 
-*** org
+*** org<<org-mode configuration>>
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-sync-directory (file-name-as-directory (file-truename "~/cloud"))
@@ -1431,6 +1431,162 @@ alternative to ~helm-imenu~ when in Org:
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t))))
+#+END_SRC
+
+*** org-brain
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-brain
+    ;; :after doesn't seem to work... Perhaps because org is builtin?
+    ;; so I'm having to place 'org-brain physically after 'org
+    :after (:all evil org)
+    :init
+#+END_SRC
+
+**** Bindings
+
+I want quick access to ~org-brain-visualize~ from anywhere:
+
+#+BEGIN_SRC emacs-lisp
+  (emaps-define-key my-evil-leader-org-map
+    "b" 'org-brain-visualize)
+#+END_SRC
+
+Some bindings are kept under the local leader key, as with
+[[org-mode configuration][org-mode]].
+
+#+BEGIN_SRC emacs-lisp
+  (evil-local-leader/set-key-for-mode 'org-brain-visualize-mode
+    "T" 'org-brain-set-tags
+    "a" 'org-brain-archive
+    "m" 'org-brain-visualize-mind-map
+    "p" 'org-brain-pin)
+#+END_SRC
+
+I use evil's =motion= state, with heavy binding customisation,
+for ~org-brain-visualize-mode~:
+
+#+BEGIN_SRC emacs-lisp
+  (evil-set-initial-state 'org-brain-visualize-mode 'motion)
+#+END_SRC
+
+***** Creation Commands
+
+For adding resources, I find that
+~org-brain-visualize-paste-resource~ doesn't work quite how I
+want it, so I've defined some helpers to give a more expected
+behaviour:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org--completing-read-link ()
+    "Read a stored link from the minibuffer."
+    (let* ((stored-links (mapcar #'car org-stored-links))
+           (first-link (car stored-links))
+           (hist-var (make-symbol "link-history")))
+      (eval
+       `(let ((,hist-var (append stored-links org-insert-link-history)))
+          (org-completing-read
+           "Link: " stored-links nil nil nil ',hist-var first-link)))))
+
+  (defun my-org--try-get-link-description (link)
+    "Return a suitable description for LINK, if one can be found."
+    (nth 1 (assoc link org-stored-links)))
+
+  (defun my-org-brain--paste-resource ()
+    "Prompt for a resource and add it as a resource link.
+
+  See `org-brain-add-resource'."
+    (interactive)
+    (-when-let (link (my-org--completing-read-link))
+      (let ((description
+             (read-string "Description: " (my-org--try-get-link-description link))))
+        (org-brain-add-resource link description))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-brain-creation-map (make-sparse-keymap)
+    "Keymap for creation bindings in `org-brain-visualize-mode'.")
+
+  (emaps-define-key my-org-brain-creation-map
+    "c" 'org-brain-add-child
+    "f" 'org-brain-add-friendship
+    "h" 'org-brain-new-child
+    "p" 'org-brain-add-parent
+    "r" 'my-org-brain--paste-resource)
+#+END_SRC
+
+***** Deletion Commands
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-brain-deletion-map (make-sparse-keymap)
+    "Keymap for deletion bindings in `org-brain-visualize-mode'.")
+
+  (emaps-define-key my-org-brain-deletion-map
+    "c" 'org-brain-remove-child
+    "d" 'org-brain-delete-entry
+    "f" 'org-brain-remove-friendship
+    "p" 'org-brain-remove-parent)
+#+END_SRC
+
+***** Visualisation Commands
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-brain-visualisation-map (make-keymap)
+    "Keymap for visualisation commands in `org-brain-visualize-mode'.")
+
+  (emaps-define-key my-org-brain-visualisation-map
+    "P" 'org-brain-visualize-remove-grandparent
+    "c" 'org-brain-visualize-remove-grandchild
+    "o" 'org-brain-visualize-add-grandchild
+    "p" 'org-brain-visualize-add-grandparent)
+#+END_SRC
+
+***** Top-level Bindings
+
+#+BEGIN_SRC emacs-lisp
+  :config
+  (evil-define-key 'motion org-brain-visualize-mode-map
+    "D" 'org-brain-delete-entry
+    "a" my-org-brain-creation-map
+    "d" my-org-brain-deletion-map
+    "j" 'forward-button
+    "k" 'backward-button
+    "o" 'org-brain-new-child
+    "q" 'org-brain-visualize-quit
+    "v" 'org-brain-visualize
+    "z" my-org-brain-visualisation-map)
+#+END_SRC
+
+**** Misc Configuration
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable
+   'org-id-track-globally t
+   "Track IDs through files.")
+
+  (add-to-list
+   'org-capture-templates
+   '("b" "Brain" plain (function org-brain-goto-end)
+     "* %i%?" :empty-lines 1))
+#+END_SRC
+
+I store my brain in my usual org directory:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-brain-path (my-org-subdir "org-brain"))
+#+END_SRC
+
+I usually want all file and headline entries to be presented as
+choices when using ~org-brain-visualize~:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-brain-visualize-default-choices 'all)
+#+END_SRC
+
+I prefer the entire entry title to always be displayed:
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-brain-title-max-length 0))
 #+END_SRC
 
 *** org-ref
