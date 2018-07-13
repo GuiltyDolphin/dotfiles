@@ -17,6 +17,13 @@
 
 + ~my-org-fill-column~ is now ~62~
 
+** Fixed
+
+*** =org-agenda=
+
++ all incomplete inbox items now show in =Unprocessed= agenda
+  view
+
 * 0.7.0 - 2018-07-12
 
 ** Added
