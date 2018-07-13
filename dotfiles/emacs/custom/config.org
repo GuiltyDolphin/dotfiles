@@ -1455,10 +1455,21 @@ I want quick access to ~org-brain-visualize~ from anywhere:
 Some bindings are kept under the local leader key, as with
 [[org-mode configuration][org-mode]].
 
+~org-brain-archive~ doesn't request explicit confirmation
+before archiving, so I define a wrapper:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-brain-archive-with-confirmation (entry)
+    "Use `org-brain-archive' on ENTRY after confirmation from the user."
+    (interactive (list (org-brain-entry-at-pt)))
+    (when (yes-or-no-p "Archive the current entry? ")
+      (org-brain-archive entry)))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (evil-local-leader/set-key-for-mode 'org-brain-visualize-mode
     "T" 'org-brain-set-tags
-    "a" 'org-brain-archive
+    "a" 'my-org-brain-archive-with-confirmation
     "m" 'org-brain-visualize-mind-map
     "p" 'org-brain-pin)
 #+END_SRC
