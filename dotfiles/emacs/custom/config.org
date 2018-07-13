@@ -1512,28 +1512,48 @@ want it, so I've defined some helpers to give a more expected
 behaviour:
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-org--completing-read-link ()
-    "Read a stored link from the minibuffer."
+  (defun my-org--completing-read-link (&optional default)
+    "Read a stored link from the minibuffer.
+
+  DEFAULT, if non-nil, specifies the default link to use."
     (let* ((stored-links (mapcar #'car org-stored-links))
            (first-link (car stored-links))
            (hist-var (make-symbol "link-history")))
       (eval
        `(let ((,hist-var (append stored-links org-insert-link-history)))
           (org-completing-read
-           "Link: " stored-links nil nil nil ',hist-var first-link)))))
+           "Link: " stored-links nil nil nil ',hist-var (or default first-link))))))
 
   (defun my-org--try-get-link-description (link)
     "Return a suitable description for LINK, if one can be found."
     (nth 1 (assoc link org-stored-links)))
+
+  (defun my-org-cliplink--retrieve-title (url)
+    "Retrieve the title for URL using `org-cliplink-retrieve-title-synchronously'.
+
+  This deals with some errors and edge cases."
+    (let* ((urlobj (url-generic-parse-url url))
+           (utype (url-type urlobj)))
+      (unless (equal utype "file") ; to prevent a bug with dired being opened
+        (condition-case nil
+            (shut-up (org-cliplink-retrieve-title-synchronously link))
+          (error nil)))))
 
   (defun my-org-brain--paste-resource ()
     "Prompt for a resource and add it as a resource link.
 
   See `org-brain-add-resource'."
     (interactive)
-    (-when-let (link (my-org--completing-read-link))
+    (-when-let (link (my-org--completing-read-link
+                      ;; only use the clipboard contents if it resembles
+                      ;; some kind of link
+                      (let ((cliplink (org-cliplink-clipboard-content)))
+                        (when (url-type (url-generic-parse-url cliplink))
+                          cliplink))))
       (let ((description
-             (read-string "Description: " (my-org--try-get-link-description link))))
+             (read-string "Description: "
+                          (or (my-org--try-get-link-description link)
+                              (my-org-cliplink--retrieve-title link)))))
         (org-brain-add-resource link description))))
 #+END_SRC
 
@@ -1622,6 +1642,12 @@ I prefer the entire entry title to always be displayed:
 
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-brain-title-max-length 0))
+#+END_SRC
+
+*** org-cliplink
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-cliplink)
 #+END_SRC
 
 *** org-ref
