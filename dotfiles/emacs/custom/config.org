@@ -1588,7 +1588,8 @@ behaviour:
     "o" 'org-brain-new-child
     "q" 'org-brain-visualize-quit
     "v" 'org-brain-visualize
-    "z" my-org-brain-visualisation-map)
+    "z" my-org-brain-visualisation-map
+    (kbd "C-o") 'org-brain-visualize-back)
 #+END_SRC
 
 **** Misc Configuration
