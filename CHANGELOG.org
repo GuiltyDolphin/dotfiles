@@ -11,6 +11,12 @@
 
 + initial =org-brain= configuration
 
+** Changed
+
+*** Emacs
+
++ ~my-org-fill-column~ is now ~62~
+
 * 0.7.0 - 2018-07-12
 
 ** Added

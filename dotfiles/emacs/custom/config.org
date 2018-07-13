@@ -1611,7 +1611,7 @@ I prefer the entire entry title to always be displayed:
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-fill-column
     ;; two side-by-side panes on my laptop
-    63
+    62
     "Fill column to use in `org-mode'.")
 #+END_SRC
 
