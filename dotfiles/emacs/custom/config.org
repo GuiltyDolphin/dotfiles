@@ -278,7 +278,8 @@ consistency:
 #+BEGIN_SRC emacs-lisp
   (use-package emaps
     :config
-    (define-key my-global-mode-map (kbd "C-h K") 'emaps-describe-keymap-bindings))
+    (emaps-define-key my-global-mode-map
+      (kbd "C-h K") 'emaps-describe-keymap-bindings))
 #+END_SRC
 
 *** auto-complete
@@ -497,7 +498,8 @@ consistency:
     (customize-set-variable 'ido-enable-flex-matching t)
     (customize-set-variable 'ido-use-faces nil))
 
-  (define-key my-global-mode-map (kbd "C-h h") 'help)
+  (emaps-define-key my-global-mode-map
+    (kbd "C-h h") 'help)
   (emaps-define-key help-map
     (kbd "C-e") 'evil-scroll-line-down
     (kbd "C-y") 'evil-scroll-line-up)
@@ -705,15 +707,18 @@ consistency:
     (add-to-list 'auto-mode-alist '("custom/snippets" . snippet-mode))
     (yas-global-mode 1)
 
-    (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)
+    (emaps-define-key yas-minor-mode-map
+      (kbd "C-b") 'yas-expand)
 
     (add-hook 'yas-before-expand-snippet-hook
               (lambda ()
-                (define-key yas-minor-mode-map (kbd "C-b") 'yas-next-field)))
+                (emaps-define-key yas-minor-mode-map
+                  (kbd "C-b") 'yas-next-field)))
 
     (add-hook 'yas-after-exit-snippet-hook
               (lambda ()
-                (define-key yas-minor-mode-map (kbd "C-b") 'yas-expand)))
+                (emaps-define-key yas-minor-mode-map
+                  (kbd "C-b") 'yas-expand)))
 
     (add-hook 'yas-minor-mode-hook
               (lambda ()
@@ -2006,8 +2011,8 @@ Things Done Forums]].
   KEY is the binding to be moved.
 
   This removes the binding from KEYMAP-FROM."
-    (define-key keymap-to key (lookup-key keymap-from key))
-    (define-key keymap-from key nil))
+    (emaps-define-key keymap-to key (lookup-key keymap-from key))
+    (emaps-define-key keymap-from key nil))
 
   (my-move-key evil-motion-state-map evil-normal-state-map " ")
 #+END_SRC
