@@ -998,6 +998,15 @@ A completed project is any project marked as =DONE=:
     "Tags/P/T query for completed projects.")
 #+END_SRC
 
+Likewise, a cancelled project is any project marked as
+=CANCELLED=:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-match-project-cancelled
+    (format "%s/+CANCELLED" my-org-gtd-match-project)
+    "Tags/P/T query for cancelled projects.")
+#+END_SRC
+
 ***** Custom Commands and Views
 
 #+BEGIN_SRC emacs-lisp
@@ -1018,6 +1027,15 @@ A completed project is any project marked as =DONE=:
               (org-agenda-files '(,my-org-gtd-tickler-file))))
        (todo "DONE"
              ((org-agenda-overriding-header "Completed Inbox Items")
+              (org-agenda-files ',my-org-gtd-inbox-files)))
+       (tags ,my-org-gtd-match-project-cancelled
+             ((org-agenda-overriding-header "Cancelled Projects")
+              (org-agenda-files '(,my-org-gtd-project-file))))
+       (todo "CANCELLED"
+             ((org-agenda-overriding-header "Cancelled Reminders")
+              (org-agenda-files '(,my-org-gtd-tickler-file))))
+       (todo "CANCELLED"
+             ((org-agenda-overriding-header "Cancelled Inbox Items")
               (org-agenda-files ',my-org-gtd-inbox-files)))))
      ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
