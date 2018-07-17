@@ -11,6 +11,16 @@
 
 + initial =org-brain= configuration
 
+*** XMonad
+
++ bindings for volume control
+
+  + lower volume
+
+  + mute
+
+  + raise volume
+
 ** Changed
 
 + =rofi= is now used in place of =dmenu= for XMonad

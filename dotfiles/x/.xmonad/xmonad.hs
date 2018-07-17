@@ -20,4 +20,11 @@ myConfig = def
       -- to fix freemind not displaying correctly (https://stackoverflow.com/questions/30742662/java-swing-gui-not-displaying-in-xmonad#30742663)
     , startupHook = setWMName "LG3D"
     , terminal   = "urxvt"
-    }
+    } `additionalKeys`
+      -- XF86AudioLowerVolume
+      [ ((0, 0x1008ff11), spawn "amixer set Master 5%-")
+      -- XF86AudioRaiseVolume
+      , ((0, 0x1008ff13), spawn "amixer set Master 5%+")
+      -- XF86AudioMute
+      , ((0, 0x1008ff12), spawn "amixer set Master toggle")
+      ]
