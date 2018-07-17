@@ -144,13 +144,6 @@ link_cask : install_cask
 install_cpanm :
 	$(call install_prog,cpanm)
 
-.PHONY: configure_dmenu
-configure_dmenu : install_dmenu
-
-.PHONY: install_dmenu
-install_dmenu :
-	$(call install_prog,dmenu)
-
 .PHONY: configure_eclim
 configure_eclim : configure_apache_ant configure_eclipse install_eclim
 
@@ -318,6 +311,13 @@ configure_recutils : install_recutils
 install_recutils :
 	$(call install_prog,recutils)
 
+.PHONY: configure_rofi
+configure_rofi : install_rofi link_xresources
+
+.PHONY: install_rofi
+install_rofi :
+	$(call install_prog,rofi)
+
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
 	$(call install_prog,ruby1.9.1)
@@ -405,10 +405,10 @@ link_xmobar : install_xmobar
 	$(call linkf,x/.xmobarrc,.xmobarrc)
 
 .PHONY: configure_xmonad
-configure_xmonad : link_xmonad
+configure_xmonad : configure_rofi link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad : configure_dmenu configure_gcc configure_ghc7 configure_glibc configure_xmobar
+install_xmonad : configure_gcc configure_ghc7 configure_glibc configure_xmobar
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 

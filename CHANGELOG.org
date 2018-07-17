@@ -13,6 +13,8 @@
 
 ** Changed
 
++ =rofi= is now used in place of =dmenu= for XMonad
+
 *** Emacs
 
 + =Complete= agenda view now shows cancelled items
