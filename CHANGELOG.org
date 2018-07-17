@@ -26,6 +26,10 @@
 + all incomplete inbox items now show in =Unprocessed= agenda
   view
 
+*** XMonad
+
++ =FreeMind= should now display correctly with XMonad
+
 * 0.7.0 - 2018-07-12
 
 ** Added
