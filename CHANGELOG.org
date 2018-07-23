@@ -7,6 +7,8 @@
 
 ** Added
 
++ Initial XScreenSaver configuration
+
 *** Emacs
 
 + initial =org-brain= configuration

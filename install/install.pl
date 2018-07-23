@@ -517,6 +517,9 @@ my %software_config = (
     xrdb => {
         with_guix_config('xrdb'),
     },
+    xscreensaver => {
+        with_guix_config('xscreensaver'),
+    },
     xset => {
         with_guix_config('xset'),
     },

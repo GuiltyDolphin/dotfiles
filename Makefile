@@ -72,7 +72,7 @@ configure_vim : link_vim setup_vundle_plugins
 # X config
 .PHONY: configure_display
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
-	configure_xrdb configure_xset link_xresources
+	configure_xrdb configure_xscreensaver configure_xset link_xresources
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
@@ -426,6 +426,17 @@ install_xrdb :
 .PHONY: link_xresources
 link_xresources :
 	$(call linkf,x/.Xresources,.Xresources)
+
+.PHONY: configure_xscreensaver
+configure_xscreensaver : link_xscreensaver
+
+.PHONY: install_xscreensaver
+install_xscreensaver :
+	$(call install_prog,xscreensaver)
+
+.PHONY: link_xscreensaver
+link_xscreensaver : install_xscreensaver
+	$(call linkf,x/.xscreensaver,.xscreensaver)
 
 .PHONY: configure_xset
 configure_xset : install_xset
