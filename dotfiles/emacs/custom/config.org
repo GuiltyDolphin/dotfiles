@@ -892,9 +892,12 @@ To support a GTD workflow, I use the following org files:
 
 + inbox.org :: unprocessed items
 
++ maybe.org :: potential projects, ideas, etc.
+
 + project.org :: active projects and actions
 
-+ someday.org :: inactive/potential projects, ideas, etc.
++ someday.org :: inactive/potential projects, ideas, etc. that
+                 I intend to engage with someday, but not now
 
 + tickler.org :: for remind-me-later items
 
@@ -919,6 +922,7 @@ To support a GTD workflow, I use the following org files:
   (let ((gtd-files
          '(("general" . "general reference items")
            ("inbox"   . "unprocessed items")
+           ("maybe"   . "potential projects and ideas")
            ("mobile/inbox" . "unprocessed items from phone")
            ("project" . "active projects")
            ("someday" . "inactive projects and ideas")
@@ -1045,7 +1049,7 @@ Likewise, a cancelled project is any project marked as
      ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
        (org-agenda-files '(,my-org-gtd-project-file))))
-     ("i" . "Someday/Maybe")
+     ("i" . "Someday")
      ("ia" "Areas of Focus" tags "aof"
       ((org-agenda-overriding-header "Areas of Focus")
        (org-agenda-files '(,my-org-gtd-someday-file))
@@ -1057,6 +1061,18 @@ Likewise, a cancelled project is any project marked as
      ("ip" "Potential Projects" tags-todo "CATEGORY=\"potential\"/!TODO"
       ((org-agenda-overriding-header "Potential Projects")
        (org-agenda-files '(,my-org-gtd-someday-file))))
+     ("I" . "Maybe")
+     ("Ia" "Areas of Focus" tags "aof"
+      ((org-agenda-overriding-header "Areas of Focus")
+       (org-agenda-files '(,my-org-gtd-maybe-file))
+       (org-use-tag-inheritance nil)))
+     ("Ic" "Categories" tags "category"
+      ((org-agenda-overriding-header "Categories")
+       (org-agenda-files '(,my-org-gtd-maybe-file))
+       (org-use-tag-inheritance nil)))
+     ("Ip" "Potential Projects" tags-todo "CATEGORY=\"potential\"/!TODO"
+      ((org-agenda-overriding-header "Potential Projects")
+       (org-agenda-files '(,my-org-gtd-maybe-file))))
      ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
        (org-agenda-files '(,my-org-gtd-project-file))))
@@ -1082,6 +1098,7 @@ Likewise, a cancelled project is any project marked as
                           `(,@my-org-gtd-calendar-files
                             ,my-org-gtd-general-file
                             ,@my-org-gtd-inbox-files
+                            ,my-org-gtd-maybe-file
                             ,my-org-gtd-project-file
                             ,my-org-gtd-someday-file
                             ,my-org-gtd-tickler-file))
@@ -1179,6 +1196,9 @@ intended refile target.
 
 + general.org :: for filing reference items
 
++ maybe.org :: for filing items away to be considered for
+               value in the future
+
 + project.org :: for activating projects and actions
 
 =project.org= is structured as follows: <<project-file-structure>>
@@ -1189,8 +1209,8 @@ intended refile target.
   assumed that only projects are being refiled (i.e., items are
   refiled under an area of focus).
 
-+ someday.org :: for filing items away to potentially be done
-                 at some point in the future
++ someday.org :: for filing items that I wish to engage with,
+                 just not now
 
 Anything explicitly tagged with =category= or =aof= is assumed
 to be an intended refile target.
@@ -1202,6 +1222,8 @@ to be an intended refile target.
   (customize-set-variable 'org-refile-targets
                           `((,my-org-gtd-calendar-calendar-file :tag . "category")
                             (,my-org-gtd-general-file :maxlevel . 3)
+                            (,my-org-gtd-maybe-file :tag . "aof")
+                            (,my-org-gtd-maybe-file :tag . "category")
                             (,my-org-gtd-project-file :level . 1)
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")

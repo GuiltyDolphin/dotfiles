@@ -11,6 +11,8 @@
 
 *** Emacs
 
++ configuration for =maybe.org= agenda file
+
 + initial =org-brain= configuration
 
 *** XMonad
