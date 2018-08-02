@@ -37,6 +37,8 @@
 
 + projects (for GTD) are now kept in =gtd.org=
 
++ reordered refile targets to favour more likely targets first
+
 + refile target for projects now uses =aof= tag rather than
   level
 

@@ -1227,14 +1227,14 @@ to be an intended refile target.
 
 #+BEGIN_SRC emacs-lisp
   (customize-set-variable 'org-refile-targets
-                          `((,my-org-gtd-calendar-calendar-file :tag . "category")
-                            (,my-org-gtd-general-file :maxlevel . 3)
-                            (,my-org-gtd-maybe-file :tag . "aof")
-                            (,my-org-gtd-maybe-file :tag . "category")
+                          `((,my-org-gtd-tickler-file :level . 0)
                             (,my-org-gtd-project-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
-                            (,my-org-gtd-tickler-file :level . 0)))
+                            (,my-org-gtd-general-file :maxlevel . 3)
+                            (,my-org-gtd-maybe-file :tag . "aof")
+                            (,my-org-gtd-maybe-file :tag . "category")
+                            (,my-org-gtd-calendar-calendar-file :tag . "category")))
 #+END_SRC
 
 ***** Completion
