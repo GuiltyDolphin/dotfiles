@@ -1224,7 +1224,7 @@ to be an intended refile target.
                             (,my-org-gtd-general-file :maxlevel . 3)
                             (,my-org-gtd-maybe-file :tag . "aof")
                             (,my-org-gtd-maybe-file :tag . "category")
-                            (,my-org-gtd-project-file :level . 1)
+                            (,my-org-gtd-project-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "category")
                             (,my-org-gtd-tickler-file :level . 0)))

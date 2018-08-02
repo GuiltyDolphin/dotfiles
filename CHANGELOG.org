@@ -35,6 +35,9 @@
 
 + ~my-org-fill-column~ is now ~62~
 
++ refile target for projects now uses =aof= tag rather than
+  level
+
 ** Fixed
 
 *** =org-agenda=
