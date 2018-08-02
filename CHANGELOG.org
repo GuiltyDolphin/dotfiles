@@ -35,6 +35,8 @@
 
 + ~my-org-fill-column~ is now ~62~
 
++ projects (for GTD) are now kept in =gtd.org=
+
 + refile target for projects now uses =aof= tag rather than
   level
 

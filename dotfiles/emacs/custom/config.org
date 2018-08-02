@@ -890,11 +890,11 @@ To support a GTD workflow, I use the following org files:
 
 + general.org :: general reference information
 
++ gtd.org :: active projects, actions, routines, etc.
+
 + inbox.org :: unprocessed items
 
 + maybe.org :: potential projects, ideas, etc.
-
-+ project.org :: active projects and actions
 
 + someday.org :: inactive/potential projects, ideas, etc. that
                  I intend to engage with someday, but not now
@@ -921,10 +921,10 @@ To support a GTD workflow, I use the following org files:
 
   (let ((gtd-files
          '(("general" . "general reference items")
+           ("gtd"     . "active items")
            ("inbox"   . "unprocessed items")
            ("maybe"   . "potential projects and ideas")
            ("mobile/inbox" . "unprocessed items from phone")
-           ("project" . "active projects")
            ("someday" . "inactive projects and ideas")
            ("tickler" . "tickled items"))))
     (mapc (lambda (spec)
@@ -935,6 +935,13 @@ To support a GTD workflow, I use the following org files:
   (defvar my-org-gtd-inbox-files
     (list my-org-gtd-inbox-file my-org-gtd-mobile-inbox-file)
     "List of GTD org inbox files.")
+#+END_SRC
+
+Projects are kept in the main (active) GTD file:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-project-file my-org-gtd-gtd-file
+    "Org file in which to keep active projects.")
 #+END_SRC
 
 ****** Calendar Files<<Calendar File Definitions>>
@@ -973,7 +980,7 @@ A project is:
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-gtd-match-project
-    (format "+FILE=\"%s\"&+LEVEL=2" (expand-file-name my-org-gtd-project-file))
+    (format "+FILE=\"%s\"&+CATEGORY=\"project\"&+LEVEL=3" (expand-file-name my-org-gtd-project-file))
     "Tags/P/T query for projects.")
 #+END_SRC
 
@@ -1097,9 +1104,9 @@ Likewise, a cancelled project is any project marked as
   (customize-set-variable 'org-agenda-files
                           `(,@my-org-gtd-calendar-files
                             ,my-org-gtd-general-file
+                            ,my-org-gtd-gtd-file
                             ,@my-org-gtd-inbox-files
                             ,my-org-gtd-maybe-file
-                            ,my-org-gtd-project-file
                             ,my-org-gtd-someday-file
                             ,my-org-gtd-tickler-file))
 #+END_SRC
@@ -1196,18 +1203,18 @@ intended refile target.
 
 + general.org :: for filing reference items
 
++ gtd.org :: for activating items
+
+Projects in =gtd.org= are structured as follows:<<project-file-structure>>
+
+: Projects / Area of Focus / Project / Action
+
+For the sake of not over-populating the refile targets, it is
+assumed that only projects are being refiled (i.e., items are
+refiled under an area of focus), and not actions.
+
 + maybe.org :: for filing items away to be considered for
                value in the future
-
-+ project.org :: for activating projects and actions
-
-=project.org= is structured as follows: <<project-file-structure>>
-
-  : Area of Focus / Project / Action
-
-  For the sake of not over-populating the refile targets, it is
-  assumed that only projects are being refiled (i.e., items are
-  refiled under an area of focus).
 
 + someday.org :: for filing items that I wish to engage with,
                  just not now
