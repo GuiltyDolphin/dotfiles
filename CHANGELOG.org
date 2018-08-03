@@ -29,6 +29,8 @@
 
 + =rofi= is now used in place of =dmenu= for XMonad
 
++ terminal now uses Emacs-like bindings rather than Vi-like
+
 *** Emacs
 
 + =Complete= agenda view now shows cancelled items

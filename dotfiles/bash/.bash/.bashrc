@@ -127,8 +127,8 @@ shopt -s extglob
 # Allow ** to expand recursively.
 shopt -s globstar
 
-# Use vi commands for terminal editing
-set -o vi
+# Use Emacs commands for terminal editing
+set -o emacs
 
 
 ########
