@@ -1258,17 +1258,19 @@ semantics to when it is not, so it is useful to have a helper
 command to distinguish between these two cases:
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-org-refile-dwim (&rest args)
-    "Refile the current heading.
+  (use-package org-capture
+    :config
+    (defun my-org-refile-dwim (&rest args)
+      "Refile the current heading.
 
   See `org-refile' for the meaning of ARGS.
 
   When `org-capture-mode' is active, this calls `org-capture-refile',
   otherwise, `org-refile' is called."
-    (interactive "P")
-    (if org-capture-mode
-        (org-capture-refile)
-      (apply #'org-refile args)))
+      (interactive "P")
+      (if org-capture-mode
+          (org-capture-refile)
+        (apply #'org-refile args))))
 #+END_SRC
 
 **** Archiving

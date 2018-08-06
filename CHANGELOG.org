@@ -5,6 +5,13 @@
 
 * Unreleased
 
+** Fixed
+
+*** Emacs
+
++ ~my-org-refile-dwim~ complaining about ~org-capture-mode~
+  not being previously loaded
+
 * 0.8.0 - 2018-08-06
 
 ** Added
