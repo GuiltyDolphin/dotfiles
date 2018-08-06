@@ -483,6 +483,9 @@ my %software_config = (
     ruby_stable => {
         with_guix_config('ruby'),
     },
+    sbcl => {
+        with_guix_config('sbcl'),
+    },
     setxkbmap => {
         with_guix_config('setxkbmap'),
     },

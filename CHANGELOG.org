@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Added
+
+*** Installer
+
++ install configuration for Common Lisp development
+
 ** Fixed
 
 *** Emacs

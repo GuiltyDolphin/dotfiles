@@ -33,12 +33,17 @@ configure_dev_heavy : configure_emacs
 # All language development
 .PHONY: configure_dev_language_all
 configure_dev_language_all : \
+	configure_dev_common_lisp \
 	configure_dev_haskell \
 	configure_dev_idris \
 	configure_dev_java \
 	configure_dev_javascript \
 	configure_dev_perl \
 	configure_dev_ruby
+
+# Common Lisp development
+.PHONY: configure_dev_common_lisp
+configure_dev_common_lisp : configure_sbcl
 
 # Haskell development
 .PHONY: configure_dev_haskell
@@ -321,6 +326,13 @@ install_rofi :
 .PHONY: install_ruby1.9.1
 install_ruby1.9.1 :
 	$(call install_prog,ruby1.9.1)
+
+.PHONY: configure_sbcl
+configure_sbcl : install_sbcl
+
+.PHONY: install_sbcl
+install_sbcl :
+	$(call install_prog,sbcl)
 
 .PHONY: link_scripts
 link_scripts :
