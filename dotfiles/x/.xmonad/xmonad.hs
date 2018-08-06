@@ -6,7 +6,9 @@ import XMonad.Hooks.ManageDocks
 -- to fix freemind not displaying correctly (https://stackoverflow.com/questions/30742662/java-swing-gui-not-displaying-in-xmonad#30742663)
 import XMonad.Hooks.SetWMName (setWMName)
 
+main :: IO ()
 main = xmonad =<< xmobar myConfig
+
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@(XConfig { modMask = mm }) = M.union myKeys' (keys def conf)
     where myKeys' = M.fromList $
