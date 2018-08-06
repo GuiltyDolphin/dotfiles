@@ -1504,6 +1504,14 @@ I want quick access to ~org-brain-visualize~ from anywhere:
     "b" 'org-brain-visualize)
 #+END_SRC
 
+Additionally, within =org-brain= I find it useful to be able
+to access ~org-brain-visualze~ quickly via the leader key:
+
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key-for-mode 'org-brain-visualize-mode
+    "b" 'org-brain-visualize)
+#+END_SRC
+
 Some bindings are kept under the local leader key, as with
 [[org-mode configuration][org-mode]].
 
