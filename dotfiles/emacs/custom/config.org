@@ -863,6 +863,9 @@ under that:
   :config
   (customize-set-variable 'org-adapt-indentation nil
                           "Don't indent node content.")
+
+  (customize-set-variable 'org-tags-sort-function #'string-lessp
+                          "Automatically sort tags lexicographically when set.")
 #+END_SRC
 
 **** Files

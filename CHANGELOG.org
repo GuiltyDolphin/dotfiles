@@ -7,6 +7,10 @@
 
 ** Added
 
+*** Emacs
+
++ automatic sorting of tags in Org by lexicographic ordering
+
 *** Installer
 
 + install configuration for Common Lisp development
