@@ -15,6 +15,15 @@
 
 + install configuration for Common Lisp development
 
+** Changed
+
+*** Emacs
+
+**** Org
+
++ timeless agenda entries are now positioned before the
+  schedule for today
+
 ** Fixed
 
 *** Emacs

@@ -866,6 +866,10 @@ under that:
 
   (customize-set-variable 'org-tags-sort-function #'string-lessp
                           "Automatically sort tags lexicographically when set.")
+
+  (customize-set-variable 'org-sort-agenda-notime-is-late nil
+                          "Position timeless agenda entries before schedule for today.")
+
 #+END_SRC
 
 **** Files
