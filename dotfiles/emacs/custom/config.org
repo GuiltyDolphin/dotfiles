@@ -1439,7 +1439,7 @@ re-evaluated.
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
         `(("t" "Inbox" entry (file ,my-org-gtd-inbox-file)
-           "* TODO %?")
+           "* TODO %?\n:PROPERTIES:\n:CREATED:  %U\n:END:")
           ("e" "Calendar")
           ("ed" "Event (single day)" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Date}t")

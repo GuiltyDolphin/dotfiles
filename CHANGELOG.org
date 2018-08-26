@@ -9,7 +9,11 @@
 
 *** Emacs
 
+**** Org
+
 + automatic sorting of tags in Org by lexicographic ordering
+
++ =Inbox= capture now includes a =CREATED= property
 
 *** Installer
 
