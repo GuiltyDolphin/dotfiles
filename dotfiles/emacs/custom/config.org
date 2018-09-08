@@ -1200,13 +1200,29 @@ cancel and archive the items:
 
 **** Refiling
 
+Any heading explicitly tagged with =category= that is in one
+of ~my-org-refile--category-files~ is assumed to be an
+intended refile target.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-refile--category-files
+    (list
+     my-org-gtd-tickler-file
+     my-org-gtd-project-file
+     my-org-gtd-someday-file
+     my-org-gtd-general-file
+     my-org-gtd-maybe-file
+     my-org-gtd-calendar-calendar-file)
+    "List of files to be considered for `category' tags when refiling.
+
+  The list should be in descending preferential order (that is to say, preferred
+  files for refile targets should come earlier in the list).")
+#+END_SRC
+
 The following files can be refiled to:
 
 + calendar/calendar.org :: for anything that should go on the
      calendar
-
-Anything explicitly tagged with =category= is assumed to be an
-intended refile target.
 
 + general.org :: for filing reference items
 
@@ -1226,8 +1242,8 @@ refiled under an area of focus), and not actions.
 + someday.org :: for filing items that I wish to engage with,
                  just not now
 
-Anything explicitly tagged with =category= or =aof= is assumed
-to be an intended refile target.
+Anything explicitly tagged with =aof= is assumed to be an
+intended refile target.
 
 + tickler.org :: for filing items that should remain inactive
                  until a specific time in the future
@@ -1237,11 +1253,9 @@ to be an intended refile target.
                           `((,my-org-gtd-tickler-file :level . 0)
                             (,my-org-gtd-project-file :tag . "aof")
                             (,my-org-gtd-someday-file :tag . "aof")
-                            (,my-org-gtd-someday-file :tag . "category")
                             (,my-org-gtd-general-file :maxlevel . 3)
                             (,my-org-gtd-maybe-file :tag . "aof")
-                            (,my-org-gtd-maybe-file :tag . "category")
-                            (,my-org-gtd-calendar-calendar-file :tag . "category")))
+                            (,my-org-refile--category-files :tag . "category")))
 #+END_SRC
 
 ***** Completion

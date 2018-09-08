@@ -15,6 +15,9 @@
 
 + =Inbox= capture now includes a =CREATED= property
 
++ support for refiling to any heading (in specific agenda
+  files) that has a =category= tag
+
 *** Installer
 
 + install configuration for Common Lisp development
