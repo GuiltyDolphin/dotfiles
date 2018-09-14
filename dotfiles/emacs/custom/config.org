@@ -1853,9 +1853,15 @@ asynchronously inside Emacs:
          (goto-char (point-max))
          (insert (format "[%s] %s\n" (format-time-string "%FT%T%z") msg))))))
 
-  (defun my-calendar-sync--log-with-warn (msg)
-    "Log MSG as with `my-calendar-sync--log', but additionally emit a warning."
-    (warn (format "%s: %s" my-calendar-sync--process-name msg))
+  (defun my-calendar-sync--log-with-warn (msg &optional time)
+    "Log MSG as with `my-calendar-sync--log', but additionally emit a warning.
+
+  Optionally, TIME may be specified to indicate the timestamp to be used when
+  logging. If TIME is not specified, the current time is used instead."
+    (warn (format "%s: [%s]: %s"
+                  my-calendar-sync--process-name
+                  (format-time-string "%FT%T" time)
+                  msg))
     (my-calendar-sync--log msg))
 
   (defun my-calendar-sync--sync-in-progress ()

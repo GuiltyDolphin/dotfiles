@@ -26,6 +26,8 @@
 
 *** Emacs
 
++ calendar sync warnings now include a timestamp
+
 **** Org
 
 + timeless agenda entries are now positioned before the
