@@ -28,6 +28,8 @@
 
 + calendar sync warnings now include a timestamp
 
++ maximum length for =org-cliplink= descriptions is now 500
+
 **** Org
 
 + timeless agenda entries are now positioned before the

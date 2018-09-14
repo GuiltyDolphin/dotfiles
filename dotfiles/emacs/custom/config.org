@@ -1704,7 +1704,9 @@ I prefer the entire entry title to always be displayed:
 *** org-cliplink
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-cliplink)
+  (use-package org-cliplink
+    :config
+    (customize-set-variable 'org-cliplink-max-length 500))
 #+END_SRC
 
 *** org-ref
