@@ -11,6 +11,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 -- to fix freemind not displaying correctly (https://stackoverflow.com/questions/30742662/java-swing-gui-not-displaying-in-xmonad#30742663)
 import XMonad.Hooks.SetWMName (setWMName)
+import XMonad.Util.EZConfig (additionalKeys)
 
 main :: IO ()
 main = xmonad =<< xmobar myConfig
