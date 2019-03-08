@@ -16,6 +16,9 @@ import XMonad.Util.EZConfig (additionalKeys)
 main :: IO ()
 main = xmonad =<< xmobar myConfig
 
+myWorkspaces :: [WorkspaceId]
+myWorkspaces = ["main", "terminal", "web", "other"]
+
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@(XConfig { modMask = mm }) = M.union myKeys' (keys def conf)
     where myKeys' = M.fromList $
@@ -34,6 +37,7 @@ myConfig = def
       -- to fix freemind not displaying correctly (https://stackoverflow.com/questions/30742662/java-swing-gui-not-displaying-in-xmonad#30742663)
     , startupHook = setWMName "LG3D"
     , terminal   = "urxvt"
+    , workspaces = myWorkspaces
     } `additionalKeys`
       -- XF86AudioLowerVolume
       [ ((0, 0x1008ff11), spawn "amixer set Master 5%-")

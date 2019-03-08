@@ -32,6 +32,9 @@
   + =M-]= :: shift current window to next workspace, and
              switch to that workspace
 
++ new workspace configuration
+  + =main=, =terminal=, =web=, and =other= workspaces
+
 ** Changed
 
 *** Emacs
