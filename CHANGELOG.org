@@ -22,6 +22,16 @@
 
 + install configuration for Common Lisp development
 
+*** XMonad
+
++ new workspace bindings
+  + =M-S-h= :: previous workspace
+  + =M-S-l= :: next workspace
+  + =M-[= :: shift current window to previous workspace, and
+             switch to that workspace
+  + =M-]= :: shift current window to next workspace, and
+             switch to that workspace
+
 ** Changed
 
 *** Emacs
