@@ -35,6 +35,9 @@
 + new workspace configuration
   + =main=, =terminal=, =web=, and =other= workspaces
 
++ new tile layout configurations
+  + tiled, mirror tiled, full
+
 ** Changed
 
 *** Emacs

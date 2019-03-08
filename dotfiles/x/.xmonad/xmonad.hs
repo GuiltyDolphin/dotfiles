@@ -29,9 +29,25 @@ myKeys conf@(XConfig { modMask = mm }) = M.union myKeys' (keys def conf)
             , ((mm,               xK_p           ), spawn "rofi -show run -location 2 -width 100")
             ]
 
+myLayout = tiled ||| Mirror tiled ||| Full -- ||| fullMaster ||| Mirror fullMaster
+  where
+     -- default tiling algorithm partitions the screen into two panes
+     tiled   = Tall nmaster delta ratio
+
+     -- The default number of windows in the master pane
+     nmaster = 1
+
+     -- Default proportion of screen occupied by master pane
+     ratio   = 1/2
+
+     -- Percent of screen to increment by when resizing panes
+     delta   = 3/100
+
+     fullMaster = Tall 2 delta 1
+
 myConfig = def
     { keys       = myKeys
-    , layoutHook = avoidStruts  $  layoutHook def
+    , layoutHook = avoidStruts  $  myLayout
     , manageHook = manageDocks <+> manageHook def
     , modMask    = mod4Mask  -- Rebind Mod to the 'Windows' key
       -- to fix freemind not displaying correctly (https://stackoverflow.com/questions/30742662/java-swing-gui-not-displaying-in-xmonad#30742663)
