@@ -55,6 +55,9 @@
 
 *** Emacs
 
++ ~my-jump-map~ bindings not getting bound if there were
+  errors early on in config
+
 + ~my-org-refile-dwim~ complaining about ~org-capture-mode~
   not being previously loaded
 

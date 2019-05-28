@@ -79,9 +79,9 @@
     (load-file user-init-file))
 #+END_SRC
 
-** Packages
+*** Early Loaders
 
-*** cask
+**** cask
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path (locate-user-emacs-file "cask/elpa"))
@@ -90,11 +90,43 @@
   (cask-initialize)
 #+END_SRC
 
-*** cl-lib
+**** cl-lib
 
 #+BEGIN_SRC emacs-lisp
   (use-package cl-lib)
 #+END_SRC
+
+**** emaps
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emaps
+    :config
+    (emaps-define-key my-global-mode-map
+      (kbd "C-h K") 'emaps-describe-keymap-bindings))
+#+END_SRC
+
+*** Navigation
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-jump-init-files-map (make-sparse-keymap)
+    "Keymap for jumping to init files.")
+
+  (emaps-define-key my-jump-init-files-map
+    "c" 'my-find-user-config-file
+    "i" 'my-find-user-init-file)
+
+  (defvar my-jump-map (make-sparse-keymap)
+    "Keymap for jumping around.")
+
+  (emaps-define-key my-jump-map
+    "i" my-jump-init-files-map
+    "p" 'evil-switch-to-windows-last-buffer
+    "t" 'eshell)
+
+  (evil-leader/set-key "g" my-jump-map)
+#+END_SRC
+
+** Packages
 
 ** Calendar
 
@@ -271,15 +303,6 @@ consistency:
 
 #+BEGIN_SRC emacs-lisp
   (use-package dash)
-#+END_SRC
-
-*** emaps
-
-#+BEGIN_SRC emacs-lisp
-  (use-package emaps
-    :config
-    (emaps-define-key my-global-mode-map
-      (kbd "C-h K") 'emaps-describe-keymap-bindings))
 #+END_SRC
 
 *** auto-complete
@@ -2067,27 +2090,6 @@ Things Done Forums]].
 #+END_SRC
 
 ** Other Config
-
-*** Bindings
-
-#+BEGIN_SRC emacs-lisp
-  (defvar my-jump-init-files-map (make-sparse-keymap)
-    "Keymap for jumping to init files.")
-
-  (emaps-define-key my-jump-init-files-map
-    "c" 'my-find-user-config-file
-    "i" 'my-find-user-init-file)
-
-  (defvar my-jump-map (make-sparse-keymap)
-    "Keymap for jumping around.")
-
-  (emaps-define-key my-jump-map
-    "i" my-jump-init-files-map
-    "p" 'evil-switch-to-windows-last-buffer
-    "t" 'eshell)
-
-  (evil-leader/set-key "g" my-jump-map)
-#+END_SRC
 
 *** Helpers
 
