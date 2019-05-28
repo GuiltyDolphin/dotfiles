@@ -44,6 +44,15 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
 
+**** User-preference variables
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-user-preferred-license "GPL-3"
+    "License to use by default with some modes.")
+
+  (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
+#+END_SRC
+
 *** Execution Path
 
 #+BEGIN_SRC emacs-lisp
@@ -296,11 +305,6 @@ consistency:
 
 #+BEGIN_SRC emacs-lisp
   (set-face-font 'default "Inconsolata-14")
-
-  (defvar my-user-preferred-license "GPL-3"
-    "License to use by default with some modes.")
-
-  (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
