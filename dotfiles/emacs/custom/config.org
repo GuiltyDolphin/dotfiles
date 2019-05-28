@@ -79,6 +79,22 @@
     (load-file user-init-file))
 #+END_SRC
 
+*** my-global-mode
+
+Global mode for e.g., adding new global bindings without
+affecting the default global settings.
+
+#+BEGIN_SRC emacs-lisp
+  (define-minor-mode my-global-mode
+    "Personal configuration without changing the default global settings."
+    :keymap (make-sparse-keymap))
+
+  (define-globalized-minor-mode my-global-global-mode my-global-mode
+    (lambda () (my-global-mode)))
+
+  (my-global-global-mode)
+#+END_SRC
+
 *** Early Loaders
 
 **** cask
@@ -282,15 +298,6 @@ consistency:
     "License to use by default with some modes.")
 
   (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
-
-  (define-minor-mode my-global-mode
-    "Personal configuration without changing the default global settings."
-    :keymap (make-sparse-keymap))
-
-  (define-globalized-minor-mode my-global-global-mode my-global-mode
-    (lambda () (my-global-mode)))
-
-  (my-global-global-mode)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
