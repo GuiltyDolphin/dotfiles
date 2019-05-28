@@ -173,8 +173,6 @@ consistency:
 *** Time & Colorscheme
 
 #+BEGIN_SRC emacs-lisp
-  (require 'calendar)
-
   (defvar my-location-name "London"
     "Name of major location for use in calendar calculations.")
 
