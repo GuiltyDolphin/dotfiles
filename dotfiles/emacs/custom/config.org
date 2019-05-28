@@ -53,6 +53,12 @@
   (customize-set-variable 'user-mail-address "software@guiltydolphin.com")
 #+END_SRC
 
+Use [[https://www.levien.com/type/myfonts/inconsolata.html][Inconsolata]] 14pt as default font.
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-font 'default "Inconsolata-14")
+#+END_SRC
+
 *** Execution Path
 
 #+BEGIN_SRC emacs-lisp
@@ -297,12 +303,6 @@ consistency:
   (if (my-date-in-daylight-hours (current-time))
       (my-background-set-light)
     (my-background-set-dark))
-#+END_SRC
-
-**** Font
-
-#+BEGIN_SRC emacs-lisp
-  (set-face-font 'default "Inconsolata-14")
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
