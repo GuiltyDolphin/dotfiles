@@ -97,6 +97,9 @@ affecting the default global settings.
 
 *** Early Loaders
 
+Packages that should be loaded early as they define
+functionality used in the remainder of the config.
+
 **** cask
 
 #+BEGIN_SRC emacs-lisp
