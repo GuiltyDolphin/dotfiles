@@ -47,6 +47,7 @@
 (depends-on "org-cliplink")
 (depends-on "org-evil")
 (depends-on "org-ref")
+(depends-on "org-super-agenda")
 (depends-on "pallet")
 (depends-on "popwin")
 (depends-on "prodigy")

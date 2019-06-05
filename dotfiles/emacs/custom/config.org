@@ -1068,6 +1068,23 @@ Likewise, a cancelled project is any project marked as
 ***** Custom Commands and Views
 
 #+BEGIN_SRC emacs-lisp
+  (defvar my-org-super-agenda--next-action-groups
+    `(org-super-agenda-groups '((:name "Deadlines" :deadline t)
+                                (:name "Most Important Tasks" :tag "mit")
+                                (:discard (:and (:tag "recurring" :scheduled future)))
+                                (:name "@emacs" :tag "@emacs")
+                                (:name "@home" :tag "@home")
+                                (:name "@university"  :tag "@university")
+                                (:name "@errands" :tag "@errands")
+                                (:name "@mother" :tag "@mother")
+                                (:name "Agenda - Other" :tag "@agenda")
+                                (:name "@anywhere - research" :heading-regexp "^Look up")
+                                (:name "@anywhere - planning" :heading-regexp "^Draft")
+                                (:name "@anywhere - reading"  :tag "reading")
+                                (:name "@anywhere - keyboard"  :tag "@keyboard")
+                                (:name "@anywhere" :anything t)))
+    "`org-super-agenda-groups' for next actions.")
+
   (customize-set-variable
    'org-agenda-custom-commands
    `(("C" "Calendar" agenda ""
@@ -1124,6 +1141,7 @@ Likewise, a cancelled project is any project marked as
        (org-agenda-files '(,my-org-gtd-maybe-file))))
      ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
+       ,my-org-super-agenda--next-action-groups
        (org-agenda-files '(,my-org-gtd-project-file))))
      ("p" "Active Projects" todo "TODO"
       ((org-agenda-overriding-header "Active Projects")
@@ -1551,6 +1569,14 @@ alternative to ~helm-imenu~ when in Org:
     ;; so I'm having to place 'org-brain physically after 'org
     :after (:all evil org)
     :init
+#+END_SRC
+
+*** org-super-agenda
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-super-agenda
+    :config
+    (org-super-agenda-mode 1))
 #+END_SRC
 
 **** Bindings

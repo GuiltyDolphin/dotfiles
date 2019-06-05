@@ -17,6 +17,8 @@
 
 + =Inbox= capture now includes a =CREATED= property
 
++ =org-super-agenda= configuration for next actions
+
 + support for refiling to any heading (in specific agenda
   files) that has a =category= tag
 
