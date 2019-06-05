@@ -7,6 +7,14 @@ alias gd='git diff '
 alias gk='gitk --all&'
 alias gx='gitx --all'
 
+github_username=GuiltyDolphin
+
+# Clone a repository from the user's GitHub.
+git-clone-my() {
+    gurl="https://github.com/$github_username/$1"
+    git clone "$gurl"
+}
+
 # Update the GIT_HASH environment variable to the current
 # commit's hash.
 ghash() {
