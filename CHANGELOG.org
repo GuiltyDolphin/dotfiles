@@ -13,6 +13,15 @@
 
 **** Org
 
++ automatic sorting of tags in Org by lexicographic ordering
+
++ =Inbox= capture now includes a =CREATED= property
+
++ support for refiling to any heading (in specific agenda
+  files) that has a =category= tag
+
+***** Agenda
+
 + agenda view for weekly agenda
 
 + agenda views for specific types of next action
@@ -20,14 +29,7 @@
   + project actions
   + standalone (no project) actions
 
-+ automatic sorting of tags in Org by lexicographic ordering
-
-+ =Inbox= capture now includes a =CREATED= property
-
 + =org-super-agenda= configuration for next actions
-
-+ support for refiling to any heading (in specific agenda
-  files) that has a =category= tag
 
 *** Installer
 
