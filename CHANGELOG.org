@@ -5,6 +5,8 @@
 
 * Unreleased
 
+* 0.9.0 - 2019-06-05
+
 ** Added
 
 + =git-clone-my= command for cloning personal repositories
