@@ -1167,6 +1167,10 @@ Likewise, a cancelled project is any project marked as
        (org-agenda-files '(,my-org-gtd-project-file))))
      ("p" "Active Projects" tags-todo "category=\"project\"/TODO"
       ((org-agenda-overriding-header "Active Projects")
+       (org-super-agenda-groups '((:name "Simple Projects List" :tag "spl")
+                                  (:name "Short-term Projects" :tag "short_term")
+                                  (:auto-parent t)
+                                  (:discard (:anything t))))
        (org-agenda-files '(,my-org-gtd-project-file))))
      ("u" "Unprocessed"
       ((tags-todo "/-DONE"

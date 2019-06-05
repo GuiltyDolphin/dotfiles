@@ -22,6 +22,10 @@
 
 ***** Agenda
 
++ agenda configuration for specific project types
+  + short term projects
+  + simple projects list
+
 + agenda view for weekly agenda
 
 + agenda views for specific types of next action
