@@ -1144,7 +1144,7 @@ Likewise, a cancelled project is any project marked as
       ((org-agenda-overriding-header "Categories")
        (org-agenda-files '(,my-org-gtd-maybe-file))
        (org-use-tag-inheritance nil)))
-     ("Ip" "Potential Projects" tags-todo "CATEGORY=\"potential\"/!TODO"
+     ("Ip" "Potential Projects" tags-todo "CATEGORY=\"potential_maybe\"/!TODO"
       ((org-agenda-overriding-header "Potential Projects")
        (org-super-agenda-groups '((:auto-group t)))
        (org-agenda-files '(,my-org-gtd-maybe-file))))
