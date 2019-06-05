@@ -1133,6 +1133,7 @@ Likewise, a cancelled project is any project marked as
        (org-use-tag-inheritance nil)))
      ("ip" "Potential Projects" tags-todo "CATEGORY=\"potential\"/!TODO"
       ((org-agenda-overriding-header "Potential Projects")
+       (org-super-agenda-groups '((:auto-group t)))
        (org-agenda-files '(,my-org-gtd-someday-file))))
      ("I" . "Maybe")
      ("Ia" "Areas of Focus" tags "aof"
@@ -1145,6 +1146,7 @@ Likewise, a cancelled project is any project marked as
        (org-use-tag-inheritance nil)))
      ("Ip" "Potential Projects" tags-todo "CATEGORY=\"potential\"/!TODO"
       ((org-agenda-overriding-header "Potential Projects")
+       (org-super-agenda-groups '((:auto-group t)))
        (org-agenda-files '(,my-org-gtd-maybe-file))))
      ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
