@@ -1143,6 +1143,19 @@ Likewise, a cancelled project is any project marked as
       ((org-agenda-overriding-header "Next Actions")
        ,my-org-super-agenda--next-action-groups
        (org-agenda-files '(,my-org-gtd-project-file))))
+     ("N" . "Next Actions (more)")
+     ("Nb" "Batch" tags-todo "batch"
+      ((org-agenda-overriding-header "Batch tasks")
+       (org-super-agenda-groups '((:auto-group t)))
+       (org-agenda-files '(,my-org-gtd-project-file))))
+     ("Np" "Project actions" tags-todo "-batch&level=4&category=\"project\"/NEXT"
+      ((org-agenda-overriding-header "Actions attached to projects")
+       ,my-org-super-agenda--next-action-groups
+       (org-agenda-files '(,my-org-gtd-project-file))))
+     ("Ns" "Standalone (no project)" tags-todo "-batch&level=3/NEXT"
+      ((org-agenda-overriding-header "Standalone Actions")
+       ,my-org-super-agenda--next-action-groups
+       (org-agenda-files '(,my-org-gtd-project-file))))
      ("p" "Active Projects" todo "TODO"
       ((org-agenda-overriding-header "Active Projects")
        (org-agenda-files '(,my-org-gtd-project-file))))

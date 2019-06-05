@@ -13,6 +13,11 @@
 
 **** Org
 
++ agenda views for specific types of next action
+  + batch tasks
+  + project actions
+  + standalone (no project) actions
+
 + automatic sorting of tags in Org by lexicographic ordering
 
 + =Inbox= capture now includes a =CREATED= property
