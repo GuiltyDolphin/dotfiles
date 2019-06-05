@@ -13,6 +13,8 @@
 
 **** Org
 
++ agenda view for weekly agenda
+
 + agenda views for specific types of next action
   + batch tasks
   + project actions

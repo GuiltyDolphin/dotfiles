@@ -1087,7 +1087,14 @@ Likewise, a cancelled project is any project marked as
 
   (customize-set-variable
    'org-agenda-custom-commands
-   `(("C" "Calendar" agenda ""
+   `(("A" "Agenda" agenda ""
+      ((org-super-agenda-groups
+        '((:name "Schedule" :time-grid t)
+          (:name "Recurring Actions" :and (:tag "recurring" :todo "NEXT"))
+          (:name "Recurring Reminders" :tag "recurring")
+          (:name "Project Items" :category "project")))
+       (org-agenda-include-deadlines nil)))
+     ("C" "Calendar" agenda ""
       ((org-agenda-files ',my-org-gtd-calendar-files)))
      ("c" . "Calendar (more)")
      ("cd" "Deadlines" agenda ""
