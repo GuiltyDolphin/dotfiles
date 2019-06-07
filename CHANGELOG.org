@@ -5,6 +5,10 @@
 
 * Unreleased
 
+** Added
+
++ confirmation when quitting Emacs
+
 * 0.9.0 - 2019-06-05
 
 ** Added

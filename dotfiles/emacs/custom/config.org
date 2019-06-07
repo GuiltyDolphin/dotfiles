@@ -160,6 +160,25 @@ functionality used in the remainder of the config.
   (evil-leader/set-key "g" my-jump-map)
 #+END_SRC
 
+*** Quitting Emacs
+
+I prefer to have Emacs confirm before exiting with =C-x C-c=.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-save-buffers-kill-terminal-ask (&optional arg)
+    "Prompt the user for confirmation before running `save-buffers-kill-terminal'.
+
+  ARG gets passed to `save-buffers-kill-terminal."
+    (interactive)
+    (when (yes-or-no-p "Are you sure you want to quit Emacs? ")
+      (save-buffers-kill-terminal arg)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (emaps-define-key my-global-mode-map
+    (kbd "C-x C-c") 'my-save-buffers-kill-terminal-ask)
+#+END_SRC
+
 ** Packages
 
 ** Calendar
