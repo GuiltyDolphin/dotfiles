@@ -1,7 +1,9 @@
 Config
     { position = TopW L 100
     , commands =
-      [ Run Memory ["-t", "Mem: <usedratio>%"] 10
+        -- e.g., Sun Jun  9 11:40 BST 2019
+      [ Run Date "%a %b %_d %H:%M %Z %Y" "date" 10
+      , Run Memory ["-t", "Mem: <usedratio>%"] 10
       , Run MultiCpu ["-t", "CPU: <autovbar>"] 10
       , Run Battery [] 10
       , Run StdinReader

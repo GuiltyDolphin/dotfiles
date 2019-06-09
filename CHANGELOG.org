@@ -11,7 +11,11 @@
 
 ** Changed
 
-+ xmobar now uses Inconsolata font
+*** Xmobar
+
++ now only shows hours and minutes in time
+
++ now uses Inconsolata font
 
 ** Fixed
 
