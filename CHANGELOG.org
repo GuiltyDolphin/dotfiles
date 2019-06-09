@@ -19,6 +19,8 @@
 + battery percentage will now display in red if it drops to
   30%
 
++ initial display for wireless network connection
+
 ** Changed
 
 *** Xmobar
