@@ -13,6 +13,8 @@
 
 *** Xmobar
 
++ CPU display now refreshes every 5 seconds instead of every 1
+
 + now only shows hours and minutes in time
 
 + now uses Inconsolata font
