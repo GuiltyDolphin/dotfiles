@@ -14,6 +14,11 @@
 + new =with_default_config= helper for installing a program
   with the default configuration
 
+*** Xmobar
+
++ battery percentage will now display in red if it drops to
+  30%
+
 ** Changed
 
 *** Xmobar

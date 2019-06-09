@@ -5,7 +5,11 @@ Config
       [ Run Date "%a %b %_d %H:%M %Z %Y" "date" 10
       , Run Memory ["-t", "Mem: <usedratio>%"] 10
       , Run MultiCpu ["-t", "CPU: <autovbar>"] 50
-      , Run Battery [] 10
+      , Run Battery [
+          "--High", "80"
+        , "--Low", "30"
+        , "--low", "red"
+        ] 10
       , Run StdinReader
       ]
     , alignSep = "}{"
