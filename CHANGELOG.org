@@ -9,6 +9,14 @@
 
 + confirmation when quitting Emacs
 
+** Changed
+
++ xmobar now uses Inconsolata font
+
+** Fixed
+
++ xmobar not spawning when starting xmonad
+
 * 0.9.0 - 2019-06-05
 
 ** Added

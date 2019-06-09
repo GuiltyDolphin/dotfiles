@@ -8,4 +8,5 @@ Config
       ]
     , alignSep = "}{"
     , template = "%StdinReader% }{ %date% | %memory% | %multicpu% | %battery%"
+    , font = "xft:-PfEd-Inconsolata-normal-normal-normal-*-19-*-*-*-m-0-iso10646-1"
     }
