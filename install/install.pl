@@ -381,6 +381,14 @@ sub git_clone {
     }
 }
 
+###########
+# Default #
+###########
+
+# Install the program with the default configuration
+sub with_default_config {
+    with_guix_config(@_);
+}
 
 #######################################################################
 #                              Commands                               #
@@ -388,13 +396,13 @@ sub git_clone {
 
 my %software_config = (
     aspell => {
-        with_guix_config('aspell'),
+        with_default_config('aspell'),
     },
     'aspell-dict-en' => {
-        with_guix_config('aspell-dict-en'),
+        with_default_config('aspell-dict-en'),
     },
     apache_ant => {
-        with_guix_config('ant'),
+        with_default_config('ant'),
     },
     cask => {
         install   => \&cask_install,
@@ -424,107 +432,107 @@ my %software_config = (
         installed => q_which('eclipse'),
     },
     emacs   => {
-        with_guix_config('emacs'),
+        with_default_config('emacs'),
     },
     font_inconsolata => {
-        with_guix_config('font-inconsolata'),
+        with_default_config('font-inconsolata'),
     },
     gcc => {
-        with_guix_config('gcc'),
+        with_default_config('gcc'),
     },
     ghc7 => {
-        with_guix_config('ghc@7'),
+        with_default_config('ghc@7'),
     },
     git => {
-        with_guix_config('git'),
+        with_default_config('git'),
     },
     glibc => {
-        with_guix_config('glibc'),
+        with_default_config('glibc'),
     },
     icecat => {
-        with_guix_config('icecat'),
+        with_default_config('icecat'),
     },
     icedtea_jdk => {
-        with_guix_config('icedtea:jdk'),
+        with_default_config('icedtea:jdk'),
     },
     idris => {
-        with_guix_config('idris'),
+        with_default_config('idris'),
     },
     libreoffice => {
-        with_guix_config('libreoffice'),
+        with_default_config('libreoffice'),
     },
     mercurial => {
-        with_guix_config('mercurial'),
+        with_default_config('mercurial'),
     },
     mu => {
-        with_guix_config('mu'),
+        with_default_config('mu'),
     },
     node => {
-        with_guix_config('node'),
+        with_default_config('node'),
     },
     offlineimap => {
-        with_guix_config('offlineimap'),
+        with_default_config('offlineimap'),
     },
     owncloud_desktop => {
-        with_guix_config('owncloud-client'),
+        with_default_config('owncloud-client'),
     },
     pip2 => {
-        with_guix_config('python2-pip'),
+        with_default_config('python2-pip'),
     },
     pip3 => {
-        with_guix_config('python-pip'),
+        with_default_config('python-pip'),
     },
     recutils => {
-        with_guix_config('recutils'),
+        with_default_config('recutils'),
     },
     rofi => {
-        with_guix_config('rofi'),
+        with_default_config('rofi'),
     },
     ruby_stable => {
-        with_guix_config('ruby'),
+        with_default_config('ruby'),
     },
     sbcl => {
-        with_guix_config('sbcl'),
+        with_default_config('sbcl'),
     },
     setxkbmap => {
-        with_guix_config('setxkbmap'),
+        with_default_config('setxkbmap'),
     },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,
     },
     tmux => {
-        with_guix_config('tmux'),
+        with_default_config('tmux'),
     },
     tmuxinator => {
         with_gem_config('tmuxinator', version => '1.9.1'),
     },
     urxvt => {
-        with_guix_config('rxvt-unicode'),
+        with_default_config('rxvt-unicode'),
     },
     vim => {
-        with_guix_config('vim'),
+        with_default_config('vim'),
     },
     xinit => {
-        with_guix_config('xinit'),
+        with_default_config('xinit'),
     },
     xmobar => {
-        with_guix_config('xmobar'),
+        with_default_config('xmobar'),
     },
     xmonad => {
-        with_guix_config('xmonad'),
+        with_default_config('xmonad'),
     },
     xmonad_contrib => {
-        with_guix_config('ghc-xmonad-contrib'),
+        with_default_config('ghc-xmonad-contrib'),
     },
     xrdb => {
-        with_guix_config('xrdb'),
+        with_default_config('xrdb'),
     },
     xscreensaver => {
-        with_guix_config('xscreensaver'),
+        with_default_config('xscreensaver'),
     },
     xset => {
-        with_guix_config('xset'),
+        with_default_config('xset'),
     },
 );
 

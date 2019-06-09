@@ -9,6 +9,11 @@
 
 + confirmation when quitting Emacs
 
+*** Installer
+
++ new =with_default_config= helper for installing a program
+  with the default configuration
+
 ** Changed
 
 *** Xmobar
