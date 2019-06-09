@@ -21,6 +21,8 @@
 
 + initial display for wireless network connection
 
++ memory usage will now display in red if it hits 90%
+
 ** Changed
 
 *** Xmobar
