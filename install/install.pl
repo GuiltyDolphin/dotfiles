@@ -201,6 +201,7 @@ my %distro_config = (
         installed => \&distro_arch_installed,
         version   => {
             compare => \&distro_arch_version_compare,
+            current => \&distro_arch_version_current,
         },
     },
     debian => {
@@ -237,6 +238,27 @@ sub distro_arch_version_compare {
     return -1 if $cmp < 0;
     return 1  if $cmp > 0;
     return 0;
+}
+
+sub distro_arch_current_info {
+    my ($package) = @_;
+    unless (distro_arch_installed($package)) {
+        error("$package is not installed with pacman");
+    }
+    my %info;
+    my @fields = qw(Name Version Description Architecture URL);
+    my $raw = `pacman -Qi $package`;
+    foreach my $field (@fields) {
+        $raw =~ /^$field\s*: (.*)$/m;
+        $info{lc $field} = $1;
+    }
+    return %info;
+}
+
+sub distro_arch_version_current {
+    my ($package) = @_;
+    my %info = distro_arch_current_info($package);
+    return $info{version};
 }
 
 ############
