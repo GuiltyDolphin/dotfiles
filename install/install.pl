@@ -261,6 +261,86 @@ sub distro_arch_version_current {
     return $info{version};
 }
 
+##############
+# Arch - AUR #
+##############
+
+my $aur_directory = "$software_directory/aur";
+
+my $aur_git_url_base = 'https://aur.archlinux.org/cgit/aur.git';
+
+sub parse_arch_pkgbuild {
+    my ($pkgbuild_info) = @_;
+    my $raw;
+    with_temp_dir sub {
+        open(my $fh, ">", "PKGBUILD");
+        print $fh $pkgbuild_info;
+        $raw = `makepkg --printsrcinfo`;
+    };
+    my %info_raw;
+    while ($raw =~ /^\s*(\w+) = (.*)$/mg) {
+        $info_raw{$1} = $2;
+    }
+    my %info = (
+        name         => $info_raw{pkgname},
+        version      => "$info_raw{pkgver}-$info_raw{pkgrel}",
+        description  => $info_raw{pkgdesc},
+        architecture => $info_raw{arch},
+        url          => $info_raw{url},
+    );
+    return %info;
+}
+
+sub arch_aur_latest_info {
+    my ($package) = @_;
+    my $pkgbuild_data = `curl -fsSL $aur_git_url_base/plain/PKGBUILD?h=$package`;
+    return parse_arch_pkgbuild($pkgbuild_data);
+}
+
+# Install a package from AUR
+sub arch_aur_install {
+    my ($package, %options) = @_;
+    my $tar_file = "$package.tar.gz";
+    my $aur_url = "$aur_git_url_base/snapshot/$tar_file";
+    with_directory $aur_directory => sub {
+        debug("Downloading latest snapshot from '$aur_url'...");
+        sequence(
+            "curl -fsSL $aur_url --output $tar_file",
+        );
+        sequence(
+            "tar -xvf $tar_file",
+        );
+        debug("Building package...");
+        with_directory $package => sub {
+            sequence(
+                "makepkg -si"
+            );
+        }
+    }, (make_dir => 1);
+}
+
+sub arch_aur_version_latest {
+    my ($package) = @_;
+    my %info = arch_aur_latest_info($package);
+    return $info{version};
+}
+
+sub arch_aur_update {
+    my ($package) = @_;
+    return arch_aur_install($package);
+}
+
+sub with_arch_aur_config {
+    my ($package) = @_;
+    return (
+        install   => sub { arch_aur_install($package) },
+        update    => sub { arch_aur_update($package) },
+        version => {
+            latest  => sub { arch_aur_version_latest($package) },
+        },
+    );
+}
+
 ############
 #  Debian  #
 ############

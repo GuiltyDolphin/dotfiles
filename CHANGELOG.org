@@ -14,6 +14,10 @@
 + new =with_default_config= helper for installing a program
   with the default configuration
 
++ support for AUR packages
+  + installation
+  + query latest version
+
 + support for =version current= command with Arch Linux
   configuration
 
