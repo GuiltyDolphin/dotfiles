@@ -85,7 +85,7 @@ configure_display : configure_urxvt configure_x_keyboard configure_xinit configu
 
 # Keyboard (when using X)
 .PHONY: configure_x_keyboard
-configure_keyboard : install_setxkbmap
+configure_x_keyboard : install_setxkbmap
 
 # Misc scripts
 .PHONY: configure_scripts
