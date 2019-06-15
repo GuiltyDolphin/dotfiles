@@ -7,6 +7,10 @@ install_prog = $(call installer,install) $(1)
 linkf = $(call installer,link) $(1) $(2)
 link_contents = $(call installer,link_contents) $(1) $(2)
 
+##############################
+#### Configuration Groups ####
+##############################
+
 # Full Configuration
 .PHONY: configure_all
 configure_all : bootstrap configure_dev_all configure_user_all
@@ -111,7 +115,9 @@ configure_user_all : configure_display configure_tools configure_scripts configu
 .PHONY: configure_web
 configure_web : install_icecat link_vimperator
 
-# Individual Programs
+#############################
+#### Individual Programs ####
+#############################
 
 .PHONY: configure_apache_ant
 configure_apache_ant : install_apache_ant
