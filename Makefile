@@ -428,7 +428,7 @@ link_xmobar : install_xmobar
 configure_xmonad : configure_rofi link_xmonad
 
 .PHONY: install_xmonad
-install_xmonad : configure_gcc configure_ghc7 configure_glibc configure_xmobar
+install_xmonad : configure_gcc configure_glibc configure_xmobar
 	$(call install_prog,xmonad)
 	$(call install_prog,xmonad_contrib)
 
