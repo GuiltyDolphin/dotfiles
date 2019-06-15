@@ -740,8 +740,8 @@ sub eclim_install {
 # Eclipse #
 ###########
 
-my $eclipse_tar_file = 'eclipse-java-neon-1-linux-gtk-x86_64.tar.gz';
-my $eclipse_dl_url = "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/1/$eclipse_tar_file";
+my $eclipse_tar_file = 'eclipse-java-photon-R-linux-gtk-x86_64.tar.gz';
+my $eclipse_dl_url = "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/photon/R/$eclipse_tar_file";
 
 sub eclipse_install {
     with_directory $software_directory => sub {
