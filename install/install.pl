@@ -531,7 +531,7 @@ my %software_config = (
     },
     eclipse => {
         install   => \&eclipse_install,
-        installed => q_which('eclipse'),
+        installed => \&eclipse_installed,
     },
     emacs   => {
         with_default_config('emacs'),
@@ -752,6 +752,10 @@ sub eclipse_install {
         ) and return $?;
         link_script_local(abs_path('eclipse/eclipse'), 'eclipse');
     }
+}
+
+sub eclipse_installed {
+    is_local_bin(get_bin_path('eclipse'));
 }
 
 ##############
