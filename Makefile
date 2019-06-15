@@ -11,31 +11,47 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 #### Configuration Groups ####
 ##############################
 
+.PHONY: configure_all \\
+		bootstrap \\
+		configure_dev_all \\
+		configure_dev \\
+		configure_dev_heavy \\
+		configure_dev_emacs \\
+		configure_dev_language_all \\
+		configure_dev_common_lisp \\
+		configure_dev_haskell \\
+		configure_dev_idris \\
+		configure_dev_java \\
+		configure_dev_javascript \\
+		configure_dev_perl \\
+		configure_dev_ruby \\
+		configure_vim \\
+		configure_display \\
+		configure_x_keyboard \\
+		configure_scripts \\
+		configure_tools \\
+		configure_user_all \\
+		configure_web
+
 # Full Configuration
-.PHONY: configure_all
 configure_all : bootstrap configure_dev_all configure_user_all
 
 # Configure programs required (or recommended) for configuration of the installer
-.PHONY: bootstrap
 bootstrap : configure_recutils
 
 # Full development configuration
-.PHONY: configure_dev_all
 configure_dev_all : configure_dev_heavy configure_dev_language_all
 
 # General development
 # Git for general version control.
 # Tmux for easier multi-session development in a terminal.
 # Vim as a fairly light-weight editor
-.PHONY: configure_dev
 configure_dev : link_bash configure_git link_tmux configure_vim
 
 # General development, but using Emacs as editor.
-.PHONY: configure_dev_emacs
 configure_dev_heavy : configure_emacs
 
 # All language development
-.PHONY: configure_dev_language_all
 configure_dev_language_all : \
 	configure_dev_common_lisp \
 	configure_dev_haskell \
@@ -46,49 +62,38 @@ configure_dev_language_all : \
 	configure_dev_ruby
 
 # Common Lisp development
-.PHONY: configure_dev_common_lisp
 configure_dev_common_lisp : configure_sbcl
 
 # Haskell development
-.PHONY: configure_dev_haskell
 configure_dev_haskell : configure_dev install_haskell_platform link_ghci
 
 # Idris development
-.PHONY: configure_dev_idris
 configure_dev_idris : install_idris
 
 # Java development
-.PHONY: configure_dev_java
 configure_dev_java : configure_eclim configure_emacs configure_jdk
 
 # JavaScript development
-.PHONY: configure_dev_javascript
 configure_dev_javascript : configure_node
 
 # Perl development
-.PHONY: configure_dev_perl
 configure_dev_perl : install_cpanm
 
 # Ruby development
-.PHONY: configure_dev_ruby
 configure_dev_ruby : install_ruby1.9.1 link_irb
 
 # Enhanced development in Vim
 # NOTE: We should also set up YCM here, but install is currently broken.
-.PHONY: configure_vim
 configure_vim : link_vim setup_vundle_plugins
 
 # X config
-.PHONY: configure_display
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
 	configure_xrdb configure_xscreensaver configure_xset link_xresources
 
 # Keyboard (when using X)
-.PHONY: configure_x_keyboard
 configure_x_keyboard : install_setxkbmap
 
 # Misc scripts
-.PHONY: configure_scripts
 configure_scripts : link_scripts
 
 # Misc tools
@@ -97,7 +102,6 @@ configure_scripts : link_scripts
 # Owncloud-desktop for file backup and syncing.
 # Shutter for screenshots.
 # Tmuxinator for Tmux session config.
-.PHONY: configure_tools
 configure_tools : \
 	configure_freemind \
 	configure_libreoffice \
@@ -106,13 +110,11 @@ configure_tools : \
 	link_tmuxinator
 
 # Better user experience (personal tools)
-.PHONY: configure_user_all
 configure_user_all : configure_display configure_tools configure_scripts configure_web
 
 # Web use
 # Icecat for browser.
 # Vimperator for Vim-like bindings.
-.PHONY: configure_web
 configure_web : install_icecat link_vimperator
 
 #############################
