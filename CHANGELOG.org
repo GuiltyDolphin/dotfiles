@@ -7,255 +7,255 @@
 
 ** Added
 
-+ confirmation when quitting Emacs
+- confirmation when quitting Emacs
 
 *** Installer
 
-+ new =with_default_config= helper for installing a program
+- new =with_default_config= helper for installing a program
   with the default configuration
 
-+ support for AUR packages
-  + installation
-  + query latest version
+- support for AUR packages
+  - installation
+  - query latest version
 
-+ support for =version current= command with Arch Linux
+- support for =version current= command with Arch Linux
   configuration
 
 *** Xmobar
 
-+ battery percentage will now display in red if it drops to
+- battery percentage will now display in red if it drops to
   30%
 
-+ initial display for wireless network connection
+- initial display for wireless network connection
 
-+ memory usage will now display in red if it hits 90%
+- memory usage will now display in red if it hits 90%
 
 ** Changed
 
 *** Xmobar
 
-+ CPU display now refreshes every 5 seconds instead of every 1
+- CPU display now refreshes every 5 seconds instead of every 1
 
-+ now only shows hours and minutes in time
+- now only shows hours and minutes in time
 
-+ now uses Inconsolata font
+- now uses Inconsolata font
 
 ** Fixed
 
-+ xmobar not spawning when starting xmonad
+- xmobar not spawning when starting xmonad
 
 ** Removed
 
 *** Installer
 
-+ =ghc7= configuration no longer directly supported by
+- =ghc7= configuration no longer directly supported by
   installer
 
 * 0.9.0 - 2019-06-05
 
 ** Added
 
-+ =git-clone-my= command for cloning personal repositories
+- =git-clone-my= command for cloning personal repositories
 
 *** Emacs
 
 **** Org
 
-+ automatic sorting of tags in Org by lexicographic ordering
+- automatic sorting of tags in Org by lexicographic ordering
 
-+ =Inbox= capture now includes a =CREATED= property
+- =Inbox= capture now includes a =CREATED= property
 
-+ support for refiling to any heading (in specific agenda
+- support for refiling to any heading (in specific agenda
   files) that has a =category= tag
 
 ***** Agenda
 
-+ agenda configuration for specific project types
-  + short term projects
-  + simple projects list
+- agenda configuration for specific project types
+  - short term projects
+  - simple projects list
 
-+ agenda view for weekly agenda
+- agenda view for weekly agenda
 
-+ agenda views for specific types of next action
-  + batch tasks
-  + project actions
-  + standalone (no project) actions
+- agenda views for specific types of next action
+  - batch tasks
+  - project actions
+  - standalone (no project) actions
 
-+ =org-super-agenda= configuration for next actions
+- =org-super-agenda= configuration for next actions
 
 *** Installer
 
-+ install configuration for Common Lisp development
+- install configuration for Common Lisp development
 
 *** XMonad
 
-+ new workspace bindings
-  + =M-S-h= :: previous workspace
-  + =M-S-l= :: next workspace
-  + =M-[= :: shift current window to previous workspace, and
+- new workspace bindings
+  - =M-S-h= :: previous workspace
+  - =M-S-l= :: next workspace
+  - =M-[= :: shift current window to previous workspace, and
              switch to that workspace
-  + =M-]= :: shift current window to next workspace, and
+  - =M-]= :: shift current window to next workspace, and
              switch to that workspace
 
-+ new workspace configuration
-  + =main=, =terminal=, =web=, and =other= workspaces
+- new workspace configuration
+  - =main=, =terminal=, =web=, and =other= workspaces
 
-+ new tile layout configurations
-  + tiled, mirror tiled, full
+- new tile layout configurations
+  - tiled, mirror tiled, full
 
 ** Changed
 
 *** Emacs
 
-+ calendar sync warnings now include a timestamp
+- calendar sync warnings now include a timestamp
 
-+ maximum length for =org-cliplink= descriptions is now 500
+- maximum length for =org-cliplink= descriptions is now 500
 
 **** Org
 
-+ timeless agenda entries are now positioned before the
+- timeless agenda entries are now positioned before the
   schedule for today
 
 ** Fixed
 
 *** Emacs
 
-+ ~my-jump-map~ bindings not getting bound if there were
+- ~my-jump-map~ bindings not getting bound if there were
   errors early on in config
 
-+ ~my-org-refile-dwim~ complaining about ~org-capture-mode~
+- ~my-org-refile-dwim~ complaining about ~org-capture-mode~
   not being previously loaded
 
 * 0.8.0 - 2018-08-06
 
 ** Added
 
-+ Initial XScreenSaver configuration
+- Initial XScreenSaver configuration
 
 *** Emacs
 
-+ configuration for =maybe.org= agenda file
+- configuration for =maybe.org= agenda file
 
-+ initial =org-brain= configuration
+- initial =org-brain= configuration
 
 *** XMonad
 
-+ bindings for volume control
+- bindings for volume control
 
-  + lower volume
+  - lower volume
 
-  + mute
+  - mute
 
-  + raise volume
+  - raise volume
 
 ** Changed
 
-+ =rofi= is now used in place of =dmenu= for XMonad
+- =rofi= is now used in place of =dmenu= for XMonad
 
-+ terminal now uses Emacs-like bindings rather than Vi-like
+- terminal now uses Emacs-like bindings rather than Vi-like
 
 *** Emacs
 
-+ =Complete= agenda view now shows cancelled items
+- =Complete= agenda view now shows cancelled items
 
-+ ~my-org-fill-column~ is now ~62~
+- ~my-org-fill-column~ is now ~62~
 
-+ projects (for GTD) are now kept in =gtd.org=
+- projects (for GTD) are now kept in =gtd.org=
 
-+ reordered refile targets to favour more likely targets first
+- reordered refile targets to favour more likely targets first
 
-+ refile target for projects now uses =aof= tag rather than
+- refile target for projects now uses =aof= tag rather than
   level
 
 ** Fixed
 
 *** =org-agenda=
 
-+ all incomplete inbox items now show in =Unprocessed= agenda
+- all incomplete inbox items now show in =Unprocessed= agenda
   view
 
 *** XMonad
 
-+ =FreeMind= should now display correctly with XMonad
+- =FreeMind= should now display correctly with XMonad
 
 * 0.7.0 - 2018-07-12
 
 ** Added
 
-+ ~history~ command now displays timestamps
+- ~history~ command now displays timestamps
 
 *** Emacs
 
 **** Commands
 
-+ ~my-search-duckduckgo~
+- ~my-search-duckduckgo~
 
-+ ~my-search-duckduckgo-site~
+- ~my-search-duckduckgo-site~
 
-+ ~my-search-gtd-forum~
+- ~my-search-gtd-forum~
 
 **** Org
 
-+ capture template for single-day events
+- capture template for single-day events
 
 ***** Agenda
 
-+ new bulk command for cancelling and archiving marked entries
+- new bulk command for cancelling and archiving marked entries
 
 ****** New Agenda Views
 
-+ calendar
+- calendar
 
-+ deadlines
+- deadlines
 
-+ someday/maybe
+- someday/maybe
 
-  + areas of focus
+  - areas of focus
 
-  + categories
+  - categories
 
-  + potential projects
+  - potential projects
 
-+ waiting for actions
+- waiting for actions
 
 ** Changed
 
 *** Emacs
 
-+ ~calendar-date-style~ is now ~iso~
+- ~calendar-date-style~ is now ~iso~
 
-+ ~display-line-numbers-mode~ is now used instead of
+- ~display-line-numbers-mode~ is now used instead of
   ~linum-mode~ for displaying line numbers
 
-+ Helm grep variants are now used instead of Projectile
+- Helm grep variants are now used instead of Projectile
   variants for Git grep and AG grep
 
 **** Org
 
 ***** Agenda Views
 
-+ =Unprocessed= agenda view now triggered with ~u~ (previously
+- =Unprocessed= agenda view now triggered with ~u~ (previously
   ~T~)
 
 ****** =Complete= agenda view
 
-+ now includes completed items from inbox
+- now includes completed items from inbox
 
-+ now loads much faster
+- now loads much faster
 
 ***** =Event= capture template
 
-+ no longer requires a time to be specified
+- no longer requires a time to be specified
 
-+ now triggered with ~e t~ (previously ~c e~)
+- now triggered with ~e t~ (previously ~c e~)
 
-+ renamed to =Event (range)=
+- renamed to =Event (range)=
 
 ***** =Inbox= capture template
 
-+ no longer includes a =CREATED= property
+- no longer includes a =CREATED= property
 
-+ no longer includes current selection
+- no longer includes current selection
 
 * 0.6.0 - 2018-06-28
 
@@ -263,50 +263,50 @@
 
 *** Org
 
-+ agenda files for calendars
+- agenda files for calendars
 
-+ agenda view for completed projects/reminders
+- agenda view for completed projects/reminders
 
-+ binding for creating "waiting for" headings
+- binding for creating "waiting for" headings
 
-+ calendar syncing with =org-caldav=
+- calendar syncing with =org-caldav=
 
-+ refile target for calendar categories
+- refile target for calendar categories
 
 ** Changed
 
-+ =projectile= will now use ~vc-git-grep~ in git projects
+- =projectile= will now use ~vc-git-grep~ in git projects
 
 *** Org
 
 **** Agenda
 
-+ ~org-agenda-follow-mode~ now displays only current item's
+- ~org-agenda-follow-mode~ now displays only current item's
   tree in an indirect buffer
 
-+ =Unprocessed= agenda view now shows calendar inbox in
+- =Unprocessed= agenda view now shows calendar inbox in
   addition to primary inboxes
 
 **** Capture
 
-+ =Inbox= capture template now files items as top-level
+- =Inbox= capture template now files items as top-level
   headings (previously under an =Inbox= heading)
 
 ***** =Event= capture template
 
-+ no longer prompts for tags
+- no longer prompts for tags
 
-+ now captures into calendar inbox
+- now captures into calendar inbox
 
 **** Refiling
 
-+ binding for refiling now accounts for differing refile
+- binding for refiling now accounts for differing refile
   semantics when capturing
 
-+ items refiled to Tickler are now top-level headings
+- items refiled to Tickler are now top-level headings
   (previously under a =Tickle= heading)
 
-+ =project.org= now only supports refiling directly under an
+- =project.org= now only supports refiling directly under an
   area of focus (i.e., cannot directly refile an action to a
   project)
 
@@ -314,17 +314,17 @@
 
 *** Org
 
-+ =Event= capture template included an additional, active
+- =Event= capture template included an additional, active
   timestamp that showed up in calendar
 
-+ ~SPC b~ binding in ~org-mode~ did not allow selecting
+- ~SPC b~ binding in ~org-mode~ did not allow selecting
   non-leaf headings
 
 ** Removed
 
 *** Org
 
-+ =Note= capture template
+- =Note= capture template
 
 * 0.5.0 - 2018-06-22
 
@@ -332,153 +332,153 @@
 
 *** Org
 
-+ fuzzy matching can now be used for refile paths
+- fuzzy matching can now be used for refile paths
 
-+ initial archiving configuration
+- initial archiving configuration
 
 **** Agenda
 
-+ new agenda views
-  + =@home= actions
-  + active projects
-  + next actions
-  + unprocessed items
+- new agenda views
+  - =@home= actions
+  - active projects
+  - next actions
+  - unprocessed items
 
-+ new bindings
-  + ~j~ :: ~org-agenda-next-line~
-  + ~k~ :: ~org-agenda-previous-line~
+- new bindings
+  - ~j~ :: ~org-agenda-next-line~
+  - ~k~ :: ~org-agenda-previous-line~
 
-+ new files included in agenda
-  + general
-  + mobile inbox
-  + someday
+- new files included in agenda
+  - general
+  - mobile inbox
+  - someday
 
 ** Changed
 
 *** Org
 
-+ entries tagged with =aof= in someday file are now valid
+- entries tagged with =aof= in someday file are now valid
   refile targets
 
 ** Fixed
 
 *** Org
 
-+ level of refile targets for tickler
+- level of refile targets for tickler
 
 ** Removed
 
 *** Org
 
-+ =FILE= and =LOCATION= properties in =Inbox= capture
+- =FILE= and =LOCATION= properties in =Inbox= capture
 
-+ =uni-calendar.org= is no longer an agenda file
+- =uni-calendar.org= is no longer an agenda file
 
 * 0.4.0 -  2018-06-19
 
 ** Added
 
-+ git alias for listing ignored files
+- git alias for listing ignored files
 
 *** Emacs
 
-+ battery status now displays in mode line
+- battery status now displays in mode line
 
-+ customisations stored in separate file
+- customisations stored in separate file
 
-+ enabled =rec-mode=
+- enabled =rec-mode=
 
-+ ~my-background-set*~ functions now accept a timeout
+- ~my-background-set*~ functions now accept a timeout
 
-+ ~slime~ will activate when visiting a lisp file
+- ~slime~ will activate when visiting a lisp file
 
 **** Org
 
-+ initial refiling configuration
+- initial refiling configuration
 
-+ line wrapping
+- line wrapping
 
-+ todo keywords (=TODO=, =NEXT=, =WAITING=, =DONE=,
+- todo keywords (=TODO=, =NEXT=, =WAITING=, =DONE=,
   =CANCELLED=)
 
-+ updated agenda files to better reflect a GTD workflow
+- updated agenda files to better reflect a GTD workflow
 
 ***** Bindings for Org under local-leader
 
-+ binding for creating new action headings
+- binding for creating new action headings
 
-+ binding for editing source block
+- binding for editing source block
 
-+ binding for refiling
+- binding for refiling
 
-+ binding for setting heading tags
+- binding for setting heading tags
 
-+ binding for setting todo status
+- binding for setting todo status
 
 ***** Agenda
 
-+ definition of stuck projects
+- definition of stuck projects
 
 ****** Bindings
 
-+ bindings for filters
-  + by category
-  + by effort
-  + by regexp
-  + by tag
-  + by top headline
-  + for removing filters
+- bindings for filters
+  - by category
+  - by effort
+  - by regexp
+  - by tag
+  - by top headline
+  - for removing filters
 
 ******* Under local-leader
 
-+ change todo status
+- change todo status
 
-+ refile
+- refile
 
-+ set tags
+- set tags
 
 *** FreeMind
 
-+ binding for =Down= icon
+- binding for =Down= icon
 
-+ binding for =Up= icon
+- binding for =Up= icon
 
 ** Changed
 
 *** Emacs
 
-+ directory for cloud sync is now =~/cloud=
+- directory for cloud sync is now =~/cloud=
 
-+ documentation improvements
+- documentation improvements
 
-+ =link= snippet now keeps cursor on same line after exiting
+- =link= snippet now keeps cursor on same line after exiting
   snippet
 
 **** Org
 
-+ reworked =Todo= capture
-  + includes file and location information
-  + no longer prompts for tag
-  + now called =Inbox=
-  + stores capture in (GTD) =inbox.org=
-  + uses property drawer for meta information
+- reworked =Todo= capture
+  - includes file and location information
+  - no longer prompts for tag
+  - now called =Inbox=
+  - stores capture in (GTD) =inbox.org=
+  - uses property drawer for meta information
 
 ***** Agenda
 
-+ initial state for ~org-agenda-mode~ is now =motion=
+- initial state for ~org-agenda-mode~ is now =motion=
 
 ** Fixed
 
 *** Emacs
 
-+ Headings up to level 10 in =config.org= should now be
+- Headings up to level 10 in =config.org= should now be
   recognised
 
 **** Org
 
-+ current selection no longer interpreted as literal org in
+- current selection no longer interpreted as literal org in
   captures
-+ prevent node content from indenting based on heading level
+- prevent node content from indenting based on heading level
 
 * 0.3.1 - 2018-06-01
 
@@ -486,75 +486,75 @@
 
 *** Emacs
 
-+ ~C-c~ and ~C-t~ bindings not taking global effect
+- ~C-c~ and ~C-t~ bindings not taking global effect
 
 * 0.3.0 - 2018-05-31
 
 ** Added
 
-+ enabled =extglob= shell option
+- enabled =extglob= shell option
 
-+ git alias for word diffs
+- git alias for word diffs
 
-+ script for fixing paths of music files
+- script for fixing paths of music files
 
 *** Emacs
 
-+ =Cask= file for dependency management
+- =Cask= file for dependency management
 
-+ ~my-background-set-*~ functions are now interactive
+- ~my-background-set-*~ functions are now interactive
 
 **** Keybindings
 
-+ binding for navigating to =config.org=
+- binding for navigating to =config.org=
 
-+ bindings for navigating sections in ~Man-mode~
+- bindings for navigating sections in ~Man-mode~
 
-+ leader binding for ~magit-log~
+- leader binding for ~magit-log~
 
 **** New Snippets
 
-+ =custom-id=
+- =custom-id=
 
-+ =description-list-item=
+- =description-list-item=
 
-+ =properties=
+- =properties=
 
 *** FreeMind
 
-+ new FreeMind configuration
+- new FreeMind configuration
 
-  + =patterns.xml=
+  - =patterns.xml=
 
-  + =user.properties=
+  - =user.properties=
 
 ** Changed
 
 *** Emacs
 
-+ =el-get= replaced with =Cask= for package management
+- =el-get= replaced with =Cask= for package management
 
-+ ~M-u~ now maps to ~universal-argument~ in insert state
+- ~M-u~ now maps to ~universal-argument~ in insert state
 
 **** Dependency Updates
 
-+ Magit bindings updated to reflect changes to Magit
+- Magit bindings updated to reflect changes to Magit
 
-+ Org capture templates updated based on deprecation warnings
+- Org capture templates updated based on deprecation warnings
 
 ** Fixed
 
 *** Emacs
 
-+ issue with =simple-block= snippet not expanding
+- issue with =simple-block= snippet not expanding
 
-+ tags are now positioned correctly in org capture templates
+- tags are now positioned correctly in org capture templates
 
-+ =helm= would sometimes not enable on load
+- =helm= would sometimes not enable on load
 
-+ =evil-surround= would sometimes not enable on load
+- =evil-surround= would sometimes not enable on load
 
 *** Installer
 
-+ =version current= printing an additional newline for some
+- =version current= printing an additional newline for some
   packages
