@@ -542,9 +542,6 @@ my %software_config = (
     gcc => {
         with_default_config('gcc'),
     },
-    ghc7 => {
-        with_default_config('ghc@7'),
-    },
     git => {
         with_default_config('git'),
     },

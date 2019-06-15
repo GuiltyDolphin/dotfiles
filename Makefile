@@ -204,13 +204,6 @@ configure_gcc : install_gcc
 install_gcc :
 	$(call install_prog,gcc)
 
-.PHONY: configure_ghc7
-configure_ghc7 : install_ghc7
-
-.PHONY: install_ghc7
-install_ghc7 :
-	$(call install_prog,ghc7)
-
 .PHONY : install_ghci
 install_ghci :
 	@[ $$(which ghci) ] || make install_haskell_platform
