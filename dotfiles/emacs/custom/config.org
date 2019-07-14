@@ -421,6 +421,7 @@ consistency:
       (kbd "C-h") 'previous-buffer
       (kbd "C-l") 'next-buffer
       (kbd "C-t") 'evil-window-next
+      "q" 'my-save-buffers-kill-terminal-ask
       "t" 'evil-window-right ; Replaces evil-window-top-left
       "-" 'evil-window-split ; Replaces evil-window-set-width
       "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
