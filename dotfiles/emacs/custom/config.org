@@ -1622,6 +1622,16 @@ alternative to ~helm-imenu~ when in Org:
 #+BEGIN_SRC emacs-lisp
   (use-package org-super-agenda
     :config
+
+    ;; these re-mappings fix an issue where being on a heading
+    ;; with org-super-agenda mode enabled would cause j and k to
+    ;; behave differently to desired
+    (emaps-define-key org-super-agenda-header-map
+      ;; previously org-agenda-goto-date
+      "j" 'org-agenda-next-line
+      ;; previously org-agenda-capture
+      "k" 'org-agenda-previous-line)
+
     (org-super-agenda-mode 1))
 #+END_SRC
 
