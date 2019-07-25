@@ -45,6 +45,8 @@
 - =j= and =k= not behaving as down/up item when on an agenda
   heading with =org-super-agenda-mode= active
 
+- =m= and =u= not updating the follow view in =org-agenda=
+
 - xmobar not spawning when starting xmonad
 
 ** Removed

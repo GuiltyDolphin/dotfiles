@@ -1268,6 +1268,59 @@ cancel and archive the items:
                           '((?C my-org-agenda--bulk-cancel-and-archive)))
 #+END_SRC
 
+****** Marking
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-agenda-bulk-mark (&optional arg)
+    "Mark the entry (or ARG entries) at point for future bulk action.
+
+  This differs from `org-agenda-bulk-mark' (which is used as the
+  function's template) in that it will cause the follow buffer (see
+  `org-agenda-follow-mode') to update after marking an item."
+    (interactive "p")
+    (dotimes (i (or arg 1))
+      (unless (org-get-at-bol 'org-agenda-diary-link)
+        (let* ((m (org-get-at-bol 'org-hd-marker))
+         ov)
+    (unless (org-agenda-bulk-marked-p)
+      (unless m (user-error "Nothing to mark at point"))
+      (push m org-agenda-bulk-marked-entries)
+      (setq ov (make-overlay (point-at-bol) (+ 2 (point-at-bol))))
+      (org-overlay-display ov (concat org-agenda-bulk-mark-char " ")
+                   (org-get-todo-face "TODO")
+                   'evaporate)
+      (overlay-put ov 'type 'org-marked-entry-overlay))
+    (org-agenda-next-line)
+    (while (and (get-char-property (point) 'invisible) (not (eobp)))
+      (beginning-of-line 2))
+    (message "%d entries marked for bulk action"
+         (length org-agenda-bulk-marked-entries))))))
+
+  (defun my-org-agenda-bulk-unmark (&optional arg)
+    "Unmark the entry at point for future bulk action.
+
+  When ARG is non-NIL, unmark all entries.
+
+  This differs from `org-agenda-bulk-unmark' (which is used as the
+  function's template) in that it will cause the follow buffer (see
+  `org-agenda-follow-mode') to update after marking an item."
+    (interactive "P")
+    (if arg
+        (org-agenda-bulk-unmark-all)
+      (cond ((org-agenda-bulk-marked-p)
+         (org-agenda-bulk-remove-overlays
+          (point-at-bol) (+ 2 (point-at-bol)))
+         (setq org-agenda-bulk-marked-entries
+           (delete (org-get-at-bol 'org-hd-marker)
+               org-agenda-bulk-marked-entries))
+         (org-agenda-next-line)
+         (while (and (get-char-property (point) 'invisible) (not (eobp)))
+           (beginning-of-line 2))
+         (message "%d entries left marked for bulk action"
+              (length org-agenda-bulk-marked-entries)))
+        (t (message "No entry to unmark here")))))
+#+END_SRC
+
 ***** Bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -1289,6 +1342,8 @@ cancel and archive the items:
     "/" my-org-agenda-filter-map
     "j" 'org-agenda-next-line
     "k" 'org-agenda-previous-line
+    "m" 'my-org-agenda-bulk-mark
+    "u" 'my-org-agenda-bulk-unmark
     (kbd "RET") 'org-agenda-switch-to)
 
   (evil-local-leader/set-key-for-mode 'org-agenda-mode
