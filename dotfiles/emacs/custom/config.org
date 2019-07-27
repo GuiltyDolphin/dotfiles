@@ -328,7 +328,21 @@ consistency:
   )
 #+END_SRC
 
-** Misc Packages
+** Library packages
+
+The following packages are used as library packages, for the
+APIs they expose.
+
+*** alert
+
+#+BEGIN_SRC emacs-lisp
+  (use-package alert)
+#+END_SRC
+
+*** async
+#+BEGIN_SRC emacs-lisp
+  (use-package async)
+#+END_SRC
 
 *** dash
 
@@ -336,12 +350,25 @@ consistency:
   (use-package dash)
 #+END_SRC
 
+** Misc Packages
+
 *** auto-complete
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-complete
     :config
     (global-auto-complete-mode))
+#+END_SRC
+
+**** ac-slime
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ac-slime
+    :after (:all auto-complete slime)
+    :config
+    (add-hook 'slime-mode-hook #'set-up-slime-ac)
+    (add-hook 'slime-repl-mode-hook #'set-up-slime-ac)
+    (add-to-list 'ac-modes 'slime-repl-mode))
 #+END_SRC
 
 *** evil-leader
@@ -560,10 +587,34 @@ consistency:
     (kbd "C-y") 'evil-scroll-line-up)
 #+END_SRC
 
+*** highlighting
+
+**** highlight-parentheses
+
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-parentheses
+    :config
+    (add-hook 'prog-mode-hook #'highlight-parentheses-mode))
+#+END_SRC
+
+**** rainbow-delimiters
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
 *** rec
 
 #+BEGIN_SRC emacs-lisp
   (use-package rec-mode)
+#+END_SRC
+
+*** swiper
+
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper)
 #+END_SRC
 
 *** web-mode
@@ -587,6 +638,12 @@ consistency:
 #+END_SRC
 
 ** Programming Languages
+
+*** Cask
+
+#+BEGIN_SRC emacs-lisp
+  (use-package cask-mode)
+#+END_SRC
 
 *** Erlang
 
@@ -613,6 +670,20 @@ consistency:
     (add-hook 'haskell-mode-hook 'turn-on-haskell-doc)
     (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
     (customize-set-variable 'haskell-interactive-popup-errors nil))
+#+END_SRC
+
+**** flycheck-haskell
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck-haskell
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+#+END_SRC
+
+**** shm (Structured Haskell Mode)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package shm)
 #+END_SRC
 
 *** Idris
@@ -672,6 +743,28 @@ consistency:
     (global-eclim-mode))
 #+END_SRC
 
+*** JavaScript
+
+**** js2-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode)
+#+END_SRC
+
+**** skewer-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package skewer-mode)
+#+END_SRC
+
+*** LaTeX
+
+**** auctex
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auctex)
+#+END_SRC
+
 *** Lisp
 
 **** eldoc
@@ -706,6 +799,14 @@ consistency:
     (slime-setup '(slime-fancy)))
 #+END_SRC
 
+*** Markdown
+
+**** markdown-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode)
+#+END_SRC
+
 *** Prolog
 
 #+BEGIN_SRC emacs-lisp
@@ -733,6 +834,22 @@ consistency:
 
 #+BEGIN_SRC emacs-lisp
   (use-package python)
+#+END_SRC
+
+*** Vim Script
+
+**** vimrc-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vimrc-mode)
+#+END_SRC
+
+*** YAML
+
+**** yaml-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
 #+END_SRC
 
 ** Completion
@@ -812,6 +929,12 @@ consistency:
     (evil-nnoremap! (kbd "C-p") 'helm-find-files)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
     (helm-mode 1))
+#+END_SRC
+
+**** helm-bibtex
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-bibtex)
 #+END_SRC
 
 *** hippie-expand
