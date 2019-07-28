@@ -1174,7 +1174,7 @@ complete.
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-gtd-match-project-active
-    (format "%s/-DONE" my-org-gtd-match-project)
+    (format "%s/TODO" my-org-gtd-match-project)
     "Tags/P/T query for active projects.")
 #+END_SRC
 
