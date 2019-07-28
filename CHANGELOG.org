@@ -7,7 +7,11 @@
 
 ** Added
 
+*** Emacs
+
 - confirmation when quitting Emacs
+
+- support for viewing next actions categorised by energy
 
 *** Installer
 

@@ -1300,6 +1300,35 @@ Likewise, a cancelled project is any project marked as
       ((org-agenda-overriding-header "Batch tasks")
        (org-super-agenda-groups '((:auto-group t)))
        (org-agenda-files '(,my-org-gtd-project-file))))
+     ("Ne" "By energy" todo "NEXT"
+      ((org-agenda-overriding-header "Actions by energy")
+       (org-super-agenda-groups
+        '((:name "Low mental, low physical"
+                 :and (:tag "@energy_mental_low" :tag "@energy_physical_low"))
+          (:name "Low mental, medium physical"
+                 :and (:tag "@energy_mental_low" :tag "@energy_physical_medium"))
+          (:name "Low mental, high physical"
+                 :and (:tag "@energy_mental_low" :tag "@energy_physical_high"))
+          (:name "Medium mental, low physical"
+                 :and (:tag "@energy_mental_medium" :tag "@energy_physical_low"))
+          (:name "Medium mental, medium physical"
+                 :and (:tag "@energy_mental_medium" :tag "@energy_physical_medium"))
+          (:name "Medium mental, high physical"
+                 :and (:tag "@energy_mental_medium" :tag "@energy_physical_high"))
+          (:name "High mental, low physical"
+                 :and (:tag "@energy_mental_high" :tag "@energy_physical_low"))
+          (:name "High mental, medium physical"
+                 :and (:tag "@energy_mental_high" :tag "@energy_physical_medium"))
+          (:name "High mental, high physical"
+                 :and (:tag "@energy_mental_high" :tag "@energy_physical_high"))
+          (:name "Low mental" :tag "@energy_mental_low")
+          (:name "Medium mental" :tag "@energy_mental_medium")
+          (:name "High mental" :tag "@energy_mental_high")
+          (:name "Low physical" :tag "@energy_physical_low")
+          (:name "Medium physical" :tag "@energy_physical_medium")
+          (:name "High physical" :tag "@energy_physical_high")
+          (:name "other" :anything t)))
+       (org-agenda-files '(,my-org-gtd-project-file))))
      ("Np" "Project actions" tags-todo "-batch&level=4&category=\"project\"/NEXT"
       ((org-agenda-overriding-header "Actions attached to projects")
        ,my-org-super-agenda--next-action-groups
