@@ -13,6 +13,13 @@
 
 - support for viewing next actions categorised by energy
 
+- =transient= as new configuration dependency
+
+**** org-brain
+
+- new academic brain
+- support for switching brains via =SPC o B=
+
 *** Installer
 
 - new =with_default_config= helper for installing a program

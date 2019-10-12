@@ -350,6 +350,12 @@ APIs they expose.
   (use-package dash)
 #+END_SRC
 
+*** transient
+
+#+BEGIN_SRC emacs-lisp
+  (use-package transient)
+#+END_SRC
+
 ** Misc Packages
 
 *** auto-complete
@@ -2006,10 +2012,42 @@ behaviour:
      "* %i%?" :empty-lines 1))
 #+END_SRC
 
-I store my brain in my usual org directory:
+I have two brains, a personal one, and an academic one. I
+provide convenient bindings for switching between the two
+brains.
 
 #+BEGIN_SRC emacs-lisp
-  (customize-set-variable 'org-brain-path (my-org-subdir "org-brain"))
+  (defvar my-org-brain-academic-brain-path (my-org-subdir "org-brain/academic")
+    "Path to my academic org brain.")
+
+  (defvar my-org-brain-personal-brain-path (my-org-subdir "org-brain/personal")
+    "Path to my personal org brain.")
+
+  (defun my-org-brain-switch-to-academic-brain ()
+    "Switch to my academic org brain."
+    (interactive)
+    (org-brain-switch-brain my-org-brain-academic-brain-path))
+
+  (defun my-org-brain-switch-to-personal-brain ()
+    "Switch to my personal org brain."
+    (interactive)
+    (org-brain-switch-brain my-org-brain-personal-brain-path))
+
+  (define-transient-command my-org-brain-brain-selection ()
+    "Transient for selecting an org brain."
+    ["Select Brain"
+     ("a" "Academic" my-org-brain-switch-to-academic-brain)
+     ("p" "Personal" my-org-brain-switch-to-personal-brain)])
+
+  (emaps-define-key my-evil-leader-org-map
+    "B" 'my-org-brain-brain-selection)
+#+END_SRC
+
+I store my brains in my usual org directory (defaulting to my
+academic brain):
+
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'org-brain-path my-org-brain-academic-brain-path)
 #+END_SRC
 
 I usually want all file and headline entries to be presented as
