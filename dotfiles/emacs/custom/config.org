@@ -1814,16 +1814,6 @@ alternative to ~helm-imenu~ when in Org:
      (python . t))))
 #+END_SRC
 
-*** org-brain
-
-#+BEGIN_SRC emacs-lisp
-  (use-package org-brain
-    ;; :after doesn't seem to work... Perhaps because org is builtin?
-    ;; so I'm having to place 'org-brain physically after 'org
-    :after (:all evil org)
-    :init
-#+END_SRC
-
 *** org-super-agenda
 
 #+BEGIN_SRC emacs-lisp
@@ -1840,6 +1830,16 @@ alternative to ~helm-imenu~ when in Org:
       "k" 'org-agenda-previous-line)
 
     (org-super-agenda-mode 1))
+#+END_SRC
+
+*** org-brain
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-brain
+    ;; :after doesn't seem to work... Perhaps because org is builtin?
+    ;; so I'm having to place 'org-brain physically after 'org
+    :after (:all evil org)
+    :init
 #+END_SRC
 
 **** Bindings
