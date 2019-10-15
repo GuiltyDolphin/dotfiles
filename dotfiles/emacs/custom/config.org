@@ -1999,6 +1999,22 @@ behaviour:
     (kbd "C-o") 'org-brain-visualize-back)
 #+END_SRC
 
+***** Navigation
+
+I find it convenient to be able to jump to the pinned items:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-brain-jump-to-pinned ()
+    "Jump to the button for the first pinned item."
+    (interactive)
+    (goto-char (point-min))
+    (re-search-forward "^PINNED:")
+    (forward-button 1))
+
+  (evil-define-key 'motion org-brain-visualize-mode-map
+    "gp" 'my-org-brain-jump-to-pinned)
+#+END_SRC
+
 **** Misc Configuration
 
 #+BEGIN_SRC emacs-lisp
