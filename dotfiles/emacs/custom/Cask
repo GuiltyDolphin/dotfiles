@@ -40,6 +40,7 @@
 (depends-on "haskell-mode")
 (depends-on "helm")
 (depends-on "helm-bibtex")
+(depends-on "helm-org")
 (depends-on "highlight-parentheses")
 (depends-on "htmlize")
 (depends-on "idle-highlight-mode")

@@ -11,6 +11,8 @@
 
 - confirmation when quitting Emacs
 
+- =helm-org= dependency
+
 - support for viewing next actions categorised by energy
 
 - =transient= as new configuration dependency
