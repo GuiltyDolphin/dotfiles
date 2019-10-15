@@ -17,6 +17,7 @@
 
 **** org-brain
 
+- binding for jumping to history items (=gh=)
 - binding for jumping to pinned items (=gp=)
 - new academic brain
 - support for switching brains via =SPC o B=

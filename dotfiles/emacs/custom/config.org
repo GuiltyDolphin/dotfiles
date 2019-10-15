@@ -2015,6 +2015,20 @@ I find it convenient to be able to jump to the pinned items:
     "gp" 'my-org-brain-jump-to-pinned)
 #+END_SRC
 
+Likewise for the history:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-brain-jump-to-history ()
+    "Jump to the button for the first history item."
+    (interactive)
+    (goto-char (point-min))
+    (re-search-forward "^HISTORY:")
+    (forward-button 1))
+
+  (evil-define-key 'motion org-brain-visualize-mode-map
+    "gh" 'my-org-brain-jump-to-history)
+#+END_SRC
+
 **** Misc Configuration
 
 #+BEGIN_SRC emacs-lisp
