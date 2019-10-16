@@ -108,6 +108,15 @@ alias ll='ls -la'
 alias rutest="rake test"
 alias ap='apropos'
 
+
+# Audio
+
+# Show live percentages for the microphone's recording input
+test-microphone() {
+  arecord -vvv -f dat /dev/null
+}
+
+
 alias irb='irb2.0'
 alias ruby='ruby2.0'
 

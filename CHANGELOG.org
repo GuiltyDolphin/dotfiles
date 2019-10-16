@@ -7,6 +7,8 @@
 
 ** Added
 
+- shell command for testing microphone
+
 *** Emacs
 
 - confirmation when quitting Emacs
