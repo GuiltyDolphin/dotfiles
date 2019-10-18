@@ -71,6 +71,8 @@
 - headings without a =TODO= keyword displaying in stuck
   projects
 
+- =void-function mwith-buffer-modified-unmodified= error
+
 ** Removed
 
 *** Emacs

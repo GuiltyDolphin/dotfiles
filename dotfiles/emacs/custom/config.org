@@ -130,6 +130,12 @@ functionality used in the remainder of the config.
   (use-package cl-lib)
 #+END_SRC
 
+**** bookmark
+
+#+BEGIN_SRC emacs-lisp
+  (use-package bookmark)
+#+END_SRC
+
 **** emaps
 
 #+BEGIN_SRC emacs-lisp
