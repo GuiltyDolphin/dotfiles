@@ -1973,10 +1973,10 @@ behaviour:
     "Keymap for visualisation commands in `org-brain-visualize-mode'.")
 
   (emaps-define-key my-org-brain-visualisation-map
-    "P" 'org-brain-visualize-remove-grandparent
-    "c" 'org-brain-visualize-remove-grandchild
-    "o" 'org-brain-visualize-add-grandchild
-    "p" 'org-brain-visualize-add-grandparent)
+    "P" 'org-brain-hide-ancestor-level
+    "c" 'org-brain-hide-descendant-level
+    "o" 'org-brain-show-descendant-level
+    "p" 'org-brain-show-ancestor-level)
 #+END_SRC
 
 ***** Top-level Bindings
