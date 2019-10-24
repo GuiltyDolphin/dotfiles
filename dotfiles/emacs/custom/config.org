@@ -1799,7 +1799,7 @@ alternative to ~helm-imenu~ when in Org:
     "w" 'my-org-gtd-insert-waiting-for-heading)
 
   (evil-local-leader/set-key-for-mode 'org-mode
-    "T" 'org-set-tags
+    "T" 'org-set-tags-command
     "e" 'org-edit-special
     "n" my-org-gtd-new-map
     "r" 'my-org-refile-dwim
