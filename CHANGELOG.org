@@ -71,6 +71,8 @@
 - headings without a =TODO= keyword displaying in stuck
   projects
 
+- upstream org getting overridden by built-in org
+
 - =void-function mwith-buffer-modified-unmodified= error
 
 ** Removed

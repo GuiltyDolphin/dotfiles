@@ -115,15 +115,6 @@ affecting the default global settings.
 Packages that should be loaded early as they define
 functionality used in the remainder of the config.
 
-**** cask
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path (locate-user-emacs-file "cask/elpa"))
-
-  (require 'cask "~/.cask/cask.el")
-  (cask-initialize)
-#+END_SRC
-
 **** cl-lib
 
 #+BEGIN_SRC emacs-lisp

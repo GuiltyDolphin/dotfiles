@@ -47,6 +47,15 @@
 (customize-set-variable
  'vc-follow-symlinks t "Follow Symlinks without asking")
 
+;; We load cask early to allow overriding built-in packages.
+;;
+;; Specifically, we need to initialize cask before calling
+;; 'org-babel-load-file, in order to prevent the built-in org
+;; being loaded.
+(add-to-list 'load-path (locate-user-emacs-file "cask/elpa"))
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
 (org-babel-load-file (locate-user-emacs-file "config.org"))
 
 ;;; init.el ends here
