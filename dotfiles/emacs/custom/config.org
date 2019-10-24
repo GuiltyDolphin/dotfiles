@@ -1713,7 +1713,7 @@ action headings:
       (my-org-heading-insert-subheading-respect-content)
       (insert text)
       (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
-      (org-set-tags-to tags)))
+      (org-set-tags tags)))
 #+END_SRC
 
 Additionally, it is useful to have a helper for creating
