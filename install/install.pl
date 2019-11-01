@@ -145,7 +145,7 @@ my %distro_map = (
     'linuxmint' => 'debian',
 );
 
-my $default_distro = 'debian';
+my $default_distro = 'arch';
 
 sub get_distribution {
     chomp (my $kernel_release = `uname -r`);

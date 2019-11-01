@@ -49,6 +49,10 @@
 
 ** Changed
 
+*** Installer
+
+- default distribution is now Arch
+
 *** Xmobar
 
 - CPU display now refreshes every 5 seconds instead of every 1
