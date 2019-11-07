@@ -50,6 +50,11 @@
 
 ** Changed
 
+*** Emacs
+
+- journal capture now records creation time in a property
+  drawer
+
 *** Installer
 
 - default distribution is now Arch
