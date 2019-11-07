@@ -539,7 +539,8 @@ APIs they expose.
       'magit-status-mode
       'magit-revision-mode
       'magit-diff-mode
-      'magit-log-mode))
+      'magit-log-mode
+      'magit-stash-mode))
 
   (add-hook 'git-commit-mode-hook (lambda () (flyspell-mode t)))
 

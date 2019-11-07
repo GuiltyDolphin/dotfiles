@@ -52,6 +52,8 @@
 
 *** Emacs
 
+- initial state for ~magit-stash-mode~ is now =motion=
+
 - journal capture now records creation time in a property
   drawer
 
