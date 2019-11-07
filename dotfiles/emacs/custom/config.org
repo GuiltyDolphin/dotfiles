@@ -2026,6 +2026,23 @@ Likewise for the history:
     "gh" 'my-org-brain-jump-to-history)
 #+END_SRC
 
+And friends:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-brain-jump-to-friends ()
+    "Jump to the button for the first friend item."
+    (interactive)
+    (if org-brain-visualizing-mind-map
+        (progn
+          (goto-char (point-min))
+          (re-search-forward "^FRIENDS:")
+          (forward-button 1))
+      (user-error "Jump to friends only available when visualizing as a mind-map")))
+
+  (evil-define-key 'motion org-brain-visualize-mode-map
+    "gf" 'my-org-brain-jump-to-friends)
+#+END_SRC
+
 **** Misc Configuration
 
 #+BEGIN_SRC emacs-lisp
