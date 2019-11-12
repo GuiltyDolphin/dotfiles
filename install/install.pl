@@ -202,6 +202,7 @@ my %distro_config = (
         version   => {
             compare => \&distro_arch_version_compare,
             current => \&distro_arch_version_current,
+            latest  => \&distro_arch_version_latest,
         },
     },
     debian => {
@@ -240,14 +241,11 @@ sub distro_arch_version_compare {
     return 0;
 }
 
-sub distro_arch_current_info {
-    my ($package) = @_;
-    unless (distro_arch_installed($package)) {
-        error("$package is not installed with pacman");
-    }
+# Parse information about an Arch package into a hash.
+sub distro_arch_parse_info {
+    my ($raw) = @_;
     my %info;
     my @fields = qw(Name Version Description Architecture URL);
-    my $raw = `pacman -Qi $package`;
     foreach my $field (@fields) {
         $raw =~ /^$field\s*: (.*)$/m;
         $info{lc $field} = $1;
@@ -255,9 +253,30 @@ sub distro_arch_current_info {
     return %info;
 }
 
+sub distro_arch_current_info {
+    my ($package) = @_;
+    unless (distro_arch_installed($package)) {
+        error("$package is not installed with pacman");
+    }
+    my $raw = `pacman -Qi $package`;
+    return distro_arch_parse_info($raw);
+}
+
+sub distro_arch_latest_info {
+    my ($package) = @_;
+    my $raw = `pacman -Si $package`;
+    return distro_arch_parse_info($raw);
+}
+
 sub distro_arch_version_current {
     my ($package) = @_;
     my %info = distro_arch_current_info($package);
+    return $info{version};
+}
+
+sub distro_arch_version_latest {
+    my ($package) = @_;
+    my %info = distro_arch_latest_info($package);
     return $info{version};
 }
 

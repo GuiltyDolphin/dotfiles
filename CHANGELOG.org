@@ -36,8 +36,9 @@
   - installation
   - query latest version
 
-- support for =version current= command with Arch Linux
-  configuration
+- support for new commands for Arch Linux configuration
+  - =version current=
+  - =version latest=
 
 *** Xmobar
 
