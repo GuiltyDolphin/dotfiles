@@ -5,6 +5,8 @@
 
 * Unreleased
 
+* 0.10.0 - 2019-11-12
+
 ** Added
 
 - shell command for testing microphone
