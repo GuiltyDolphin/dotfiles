@@ -438,31 +438,6 @@ sub github_version_latest_from_tags {
     );
 }
 
-##########
-#  Guix  #
-##########
-
-sub with_guix_config {
-    my ($package) = @_;
-    return (
-        install   => sub { return system("guix package -i $package") },
-        installed => sub {
-            return `guix package --list-installed` =~ /^$package\s/im;
-        },
-        update => sub { return system("guix package -u \\<$package\\>") },
-        version => {
-            current => sub {
-                `guix package --list-installed='^$package\$'` =~ /^$package\t(?<version>[^\t]+)\t/;
-                return $+{version};
-            },
-            latest => sub {
-                `guix package --show='$package' | recsel -p version` =~ /^version: (?<version>.*)/;
-                return $+{version};
-            },
-        },
-    );
-}
-
 #########
 #  Gem  #
 #########

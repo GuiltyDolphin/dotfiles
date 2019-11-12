@@ -108,6 +108,8 @@
 - =ghc7= configuration no longer directly supported by
   installer
 
+- guix configuration and setup removed
+
 * 0.9.0 - 2019-06-05
 
 ** Added
