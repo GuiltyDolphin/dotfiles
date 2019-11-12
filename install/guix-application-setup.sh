@@ -9,7 +9,7 @@
 
 setupLocales() {
   echo "Setting up locales..."
-  guix package -i glibc-locales
+  guix package -i glibc-locales glibc-utf8-locales
 }
 
 setupNameServiceSwitch() {
