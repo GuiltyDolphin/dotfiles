@@ -630,6 +630,9 @@ my %software_config = (
     xmonad_contrib => {
         with_default_config('xmonad-contrib'),
     },
+    xorg_server => {
+        with_default_config('xorg-server'),
+    },
     xrdb => {
         with_default_config('xorg-xrdb'),
     },
