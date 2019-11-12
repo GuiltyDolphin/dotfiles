@@ -280,6 +280,18 @@ sub distro_arch_version_latest {
     return $info{version};
 }
 
+sub with_arch_config {
+    my ($package) = @_;
+    return (
+        install   => sub { distro_arch_install($package) },
+        installed => sub { distro_arch_installed($package) },
+        version   => {
+            current => sub { distro_arch_version_current($package) },
+            latest  => sub { distro_arch_version_latest($package) },
+        },
+    );
+}
+
 ##############
 # Arch - AUR #
 ##############
@@ -508,7 +520,7 @@ sub git_clone {
 
 # Install the program with the default configuration
 sub with_default_config {
-    with_guix_config(@_);
+    with_arch_config(@_);
 }
 
 #######################################################################
@@ -520,7 +532,7 @@ my %software_config = (
         with_default_config('aspell'),
     },
     'aspell-dict-en' => {
-        with_default_config('aspell-dict-en'),
+        with_default_config('aspell-en'),
     },
     apache_ant => {
         with_default_config('ant'),
@@ -556,7 +568,7 @@ my %software_config = (
         with_default_config('emacs'),
     },
     font_inconsolata => {
-        with_default_config('font-inconsolata'),
+        with_default_config('ttf-inconsolata'),
     },
     gcc => {
         with_default_config('gcc'),
@@ -577,7 +589,7 @@ my %software_config = (
         with_default_config('idris'),
     },
     libreoffice => {
-        with_default_config('libreoffice'),
+        with_default_config('libreoffice-fresh'),
     },
     mercurial => {
         with_default_config('mercurial'),
@@ -586,7 +598,7 @@ my %software_config = (
         with_default_config('mu'),
     },
     node => {
-        with_default_config('node'),
+        with_default_config('nodejs'),
     },
     offlineimap => {
         with_default_config('offlineimap'),
@@ -613,7 +625,7 @@ my %software_config = (
         with_default_config('sbcl'),
     },
     setxkbmap => {
-        with_default_config('setxkbmap'),
+        with_default_config('xorg-setxkbmap'),
     },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
@@ -632,7 +644,7 @@ my %software_config = (
         with_default_config('vim'),
     },
     xinit => {
-        with_default_config('xinit'),
+        with_default_config('xorg-xinit'),
     },
     xmobar => {
         with_default_config('xmobar'),
@@ -641,16 +653,16 @@ my %software_config = (
         with_default_config('xmonad'),
     },
     xmonad_contrib => {
-        with_default_config('ghc-xmonad-contrib'),
+        with_default_config('xmonad-contrib'),
     },
     xrdb => {
-        with_default_config('xrdb'),
+        with_default_config('xorg-xrdb'),
     },
     xscreensaver => {
         with_default_config('xscreensaver'),
     },
     xset => {
-        with_default_config('xset'),
+        with_default_config('xorg-xset'),
     },
 );
 
