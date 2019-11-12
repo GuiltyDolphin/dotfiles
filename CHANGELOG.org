@@ -64,6 +64,11 @@
 
 - default manager configuration is now Arch
 
+- some packages switched to use Arch AUR
+  - =icecat=
+  - =mu=
+  - =recutils=
+
 *** Xmobar
 
 - CPU display now refreshes every 5 seconds instead of every 1

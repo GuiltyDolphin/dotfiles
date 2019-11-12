@@ -580,7 +580,7 @@ my %software_config = (
         with_default_config('glibc'),
     },
     icecat => {
-        with_default_config('icecat'),
+        with_arch_aur_config('icecat'),
     },
     icedtea_jdk => {
         with_default_config('icedtea:jdk'),
@@ -595,7 +595,7 @@ my %software_config = (
         with_default_config('mercurial'),
     },
     mu => {
-        with_default_config('mu'),
+        with_arch_aur_config('mu'),
     },
     node => {
         with_default_config('nodejs'),
@@ -613,7 +613,7 @@ my %software_config = (
         with_default_config('python-pip'),
     },
     recutils => {
-        with_default_config('recutils'),
+        with_arch_aur_config('recutils'),
     },
     rofi => {
         with_default_config('rofi'),
