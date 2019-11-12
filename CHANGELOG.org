@@ -89,6 +89,8 @@
 
 ** Removed
 
+- fortune text no longer displays when opening a terminal
+
 *** Emacs
 
 - dependency on =el-get=

@@ -9,9 +9,6 @@ if [ $(which dircolors) ]; then
   fi
 fi
 
-# ;}
-[[ $(which fortune) ]] && fortune
-
 ##############
 #  TERMINAL  #
 ##############
