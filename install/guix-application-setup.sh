@@ -15,6 +15,7 @@ setupLocales() {
 setupNameServiceSwitch() {
   echo "Setting up Name Service Switch..."
   nscd
+  true
 }
 
 setupFonts() {
