@@ -367,6 +367,9 @@ install_tmux :
 link_tmux : install_tmux
 	@$(call linkf,tmux/.tmux.conf,.tmux.conf)
 
+.PHONY: configure_tmuxinator
+configure_tmuxinator : link_tmuxinator
+
 .PHONY: install_tmuxinator
 install_tmuxinator : install_ruby1.9.1
 	$(call install_prog,tmuxinator)
