@@ -21,6 +21,11 @@
 
 - XScreenSaver disabled
 
+** Fixed
+
+- installer not detecting distribution when there were
+  non-word characters after the name
+
 * 0.10.0 - 2019-11-12
 
 ** Added

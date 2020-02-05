@@ -154,7 +154,7 @@ sub get_distribution {
         error('unable to detect distribution, defaulting to debian system');
         $distro = 'debian';
     } else {
-        $kernel_release =~ /^.+?(\w+)$/;
+        $kernel_release =~ /^.+?([[:alpha:]]+).*?$/;
         $distro = $1;
     }
     unless ($distro = $distro_map{lc $distro}) {
