@@ -10,6 +10,9 @@
 - =grepcount= command for searching files and organising
   result on number of matches
 
+- =greptxt= and =greptext= aliases for searching =.txt= files
+  and organising results on number of matches
+
 - =configure_dev_terminal= recipe
 
 - install configuration for =htop=

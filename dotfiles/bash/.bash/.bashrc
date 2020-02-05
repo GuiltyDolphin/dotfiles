@@ -100,6 +100,9 @@ grepcount() {
   grep -r "$1" -oc "${@:2}" | grep -v ':0$' | sort -gr -t: -k 2 | uniq
 }
 
+alias greptxt='grepcount **/*.txt -ie'
+alias greptext='grep **/*.txt -ie'
+
 
 # Audio
 
