@@ -93,6 +93,14 @@ alias rutest="rake test"
 alias ap='apropos'
 
 
+# Searching
+
+# Grep then order on number of matches
+grepcount() {
+  grep -r "$1" -oc "${@:2}" | grep -v ':0$' | sort -gr -t: -k 2 | uniq
+}
+
+
 # Audio
 
 # Show live percentages for the microphone's recording input

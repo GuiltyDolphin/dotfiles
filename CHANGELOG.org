@@ -7,6 +7,9 @@
 
 ** Added
 
+- =grepcount= command for searching files and organising
+  result on number of matches
+
 - =configure_dev_terminal= recipe
 
 - install configuration for =htop=
