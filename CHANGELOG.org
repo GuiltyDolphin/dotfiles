@@ -13,6 +13,8 @@
 - =greptxt= and =greptext= aliases for searching =.txt= files
   and organising results on number of matches
 
+- =cman= alias for =connmanctl=
+
 - =configure_dev_terminal= recipe
 
 - install configuration for =htop=

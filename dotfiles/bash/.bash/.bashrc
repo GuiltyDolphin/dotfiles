@@ -91,6 +91,7 @@ alias la='ls -a'
 alias ll='ls -la'
 alias rutest="rake test"
 alias ap='apropos'
+alias cman='connmanctl'
 alias pdftotext='pdftotext -layout -nopgbrk -eol unix'
 
 
