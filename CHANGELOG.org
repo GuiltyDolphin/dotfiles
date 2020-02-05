@@ -9,6 +9,8 @@
 
 ** Added
 
+- =configure_dev_terminal= recipe
+
 - install configuration for =texlive=
 
 - shell command for testing microphone

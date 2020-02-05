@@ -25,6 +25,7 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 		configure_dev_javascript \\
 		configure_dev_perl \\
 		configure_dev_ruby \\
+		configure_dev_terminal \\
 		configure_vim \\
 		configure_display \\
 		configure_x_keyboard \\
@@ -89,6 +90,9 @@ configure_vim : link_vim setup_vundle_plugins
 # X config
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
 	configure_xrdb configure_xscreensaver configure_xset link_xresources
+
+# Setup for working in a terminal.
+configure_dev_terminal : configure_dev configure_tmuxinator
 
 # Keyboard (when using X)
 configure_x_keyboard : install_setxkbmap
