@@ -10,7 +10,8 @@ Config
         ] 10
       , Run MultiCpu ["-t", "CPU: <autovbar>"] 50
       , Run Battery [
-          "--High", "80"
+          "-t", "<left>% (<watts> :: <timeleft>)"
+        , "--High", "80"
         , "--Low", "30"
         , "--low", "red"
         ] 10

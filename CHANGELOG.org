@@ -9,6 +9,9 @@
 
 - =configure_dev_terminal= recipe
 
+- indicator for usage and expected lifetime of battery in
+  status bar
+
 - install configuration for =texlive=
 
 * 0.10.0 - 2019-11-12
