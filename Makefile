@@ -436,7 +436,7 @@ link_xmobar : install_xmobar
 	$(call linkf,x/.xmobarrc,.xmobarrc)
 
 .PHONY: configure_xmonad
-configure_xmonad : configure_rofi link_xmonad
+configure_xmonad : configure_rofi link_xmonad configure_xorg
 
 .PHONY: install_xmonad
 install_xmonad : configure_gcc configure_glibc configure_xmobar
@@ -446,6 +446,13 @@ install_xmonad : configure_gcc configure_glibc configure_xmobar
 .PHONY: link_xmonad
 link_xmonad : install_xmonad
 	$(call linkf,x/.xmonad/xmonad.hs,.xmonad/xmonad.hs)
+
+.PHONY: configure_xorg
+configure_xorg : install_xorg
+
+.PHONY: install_xorg
+install_xorg :
+	$(call install_prog,xorg_server)
 
 .PHONY: configure_xrdb
 configure_xrdb : install_xrdb
