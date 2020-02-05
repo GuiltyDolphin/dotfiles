@@ -602,9 +602,6 @@ my %software_config = (
     setxkbmap => {
         with_default_config('xorg-setxkbmap'),
     },
-    stalonetray => {
-        with_default_config('stalonetray'),
-    },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,

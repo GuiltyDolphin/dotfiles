@@ -348,17 +348,6 @@ setxkbmap :
 install_shutter :
 	@$(call install_prog,shutter)
 
-.PHONY: configure_stalonetray
-configure_stalonetray : link_stalonetray
-
-.PHONY: install_stalonetray
-install_stalonetray :
-	$(call install_prog,stalonetray)
-
-.PHONY: link_stalonetray
-link_stalonetray : install_stalonetray
-	$(call linkf,x/.stalonetrayrc,.stalonetrayrc)
-
 .PHONY: install_tmux
 install_tmux :
 	$(call install_prog,tmux)
@@ -429,7 +418,7 @@ link_xmobar : install_xmobar
 	$(call linkf,x/.xmobarrc,.xmobarrc)
 
 .PHONY: configure_xmonad
-configure_xmonad : configure_rofi link_xmonad configure_stalonetray
+configure_xmonad : configure_rofi link_xmonad
 
 .PHONY: install_xmonad
 install_xmonad : configure_gcc configure_glibc configure_xmobar
