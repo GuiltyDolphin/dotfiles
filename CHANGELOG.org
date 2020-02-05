@@ -13,6 +13,8 @@
 
 - install configuration for =texlive=
 
+- support for high-priority custom scripts
+
 - support for personal environment file
 
 *** Xmobar

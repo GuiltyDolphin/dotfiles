@@ -3,7 +3,8 @@
 # https://www.github.com/GuiltyDolphin/config
 
 # Default path
-PATH=~/.local/bin # Prefer local versions
+PATH=~/.local/bin/scripts # Custom scripts override everything else
+PATH=$PATH:~/.local/bin # Prefer local versions
 PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/bin
 PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 
