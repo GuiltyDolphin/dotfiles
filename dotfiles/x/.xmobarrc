@@ -15,7 +15,10 @@ Config
         , "--Low", "30"
         , "--low", "red"
         ] 10
-      , Run Wireless "wlan0" [] 10
+      , Run Wireless "wlan0" [
+          "-t", "<essid> <quality>"
+        , "--minwidth", "3"
+        ] 10
       , Run StdinReader
       ]
     , alignSep = "}{"

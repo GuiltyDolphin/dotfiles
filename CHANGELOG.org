@@ -9,10 +9,13 @@
 
 - =configure_dev_terminal= recipe
 
-- indicator for usage and expected lifetime of battery in
-  status bar
-
 - install configuration for =texlive=
+
+*** Xmobar
+
+- indicator for network ESSID and quality
+
+- indicator for usage and expected lifetime of battery
 
 * 0.10.0 - 2019-11-12
 
