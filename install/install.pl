@@ -606,6 +606,9 @@ my %software_config = (
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,
     },
+    texlive => {
+        with_default_config('texlive-most'),
+    },
     tmux => {
         with_default_config('tmux'),
     },

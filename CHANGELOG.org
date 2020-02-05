@@ -9,6 +9,8 @@
 
 ** Added
 
+- install configuration for =texlive=
+
 - shell command for testing microphone
 
 *** Emacs

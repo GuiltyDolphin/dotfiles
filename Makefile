@@ -110,7 +110,8 @@ configure_tools : \
 	link_tmuxinator
 
 # Better user experience (personal tools)
-configure_user_all : configure_display configure_tools configure_scripts configure_web
+configure_user_all : configure_display configure_tools configure_scripts \
+	configure_tex configure_web
 
 # Web use
 # Icecat for browser.
@@ -347,6 +348,16 @@ setxkbmap :
 .PHONY: install_shutter
 install_shutter :
 	@$(call install_prog,shutter)
+
+.PHONY: configure_tex
+configure_tex : configure_texlive
+
+.PHONY: configure_texlive
+configure_texlive : install_texlive
+
+.PHONY: install_texlive
+install_texlive :
+	$(call install_prog,texlive)
 
 .PHONY: install_tmux
 install_tmux :
