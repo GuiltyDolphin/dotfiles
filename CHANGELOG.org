@@ -19,6 +19,9 @@
 
 - install configuration for =texlive=
 
+- =office-monitor-show= and =office-monitor-hide= commands for
+  enabling/disabling office monitor
+
 - support for high-priority custom scripts
 
 - support for personal environment file

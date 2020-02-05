@@ -120,6 +120,14 @@ pdfmkv() {
   pdflatex $1 && okular ${1%.*}.pdf
 }
 
+office-monitor-show() {
+  xrandr --output HDMI1 --right-of LVDS1 --auto
+}
+
+office-monitor-hide() {
+  xrandr --output HDMI1 --off
+}
+
 
 #############
 #  Options  #
