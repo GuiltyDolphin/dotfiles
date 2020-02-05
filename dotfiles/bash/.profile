@@ -52,3 +52,17 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+
+##########################################
+# Personal/private environment variables #
+##########################################
+
+# change this line to point to whichever file you
+# keep personal environment variables in
+PERSONAL_ENV_FILE="$HOME/.env-personal"
+
+if [[ -r "$PERSONAL_ENV_FILE" ]]; then
+    source "$PERSONAL_ENV_FILE"
+else
+    echo "Personal environment file '$PERSONAL_ENV_FILE' not found"
+fi

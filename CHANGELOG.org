@@ -13,6 +13,8 @@
 
 - install configuration for =texlive=
 
+- support for personal environment file
+
 *** Xmobar
 
 - indicator for network ESSID and quality
