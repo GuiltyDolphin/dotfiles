@@ -102,12 +102,14 @@ configure_scripts : link_scripts
 
 # Misc tools
 # freemind for mind mapping
+# htop for viewing processes
 # libreoffice as an office suite
 # Owncloud-desktop for file backup and syncing.
 # Shutter for screenshots.
 # Tmuxinator for Tmux session config.
 configure_tools : \
 	configure_freemind \
+	configure_htop \
 	configure_libreoffice \
 	install_owncloud_desktop \
 	install_shutter \
@@ -201,6 +203,13 @@ configure_freemind : link_freemind
 link_freemind :
 	@$(call linkf,freemind/patterns.xml,.freemind/patterns.xml)
 	@$(call linkf,freemind/user.properties,.freemind/user.properties)
+
+.PHONY: configure_htop
+configure_htop : install_htop
+
+.PHONY: install_htop
+install_htop :
+	$(call install_prog,htop)
 
 .PHONY: configure_gcc
 configure_gcc : install_gcc

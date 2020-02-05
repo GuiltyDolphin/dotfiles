@@ -554,6 +554,9 @@ my %software_config = (
     glibc => {
         with_default_config('glibc'),
     },
+    htop => {
+        with_default_config('htop'),
+    },
     icecat => {
         with_arch_aur_config('icecat'),
     },

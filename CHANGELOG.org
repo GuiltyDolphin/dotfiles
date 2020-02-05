@@ -9,6 +9,8 @@
 
 - =configure_dev_terminal= recipe
 
+- install configuration for =htop=
+
 - install configuration for =texlive=
 
 *** Xmobar
