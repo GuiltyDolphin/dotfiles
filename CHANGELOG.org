@@ -17,6 +17,10 @@
 
 - indicator for usage and expected lifetime of battery
 
+** Changed
+
+- XScreenSaver disabled
+
 * 0.10.0 - 2019-11-12
 
 ** Added
