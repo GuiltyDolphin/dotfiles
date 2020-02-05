@@ -79,19 +79,6 @@ alias pyt='python3 setup.py test '
 alias ipy='ipython3 '
 
 
-##############
-#  APTITUDE  #
-##############
-
-# If we can't use apt then use apt-cache
-if [[ $(which apt) ]]; then
-  alias ash='apt search'
-else
-  alias ash='apt-cache search'
-fi
-
-alias as='apt-get show '
-
 # Use vi-keys when invoking the info command.
 alias info="info --vi-keys"
 

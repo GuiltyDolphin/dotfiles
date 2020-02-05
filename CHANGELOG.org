@@ -28,6 +28,10 @@
 - installer not detecting distribution when there were
   non-word characters after the name
 
+** Removed
+
+- =as= and =ash= aliases for aptitude-related programs
+
 * 0.10.0 - 2019-11-12
 
 ** Added
