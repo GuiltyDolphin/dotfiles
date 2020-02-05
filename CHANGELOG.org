@@ -9,6 +9,8 @@
 
 ** Added
 
+- configuration for =stalonetray=
+
 - shell command for testing microphone
 
 *** Emacs
