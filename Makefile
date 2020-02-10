@@ -26,6 +26,7 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 		configure_dev_perl \\
 		configure_dev_ruby \\
 		configure_dev_terminal \\
+		configure_perl_local_lib \\
 		configure_vim \\
 		configure_display \\
 		configure_x_keyboard \\
@@ -79,6 +80,9 @@ configure_dev_javascript : configure_node
 
 # Perl development
 configure_dev_perl : install_cpanm
+
+configure_perl_local_lib : configure_dev_perl
+	cpanm --local-lib=~/perl5 local::lib && eval $(perl -I $PERL5LIB -Mlocal::lib)
 
 # Ruby development
 configure_dev_ruby : install_ruby1.9.1 link_irb
