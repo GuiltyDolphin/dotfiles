@@ -20,6 +20,8 @@
 
 - support for high-priority custom scripts
 
+- support for owncloud sync exclude list
+
 - support for personal environment file
 
 *** Installer

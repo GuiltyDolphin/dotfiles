@@ -111,7 +111,7 @@ configure_tools : \
 	configure_freemind \
 	configure_htop \
 	configure_libreoffice \
-	install_owncloud_desktop \
+	configure_owncloud_desktop \
 	install_shutter \
 	link_tmuxinator
 
@@ -328,9 +328,16 @@ link_offlineimap : install_offlineimap
 .PHONY: configure_offlineimap
 configure_offlineimap : link_offlineimap
 
+.PHONY: configure_owncloud_desktop
+configure_owncloud_desktop : install_owncloud_desktop link_owncloud_desktop
+
 .PHONY: install_owncloud_desktop
 install_owncloud_desktop :
 	@$(call install_prog,owncloud_desktop)
+
+.PHONY: link_owncloud_desktop
+link_owncloud_desktop :
+	@$(call linkf,cloud/owncloud/sync-exclude.lst,.config/ownCloud/sync-exclude.lst)
 
 .PHONY: install_pip
 install_pip :
