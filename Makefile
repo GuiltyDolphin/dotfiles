@@ -375,8 +375,7 @@ install_sbcl :
 
 .PHONY: link_scripts
 link_scripts :
-	$(call link_contents,bash/scripts,.local/bin)
-	$(call link_contents,scripts,.local/bin)
+	$(call linkf,bash/scripts,.local/bin/scripts)
 
 .PHONY: install_setxkbmap
 setxkbmap :
