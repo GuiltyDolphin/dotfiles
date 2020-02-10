@@ -85,6 +85,7 @@
 ** Removed
 
 - =as= and =ash= aliases for aptitude-related programs
+- =C-p= binding for =helm-find-files= in Emacs
 
 * 0.10.0 - 2019-11-12
 
