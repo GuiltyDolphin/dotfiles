@@ -818,6 +818,16 @@ APIs they expose.
   (use-package markdown-mode)
 #+END_SRC
 
+*** OCaml
+
+#+BEGIN_SRC emacs-lisp
+  (autoload 'utop "utop" "Toplevel for OCaml" t)
+
+  (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+
+  (add-hook 'tuareg-mode-hook 'utop-minor-mode)
+#+END_SRC
+
 *** Prolog
 
 #+BEGIN_SRC emacs-lisp

@@ -23,6 +23,7 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 		configure_dev_idris \\
 		configure_dev_java \\
 		configure_dev_javascript \\
+		configure_dev_ocaml \\
 		configure_dev_perl \\
 		configure_dev_ruby \\
 		configure_dev_terminal \\
@@ -60,6 +61,7 @@ configure_dev_language_all : \
 	configure_dev_idris \
 	configure_dev_java \
 	configure_dev_javascript \
+	configure_dev_ocaml \
 	configure_dev_perl \
 	configure_dev_ruby
 
@@ -77,6 +79,9 @@ configure_dev_java : configure_eclim configure_emacs configure_jdk
 
 # JavaScript development
 configure_dev_javascript : configure_node
+
+# OCaml development
+configure_dev_ocaml : configure_ocaml configure_opam
 
 # Perl development
 configure_dev_perl : install_cpanm
@@ -342,6 +347,20 @@ install_owncloud_desktop :
 .PHONY: link_owncloud_desktop
 link_owncloud_desktop :
 	@$(call linkf,cloud/owncloud/sync-exclude.lst,.config/ownCloud/sync-exclude.lst)
+
+.PHONY: configure_ocaml
+configure_ocaml : install_ocaml
+
+.PHONY: install_ocaml
+install_ocaml :
+	@$(call install_prog,ocaml)
+
+.PHONY: configure_opam
+configure_opam : install_opam
+
+.PHONY: install_opam
+install_opam :
+	@$(call install_prog,opam)
 
 .PHONY: install_pip
 install_pip :

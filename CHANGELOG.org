@@ -32,6 +32,8 @@
 
 - install configuration for =htop=
 
+- install configuration for =ocaml=
+
 - install configuration for =texlive=
 
 *** Snippets

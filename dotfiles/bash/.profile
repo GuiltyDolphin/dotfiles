@@ -45,6 +45,18 @@ PERL_MB_OPT="--install_base \"$HOME/perl5\""
 PERL_LOCAL_LIB_ROOT="$HOME/perl5"
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
 
+#########
+# OCaml #
+#########
+
+test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+export PATH=$PATH:$HOME/.opam/default/bin
+
+###########
+# Finally #
+###########
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
