@@ -15,18 +15,22 @@
 
 - =cman= alias for =connmanctl=
 
-- =configure_dev_terminal= recipe
-
-- install configuration for =htop=
-
-- install configuration for =texlive=
-
 - =office-monitor-show= and =office-monitor-hide= commands for
   enabling/disabling office monitor
 
 - support for high-priority custom scripts
 
 - support for personal environment file
+
+*** Installer
+
+- =configure_dev_terminal= recipe
+
+- install configuration for =agda=
+
+- install configuration for =htop=
+
+- install configuration for =texlive=
 
 *** Snippets
 

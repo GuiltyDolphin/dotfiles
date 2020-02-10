@@ -128,6 +128,19 @@ configure_web : install_icecat link_vimperator
 #### Individual Programs ####
 #############################
 
+.PHONY: configure_agda
+configure_agda : install_agda link_agda
+
+.PHONY: install_agda
+install_agda :
+	$(call install_prog,agda)
+	$(call install_prog,agda_stdlib)
+
+.PHONY: link_agda
+link_agda :
+	$(call linkf,agda/libraries,.agda/libraries)
+	$(call linkf,agda/defaults,.agda/defaults)
+
 .PHONY: configure_apache_ant
 configure_apache_ant : install_apache_ant
 

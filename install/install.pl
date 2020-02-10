@@ -503,6 +503,12 @@ sub with_default_config {
 #######################################################################
 
 my %software_config = (
+    agda => {
+        with_default_config('agda'),
+    },
+    agda_stdlib => {
+        with_default_config('agda-stdlib'),
+    },
     aspell => {
         with_default_config('aspell'),
     },

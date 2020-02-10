@@ -643,6 +643,13 @@ APIs they expose.
 
 ** Programming Languages
 
+*** Agda
+
+#+BEGIN_SRC emacs-lisp
+  (load-file (let ((coding-system-for-read 'utf-8))
+                  (shell-command-to-string "agda-mode locate")))
+#+END_SRC
+
 *** Cask
 
 #+BEGIN_SRC emacs-lisp
