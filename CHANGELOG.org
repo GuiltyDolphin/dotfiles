@@ -24,6 +24,10 @@
 
 - support for personal environment file
 
+*** Emacs
+
+- fill-column for =latex-mode=
+
 *** Installer
 
 - =configure_dev_terminal= recipe

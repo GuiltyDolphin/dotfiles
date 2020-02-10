@@ -2141,9 +2141,15 @@ I prefer the entire entry title to always be displayed:
 *** Line Wrapping
 
 #+BEGIN_SRC emacs-lisp
-  (defvar my-org-fill-column
+  (defvar my-default-fill-column
     ;; two side-by-side panes on my laptop
     62
+    "Generally preferred fill column.")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-fill-column
+    my-default-fill-column
     "Fill column to use in `org-mode'.")
 #+END_SRC
 
@@ -2374,6 +2380,24 @@ And all we need to do when configuring is set up the timers:
     :config
     (evil-define-key '(motion normal) comint-mode-map
       (kbd "C-d") 'evil-scroll-down))
+#+END_SRC
+
+** TeX
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-latex-fill-column
+    ;; two side-by-side panes on my laptop
+    my-default-fill-column
+    "Fill column to use in `latex-mode'.")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-latex-initialise-fill-column ()
+    "Initialise `auto-fill-mode' with my preferences for `latex-mode'."
+    (setq fill-column my-latex-fill-column)
+    (turn-on-auto-fill))
+  (add-hook 'latex-mode-hook 'my-latex-initialise-fill-column)
+  (add-hook 'LaTeX-mode-hook 'my-latex-initialise-fill-column)
 #+END_SRC
 
 ** Other commands
