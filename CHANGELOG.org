@@ -28,6 +28,37 @@
 
 - support for personal environment file
 
+*** Snippets
+
+*** =latex-mode=
+
+- =begin=
+- =lists/itemize=
+- =math/align-star=
+- =proof=
+- =sectioning/paragraph=
+- =sectioning/section=
+- =sectioning/subparagraph=
+- =slide=
+- =todo-bmi=
+- =unused-lemma=
+
+**** =org-mode=
+
+- =blocks/block-latex=
+- =blocks/block-quote=
+- =blocks/source-block=
+- =blocks/source-block-emacs-lisp=
+- =includes/include=
+- =includes/include-min-level=
+- =properties/basic-property=
+- =quote-with-author-and-time=
+- =tex/begin-definition-tex=
+- =tex/begin-tex=
+- =tex/granule=
+- =title=
+- =todo-comment=
+
 *** Xmobar
 
 - indicator for network ESSID and quality

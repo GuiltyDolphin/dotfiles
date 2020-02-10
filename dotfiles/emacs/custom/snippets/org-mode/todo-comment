@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: todo-comment
+# key: todo
+# --
+# TODO$0 (`(format-time-string "%Y-%m-%d")`)

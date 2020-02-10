@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: begin-definition-tex
+# key: begdef
+# --
+\begin{definition}
+  $0
+\end{definition}

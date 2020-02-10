@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: block-latex
+# key: <l
+# --
+#+BEGIN_EXPORT latex
+$0
+#+END_EXPORT

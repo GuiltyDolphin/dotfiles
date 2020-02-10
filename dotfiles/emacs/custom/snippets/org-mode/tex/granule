@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: granule
+# key: gran
+# --
+\begin{granule}
+  $0
+\end{granule}

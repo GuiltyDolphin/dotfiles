@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: subparagraph
+# key: subpar
+# --
+\subparagraph{$1}
+
+$0

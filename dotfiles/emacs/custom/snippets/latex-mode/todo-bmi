@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: todo-bmi
+# key: todo
+# --
+\BMI{TODO$0 (`(format-time-string "%Y-%m-%d")`)}

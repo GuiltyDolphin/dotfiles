@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: unused-lemma
+# key: unused
+# --
+\BMI{This is unused. Last checked (`(format-time-string "%Y-%m-%d")`)}

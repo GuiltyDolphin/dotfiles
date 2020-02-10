@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: quote-with-author-and-time
+# key: quotet
+# expand-env: ((yas-indent-line 'fixed))
+# --
+#+BEGIN_QUOTE
+$0
+
+    ― ${1:author} `(with-temp-buffer (org-insert-time-stamp (org-read-date nil t) nil t))`
+#+END_QUOTE

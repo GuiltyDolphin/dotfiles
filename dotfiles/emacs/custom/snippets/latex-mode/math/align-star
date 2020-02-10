@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: align-star
+# key: begal
+# --
+\begin{align*}
+  $0
+\end{align*}
