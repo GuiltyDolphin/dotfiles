@@ -1067,7 +1067,12 @@ under that:
 
   (customize-set-variable 'org-sort-agenda-notime-is-late nil
                           "Position timeless agenda entries before schedule for today.")
+#+END_SRC
 
+Automatically turn on spelling for org buffers:
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'flyspell-mode)
 #+END_SRC
 
 **** Files

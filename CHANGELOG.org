@@ -26,6 +26,8 @@
 
 *** Emacs
 
+- automatic spell-checking for =org-mode=
+
 - fill-column for =latex-mode=
 
 *** Installer
