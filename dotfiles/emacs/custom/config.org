@@ -347,6 +347,12 @@ APIs they expose.
   (use-package dash)
 #+END_SRC
 
+*** s
+
+#+BEGIN_SRC emacs-lisp
+  (use-package s)
+#+END_SRC
+
 *** transient
 
 #+BEGIN_SRC emacs-lisp
