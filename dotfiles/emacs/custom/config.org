@@ -679,6 +679,7 @@ APIs they expose.
     :config
     (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
     (customize-set-variable 'haskell-process-type 'stack-ghci)
+    (customize-set-variable 'haskell-indent-offset 2)
     ;; This seems to have fixed the flymake issue.
     ;; Flycheck seems to handle errors well, and the
     ;; cably-repl doesn't seem to be broken.

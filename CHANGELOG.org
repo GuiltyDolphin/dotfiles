@@ -87,6 +87,8 @@
 
 ** Changed
 
+- default indent in =haskel-mode= is now 2
+
 - XScreenSaver disabled
 
 ** Fixed
