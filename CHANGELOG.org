@@ -34,6 +34,9 @@
 
 - automatic spell-checking for =org-mode=
 
+- command for prompting for and inserting (org) links with
+  descriptions
+
 - fill-column for =latex-mode=
 
 *** Installer

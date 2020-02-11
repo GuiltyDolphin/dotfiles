@@ -1974,6 +1974,25 @@ behaviour:
         (org-brain-add-resource link description))))
 #+END_SRC
 
+Command for prompting for and inserting links (with
+descriptions):
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org--insert-link ()
+    "Prompt for a link and add insert it with a description."
+    (interactive)
+    (-when-let (link (my-org--completing-read-link
+                      ;; only use the clipboard contents if it resembles
+                      ;; some kind of link
+                      (let ((cliplink (org-cliplink-clipboard-content)))
+                        (when (url-type (url-generic-parse-url cliplink))
+                          cliplink))))
+      (let ((default-description
+              (or (my-org--try-get-link-description link)
+                  (my-org-cliplink--retrieve-title link))))
+        (org-insert-link nil link default-description))))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-brain-creation-map (make-sparse-keymap)
     "Keymap for creation bindings in `org-brain-visualize-mode'.")
