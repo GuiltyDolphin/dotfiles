@@ -94,6 +94,8 @@
 
 - default indent in =haskel-mode= is now 2
 
+- =flyspell= no longer enabled in all text modes in Emacs
+
 - XScreenSaver disabled
 
 ** Fixed

@@ -2477,10 +2477,10 @@ And all we need to do when configuring is set up the timers:
 *** spelling
 
 #+BEGIN_SRC emacs-lisp
-  (use-package flyspell
-    :config
-    (add-hook 'text-mode-hook (lambda () (flyspell-mode t))))
+  (use-package flyspell)
+#+END_SRC
 
+#+BEGIN_SRC emacs-lisp
   (evil-set-initial-state 'Custom-mode 'normal)
   (evil-set-initial-state 'finder-mode 'motion)
 #+END_SRC
