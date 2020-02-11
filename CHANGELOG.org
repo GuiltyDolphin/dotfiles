@@ -26,6 +26,12 @@
 
 *** Emacs
 
+- add new GTD context tags
+  - =@laptop=
+  - =@motorbike=
+  - =@phone=
+  - =@planning=
+
 - automatic spell-checking for =org-mode=
 
 - fill-column for =latex-mode=
