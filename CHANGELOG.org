@@ -32,6 +32,8 @@
   - =@phone=
   - =@planning=
 
+- agenda view for =Creative [I]maginings=
+
 - automatic spell-checking for =org-mode=
 
 - command for prompting for and inserting (org) links with

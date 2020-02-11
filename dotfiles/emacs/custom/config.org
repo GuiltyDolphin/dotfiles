@@ -1327,6 +1327,10 @@ Likewise, a cancelled project is any project marked as
       ((org-agenda-overriding-header "Potential Projects")
        (org-super-agenda-groups '((:auto-group t)))
        (org-agenda-files '(,my-org-gtd-maybe-file))))
+     ("Ii" "Creative [I]maginings" tags-todo "CATEGORY=\"creative_imaginings\"/!TODO"
+      ((org-agenda-overriding-header "Creative Imaginings")
+       (org-super-agenda-groups '((:auto-group t)))
+       (org-agenda-files '(,my-org-gtd-maybe-file))))
      ("n" "Actions" todo "NEXT"
       ((org-agenda-overriding-header "Next Actions")
        ,my-org-super-agenda--next-action-groups
