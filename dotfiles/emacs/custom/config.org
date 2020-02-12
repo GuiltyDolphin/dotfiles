@@ -744,7 +744,7 @@ APIs they expose.
     (defvar my-eclim-refactor-map (make-sparse-keymap)
       "Keymap for refactoring in `eclim-mode'.")
     :config
-    (customize-set-variable 'eclim-eclipse-dirs my-eclipse-directory)
+    (customize-set-variable 'eclim-eclipse-dirs (list my-eclipse-directory))
     (customize-set-variable 'eclim-executable (concat my-eclipse-directory "eclim"))
     (emaps-define-key my-eclim-find-map
       "d" 'eclim-java-find-declaration
