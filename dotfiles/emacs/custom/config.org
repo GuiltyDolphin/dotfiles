@@ -652,8 +652,10 @@ APIs they expose.
 *** Agda
 
 #+BEGIN_SRC emacs-lisp
-  (load-file (let ((coding-system-for-read 'utf-8))
-                  (shell-command-to-string "agda-mode locate")))
+  (if (executable-find "agda-mode")
+    (load-file (let ((coding-system-for-read 'utf-8))
+                    (shell-command-to-string "agda-mode locate")))
+    (warn "(config.org) agda-mode program is not installed, skipping agda configuration."))
 #+END_SRC
 
 *** Cask
