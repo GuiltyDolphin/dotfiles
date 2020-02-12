@@ -103,6 +103,8 @@
 - installer not detecting distribution when there were
   non-word characters after the name
 
+- repository for Solarized with Emacs
+
 ** Removed
 
 - =as= and =ash= aliases for aptitude-related programs
