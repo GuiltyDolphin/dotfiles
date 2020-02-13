@@ -94,9 +94,16 @@
 
 ** Changed
 
+- commands for showing/hiding secondary monitor now use more
+  generic detection mechanism
+
 - default indent in =haskel-mode= is now 2
 
 - =flyspell= no longer enabled in all text modes in Emacs
+
+- =office-monitor-hide= renamed to =monitor-hide-secondary=
+
+- =office-monitor-show= renamed to =monitor-show-secondary=
 
 - XScreenSaver disabled
 

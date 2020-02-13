@@ -122,12 +122,22 @@ pdfmkv() {
   pdflatex $1 && okular ${1%.*}.pdf
 }
 
-office-monitor-show() {
-  xrandr --output HDMI1 --right-of LVDS1 --auto
+monitor-list-primary() {
+    xrandr -q | grep primary | grep '^[^ ]\+' -o
 }
 
-office-monitor-hide() {
-  xrandr --output HDMI1 --off
+monitor-list-secondary() {
+    xrandr -q | grep '\<connected' | grep '^[^ ]\+' -o | grep -v $(monitor-list-primary)
+}
+
+# only for one extra monitor at the moment (2020-02-13)
+monitor-show-secondary() {
+  xrandr --output $(monitor-list-secondary) --right-of $(monitor-list-primary) --auto
+}
+
+# only for one extra monitor at the moment (2020-02-13)
+monitor-hide-secondary() {
+  xrandr --output $(monitor-list-secondary) --off
 }
 
 
