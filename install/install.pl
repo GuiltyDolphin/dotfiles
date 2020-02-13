@@ -645,6 +645,9 @@ my %software_config = (
     xorg_server => {
         with_default_config('xorg-server'),
     },
+    xrandr => {
+        with_default_config('xorg-xrandr'),
+    },
     xrdb => {
         with_default_config('xorg-xrdb'),
     },

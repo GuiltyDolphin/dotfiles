@@ -98,7 +98,7 @@ configure_vim : link_vim setup_vundle_plugins
 
 # X config
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
-	configure_xrdb configure_xscreensaver configure_xset link_xresources
+	configure_xrandr configure_xrdb configure_xscreensaver configure_xset link_xresources
 
 # Setup for working in a terminal.
 configure_dev_terminal : configure_dev configure_tmuxinator
@@ -504,6 +504,13 @@ configure_xorg : install_xorg
 .PHONY: install_xorg
 install_xorg :
 	$(call install_prog,xorg_server)
+
+.PHONY: configure_xrandr
+configure_xrandr : install_xrandr
+
+.PHONY: install_xrandr
+install_xrandr :
+	$(call install_prog,xrandr)
 
 .PHONY: configure_xrdb
 configure_xrdb : install_xrdb

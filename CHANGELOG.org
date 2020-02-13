@@ -53,6 +53,8 @@
 
 - install configuration for =texlive=
 
+- install configuration for =xrandr=
+
 *** Snippets
 
 *** =latex-mode=
