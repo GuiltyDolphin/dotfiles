@@ -59,6 +59,16 @@ Use [[https://www.levien.com/type/myfonts/inconsolata.html][Inconsolata]] 14pt a
   (set-face-font 'default "Inconsolata-14")
 #+END_SRC
 
+I typically like fairly short lines, so we can use a default
+fill column to indicate this:
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-default-fill-column
+    ;; two side-by-side panes on my laptop
+    62
+    "Generally preferred fill column.")
+#+END_SRC
+
 *** Execution Path
 
 #+BEGIN_SRC emacs-lisp
@@ -825,6 +835,22 @@ APIs they expose.
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode)
+#+END_SRC
+
+***** Line Wrapping
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-markdown-fill-column
+    my-default-fill-column
+    "Fill column to use in `markdown-mode'.")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-markdown-initialise-fill-column ()
+    "Initialise `auto-fill-mode' with my preferences for `markdown-mode'."
+    (setq fill-column my-markdown-fill-column)
+    (turn-on-auto-fill))
+  (add-hook 'markdown-mode-hook 'my-markdown-initialise-fill-column)
 #+END_SRC
 
 *** OCaml
@@ -2180,13 +2206,6 @@ I prefer the entire entry title to always be displayed:
 #+END_SRC
 
 *** Line Wrapping
-
-#+BEGIN_SRC emacs-lisp
-  (defvar my-default-fill-column
-    ;; two side-by-side panes on my laptop
-    62
-    "Generally preferred fill column.")
-#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-org-fill-column

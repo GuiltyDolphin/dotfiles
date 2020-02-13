@@ -41,6 +41,8 @@
 
 - fill-column for =latex-mode=
 
+- fill-column for =markdown-mode=
+
 *** Installer
 
 - =configure_dev_terminal= recipe
