@@ -2442,6 +2442,18 @@ And all we need to do when configuring is set up the timers:
       (kbd "C-d") 'evil-scroll-down))
 #+END_SRC
 
+*** org-reveal
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-slide-directory
+    (concat my-sync-directory "Documents/slides/")
+    "Location of main slide directory.")
+
+  (use-package org-re-reveal
+    :config
+    (customize-set-variable 'org-re-reveal-root (concat my-slide-directory "reveal.js")))
+#+END_SRC
+
 ** TeX
 
 #+BEGIN_SRC emacs-lisp

@@ -39,6 +39,8 @@
 - command for prompting for and inserting (org) links with
   descriptions
 
+- configuration for =org-re-reveal=
+
 - fill-column for =latex-mode=
 
 - fill-column for =markdown-mode=

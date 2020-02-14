@@ -55,6 +55,7 @@
 (depends-on "org-caldav")
 (depends-on "org-cliplink")
 (depends-on "org-evil")
+(depends-on "org-re-reveal")
 (depends-on "org-ref")
 (depends-on "org-super-agenda")
 (depends-on "pallet")
