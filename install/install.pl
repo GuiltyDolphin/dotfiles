@@ -611,6 +611,9 @@ my %software_config = (
     setxkbmap => {
         with_default_config('xorg-setxkbmap'),
     },
+    slack => {
+        with_arch_aur_config('slack-desktop'),
+    },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,

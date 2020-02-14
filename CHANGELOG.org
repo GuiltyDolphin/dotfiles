@@ -55,6 +55,8 @@
 
 - install configuration for =ocaml=
 
+- install configuration for =slack=
+
 - install configuration for =texlive=
 
 - install configuration for =xrandr=

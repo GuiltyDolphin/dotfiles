@@ -109,6 +109,10 @@ configure_x_keyboard : install_setxkbmap
 # Misc scripts
 configure_scripts : link_scripts
 
+# Slack for workplace communication
+.PHONY: configure_social
+configure_social : configure_slack
+
 # Misc tools
 # freemind for mind mapping
 # htop for viewing processes
@@ -126,7 +130,7 @@ configure_tools : \
 
 # Better user experience (personal tools)
 configure_user_all : configure_display configure_tools configure_scripts \
-	configure_tex configure_web
+	configure_social configure_tex configure_web
 
 # Web use
 # Icecat for browser.
@@ -403,6 +407,13 @@ setxkbmap :
 .PHONY: install_shutter
 install_shutter :
 	@$(call install_prog,shutter)
+
+.PHONY: configure_slack
+configure_slack : install_slack
+
+.PHONY: install_slack
+install_slack :
+	$(call install_prog,slack)
 
 .PHONY: configure_tex
 configure_tex : configure_texlive
