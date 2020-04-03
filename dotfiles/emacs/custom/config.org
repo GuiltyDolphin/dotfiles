@@ -428,10 +428,10 @@ APIs they expose.
       "ed" 'eval-defun))
 
   (evil-local-leader/set-key-for-mode 'haskell-mode
-    "en" 'ghc-goto-next-error
-    "eN" 'ghc-goto-prev-error
-    "t"  'ghc-show-type
-    "i"  'ghc-show-info
+    "en" 'haskell-goto-next-error
+    "eN" 'haskell-goto-prev-error
+    "t"  'haskell-process-do-type
+    "i"  'haskell-process-do-info
     "sd" 'inferior-haskell-send-decl)
 
   (evil-local-leader/set-key-for-mode 'latex-mode

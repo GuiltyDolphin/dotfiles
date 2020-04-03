@@ -118,6 +118,9 @@
 - crash/partially initialised config when loading Emacs
   without =agda-mode= installed
 
+- incorrect bindings for =haskell-mode= (was using =ghc-*=) in
+  Emacs
+
 - installer not detecting distribution when there were
   non-word characters after the name
 
