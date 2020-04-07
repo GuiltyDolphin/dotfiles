@@ -100,6 +100,13 @@
 
 - indicator for usage and expected lifetime of battery
 
+*** XMonad
+
+- new keybindings
+  - decrease microphone sensitivity
+  - increase microphone sensitivity
+  - mute microphone
+
 ** Changed
 
 - commands for showing/hiding secondary monitor now use more

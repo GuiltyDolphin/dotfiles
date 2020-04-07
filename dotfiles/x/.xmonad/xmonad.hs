@@ -55,10 +55,27 @@ myConfig = def
     , terminal   = "urxvt"
     , workspaces = myWorkspaces
     } `additionalKeys`
+      [
+
+      ------------
+      -- Volume --
+      ------------
+
+      -- XF86AudioMute
+        ((0, 0x1008ff12), spawn "amixer set Master toggle")
       -- XF86AudioLowerVolume
-      [ ((0, 0x1008ff11), spawn "amixer set Master 5%-")
+      , ((0, 0x1008ff11), spawn "amixer set Master 5%-")
       -- XF86AudioRaiseVolume
       , ((0, 0x1008ff13), spawn "amixer set Master 5%+")
-      -- XF86AudioMute
-      , ((0, 0x1008ff12), spawn "amixer set Master toggle")
+
+      ----------------
+      -- Microphone --
+      ----------------
+
+      -- XF86AudioMicMute
+      , ((0, 0x1008ffb2), spawn "amixer set Capture toggle")
+      -- C-XF86AudioLowerVolume
+      , ((controlMask, 0x1008ff11), spawn "amixer set Capture 5%-")
+      -- C-XF86AudioRaiseVolume
+      , ((controlMask, 0x1008ff13), spawn "amixer set Capture 5%+")
       ]
