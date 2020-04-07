@@ -174,6 +174,7 @@ link_bash :
 	@$(call linkf,bash/.bash,.bash)
 	@$(call linkf,bash/.profile,.profile)
 	@$(call linkf,bash/.bash/.bashrc,.bashrc)
+	@$(call linkf,bash/.bash_profile,.bash_profile)
 
 .PHONY: configure_cask
 configure_cask : link_cask

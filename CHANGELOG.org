@@ -7,6 +7,8 @@
 
 ** Added
 
+- =.bash_profile= file
+
 - =grepcount= command for searching files and organising
   result on number of matches
 
