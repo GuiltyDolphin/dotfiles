@@ -912,7 +912,7 @@ while (my $command = shift) {
 
 sub check_link {
     my ($source, $target) = @_;
-    my $link = `readlink -n $target`;
+    my $link = `readlink -mn $target`;
     if (-e $target && $link ne $source) {
         error("$target exists but does not match $source, "
             . 'skipping', critical => 0);

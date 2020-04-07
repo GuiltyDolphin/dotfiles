@@ -121,10 +121,15 @@
 - incorrect bindings for =haskell-mode= (was using =ghc-*=) in
   Emacs
 
-- installer not detecting distribution when there were
-  non-word characters after the name
-
 - repository for Solarized with Emacs
+
+*** Installer
+
+- not detecting distribution when there were non-word
+  characters after the name
+
+- not recognising linked files as the same when paths
+  contained more than one level of symbolic link
 
 ** Removed
 
