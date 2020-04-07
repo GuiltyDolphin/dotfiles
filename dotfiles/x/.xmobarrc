@@ -19,9 +19,15 @@ Config
           "-t", "<essid> <quality>"
         , "--minwidth", "3"
         ] 10
+      , Run Alsa "default" "Master" [
+          "-t", "Vol: <volume>% <status>"
+        ]
+      , Run Alsa "default" "Capture" [
+          "-t", "Mic: <volume>% <status>"
+        ]
       , Run StdinReader
       ]
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %date% | %memory% | %multicpu% | %battery% | %wlan0wi%"
+    , template = "%StdinReader% }{ %date% | %memory% | %multicpu% | %battery% | %wlan0wi% | %alsa:default:Master% | %alsa:default:Capture%"
     , font = "xft:-PfEd-Inconsolata-normal-normal-normal-*-19-*-*-*-m-0-iso10646-1"
     }

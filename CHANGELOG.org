@@ -96,6 +96,10 @@
 
 *** Xmobar
 
+- indicator for audio volume and status
+
+- indicator for microphone volume and status
+
 - indicator for network ESSID and quality
 
 - indicator for usage and expected lifetime of battery
