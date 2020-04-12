@@ -283,7 +283,7 @@ consistency:
     (let ((timeout (or timeout "2 minutes")))
       (push (run-at-time timeout nil 'my-background-initialize-timers)
             my-background-timers))
-    (load-theme 'solarized t))
+    (load-theme (if (equal bgmode 'dark) 'solarized-dark 'solarized-light) t))
 
   (defun my-background-set-dark (&optional timeout)
     "Set the current background mode to 'dark.
