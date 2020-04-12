@@ -56,7 +56,7 @@
 Use [[https://www.levien.com/type/myfonts/inconsolata.html][Inconsolata]] 14pt as default font.
 
 #+BEGIN_SRC emacs-lisp
-  (set-face-font 'default "Inconsolata-14")
+  (set-frame-font "Inconsolata-14")
 #+END_SRC
 
 I typically like fairly short lines, so we can use a default
