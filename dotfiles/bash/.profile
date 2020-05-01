@@ -53,19 +53,6 @@ test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> 
 
 export PATH=$PATH:$HOME/.opam/default/bin
 
-###########
-# Finally #
-###########
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    [[ -f "$HOME/.bashrc" ]] \
-      && source "$HOME/.bashrc"
-fi
-
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
-
 ##########################################
 # Personal/private environment variables #
 ##########################################
@@ -79,3 +66,17 @@ if [[ -r "$PERSONAL_ENV_FILE" ]]; then
 else
     echo "Personal environment file '$PERSONAL_ENV_FILE' not found"
 fi
+
+###########
+# Finally #
+###########
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists, and we are interactive
+    # [[ -f "$HOME/.bashrc" && $- == *i* ]]
+    [[ -f "$HOME/.bashrc" ]] \
+      && source "$HOME/.bashrc"
+fi
+
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
