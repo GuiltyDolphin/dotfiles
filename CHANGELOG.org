@@ -65,7 +65,7 @@
 
 *** Snippets
 
-*** =latex-mode=
+**** =latex-mode=
 
 - =begin=
 - =lists/itemize=
