@@ -390,6 +390,19 @@ APIs they expose.
     (add-to-list 'ac-modes 'slime-repl-mode))
 #+END_SRC
 
+*** checkdoc
+
+#+BEGIN_SRC emacs-lisp
+  (use-package checkdoc
+    :config
+    (customize-set-variable 'checkdoc-arguments-in-order-flag nil)
+    (customize-set-variable 'checkdoc-force-docstrings-flag t)
+    (customize-set-variable 'checkdoc-package-keywords-flag t)
+    (customize-set-variable 'checkdoc-permit-comma-termination-flag nil)
+    (customize-set-variable 'checkdoc-spellcheck-documentation-flag nil)
+    (customize-set-variable 'checkdoc-verb-check-experimental-flag t))
+#+END_SRC
+
 *** evil-leader
 
 #+BEGIN_SRC emacs-lisp

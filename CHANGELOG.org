@@ -41,6 +41,8 @@
 - command for prompting for and inserting (org) links with
   descriptions
 
+- configuration for =checkdoc=
+
 - configuration for =org-re-reveal=
 
 - fill-column for =latex-mode=
