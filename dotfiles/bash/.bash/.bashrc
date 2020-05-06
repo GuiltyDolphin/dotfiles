@@ -154,13 +154,6 @@ shopt -s globstar
 # Use Emacs commands for terminal editing
 set -o emacs
 
-
-########
-# Perl #
-########
-
-export PERL5LIB=$HOME/perl5/lib/perl5
-
 #######
 # Git #
 #######

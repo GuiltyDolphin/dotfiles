@@ -63,6 +63,8 @@
 
 - install configuration for =okular=
 
+- install configuration for =perl_local_lib= (=local::lib=)
+
 - install configuration for =slack=
 
 - install configuration for =texlive=
@@ -130,6 +132,8 @@
 
 - =office-monitor-show= renamed to =monitor-show-secondary=
 
+- perl modules now install under =~/.local=
+
 - XScreenSaver disabled
 
 ** Fixed
@@ -139,6 +143,8 @@
 
 - incorrect bindings for =haskell-mode= (was using =ghc-*=) in
   Emacs
+
+- =local::lib= not configuring correctly in some cases
 
 - repository for Solarized with Emacs
 

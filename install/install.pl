@@ -593,6 +593,14 @@ my %software_config = (
     owncloud_desktop => {
         with_default_config('owncloud-client'),
     },
+    perl_local_lib   => {
+        install   => \&perl_local_lib_install,
+        installed => \&perl_local_lib_installed,
+        version   => {
+            current => \&perl_local_lib_version_current,
+            latest  => \&perl_local_lib_version_latest,
+        },
+    },
     pip2 => {
         with_default_config('python2-pip'),
     },
@@ -732,6 +740,57 @@ sub cask_install {
 
 sub cask_update {
     system('cask update-cask');
+}
+
+################
+#  local::lib  #
+################
+
+my $perl_local_lib_base_url = 'https://cpan.metacpan.org/authors/id/H/HA/HAARG/';
+
+# $package_re should match the 'numeric' version in $1
+sub version_latest_from_directory_url_multi_package {
+    my ($url, $package_re) = @_;
+    my $dat = `curl -s $url`;
+    my @versions;
+    while ($dat =~ /$package_re/g) {
+        push @versions, $1;
+    }
+    return (sort @versions)[$#versions];
+}
+
+sub perl_local_lib_version_current {
+    `perl -Mlocal::lib=--no-create -e 'print local::lib->VERSION'`
+}
+
+sub perl_local_lib_version_latest {
+    version_latest_from_directory_url_multi_package($perl_local_lib_base_url, qr/local-lib-(\d+\.\d+)/)
+}
+
+sub perl_local_lib_installed {
+    query_noerr('perl', '-Mlocal::lib=--no-create')
+}
+
+sub perl_local_lib_install {
+    my $base_url = $perl_local_lib_base_url;
+    my $latest = perl_local_lib_version_latest();
+    my $package = "local-lib-$latest";
+    my $tar_file = "$package.tar.gz";
+    my $local_lib_url = "$base_url/$tar_file";
+    with_directory $software_directory => sub {
+        debug("Downloading local::lib from '$local_lib_url'...");
+        sequence(
+            "curl -fsSL $local_lib_url --output $tar_file",
+            "tar -xvf $tar_file",
+        );
+        debug("Building local-lib...");
+        with_directory $package => sub {
+            sequence(
+                "perl Makefile.PL --bootstrap=~/.local",
+                "make test && make install",
+            );
+        }
+    }, (make_dir => 1);
 }
 
 ###############

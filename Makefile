@@ -13,6 +13,7 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 
 .PHONY: configure_all \\
 		bootstrap \\
+		configure_cpanm \\
 		configure_dev_all \\
 		configure_dev \\
 		configure_dev_heavy \\
@@ -84,10 +85,13 @@ configure_dev_javascript : configure_node
 configure_dev_ocaml : configure_ocaml configure_opam
 
 # Perl development
-configure_dev_perl : install_cpanm
+configure_dev_perl : configure_cpanm
 
-configure_perl_local_lib : configure_dev_perl
-	cpanm --local-lib=~/perl5 local::lib && eval $(perl -I $PERL5LIB -Mlocal::lib)
+configure_perl_local_lib : install_perl_local_lib
+
+.PHONY: install_perl_local_lib
+install_perl_local_lib :
+	$(call install_prog,perl_local_lib)
 
 # Ruby development
 configure_dev_ruby : install_ruby1.9.1 link_irb
@@ -188,8 +192,10 @@ install_cask :
 link_cask : install_cask
 	@$(call linkf,emacs/custom/Cask,.emacs.d/Cask)
 
+configure_cpanm : install_cpanm
+
 .PHONY: install_cpanm
-install_cpanm :
+install_cpanm : configure_perl_local_lib
 	$(call install_prog,cpanm)
 
 .PHONY: configure_eclim

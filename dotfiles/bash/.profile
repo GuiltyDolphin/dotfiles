@@ -12,10 +12,6 @@ PATH=$PATH:/sbin:/bin:/usr/games:/usr/local/games
 [[ -d "/usr/local/texlive/2015/bin/x86_64-linux" ]] \
   && PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH
 
-# Add perl5 bin to path if it exists
-[[ -d "$HOME/perl5/bin" ]] \
-  && PATH="$HOME/perl5/bin:$PATH"
-
 # set PATH so it includes user's private bin if it exists
 [[ -d "$HOME/bin" ]] \
   && PATH="$HOME/bin:$PATH"
@@ -40,10 +36,9 @@ LANG="en_GB.UTF-8"
 #  Perl  #
 ##########
 
-PERL5LIB="$HOME/perl5/lib/perl5"
-PERL_MB_OPT="--install_base \"$HOME/perl5\""
-PERL_LOCAL_LIB_ROOT="$HOME/perl5"
-PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
+LOCAL_PATH="$HOME/.local"
+
+eval "$(perl -I$LOCAL_PATH/lib/perl5 -Mlocal::lib=$LOCAL_PATH)"
 
 #########
 # OCaml #
