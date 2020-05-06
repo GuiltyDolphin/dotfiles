@@ -7,8 +7,6 @@
 
 ** Added
 
-- =.bash_profile= file
-
 - =grepcount= command for searching files and organising
   result on number of matches
 
@@ -16,6 +14,10 @@
   and organising results on number of matches
 
 - =cman= alias for =connmanctl=
+
+- new files
+  - =.bash_profile=
+  - =okularpartrc=
 
 - =office-monitor-show= and =office-monitor-hide= commands for
   enabling/disabling office monitor
@@ -58,6 +60,8 @@
 - install configuration for =htop=
 
 - install configuration for =ocaml=
+
+- install configuration for =okular=
 
 - install configuration for =slack=
 

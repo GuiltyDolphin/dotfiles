@@ -587,6 +587,9 @@ my %software_config = (
     offlineimap => {
         with_default_config('offlineimap'),
     },
+    okular => {
+        with_default_config('okular'),
+    },
     owncloud_desktop => {
         with_default_config('owncloud-client'),
     },

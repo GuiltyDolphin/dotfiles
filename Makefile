@@ -124,6 +124,7 @@ configure_tools : \
 	configure_freemind \
 	configure_htop \
 	configure_libreoffice \
+	configure_okular \
 	configure_owncloud_desktop \
 	install_shutter \
 	link_tmuxinator
@@ -341,6 +342,17 @@ link_offlineimap : install_offlineimap
 
 .PHONY: configure_offlineimap
 configure_offlineimap : link_offlineimap
+
+.PHONY: configure_okular
+configure_okular : link_okular
+
+.PHONY: install_okular
+install_okular :
+	$(call install_prog,okular)
+
+.PHONY: link_okular
+link_okular : install_okular
+	$(call linkf,x/okularpartrc,.config/okularpartrc)
 
 .PHONY: configure_owncloud_desktop
 configure_owncloud_desktop : install_owncloud_desktop link_owncloud_desktop
