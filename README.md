@@ -8,11 +8,32 @@ Hosted on [GitHub](https://github.com/GuiltyDolphin/dotfiles).
 
 ### Overview
 
-#### Prerequisites
+#### Setting up the installer
 
-Running these commands requires that you have `make` (or something
-that can run like `make`) installed on your system. Additionally,
-`git` and `apt-get` may be used for installing software.
+To set up the installer, you first need to make sure you have
+Perl installed. To check if you have a Perl executable, simply
+run `type -p perl` in a terminal. If you see a path displayed
+(as in `/usr/bin/perl`), you can move on to the next step,
+otherwise you'll need to grab a copy of Perl for your
+distribution.
+
+**NOTE: By default the bootstrapper tries to configure Perl in
+`~/.local`, if you want to use a different directory, specify
+the flag `--perl-install-dir` (e.g.,
+`--perl-install-dir=~/.local`)**
+
+Once you have Perl installed, you can proceed to run
+`./install/bootstrap.pl` (or `perl ./install/bootstrap.pl`),
+which will try and configure the installer, and will let you
+know if it encounters any issues (e.g., missing dependencies
+that the bootstrapper can't install). If something is failing
+and you're not sure what, try running the bootstrap script
+with the `--debug` flag.
+
+If you see a message saying the bootstrapping has been
+successful (e.g., "Installer bootstrapped!") at the end of the
+output, then the installer has been configured, and is ready
+to use!
 
 ##### Root
 
@@ -28,8 +49,10 @@ in the `/etc/sudoers` file.
 
 #### Commands
 
-For a complete installation, run the following command:
-`git clone https://github.com/GuiltyDolphin/dotfiles && cd dotfiles && make configure_all`.
+For a complete installation, run the following command: `git
+clone https://github.com/GuiltyDolphin/dotfiles && cd dotfiles
+&& ./install/bootstrap.pl && make configure_all` (making sure
+you have `perl` somewhere on your `PATH`).
 
 If a full setup is not desired, individual packages can be configured
 via Make, or the following commands

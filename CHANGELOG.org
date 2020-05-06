@@ -74,6 +74,9 @@
 
 - install configuration for =xrandr=
 
+- we now have a bootstrapper (=install/bootstrap.pl=) for
+  setting up the installer
+
 *** Snippets
 
 **** =latex-mode=
