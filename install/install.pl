@@ -123,14 +123,6 @@ sub q_version {
     }
 }
 
-sub q_which {
-    my $program = shift;
-    return sub {
-        `which $program 2>/dev/null`;
-        return !$?;
-    }
-}
-
 sub query_noerr {
     my ($program, $args) = @_;
     return sub {
@@ -143,6 +135,13 @@ sub query_ok {
     my ($program, $args) = @_;
     `$program $args 2>/dev/null`;
     return ($? eq $OK) ? 1 : 0;
+}
+
+sub can_execute {
+    my ($program) = @_;
+    return sub {
+        query_ok('sh', "-c 'type -p $program'");
+    }
 }
 
 my %distro_map = (
@@ -184,7 +183,7 @@ sub is_local_bin {
 
 sub get_bin_path {
     my $program = shift;
-    chomp (my $bin = `which $program &2>/dev/null`);
+    chomp (my $bin = `sh -c 'type -P $program'`);
     return $bin;
 }
 
@@ -527,7 +526,7 @@ my %software_config = (
     },
     cask => {
         install   => \&cask_install,
-        installed => q_which('cask'),
+        installed => can_execute('cask'),
         update    => \&cask_update,
         version   => {
             current => q_version('cask'),
