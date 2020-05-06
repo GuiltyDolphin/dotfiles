@@ -53,6 +53,9 @@
 
 *** Installer
 
+- command for checking if program is installed (=installed
+  NAME=)
+
 - =configure_dev_terminal= recipe
 
 - install configuration for =agda=

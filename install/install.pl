@@ -941,6 +941,15 @@ sub install_deps {
     error("error encountered while installing dependencies for '$program'") unless $ok;
 }
 
+sub program_installed {
+    my $program = shift;
+    if (is_installed($program)) {
+        info("'$program' is installed.")
+    } else {
+        info("'$program' is not installed.")
+    }
+}
+
 sub update_program {
     my $program = shift;
     info("updating '$program'");
@@ -984,6 +993,8 @@ while (my $command = shift) {
         install_program(shift);
     } elsif ($command eq 'install_deps') {
         install_deps(shift);
+    } elsif ($command eq 'installed') {
+        program_installed(shift);
     } elsif ($command eq 'link_contents') {
         my $search_dir = dot_file(shift);
         my $target_dir = home(shift);
