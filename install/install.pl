@@ -138,6 +138,13 @@ sub query_noerr {
     };
 }
 
+# 1 if the return status of the command is 0, 0 otherwise
+sub query_ok {
+    my ($program, $args) = @_;
+    `$program $args 2>/dev/null`;
+    return ($? eq $OK) ? 1 : 0;
+}
+
 my %distro_map = (
     'arch'      => 'arch',
     'debian'    => 'debian',
@@ -534,8 +541,12 @@ my %software_config = (
     },
     cpanm   => {
         install   => \&cpanm_install,
-        installed => q_version('cpanm'),
+        installed => perl_module_installed('App::cpanminus'),
         update    => \&cpanm_update,
+        version   => {
+            current => perl_module_version_current('App::cpanminus'),
+            latest  => perl_module_version_latest('MIYAGAWA', qr/App-cpanminus-(\d+\.\d+)\.meta/),
+        }
     },
     eclim => {
         install   => \&eclim_install,
@@ -595,10 +606,10 @@ my %software_config = (
     },
     perl_local_lib   => {
         install   => \&perl_local_lib_install,
-        installed => \&perl_local_lib_installed,
+        installed => perl_module_installed('local::lib'),
         version   => {
-            current => \&perl_local_lib_version_current,
-            latest  => \&perl_local_lib_version_latest,
+            current => perl_module_version_current('local::lib'),
+            latest  => \&perl_local_lib_version_latest
         },
     },
     pip2 => {
@@ -746,8 +757,6 @@ sub cask_update {
 #  local::lib  #
 ################
 
-my $perl_local_lib_base_url = 'https://cpan.metacpan.org/authors/id/H/HA/HAARG/';
-
 # $package_re should match the 'numeric' version in $1
 sub version_latest_from_directory_url_multi_package {
     my ($url, $package_re) = @_;
@@ -759,20 +768,37 @@ sub version_latest_from_directory_url_multi_package {
     return (sort @versions)[$#versions];
 }
 
-sub perl_local_lib_version_current {
-    `perl -Mlocal::lib=--no-create -e 'print local::lib->VERSION'`
+sub perl_module_installed {
+    my ($module) = @_;
+    return sub {
+        query_ok('perl', "-e 'require $module'");
+    }
+}
+
+sub perl_module_version_current {
+    my ($module) = @_;
+    return sub {
+        `perl -e 'require $module; print $module->VERSION'`
+    }
+}
+
+sub perl_module_version_latest {
+    my ($user, $package_re) = @_;
+    my @letters = split('', $user);
+    my $fl = $letters[0];
+    my $fsl = join '', @letters[0..1];
+    my $base_url = "https://cpan.metacpan.org/authors/id/$fl/$fsl/$user/";
+    return sub {
+      version_latest_from_directory_url_multi_package($base_url, $package_re);
+    }
 }
 
 sub perl_local_lib_version_latest {
-    version_latest_from_directory_url_multi_package($perl_local_lib_base_url, qr/local-lib-(\d+\.\d+)/)
-}
-
-sub perl_local_lib_installed {
-    query_noerr('perl', '-Mlocal::lib=--no-create')
+    perl_module_version_latest('HAARG', 'local-lib-(\d+\.\d+)\.meta')->()
 }
 
 sub perl_local_lib_install {
-    my $base_url = $perl_local_lib_base_url;
+    my $base_url = 'https://cpan.metacpan.org/authors/id/H/HA/HAARG/';
     my $latest = perl_local_lib_version_latest();
     my $package = "local-lib-$latest";
     my $tar_file = "$package.tar.gz";

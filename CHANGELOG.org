@@ -153,6 +153,8 @@
 - not detecting distribution when there were non-word
   characters after the name
 
+- not detecting versions for =cpanm=
+
 - not recognising linked files as the same when paths
   contained more than one level of symbolic link
 
