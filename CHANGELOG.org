@@ -5,6 +5,12 @@
 
 * Unreleased
 
+** Fixed
+
+- =my-projectile-grep= no longer fails when grepping in a
+  non-project directory (searches in current directory
+  instead)
+
 * 0.11.0 - 2020-05-06
 
 ** Added

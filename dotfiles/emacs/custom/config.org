@@ -1039,15 +1039,25 @@ I prefer to use Helm for searching projects where possible:
     "Return t if the current project is under Git version control."
     (eq 'git (projectile-project-vcs)))
 
+  (defmacro my-projectile-with-directory-temporarily-project (dir &rest body)
+    "Execute BODY with DIR temporarily treated as the root of a project, if it doesn't already belong to one."
+    (declare (indent defun))
+    (let ((dir-calc (make-symbol "dir-calc")))
+      `(let ((,dir-calc ,dir))
+         (if (projectile-project-p ,dir-calc) (progn ,@body)
+           (unwind-protect (let ((projectile-project-root ,dir-calc)) ,@body)
+             (puthash (format "%s-%s" #'projectile-root-local ,dir-calc) nil projectile-project-root-cache))))))
+
   (defun my-projectile-grep ()
-    "Grep the current project.
+    "Grep the current project, or the current directory if not in a project.
 
   In a Git project this calls `helm-grep-do-git-grep',
   otherwise it uses `projectile-grep'."
     (interactive)
-    (if (my-projectile-git-project-p)
-        (helm-grep-do-git-grep nil)
-      (projectile-grep)))
+    (my-projectile-with-directory-temporarily-project default-directory
+      (if (my-projectile-git-project-p)
+          (helm-grep-do-git-grep nil)
+        (projectile-grep))))
 
   (defun my-projectile-grep-ag ()
     "Grep the current project with AG."
