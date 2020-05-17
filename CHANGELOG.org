@@ -5,6 +5,11 @@
 
 * Unreleased
 
+** Added
+
+- new shell command =my-size-all= for summarising sizes of
+  files and directories in current directory
+
 ** Fixed
 
 - =my-projectile-grep= no longer fails when grepping in a

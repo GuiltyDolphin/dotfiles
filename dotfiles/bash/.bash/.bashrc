@@ -140,6 +140,12 @@ monitor-hide-secondary() {
   xrandr --output $(monitor-list-secondary) --off
 }
 
+# Show the sizes of all files and directories in the current
+# directory, in ascending order of size, and produce a summary
+my-size-all() {
+    du -hsc $(ls -1a | tail -n +3) | sort --sort=human-numeric
+}
+
 
 #############
 #  Options  #
