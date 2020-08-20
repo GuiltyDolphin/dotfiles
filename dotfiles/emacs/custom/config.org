@@ -1147,6 +1147,12 @@ Automatically turn on spelling for org buffers:
     "Return PATH under `my-org-gtd-directory'."
     (concat my-org-gtd-directory "/" path))
 
+  (defvar my-org-gtd-current-directory (my-gtd-subdir "current")
+    "Directory under which active org files for GTD are kept.")
+
+  (defvar my-org-gtd-calendar-directory (my-gtd-subdir "calendar")
+    "Directory under which calendar org files for GTD are kept.")
+
   (customize-set-variable 'org-mobile-directory (concat my-sync-directory "mobile-org"))
 
   (customize-set-variable 'org-default-notes-file (concat org-directory "/notes.org"))
@@ -1170,8 +1176,8 @@ To support a GTD workflow, I use the following org files:
 + tickler.org :: for remind-me-later items
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-define-org-gtd-file (name keeps-what)
-    "Define a new GTD file variable for NAME, containing KEEPS-WHAT items.
+  (defun my-define-org-gtd-file (name dir keeps-what)
+    "Define a new GTD file variable for NAME in directory DIR, containing KEEPS-WHAT items.
 
   KEEPS-WHAT is used to define a documentation string describing the
   variable \"Org file in which to keep KEEPS-WHAT.\".
@@ -1184,20 +1190,26 @@ To support a GTD workflow, I use the following org files:
     \"Org file in which to keep test items.\")"
     (eval
      `(defvar ,(intern (format "my-org-gtd-%s-file" (replace-regexp-in-string "\/" "-" name)))
-        (my-gtd-subdir (concat ,name ".org"))
+        (concat ,dir "/" (concat ,name ".org"))
         ,(format "Org file in which to keep %s." keeps-what))))
+
+  (defun my-define-org-gtd-current-file (name keeps-what)
+    "See `my-define-org-gtd-file' for the meaning of NAME and KEEPS-WHAT.
+
+  This uses `my-org-gtd-current-directory' as the parent directory."
+    (my-define-org-gtd-file name my-org-gtd-current-directory keeps-what))
 
   (let ((gtd-files
          '(("general" . "general reference items")
            ("gtd"     . "active items")
            ("inbox"   . "unprocessed items")
            ("maybe"   . "potential projects and ideas")
-           ("mobile/inbox" . "unprocessed items from phone")
+           ("mobile-inbox" . "unprocessed items from phone")
            ("someday" . "inactive projects and ideas")
            ("tickler" . "tickled items"))))
     (mapc (lambda (spec)
             (-let [(name . keeps-what) spec]
-              `,@(my-define-org-gtd-file name keeps-what)))
+              `,@(my-define-org-gtd-current-file name keeps-what)))
           gtd-files))
 
   (defvar my-org-gtd-inbox-files
@@ -1218,13 +1230,19 @@ There needs to be a file for storing new entries from the
 calendar:
 
 #+BEGIN_SRC emacs-lisp
-  (my-define-org-gtd-file "calendar/inbox" "unprocessed calendar items")
+  (defun my-define-org-gtd-calendar-file (name keeps-what)
+    "See `my-define-org-gtd-file' for the meaning of NAME and KEEPS-WHAT.
+
+  This uses `my-org-gtd-calendar-directory' as the parent directory."
+    (my-define-org-gtd-file (concat "calendar/" name) my-org-gtd-directory keeps-what))
+
+  (my-define-org-gtd-calendar-file "inbox" "unprocessed calendar items")
 #+END_SRC
 
 I use =calendar.org= to keep primary calendar items:
 
 #+BEGIN_SRC emacs-lisp
-  (my-define-org-gtd-file "calendar/calendar" "main calender items")
+  (my-define-org-gtd-calendar-file "calendar" "main calender items")
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
