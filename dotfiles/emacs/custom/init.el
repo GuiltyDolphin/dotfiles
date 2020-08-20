@@ -25,16 +25,10 @@
 
 ;;; Code:
 
-;; Ensure MELPA packages are available
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+;; some important config moved to early-init, so if using Emacs < 27,
+;; manually load it up
 (when (< emacs-major-version 27)
+  (load-file (locate-user-emacs-file "early-init.el"))
   (package-initialize))
 
 ;; set file for custom variables
@@ -48,15 +42,9 @@
 (customize-set-variable
  'vc-follow-symlinks t "Follow Symlinks without asking")
 
-;; We load cask early to allow overriding built-in packages.
-;;
-;; Specifically, we need to initialize cask before calling
-;; 'org-babel-load-file, in order to prevent the built-in org
-;; being loaded.
-(add-to-list 'load-path (locate-user-emacs-file "cask/elpa"))
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
-
+;; been having issues with config not correctly reloading, so manually
+;; deleting the files beforehand...
+(delete-file (locate-user-emacs-file "config.el"))
 (org-babel-load-file (locate-user-emacs-file "config.org"))
 
 ;;; init.el ends here

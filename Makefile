@@ -227,6 +227,7 @@ configure_emacs : configure_aspell configure_cask configure_mu install_font_inco
 .PHONY: link_emacs
 link_emacs : install_emacs
 	@$(call linkf,emacs/custom,.emacs.d/custom)
+	@$(call linkf,emacs/custom/early-init.el,.emacs.d/early-init.el)
 	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
 	@$(call linkf,emacs/custom/config.org,.emacs.d/config.org)
 
