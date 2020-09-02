@@ -10,6 +10,8 @@
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
+- prompt for org next action energies
+
 ** Changed
 
 - org gtd files now under =current= directory

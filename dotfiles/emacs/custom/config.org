@@ -1802,11 +1802,22 @@ action headings:
   (defvar my-org-gtd--next-action-todo-keyword "NEXT"
     "Todo keyword to indicate next actions.")
 
+  (defun my-org-gtd--prompt-next-action-energies ()
+    "Prompt or physical and mental energies, and return them as tags."
+    (let ((energy-prompt
+           (lambda (energy-type)
+             (let ((energy (completing-read (format "%s energy [enter to skip]: " energy-type) '(unknown low medium high) nil t)))
+               (when (not (equal "unknown" energy)) (format "@energy_%s_%s" energy-type energy))))))
+      (let ((physical-energy (funcall energy-prompt "physical"))
+            (mental-energy (funcall energy-prompt "mental")))
+        (-non-nil (list physical-energy mental-energy)))))
+
   (defun my-org-gtd--prompt-next-action-title-context ()
     "Prompt for the title and contexts for a next action."
     (let ((org-add-colon-after-tag-completion t))
-      (let ((title (read-string "Action: "))
-            (tags (my-org--completing-read-tags "Context: " (my-org-gtd--get-contexts))))
+      (let* ((title (read-string "Action: "))
+            (context-tags (my-org--completing-read-tags "Context: " (my-org-gtd--get-contexts)))
+            (tags (-concat context-tags (my-org-gtd--prompt-next-action-energies))))
         (list title tags))))
 
   (defun my-org-gtd-insert-next-action-heading (text tags)
