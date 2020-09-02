@@ -966,7 +966,7 @@ APIs they expose.
                 (yas-activate-extra-mode 'fundamental-mode)))
 
     (after 'yasnippet
-      (yas/reload-all)
+      (yas-reload-all)
       (customize-set-variable 'yas/prompt-functions '(yas/ido-prompt yas/completing-prompt yas/no-prompt)))
 
     (after "yasnippet-autoloads"
@@ -1025,7 +1025,7 @@ APIs they expose.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :config
-    (projectile-global-mode 1)
+    (projectile-mode 1)
     (evil-leader/set-key
       "p" 'projectile-command-map)
 #+END_SRC
@@ -1819,7 +1819,7 @@ action headings:
       (my-org-heading-insert-subheading-respect-content)
       (insert text)
       (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
-      (org-set-tags-to tags)))
+      (org-set-tags (-cons* "next_action" tags))))
 #+END_SRC
 
 Additionally, it is useful to have a helper for creating
@@ -2202,7 +2202,7 @@ brains.
     (interactive)
     (org-brain-switch-brain my-org-brain-personal-brain-path))
 
-  (define-transient-command my-org-brain-brain-selection ()
+  (transient-define-prefix my-org-brain-brain-selection ()
     "Transient for selecting an org brain."
     ["Select Brain"
      ("a" "Academic" my-org-brain-switch-to-academic-brain)
