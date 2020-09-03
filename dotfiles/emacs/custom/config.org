@@ -1203,6 +1203,7 @@ To support a GTD workflow, I use the following org files:
          '(("general" . "general reference items")
            ("gtd"     . "active items")
            ("inbox"   . "unprocessed items")
+           ("journal" . "a log of important events")
            ("maybe"   . "potential projects and ideas")
            ("mobile-inbox" . "unprocessed items from phone")
            ("someday" . "inactive projects and ideas")
@@ -1885,7 +1886,7 @@ re-evaluated.
            "* %^{Title}%?\n%^{Date}t")
           ("et" "Event (range)" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Start}t--%^{End}t")
-          ("j" "Journal" entry (file+olp+datetree ,(my-org-subdir "journal.org"))
+          ("j" "Journal" entry (file+olp+datetree ,my-org-gtd-journal-file)
            "* %? %^G\n:PROPERTIES:\n:CREATED:  %U\n:END:\n%i")))
 #+END_SRC
 
