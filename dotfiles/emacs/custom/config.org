@@ -1206,6 +1206,7 @@ To support a GTD workflow, I use the following org files:
            ("journal" . "a log of important events")
            ("maybe"   . "potential projects and ideas")
            ("mobile-inbox" . "unprocessed items from phone")
+           ("tablet-inbox" . "unprocessed items from tablet")
            ("someday" . "inactive projects and ideas")
            ("tickler" . "tickled items"))))
     (mapc (lambda (spec)
@@ -1214,7 +1215,7 @@ To support a GTD workflow, I use the following org files:
           gtd-files))
 
   (defvar my-org-gtd-inbox-files
-    (list my-org-gtd-inbox-file my-org-gtd-mobile-inbox-file)
+    (list my-org-gtd-inbox-file my-org-gtd-mobile-inbox-file my-org-gtd-tablet-inbox-file)
     "List of GTD org inbox files.")
 #+END_SRC
 
