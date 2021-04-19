@@ -1952,6 +1952,7 @@ action headings:
       (insert text)
       (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
       (my-org--set-created-at)
+      (org-set-tags tags)
       (org-set-property my-org-gtd-type-property-name my-org-gtd-next-action-property-keyword)))
 #+END_SRC
 
