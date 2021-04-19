@@ -1892,16 +1892,19 @@ re-evaluated.
 ***** Capture Templates
 
 #+BEGIN_SRC emacs-lisp
+  (defvar my-org-created-property-name "CREATED"
+    "Property name used to track when entries were created.")
+
   (setq org-capture-templates
         `(("t" "Inbox" entry (file ,my-org-gtd-inbox-file)
-           "* TODO %?\n:PROPERTIES:\n:CREATED:  %U\n:END:")
+           ,(concat "* TODO %?\n:PROPERTIES:\n:" my-org-created-property-name ":  %U\n:END:"))
           ("e" "Calendar")
           ("ed" "Event (single day)" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Date}t")
           ("et" "Event (range)" entry (file ,my-org-gtd-calendar-inbox-file)
            "* %^{Title}%?\n%^{Start}t--%^{End}t")
           ("j" "Journal" entry (file+olp+datetree ,my-org-gtd-journal-file)
-           "* %? %^G\n:PROPERTIES:\n:CREATED:  %U\n:END:\n%i")))
+           ,(concat "* %? %^G\n:PROPERTIES:\n:" my-org-created-property-name ":  %U\n:END:\n%i"))))
 #+END_SRC
 
 **** Bindings
