@@ -27,8 +27,8 @@
 
 ** Changed
 
-- agenda view =D= now displays completed actions and cancelled
-  actions
+- agenda view =D= now displays completed and cancelled
+  actions, waiting fors, someday items, and maybe items
 
 - next actions and waiting fors created with
   =my-org-gtd-insert-next-action-heading= and

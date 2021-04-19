@@ -1337,6 +1337,12 @@ be used to add/set the created property for an entry.
 
   If FILTER is not specified, then just provide a filter that matches next actions."
     (my-org-join-filters (format "%s=\"%s\"" my-org-gtd-type-property-name my-org-gtd-next-action-property-keyword) filter))
+
+  (defun my-org-gtd-filter-is-waiting-for (&optional filter)
+    "Add a condition that the entry matched by FILTER is also a waiting for.
+
+  If FILTER is not specified, then just provide a filter that matches waiting fors."
+    (my-org-join-filters (format "%s=\"%s\"" my-org-gtd-type-property-name my-org-gtd-waiting-for-property-keyword) filter))
 #+END_SRC
 
 ***** Projects
@@ -1452,6 +1458,12 @@ Likewise, a cancelled project is any project marked as
        (tags ,(my-org-gtd-filter-is-action "/CANCELLED")
              ((org-agenda-overriding-header "Cancelled Actions")
               (org-agenda-files '(,my-org-gtd-project-file))))
+       (tags ,(my-org-gtd-filter-is-waiting-for "/DONE")
+             ((org-agenda-overriding-header "Completed Waiting Fors")
+              (org-agenda-files '(,my-org-gtd-project-file))))
+       (tags ,(my-org-gtd-filter-is-waiting-for "/CANCELLED")
+             ((org-agenda-overriding-header "Cancelled Waiting Fors")
+              (org-agenda-files '(,my-org-gtd-project-file))))
        (todo "DONE"
              ((org-agenda-overriding-header "Completed Reminders")
               (org-agenda-files '(,my-org-gtd-tickler-file))))
@@ -1463,7 +1475,19 @@ Likewise, a cancelled project is any project marked as
               (org-agenda-files '(,my-org-gtd-tickler-file))))
        (todo "CANCELLED"
              ((org-agenda-overriding-header "Cancelled Inbox Items")
-              (org-agenda-files ',my-org-gtd-inbox-files)))))
+              (org-agenda-files ',my-org-gtd-inbox-files)))
+       (todo "DONE"
+             ((org-agenda-overriding-header "Completed Someday Items")
+              (org-agenda-files '(,my-org-gtd-someday-file))))
+       (todo "CANCELLED"
+             ((org-agenda-overriding-header "Cancelled Someday Items")
+              (org-agenda-files '(,my-org-gtd-someday-file))))
+       (todo "DONE"
+             ((org-agenda-overriding-header "Completed Maybe Items")
+              (org-agenda-files '(,my-org-gtd-maybe-file))))
+       (todo "CANCELLED"
+             ((org-agenda-overriding-header "Cancelled Maybe Items")
+              (org-agenda-files '(,my-org-gtd-maybe-file))))))
      ("h" "At home" tags-todo "@home"
       ((org-agenda-overriding-header "Home")
        (org-agenda-files '(,my-org-gtd-project-file))))
