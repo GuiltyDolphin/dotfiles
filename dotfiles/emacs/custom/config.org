@@ -323,6 +323,19 @@ consistency:
           (funcall add-bg-timer 'light sunrise-today-or-next))))))
 #+END_SRC
 
+Sometimes the background gets out of sync, so it can be useful
+to manually trigger a check, for which the
+=my-background-update-now= command can be used:
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-background-update-now ()
+    "Update the background mode according to whether the current time is in daylight or not."
+    (interactive)
+    (if (my-date-in-daylight-hours (current-time))
+        (my-background-set-light)
+      (my-background-set-dark)))
+#+END_SRC
+
 **** Color theme
 
 #+BEGIN_SRC emacs-lisp

@@ -7,6 +7,10 @@
 
 ** Added
 
+- new Emacs command =my-background-update-now= for manually
+  triggering a check of the background theme based on daylight
+  time
+
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
