@@ -1944,7 +1944,7 @@ re-evaluated.
   (defun my-org-gtd--prompt-waiting-for ()
     "Prompt for information for building a waiting for heading."
     (let ((wf-what (read-string "Waiting for what: "))
-          (remind-date (org-read-date nil nil nil "Reminder: ")))
+          (remind-date (org-read-date nil nil nil "Reminder (empty or in past for no reminder): ")))
       (list wf-what remind-date)))
 
   (defun my-org-gtd-insert-waiting-for-heading (text remind-date)
@@ -1958,7 +1958,10 @@ re-evaluated.
         (my-org-heading-insert-subheading-respect-content)
         (insert wf-header)
         (my-org-heading--set-todo my-org-gtd--waiting-for-todo-keyword))
-        (org-schedule nil remind-date)
+      (let ((now (current-time)) (remind-date-time (org-time-string-to-time remind-date)))
+        ;; if the reminder time is now or in the past, we omit it
+        (unless (or (time-equal-p remind-date-time now) (time-less-p remind-date-time now))
+          (org-schedule nil remind-date)))
         (my-org--set-created-at)
         (org-set-property my-org-gtd-type-property-name my-org-gtd-waiting-for-property-keyword)))
 #+END_SRC

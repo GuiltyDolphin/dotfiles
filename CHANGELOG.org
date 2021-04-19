@@ -40,6 +40,9 @@
 - org mobile inbox is now =mobile-inbox.org= (under =current=
   directory)
 
+- =my-org-gtd-insert-waiting-for-heading= will now only
+  schedule if date is in future
+
 ** Fixed
 
 - =my-projectile-grep= no longer fails when grepping in a
