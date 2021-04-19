@@ -1290,6 +1290,12 @@ I use =calendar.org= to keep primary calendar items:
           (format "%s+%s" filter1 filter2))
       ;; if both filters aren't specified, give back the first that is
       (or filter1 filter2)))
+
+  (defun my-org-gtd-filter-is-action (&optional filter)
+    "Add a condition that the entry matched by FILTER is also a next action.
+
+  If FILTER is not specified, then just provide a filter that matches next actions."
+    (my-org-join-filters (format "%s=\"%s\"" my-org-gtd-type-property-name my-org-gtd-next-action-property-keyword) filter))
 #+END_SRC
 
 ***** Projects
@@ -1395,6 +1401,12 @@ Likewise, a cancelled project is any project marked as
      ("D" "Complete"
       ((tags ,my-org-gtd-match-project-complete
              ((org-agenda-overriding-header "Completed Projects")
+              (org-agenda-files '(,my-org-gtd-project-file))))
+       (tags ,(my-org-gtd-filter-is-action "/DONE")
+             ((org-agenda-overriding-header "Completed Actions")
+              (org-agenda-files '(,my-org-gtd-project-file))))
+       (tags ,(my-org-gtd-filter-is-action "/CANCELLED")
+             ((org-agenda-overriding-header "Cancelled Actions")
               (org-agenda-files '(,my-org-gtd-project-file))))
        (todo "DONE"
              ((org-agenda-overriding-header "Completed Reminders")
