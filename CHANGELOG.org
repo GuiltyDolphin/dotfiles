@@ -30,6 +30,11 @@
 - agenda view =D= now displays completed actions and cancelled
   actions
 
+- next actions and waiting fors created with
+  =my-org-gtd-insert-next-action-heading= and
+  =my-org-gtd-insert-waiting-for-heading= now include a
+  creation date
+
 - org gtd files now under =current= directory
 
 - org mobile inbox is now =mobile-inbox.org= (under =current=

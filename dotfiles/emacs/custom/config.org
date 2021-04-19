@@ -1267,6 +1267,47 @@ I use =calendar.org= to keep primary calendar items:
     "List of GTD org calendar files.")
 #+END_SRC
 
+**** Timestamps
+
+Useful timestamp manipulation.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-format-time-as-time-stamp (time &optional with-hm inactive)
+    "Format TIME as a timestamp.
+
+  WITH-HM means use the stamp format that includes the time of the day.
+  INACTIVE means use square brackets instead of angular ones, so that the
+  stamp will not contribute to the agenda.
+
+  See `org-insert-time-stamp' for more information."
+    (let ((fmt (funcall (if with-hm 'cdr 'car) org-time-stamp-formats)) stamp)
+      (when inactive (setq fmt (concat "[" (substring fmt 1 -1) "]")))
+      (format-time-string fmt time)))
+
+  (defun my-org-format-time-as-inactive-time-stamp (time &optional with-hm)
+    "Format TIME as an inactive timestamp.
+
+  WITH-HM means use the stamp format that includes the time of the day.
+
+  See `my-org-format-time-as-time-stamp' for more information."
+    (my-org-format-time-as-time-stamp time with-hm t))
+#+END_SRC
+
+=my-org-created-property-name= specifies a property used to
+track when entries were created. =my-org--set-created-at= can
+be used to add/set the created property for an entry.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-created-property-name "CREATED"
+    "Property name used to track when entries were created.")
+
+  (defun my-org--set-created-at (&optional time)
+    "Add a property indicating when the current entry was created.
+
+  TIME optionally specifies a time other than now to set the property to."
+    (org-set-property my-org-created-property-name (my-org-format-time-as-inactive-time-stamp (or time (current-time)) t)))
+#+END_SRC
+
 **** Agenda
 
 #+BEGIN_SRC emacs-lisp
@@ -1886,6 +1927,7 @@ action headings:
       (my-org-heading-insert-subheading-respect-content)
       (insert text)
       (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
+      (my-org--set-created-at)
       (org-set-property my-org-gtd-type-property-name my-org-gtd-next-action-property-keyword)))
 #+END_SRC
 
@@ -1917,6 +1959,7 @@ re-evaluated.
         (insert wf-header)
         (my-org-heading--set-todo my-org-gtd--waiting-for-todo-keyword))
         (org-schedule nil remind-date)
+        (my-org--set-created-at)
         (org-set-property my-org-gtd-type-property-name my-org-gtd-waiting-for-property-keyword)))
 #+END_SRC
 
@@ -1934,9 +1977,6 @@ re-evaluated.
 ***** Capture Templates
 
 #+BEGIN_SRC emacs-lisp
-  (defvar my-org-created-property-name "CREATED"
-    "Property name used to track when entries were created.")
-
   (setq org-capture-templates
         `(("t" "Inbox" entry (file ,my-org-gtd-inbox-file)
            ,(concat "* TODO %?\n:PROPERTIES:\n:" my-org-created-property-name ":  %U\n:END:"))
