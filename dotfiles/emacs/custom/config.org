@@ -1402,6 +1402,9 @@ Likewise, a cancelled project is any project marked as
       ((tags ,my-org-gtd-match-project-complete
              ((org-agenda-overriding-header "Completed Projects")
               (org-agenda-files '(,my-org-gtd-project-file))))
+       (tags ,my-org-gtd-match-project-cancelled
+             ((org-agenda-overriding-header "Cancelled Projects")
+              (org-agenda-files '(,my-org-gtd-project-file))))
        (tags ,(my-org-gtd-filter-is-action "/DONE")
              ((org-agenda-overriding-header "Completed Actions")
               (org-agenda-files '(,my-org-gtd-project-file))))
@@ -1414,9 +1417,6 @@ Likewise, a cancelled project is any project marked as
        (todo "DONE"
              ((org-agenda-overriding-header "Completed Inbox Items")
               (org-agenda-files ',my-org-gtd-inbox-files)))
-       (tags ,my-org-gtd-match-project-cancelled
-             ((org-agenda-overriding-header "Cancelled Projects")
-              (org-agenda-files '(,my-org-gtd-project-file))))
        (todo "CANCELLED"
              ((org-agenda-overriding-header "Cancelled Reminders")
               (org-agenda-files '(,my-org-gtd-tickler-file))))
