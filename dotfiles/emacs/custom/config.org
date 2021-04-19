@@ -1269,6 +1269,29 @@ I use =calendar.org= to keep primary calendar items:
 
 **** Agenda
 
+#+BEGIN_SRC emacs-lisp
+  (defvar my-org-gtd-type-property-name "ORG_GTD_TYPE"
+    "Name of the property used to identify the GTD type of Org elements.")
+
+  (defvar my-org-gtd-next-action-property-keyword "next_action"
+    "Keyword used with `my-org-gtd-type-property-name' for next actions.")
+
+  (defvar my-org-gtd-waiting-for-property-keyword "waiting_for"
+    "Keyword used with `my-org-gtd-type-property-name' for \"waiting for\" actions.")
+
+  (defvar my-org-gtd-project-property-keyword "project"
+    "Keyword used with `my-org-gtd-type-property-name' for projects.")
+
+  (defun my-org-join-filters (filter1 filter2)
+    "Combine FILTER1 and FILTER2 into a new agenda filter."
+    (if (and filter1 filter2) ;; check both filters are specified
+        (if (string-match-p "^[+-/&|]" filter2)
+            (concat filter1 filter2) ;; if the second filter already has a search connector then just append
+          (format "%s+%s" filter1 filter2))
+      ;; if both filters aren't specified, give back the first that is
+      (or filter1 filter2)))
+#+END_SRC
+
 ***** Projects
 
 I provide variables for defining which headlines should be
@@ -1280,8 +1303,14 @@ A project is:
 + a level two heading (see [[project-file-structure][structure of the project file]])
 
 #+BEGIN_SRC emacs-lisp
+  (defun my-org-gtd-filter-is-project (&optional filter)
+    "Add a condition that the entry matched by FILTER is also a project.
+
+    If FILTER is not specified, then just provide a filter that matches projects."
+    (my-org-join-filters (format "%s=\"%s\"" my-org-gtd-type-property-name my-org-gtd-project-property-keyword) filter))
+
   (defvar my-org-gtd-match-project
-    (format "+FILE=\"%s\"&+CATEGORY=\"project\"&+LEVEL=3" (expand-file-name my-org-gtd-project-file))
+    (my-org-gtd-filter-is-project (format "+FILE=\"%s\"&+CATEGORY=\"project\"" (expand-file-name my-org-gtd-project-file)))
     "Tags/P/T query for projects.")
 #+END_SRC
 
@@ -1845,7 +1874,7 @@ action headings:
       (my-org-heading-insert-subheading-respect-content)
       (insert text)
       (my-org-heading--set-todo my-org-gtd--next-action-todo-keyword)
-      (org-set-tags (-cons* "next_action" tags))))
+      (org-set-property my-org-gtd-type-property-name my-org-gtd-next-action-property-keyword)))
 #+END_SRC
 
 Additionally, it is useful to have a helper for creating
@@ -1874,8 +1903,9 @@ re-evaluated.
         (org-end-of-line)
         (my-org-heading-insert-subheading-respect-content)
         (insert wf-header)
-        (my-org-heading--set-todo my-org-gtd--waiting-for-todo-keyword)
-        (org-schedule nil remind-date))))
+        (my-org-heading--set-todo my-org-gtd--waiting-for-todo-keyword))
+        (org-schedule nil remind-date)
+        (org-set-property my-org-gtd-type-property-name my-org-gtd-waiting-for-property-keyword)))
 #+END_SRC
 
 **** Todo and Capture

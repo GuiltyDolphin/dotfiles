@@ -21,6 +21,10 @@
   name of the property used to track when Org items were
   created
 
+- next actions, projects, and waiting-fors are now identified
+  via the =my-org-gtd-type-property-name= property rather than
+  by tags
+
 ** Changed
 
 - org gtd files now under =current= directory
