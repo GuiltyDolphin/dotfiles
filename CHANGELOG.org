@@ -17,6 +17,8 @@
 - =my-background-update-now= command for manually triggering a
   check of the background theme based on daylight time
 
+- =my-emacs-cask= projectile project type
+
 - =my-org-created-property-name= variable for specifying the
   name of the property used to track when Org items were
   created

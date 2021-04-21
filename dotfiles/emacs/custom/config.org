@@ -1086,7 +1086,17 @@ To prevent files in =.gitignore= from showing up in search
 results, set ~projectile-use-git-grep~:
 
 #+BEGIN_SRC emacs-lisp
-  (customize-set-variable 'projectile-use-git-grep t))
+  (customize-set-variable 'projectile-use-git-grep t)
+#+END_SRC
+
+**** Custom project types
+
+#+BEGIN_SRC emacs-lisp
+  (projectile-register-project-type "my-emacs-cask" '("Cask") :project-file "Cask" :compile "make build" :test "make test" :test-suffix "-tests" :test-dir "tests")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  )
 #+END_SRC
 
 ** Org
