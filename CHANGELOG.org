@@ -32,6 +32,8 @@
 - agenda view =D= now displays completed and cancelled
   actions, waiting fors, someday items, and maybe items
 
+- =evil-undo-system= now uses ='undo-tree=
+
 - next actions and waiting fors created with
   =my-org-gtd-insert-next-action-heading= and
   =my-org-gtd-insert-waiting-for-heading= now include a

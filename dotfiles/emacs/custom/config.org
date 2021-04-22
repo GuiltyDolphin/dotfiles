@@ -146,6 +146,14 @@ functionality used in the remainder of the config.
       (kbd "C-h K") 'emaps-describe-keymap-bindings))
 #+END_SRC
 
+**** undo-tree
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode 1))
+#+END_SRC
+
 *** Navigation
 
 #+BEGIN_SRC emacs-lisp
@@ -499,6 +507,9 @@ APIs they expose.
       "|" 'evil-window-vsplit ; Replaces evil-window-decrease-height
       "x" 'my-kill-buffer-and-window-ask
       "s" 'helm-buffers-list)
+
+    (customize-set-variable 'evil-undo-system 'undo-tree
+                            "Note that for undo-tree must also be enabled for 'undo-tree option to work.")
     (evil-mode 1))
 #+END_SRC
 
