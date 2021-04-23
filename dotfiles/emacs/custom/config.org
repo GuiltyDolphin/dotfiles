@@ -510,6 +510,8 @@ APIs they expose.
 
     (customize-set-variable 'evil-undo-system 'undo-tree
                             "Note that for undo-tree must also be enabled for 'undo-tree option to work.")
+    (add-hook 'evil-local-mode-hook 'turn-on-undo-tree-mode)
+
     (evil-mode 1))
 #+END_SRC
 
