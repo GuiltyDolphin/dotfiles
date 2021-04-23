@@ -49,11 +49,18 @@
 - =my-org-gtd-insert-waiting-for-heading= will now only
   schedule if date is in future
 
+- =xref--xref-buffer-mode= now defaults to =motion= state
+
 ** Fixed
+
+*** Emacs
 
 - =my-projectile-grep= no longer fails when grepping in a
   non-project directory (searches in current directory
   instead)
+
+- =RET= in =xref--xref-buffer-mode= now jumps to the
+  definition
 
 - various fixes needed to get configuration working with Emacs
   27

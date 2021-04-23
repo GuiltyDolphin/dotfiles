@@ -694,6 +694,17 @@ APIs they expose.
       (add-to-list 'auto-mode-alist (cons extension 'web-mode))))
 #+END_SRC
 
+*** xref
+
+#+BEGIN_SRC emacs-lisp
+  (use-package xref
+    :config
+    (evil-set-initial-state 'xref--xref-buffer-mode 'motion)
+
+    (evil-define-key 'motion xref--xref-buffer-mode-map
+      (kbd "RET" ) 'xref-goto-xref))
+#+END_SRC
+
 ** Email
 
 #+BEGIN_SRC emacs-lisp
