@@ -636,7 +636,11 @@ APIs they expose.
     (flx-ido-mode 1)
     (customize-set-variable 'ido-enable-flex-matching t)
     (customize-set-variable 'ido-use-faces nil))
+#+END_SRC
 
+*** help
+
+#+BEGIN_SRC emacs-lisp
   (emaps-define-key my-global-mode-map
     (kbd "C-h h") 'help)
   (emaps-define-key help-map
