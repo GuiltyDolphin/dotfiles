@@ -10,8 +10,6 @@
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
-- prompt for org next action energies
-
 *** Emacs
 
 - =my-background-update-now= command for manually triggering a
@@ -26,6 +24,8 @@
 - next actions, projects, and waiting-fors are now identified
   via the =my-org-gtd-type-property-name= property rather than
   by tags
+
+- prompt for org next action energies
 
 ** Changed
 
