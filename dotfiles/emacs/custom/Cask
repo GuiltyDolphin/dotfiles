@@ -75,6 +75,7 @@
 (depends-on "solarized-theme")
 (depends-on "swiper")
 (depends-on "transient")
+(depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "vimrc-mode")
 (depends-on "web-mode")

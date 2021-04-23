@@ -27,6 +27,8 @@
 
 - prompt for org next action energies
 
+- =undo-tree= is now an explicit dependency in Cask
+
 ** Changed
 
 - agenda view =D= now displays completed and cancelled
