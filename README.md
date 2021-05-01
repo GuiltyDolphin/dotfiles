@@ -27,6 +27,10 @@ https://wiki.archlinux.org/index.php/Locale.
 
 #### Setting up the installer
 
+Make sure if you are on Arch, that you install the
+`base-devel` group before using the installer, if you want to
+avoid missing package errors (`pacman -S base-devel`).
+
 To set up the installer, you first need to make sure you have
 Perl installed. To check if you have a Perl executable, simply
 run `type -p perl` in a terminal. If you see a path displayed
