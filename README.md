@@ -4,6 +4,23 @@ My configuration files for Linux systems.
 
 Hosted on [GitHub](https://github.com/GuiltyDolphin/dotfiles).
 
+## Setting up a new system
+
+When setting up a new system, you'll want to make sure that
+things such as locales are set up correctly.
+
+### Setting up locale
+
+First, add a line `en_GB.UTF-8 UTF-8` (or a locale of your
+choice) to `/etc/locale.gen` if it isn't there already, then
+run `locale-gen` as root. The locale should now be enabled,
+which you can check with `locale -a`. Run `locale` to see if
+your locale is set correctly, and if not, reload bash
+configuration files, which should set this for you.
+
+If you get stuck, you can find more information at
+https://wiki.archlinux.org/index.php/Locale.
+
 ## Installing
 
 ### Overview
