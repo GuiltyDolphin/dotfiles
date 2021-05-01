@@ -13,6 +13,8 @@
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
+- =snapd= AUR package install recipe
+
 - =/var/lib/snapd/snap/bin= directory will now be included in
   =PATH= if it exists
 

@@ -654,6 +654,9 @@ my %software_config = (
     slack => {
         with_arch_aur_config('slack-desktop'),
     },
+    snapd => {
+        with_arch_aur_config('snapd'),
+    },
     'swi-prolog' => {
         install   => \&swi_prolog_install,
         installed => \&swi_prolog_installed,
