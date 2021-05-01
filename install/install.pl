@@ -153,19 +153,38 @@ my %distro_map = (
 
 my $default_distro = 'arch';
 
-sub get_distribution {
-    chomp (my $kernel_release = `uname -r`);
-    my $distro;
-    unless ($kernel_release) {
-        error('unable to detect distribution, defaulting to debian system');
-        $distro = 'debian';
-    } else {
-        $kernel_release =~ /^.+?([[:alpha:]]+).*?$/;
-        $distro = $1;
+sub get_distribution_info {
+    my ($field) = @_;
+
+    my $release_info = query_noerr('cat', '/etc/*-release')->();
+    unless ($release_info) {
+        $release_info = query_noerr('cat', '/usr/lib/*-release')->();
     }
-    unless ($distro = $distro_map{lc $distro}) {
-        error("no custom configuration for $distro - defaulting to $default_distro");
-        $distro = $distro_map{lc $distro} // $default_distro;
+
+    if ($release_info) {
+        $release_info =~ /^$field=(.+)$/m;
+        return $1;
+    }
+    return;
+}
+
+sub get_distribution {
+    my $distro = get_distribution_info('ID');
+
+    unless (defined $distro) {
+        error("unable to detect distribution, defaulting to $default_distro");
+        $distro = $default_distro;
+    }
+    if ($distro) {
+        if (my $distro_final = $distro_map{lc $distro}) {
+            $distro = $distro_final;
+        } else {
+            error("no custom configuration for $distro - defaulting to $default_distro");
+            $distro = $default_distro;
+        }
+    } else {
+        error("unable to detect distribution, defaulting to $default_distro");
+        $distro = $default_distro;
     }
     return $distro;
 }
@@ -972,6 +991,13 @@ sub version {
     data($version);
 }
 
+# Show the name of the current distribution
+sub show_distro {
+    my $distro = get_distribution_info('NAME') // 'unknown';
+    $distro =~ s/^"(.+)"$/$1/g;
+    data($distro);
+}
+
 my @tmp_argv;
 while (my $command = shift) {
     if ($command eq '--debug') {
@@ -1002,6 +1028,8 @@ while (my $command = shift) {
         update_program(shift);
     } elsif ($command eq 'version') {
         version(shift, shift);
+    } elsif ($command eq 'show_distro') {
+        show_distro();
     } else {
         print "$usage\n" and die 1;
     }

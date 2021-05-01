@@ -7,6 +7,9 @@
 
 ** Added
 
+- installer command =show_distro= which shows the currently
+  detected Linux distribution
+
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
@@ -36,6 +39,9 @@
 
 - =evil-undo-system= now uses ='undo-tree=
 
+- installer distribution now always defaults to =arch= if a
+  distribution cannot be detected
+
 - next actions and waiting fors created with
   =my-org-gtd-insert-next-action-heading= and
   =my-org-gtd-insert-waiting-for-heading= now include a
@@ -52,6 +58,10 @@
 - =xref--xref-buffer-mode= now defaults to =motion= state
 
 ** Fixed
+
+- installer not detecting distribution if the =uname -a=
+  format didn't contain enough information (this now uses
+  release files (see =man os-release=))
 
 *** Emacs
 
