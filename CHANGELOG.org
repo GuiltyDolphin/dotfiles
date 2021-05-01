@@ -13,6 +13,9 @@
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
+- =/var/lib/snapd/snap/bin= directory will now be included in
+  =PATH= if it exists
+
 *** Emacs
 
 - =my-background-update-now= command for manually triggering a

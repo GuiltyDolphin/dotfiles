@@ -26,6 +26,10 @@ EDITOR="vim"
 [[ -d "$HOME/.gem/ruby/2.0.0/bin" ]] \
   && PATH=$PATH:~/.gem/ruby/2.0.0/bin
 
+# Snap bin
+[[ -d "/var/lib/snapd/snap/bin" ]] \
+  && PATH=$PATH:/var/lib/snapd/snap/bin
+
 # Commands compiled from cabal
 [[ -d "$HOME/.cabal/bin" ]] \
   && PATH="$HOME/.cabal/bin:$PATH"
