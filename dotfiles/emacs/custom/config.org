@@ -841,6 +841,22 @@ APIs they expose.
   (use-package skewer-mode)
 #+END_SRC
 
+**** TypeScript
+
+#+BEGIN_SRC emacs-lisp
+  (use-package typescript-mode)
+#+END_SRC
+
+***** tide
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tide
+    :after (typescript-mode company flycheck)
+    :hook ((typescript-mode . tide-setup)
+           (typescript-mode . tide-hl-identifier-mode)
+           (before-save . tide-format-before-save)))
+#+END_SRC
+
 *** LaTeX
 
 **** auctex

@@ -20,6 +20,8 @@
 
 *** Emacs
 
+- configuration for =typescript-mode= and =tide=
+
 - =my-background-update-now= command for manually triggering a
   check of the background theme based on daylight time
 
