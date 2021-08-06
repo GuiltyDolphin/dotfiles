@@ -36,6 +36,13 @@
 
 *** Installer
 
+- install configurations
+  - =lcov=
+  - =plover=
+  - =tor_browser=
+  - =zotero=
+  - =zoom=
+
 - installer command =show_distro= which shows the currently
   detected Linux distribution
 

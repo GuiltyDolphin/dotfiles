@@ -661,6 +661,9 @@ my %software_config = (
     idris => {
         with_default_config('idris'),
     },
+    lcov => {
+        with_arch_aur_config('lcov'),
+    },
     libreoffice => {
         with_default_config('libreoffice-fresh'),
     },
@@ -696,6 +699,9 @@ my %software_config = (
     pip3 => {
         with_default_config('python-pip'),
     },
+    plover => {
+        with_arch_aur_config('plover-git'),
+    },
     recutils => {
         with_arch_aur_config('recutils'),
     },
@@ -730,6 +736,9 @@ my %software_config = (
     tmuxinator => {
         with_gem_config('tmuxinator', version => '1.9.1'),
     },
+    tor_browser => {
+        with_arch_aur_config('tor-browser'),
+    },
     urxvt => {
         with_default_config('rxvt-unicode'),
     },
@@ -762,6 +771,12 @@ my %software_config = (
     },
     xset => {
         with_default_config('xorg-xset'),
+    },
+    zoom => {
+        with_arch_aur_config('zoom'),
+    },
+    zotero => {
+        with_arch_aur_config('zotero'),
     },
 );
 
