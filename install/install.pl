@@ -206,16 +206,6 @@ sub get_bin_path {
     return $bin;
 }
 
-# Install to user installs with pip
-sub install_via_pip {
-    my ($program, %options) = @_;
-    my $version = $options{pip_version} // '';
-    my $command = "pip$version install --user ";
-    $command .= '-I ' if $options{ignore_installed};
-    $command .= $program;
-    system($command);
-}
-
 #######################################################################
 #                     Distribution Configuration                      #
 #######################################################################
@@ -512,6 +502,76 @@ sub git_clone {
             return $ERROR;
         }
     }
+}
+
+
+##############
+# Python Pip #
+##############
+
+sub pip_run_output {
+    my ($args) = @_;
+    return query_noerr('pip', $args)->();
+}
+
+# Install to user installs with pip
+sub pip_install {
+    my ($program, %options) = @_;
+    my $version = $options{pip_version} // '';
+    my $command = "pip$version install --user ";
+    $command .= '-I ' if $options{ignore_installed};
+    $command .= $program;
+    system($command);
+}
+
+sub pip_installed {
+    my ($package, %options) = @_;
+    my $out = pip_run_output("show $package");
+    return not ($out eq '');
+}
+
+sub pip_update {
+    my ($program, %options) = @_;
+    my $version = $options{pip_version} // '';
+    system("pip$version install --user --upgrade $program");
+}
+
+sub pip_version_current {
+    my ($package, %options) = @_;
+    my $out = pip_run_output("show $package");
+    if ($out eq '') {
+        error("Could not find an installed pip package by the name of '$package'");
+    }
+    $out =~ m/^Version: (.+)$/m;
+    my $version = $1;
+    unless (defined $version) {
+        error("Found a package by the name of '$package', but was unable to retrieve a version from pip.");
+    }
+    return $version;
+}
+
+sub pip_version_latest {
+    my ($package, %options) = @_;
+    my $out = pip_run_output("search $package");
+    $out =~ m/^(?:$package) \(([0-9.]+)\)/m;
+    my $version = $1;
+    unless (defined $version) {
+        error("Could not find any pip package by the name of '$package'");
+    }
+    return $version;
+}
+
+sub with_pip_config {
+    my ($package) = @_;
+    return (
+        install   => sub { pip_install($package) },
+        installed => sub { pip_installed($package) },
+        update    => sub { pip_update($package) },
+        version => {
+            current => sub { pip_version_current($package) },
+            latest  => sub { pip_version_latest($package) },
+        },
+    );
 }
 
 ###########

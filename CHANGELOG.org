@@ -7,13 +7,8 @@
 
 ** Added
 
-- installer command =show_distro= which shows the currently
-  detected Linux distribution
-
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
-
-- =snapd= AUR package install recipe
 
 - =/var/lib/snapd/snap/bin= directory will now be included in
   =PATH= if it exists
@@ -38,6 +33,20 @@
 - prompt for org next action energies
 
 - =undo-tree= is now an explicit dependency in Cask
+
+*** Installer
+
+- installer command =show_distro= which shows the currently
+  detected Linux distribution
+
+- =pip= manager now supports
+  - =install=
+  - =installed=
+  - =update=
+  - =version current=
+  - =version latest=
+
+- =snapd= AUR package install recipe
 
 ** Changed
 
