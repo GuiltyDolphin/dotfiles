@@ -82,6 +82,8 @@
 
 - =xscreensaver= timeout is now 15 minutes
 
+- =xscreensaver= will now lock the screen
+
 ** Fixed
 
 - installer not detecting distribution if the =uname -a=
