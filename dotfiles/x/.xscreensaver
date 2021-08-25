@@ -1,7 +1,7 @@
 # XScreenSaver Preferences File
 # https://www.jwz.org/xscreensaver/
 
-timeout:	0:10:00
+timeout:	0:15:00
 cycle:		0:10:00
 lock:		False
 lockTimeout:	0:00:00

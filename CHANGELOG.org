@@ -80,6 +80,8 @@
 
 - =xref--xref-buffer-mode= now defaults to =motion= state
 
+- =xscreensaver= timeout is now 15 minutes
+
 ** Fixed
 
 - installer not detecting distribution if the =uname -a=
