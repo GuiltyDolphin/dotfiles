@@ -579,6 +579,10 @@ sub with_pip_config {
     );
 }
 
+########
+# Rust #
+########
+
 sub rust_config {
     return (
         install => sub {
