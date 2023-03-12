@@ -149,6 +149,7 @@ my %distro_map = (
     'debian'    => 'debian',
     'generic'   => 'debian',
     'linuxmint' => 'debian',
+    'pop'       => 'debian',
 );
 
 my $default_distro = 'arch';
