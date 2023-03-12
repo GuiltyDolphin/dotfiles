@@ -12,6 +12,9 @@
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 
+- new shell command =top-level-files-directories-in-zip-archive= for
+  getting number of top-level files and directories in an archive
+
 - =/var/lib/snapd/snap/bin= directory will now be included in
   =PATH= if it exists
 

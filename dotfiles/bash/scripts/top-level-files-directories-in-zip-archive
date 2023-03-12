@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Get the number of top-level files and directories in a zip archive
+# TODO: fail if unzipping fails
+unzip -l "$1" | grep -E '^[^/]*/?$' | tail -n +4 | head -n -2 | wc -l
