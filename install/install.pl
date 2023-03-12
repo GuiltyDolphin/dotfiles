@@ -419,8 +419,9 @@ sub distro_debian_update {
 
 sub distro_debian_version_current {
     my $program = shift;
-    chomp (my $version = `apt version $program`);
-    return $version;
+    my $info = `apt-cache policy $program`;
+    $info =~ /^  Installed: (.+)$/m;
+    return $1;
 }
 
 sub distro_debian_version_latest {
