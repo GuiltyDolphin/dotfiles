@@ -190,6 +190,11 @@ sub get_distribution {
     return $distro;
 }
 
+sub get_user_distro {
+    $user_distro //= get_distribution();
+    return $user_distro;
+}
+
 my @local_bins = (
     home('.local/bin'),
     home('bin'),
@@ -604,7 +609,10 @@ sub rust_config {
 
 # Install the program with the default configuration
 sub with_default_config {
-    with_arch_config(@_);
+    if (get_user_distro() eq 'arch') {
+        return with_arch_config(@_);
+    }
+    return ();
 }
 
 #######################################################################
@@ -841,7 +849,7 @@ sub run_config_or_default {
     if (my $custom = get_config(@accessors)) {
         return $custom->(@args);
     }
-    $user_distro //= get_distribution();
+    my $user_distro = get_user_distro();
     my @access_path = @accessors[1..$#accessors];
     my $default = get_config_distro($user_distro, @access_path) // get_config_base(@access_path);
     unless ($default) {
