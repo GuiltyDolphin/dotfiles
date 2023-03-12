@@ -56,7 +56,8 @@ configure_dev_language_all : \
 	configure_dev_javascript \
 	configure_dev_ocaml \
 	configure_dev_perl \
-	configure_dev_ruby
+	configure_dev_ruby \
+	configure_dev_rust
 
 # Common Lisp development
 configure_dev_common_lisp : configure_sbcl
@@ -87,6 +88,12 @@ install_perl_local_lib :
 
 # Ruby development
 configure_dev_ruby : install_ruby1.9.1 link_irb
+
+# Rust development
+configure_dev_rust : install_rust
+
+install_rust :
+	$(call install_prog,rust)
 
 # Enhanced development in Vim
 # NOTE: We should also set up YCM here, but install is currently broken.

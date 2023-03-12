@@ -203,13 +203,16 @@ sub is_local_bin {
 
 sub get_bin_path {
     my $program = shift;
-    chomp (my $bin = `sh -c 'type -P $program'`);
-    return $bin;
+    return IPC::Cmd::can_run($program);
 }
 
 #######################################################################
 #                     Distribution Configuration                      #
 #######################################################################
+
+my %base_config = (
+    up_to_date => \&default_up_to_date,
+);
 
 my %distro_config = (
     arch => {
@@ -575,6 +578,21 @@ sub with_pip_config {
     );
 }
 
+sub rust_config {
+    return (
+        install => sub {
+            # https://doc.rust-lang.org/book/ch01-01-installation.html#installing-rustup-on-linux-or-macos
+            system("curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh");
+        },
+        installed => sub { defined get_bin_path('rustup') },
+        update => sub {
+            system("rustup update");
+        },
+        # let rustup handle the version check
+        up_to_date => sub { 'no_check' },
+    );
+}
+
 ###########
 # Default #
 ###########
@@ -712,6 +730,9 @@ my %software_config = (
     ruby_stable => {
         with_default_config('ruby'),
     },
+    rust => {
+        rust_config,
+    },
     sbcl => {
         with_default_config('sbcl'),
     },
@@ -795,6 +816,10 @@ sub get_config {
     return get_config_generic(\%software_config, @_);
 }
 
+sub get_config_base {
+    return get_config_generic(\%base_config, @_);
+}
+
 sub get_config_distro {
     return get_config_generic(\%distro_config, @_);
 }
@@ -812,15 +837,16 @@ sub run_config_or_default {
         return $custom->(@args);
     }
     $user_distro //= get_distribution();
-    my $default = get_config_distro($user_distro, @accessors[1..$#accessors]);
+    my @access_path = @accessors[1..$#accessors];
+    my $default = get_config_distro($user_distro, @access_path) // get_config_base(@access_path);
     unless ($default) {
-        error('no default implementation of ' . join('_', @accessors[1..$#accessors]) . " for '$user_distro'");
+        error('no default implementation of ' . join('_', @access_path) . " for '$user_distro'");
         return 1;
     }
     return $default->($accessors[0], @args);
 }
 
-sub is_up_to_date {
+sub default_up_to_date {
     my $program = shift;
     my $current = eval { run_config_or_default($program, 'version', 'current') };
     info('could not retrieve current version number, assuming up-to-date')
@@ -831,6 +857,17 @@ sub is_up_to_date {
     debug("comparing version $current (current) to $latest (latest)");
     my $comp = run_config_or_default([$current, $latest], $program, 'version', 'compare');
     return ($comp >= 0);
+}
+
+sub is_up_to_date {
+    my $program = shift;
+    my $up_to_date = run_config_or_default($program, 'up_to_date');
+    if ($up_to_date eq 'no_check') {
+        debug("Skipping version check.");
+        return 0;
+    } else {
+        return $up_to_date;
+    }
 }
 
 ########

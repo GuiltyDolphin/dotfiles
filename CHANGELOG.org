@@ -44,6 +44,7 @@
 - install configurations
   - =lcov=
   - =plover=
+  - =rust=
   - =tor_browser=
   - =zotero=
   - =zoom=
