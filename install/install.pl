@@ -1067,13 +1067,27 @@ sub install_program {
     my $program = shift;
     if (is_installed($program)) {
         debug("'$program' already installed, updating...");
-        update_program($program);
-        return;
+        return update_program($program);
     }
     info("installing '$program'");
+
+    # when dependencies are explicitly provided, we install them
+    my $deps = get_config($program, 'dependencies');
+    my $deps_ok = 1;
+    if ($deps) {
+        foreach my $dep (@{$deps->()}) {
+            info("Installing dependency: $dep");
+            $deps_ok = 0 unless install_program($dep);
+        }
+    }
+    if (!$deps_ok) {
+        error("there was a problem installing dependencies");
+    }
+
     my $ok = success(run_config_or_default($program, 'install'));
     $ok and info("successfully installed '$program'");
     error("error encountered while installing '$program'") unless $ok;
+    return $ok;
 }
 
 sub install_deps {
@@ -1102,15 +1116,16 @@ sub update_program {
     info("updating '$program'");
     unless (is_installed($program)) {
         error("cannot update '$program' (not installed)");
-        return;
+        return 0;
     }
     if (is_up_to_date($program)) {
         info("skipping $program (up-to-date)");
-        return;
+        return 1;
     }
     my $ok = success(run_config_or_default($program, 'update'));
     $ok and info("successfully updated '$program'");
     error("error encountered while updating '$program'") unless $ok;
+    return $ok;
 }
 
 sub version {
