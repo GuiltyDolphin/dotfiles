@@ -19,14 +19,6 @@ link_contents = $(call installer,link_contents) $(1) $(2)
 		configure_dev_heavy \\
 		configure_dev_emacs \\
 		configure_dev_language_all \\
-		configure_dev_common_lisp \\
-		configure_dev_haskell \\
-		configure_dev_idris \\
-		configure_dev_java \\
-		configure_dev_javascript \\
-		configure_dev_ocaml \\
-		configure_dev_perl \\
-		configure_dev_ruby \\
 		configure_dev_terminal \\
 		configure_perl_local_lib \\
 		configure_vim \\
