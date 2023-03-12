@@ -397,12 +397,12 @@ sub with_arch_aur_config {
 
 sub distro_debian_install {
     my $program = shift;
-    return system("apt-get install $program -y");
+    return system("sudo apt-get install $program -y");
 }
 
 sub distro_debian_install_deps {
     my ($program) = @_;
-    return system("apt-get build-dep $program -y");
+    return system("sudo apt-get build-dep $program -y");
 }
 
 sub distro_debian_installed {
@@ -414,7 +414,7 @@ sub distro_debian_installed {
 
 sub distro_debian_update {
     my $program = shift;
-    return system("apt-get install $program -y");
+    return system("sudo apt-get install $program -y");
 }
 
 sub distro_debian_version_current {
