@@ -603,6 +603,27 @@ sub rust_config {
     );
 }
 
+#########
+# Ctags #
+#########
+
+sub universal_ctags_install {
+    # https://docs.ctags.io/en/latest/autotools.html
+    with_directory $software_directory => sub {
+        sequence(
+            git_clone('https://github.com/universal-ctags/ctags.git'),
+            with_directory "$software_directory/ctags" => sub {
+                sequence(
+                    "./autogen.sh",
+                    "./configure --prefix $HOME/.local",
+                    "make",
+                    "make install"
+                );
+            },
+        );
+    };
+}
+
 ###########
 # Default #
 ###########
@@ -773,6 +794,45 @@ my %software_config = (
     },
     tor_browser => {
         with_arch_aur_config('tor-browser'),
+    },
+    universal_ctags => {
+        install => \&universal_ctags_install,
+        installed => sub { is_local_bin(get_bin_path('ctags')) },
+        dependencies => sub {
+            return [
+                # https://github.com/universal-ctags/ctags/blob/master/docs/autotools.rst#gnulinux-distributions
+                'gcc',
+                'make',
+                'pkg-config',
+                'autoconf',
+                'automake',
+                'python3-docutils',
+                'libseccomp-dev',
+                'libjansson-dev',
+                'libyaml-dev',
+                'libxml2-dev'
+            ];
+        },
+        version => {
+            current => sub {
+                my $info = `ctags --version`;
+                $info =~ qr/^Universal Ctags [0-9.]+\(p([^)]+)\)/;
+                return $1;
+            },
+            latest => sub {
+                my $version;
+                with_directory $software_directory => sub {
+                    sequence(
+                        git_clone('https://github.com/universal-ctags/ctags.git'),
+                        with_directory "$software_directory/ctags" => sub {
+                            sequence('git fetch --tags');
+                            chomp ($version = `git tag --list | grep '^p[0-9]' | sort -r | head -n 1`);
+                        },
+                    );
+                };
+                return $version =~ s/^p//r;
+            },
+        },
     },
     urxvt => {
         with_default_config('rxvt-unicode'),

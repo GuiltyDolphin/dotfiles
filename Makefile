@@ -582,6 +582,7 @@ setup_ycm : install_vundle
 
 .PHONY: setup_vundle_plugins
 setup_vundle_plugins : install_vundle
+	$(call install_prog,universal_ctags) # for tagbar
 	@vim -c 'exec "PluginInstall" | qa'
 
 solarized_file_url = "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark"
