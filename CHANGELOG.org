@@ -7,6 +7,8 @@
 
 ** Added
 
+- new shell command =diff-directories= for summarising directory diffs
+
 - new shell command =my-size-all= for summarising sizes of
   files and directories in current directory
 

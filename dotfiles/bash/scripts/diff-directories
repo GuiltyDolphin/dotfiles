@@ -1,0 +1,186 @@
+#!/usr/bin/env sh
+
+DIR1="$1"
+DIR2="$2"
+
+USAGE="USAGE: diff-directories <DIR1> <DIR2> [lrb] [sf]"
+HELP="$(cat <<EOF
+  l - prefer left directory (don't warn if files are only in left)
+  r - prefer right directory (don't warn if files are only in right)
+  b - prefer neither directory (warn for all "only in" files)
+
+  n - don't do any squashing
+  s - squash certain diffs for simplicity (e.g., just mention that git object directories differ, don't list)
+  f - full squash (including directories differing by contents)
+EOF
+)"
+
+if [ "$DIR1" = '' -o "$DIR2" = "" ]; then
+  echo "$USAGE"
+  exit 1
+fi
+
+if [ ! -d "$DIR1" ]; then
+  echo "Not a directory: $DIR1"
+  exit 1
+fi
+
+if [ ! -d "$DIR2" ]; then
+  echo "Not a directory: $DIR2"
+  exit 1
+fi
+
+prefer='none'
+
+if [ "$3" != '' -a "$3" != 'l' -a "$3" != 'r' -a "$3" != 'b' ]; then
+  echo "$USAGE"
+  exit 1
+fi
+if [ "$3" = 'l' ]; then
+  prefer='left'
+elif [ "$3" = 'r' ]; then
+  prefer='right'
+fi
+
+squash='none'
+if [ "$4" != '' -a "$4" != 's' -a "$4" != 'f' -a "$4" != 'n' ]; then
+  echo "$USAGE"
+  exit 1
+elif [ "$4" = 's' ]; then
+  squash='squash'
+elif [ "$4" = 'f' ]; then
+  squash='full-squash'
+fi
+
+filter_preference() {
+  filter_re=''
+  if [ "$prefer" = 'left' ]; then
+    filter_re="Only in $DIR1";
+  elif [ "$prefer" = 'right' ]; then
+    filter_re="Only in $DIR2";
+  else
+    cat
+    exit 0
+  fi
+  grep -Fv "$filter_re"
+}
+
+# NOTE: squashing doesn't currently play well with 'b' option - because of the alternating Only in a, Only in b... (2022-07-10)
+git_path_re='\.git[\/:]'
+
+squash_git() {
+  squash_git="$(cat <<EOF
+{
+  if (/^Only in /) {
+    split(\$3, arr, /$git_path_re/);
+    rex="^"arr[1]"$git_path_re";
+    if (!(prev ~ rex)) {
+      if (\$3 ~ /$git_path_re/) {
+        print \$1" "\$2" "arr[1]".git/ <some git files differ>"
+      } else {
+        print \$0
+      }
+    }
+    prev = \$3;
+  } else {
+    print \$0
+    prev = \$3;
+  }
+}
+EOF
+)"
+  awk "$squash_git"
+}
+
+squash_differing_directories() {
+  squash_dirs="$(cat <<EOF
+{
+  if (/^Only in /) {
+    if (\$3 == running) {
+      count = count + 1
+    } else {
+      if (count == 1) {
+        print prev_full
+      } else {
+        print "Only in "running" <"count" files>"
+      }
+      running = \$3
+      count = 1
+    }
+    prev = \$3;
+    prev_full = \$0;
+  } else {
+    print \$0
+  }
+}
+END {
+  if (/^Only in /) {
+    if (count == 1) {
+      print prev_full
+    } else {
+      print "Only in "running" <"count" files>"
+    }
+  }
+}
+EOF
+)"
+
+  awk "$squash_dirs"
+}
+
+# Prefix a line with '--' to ignore/comment it out
+IGNORES=$(echo "$(sed -E 's/| *--($| .*$)//gm' << EOF
+    \\.stack-work
+    |\\.git
+    |\\.~
+    |~($| )
+EOF
+)" | tr --delete '\n ')
+
+git_ignore_paths() {
+  find "$DIR1" "$DIR2" -name .gitignore -exec sh -c "cd \"\$(dirname {})\"; git list-ignored | xargs -Ifile echo \"\$(dirname {})/file\"" \;
+}
+
+squash_verbosity() {
+  remove_ignores() {
+    ignore_file=/tmp/_diff_directories_ignore_paths
+    echo "$(git_ignore_paths)" > "$ignore_file"
+    grep -vFf "$ignore_file"
+  }
+  if [ "$squash" = 'squash' ]; then
+    squash_git | remove_ignores
+  elif [ "$squash" = 'full-squash' ]; then
+    squash_git | remove_ignores | squash_differing_directories
+  else
+    cat
+  fi
+}
+
+# NOTE: assumes that the directory names can each only occur once in a line
+simplify_naming() {
+  if [ "$squash" = 'none' ]; then
+    cat
+  else
+    awk "$(cat <<EOF
+{
+  curr=\$0
+  d1p=index(curr, "$DIR1")
+  if (d1p != 0) {
+    before=substr(curr, 0, d1p-1)
+    after=substr(curr, d1p+length("$DIR1"))
+    curr=before"_dir1/"after
+  }
+  d2p=index(curr, "$DIR2")
+  if (d2p != 0) {
+    before=substr(curr, 0, d2p-1)
+    after=substr(curr, d2p+length("$DIR2"))
+    curr=before"_dir2/"after
+  }
+  print curr
+}
+EOF
+)"
+  fi
+}
+
+diff -r "$DIR1" "$DIR2" | filter_preference | squash_verbosity | grep -vE "$IGNORES" | simplify_naming
