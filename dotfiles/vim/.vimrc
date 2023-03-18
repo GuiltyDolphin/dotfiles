@@ -28,6 +28,7 @@ if g:use_syntax_plugins
   " Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
   Plugin 'ehamberg/vim-cute-python'
   Plugin 'idris-hackers/idris-vim' " General plugin for Idris
+  Plugin 'rust-lang/rust.vim' " General plugin for Rust
 endif
 
 " Disable to stop large plugins being used (>10M)
@@ -352,6 +353,7 @@ let s:js_ignore_used_before_defined = "'\\(DD[GH]\\|moment\\|\\$\\)' was used be
 let g:syntastic_javascript_jshint_quiet_messages = { "regex": s:js_ignore_used_before_defined }
 let g:syntastic_javascript_jslint_quiet_messages = { "regex": s:js_ignore_used_before_defined }
 let g:syntastic_vim_checkers = ['vint']
+let g:syntastic_rust_checkers = ['cargo']
 
 " }}}
 
@@ -637,6 +639,16 @@ augroup Haskell
   autocmd!
   au FileType haskell setlocal omnifunc=necoghc#omnifunc
   au FileType haskell let g:ycm_semantic_triggers={'haskell' : ['.', '= ', '> ', '- ', ':: '] }
+augroup END
+
+" }}}
+
+" Rust {{{
+
+let g:rustfmt_fail_silently = 0 " Don't prevent rustfmt from showing errors
+augroup Rust
+  autocmd!
+  au FileType rust let b:rustfmt_autosave = 1 " Automatically format on buffer save
 augroup END
 
 " }}}

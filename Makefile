@@ -91,6 +91,7 @@ configure_dev_ruby : install_ruby1.9.1 link_irb
 
 # Rust development
 configure_dev_rust : install_rust
+	@rustup component add rustfmt
 
 install_rust :
 	$(call install_prog,rust)

@@ -52,6 +52,14 @@ test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> 
 
 export PATH=$PATH:$HOME/.opam/default/bin
 
+########
+# Rust #
+########
+
+export CARGO_HOME=$HOME/.cargo
+export RUSTUP_HOME=$HOME/.rustup
+export PATH=$CARGO_HOME/bin:$PATH
+
 ##########
 # nodenv #
 ##########
