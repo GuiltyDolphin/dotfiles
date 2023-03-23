@@ -52,6 +52,12 @@ test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> 
 
 export PATH=$PATH:$HOME/.opam/default/bin
 
+##########
+# nodenv #
+##########
+
+export PATH="$HOME/.nodenv/bin:$PATH"
+
 ##########################################
 # Personal/private environment variables #
 ##########################################

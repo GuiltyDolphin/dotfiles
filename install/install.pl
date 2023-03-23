@@ -625,6 +625,56 @@ sub universal_ctags_install {
     };
 }
 
+sub nodenv_config {
+    my $nodenv_dir = "$HOME/.nodenv";
+
+    return (
+        # https://github.com/nodenv/nodenv#basic-github-checkout
+        install => sub {
+            sequence(
+                "git clone https://github.com/nodenv/nodenv.git $nodenv_dir",
+                with_directory $nodenv_dir => sub {
+                    sequence(
+                        "src/configure",
+                        "make -C src",
+                        "$nodenv_dir/bin/nodenv init",
+                        # verify installation
+                        "curl -fsSL https://github.com/nodenv/nodenv-installer/raw/main/bin/nodenv-doctor | bash",
+                    );
+                },
+            );
+        },
+        installed => sub { defined get_bin_path('nodenv') },
+        update => sub {
+            sequence(
+                "git -C $nodenv_dir pull",
+            );
+        },
+        up_to_date => sub { 'no_check' },
+    );
+}
+
+sub nodebuild_config {
+    my $nodenv_dir = "$HOME/.nodenv";
+    return (
+        # https://github.com/nodenv/node-build#installation
+        install => sub {
+            sequence(
+                "mkdir -p \$(nodenv root)/plugins",
+                q{git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build},
+            );
+        },
+        installed => sub { system("git -C $nodenv_dir/plugins/node-build rev-parse 2>/dev/null") == 0 },
+        update => sub {
+            sequence(
+                q{git -C "$(nodenv root)"/plugins/node-build pull},
+            );
+        },
+        up_to_date => sub { 'no_check' },
+        dependencies => sub { ['nodenv'] },
+    );
+}
+
 ###########
 # Default #
 ###########
@@ -729,6 +779,12 @@ my %software_config = (
     },
     node => {
         with_default_config('nodejs'),
+    },
+    nodenv => {
+        nodenv_config(),
+    },
+    node_build => {
+        nodebuild_config(),
     },
     offlineimap => {
         with_default_config('offlineimap'),

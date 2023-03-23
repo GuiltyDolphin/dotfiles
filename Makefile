@@ -72,7 +72,7 @@ configure_dev_idris : install_idris
 configure_dev_java : configure_eclim configure_emacs configure_jdk
 
 # JavaScript development
-configure_dev_javascript : configure_node
+configure_dev_javascript : configure_node configure_nodenv
 
 # OCaml development
 configure_dev_ocaml : configure_ocaml configure_opam
@@ -337,6 +337,17 @@ install_node :
 .PHONY: link_npm
 link_npm :
 	@$(call linkf,node/.npmrc,.npmrc)
+
+.PHONY: configure_nodenv
+configure_nodenv : install_nodenv install_nodebuild
+
+.PHONY: install_nodenv
+install_nodenv :
+	@$(call install_prog,nodenv)
+
+.PHONY: install_nodebuild
+install_nodebuild :
+	@$(call install_prog,node_build)
 
 .PHONY: install_offlineimap
 install_offlineimap :

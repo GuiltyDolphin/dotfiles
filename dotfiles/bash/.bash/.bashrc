@@ -166,6 +166,12 @@ set -o emacs
 
 source "$HOME/.bash/git_aliases.sh"
 
+##########
+# nodenv #
+##########
+
+eval "$(nodenv init - bash)"
+
 ###########
 # History #
 ###########
