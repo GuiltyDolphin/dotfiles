@@ -125,10 +125,23 @@ nnoremap <silent> <c-n> <nop>
 
 " Toggle tagbar window
 nnoremap <silent> <leader>b :TagbarToggle<cr>
-" Open ctrlp tag window
-nnoremap <silent <C-p> :CtrlP<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+
+" ctrlp {{{
+
+" Open ctrlp tag window
+nnoremap <silent <C-p> :CtrlP<cr>
+
+" In git repos: list all files (including untracked), except those excluded
+" (e.g., via .gitignore)
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
+    \ },
+\ }
+
+" }}}
 
 " Ultisnips
 let g:UltiSnipsJumpForwardTrigger = "<c-b>"
