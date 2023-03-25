@@ -98,7 +98,7 @@ install_rust :
 
 # Enhanced development in Vim
 # NOTE: We should also set up YCM here, but install is currently broken.
-configure_vim : link_vim setup_vundle_plugins
+configure_vim : link_vim setup_vim_plugins
 
 # X config
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
@@ -586,16 +586,16 @@ install_xset :
 # Other
 
 .PHONY: setup_ycm
-setup_ycm : install_vundle
+setup_ycm : setup_vim_plugins
 	@$(call install_prog,cmake) \
 		&& $(call install_prog,python-dev) \
 		&& cd $(vundle_dir)/youcompleteme \
 		&& ./install.py
 
-.PHONY: setup_vundle_plugins
-setup_vundle_plugins : install_vundle
+.PHONY: setup_vim_plugins
+setup_vim_plugins :
 	$(call install_prog,universal_ctags) # for tagbar
-	@vim -c 'exec "PluginInstall" | qa'
+	@vim -c 'exec "PlugInstall" | qa'
 
 solarized_file_url = "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark"
 solarized_color_file = $(HOME)/.dircolors

@@ -5,63 +5,63 @@
 set nocompatible              " be iMproved
 
 
-" Vundle {{{
+" Vim-Plug {{{
 
-filetype off                  " required
+" Bootstrap vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  augroup VimPlugInit
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
+endif
 
-" set the runtime path to include Vundle and initialize
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-
-" Disable to stop Vundle from using syntax plugins.
+" Disable to prevent loading of syntax plugins.
 let g:use_syntax_plugins = 1
 
 if g:use_syntax_plugins
-  Plugin 'lervag/vimtex'
-  Plugin 'lesliev/vim-inform7'       " Syntax file highlighting for inform
-  Plugin 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
-  Plugin 'Twinside/vim-haskellConceal'
-  " Plugin 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
-  Plugin 'ehamberg/vim-cute-python'
-  Plugin 'idris-hackers/idris-vim' " General plugin for Idris
-  Plugin 'rust-lang/rust.vim' " General plugin for Rust
+  Plug 'lervag/vimtex'
+  Plug 'lesliev/vim-inform7'       " Syntax file highlighting for inform
+  Plug 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
+  Plug 'Twinside/vim-haskellConceal'
+  " Plug 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
+  Plug 'ehamberg/vim-cute-python'
+  Plug 'idris-hackers/idris-vim' " General plugin for Idris
+  Plug 'rust-lang/rust.vim' " General plugin for Rust
 endif
 
 " Disable to stop large plugins being used (>10M)
 let g:use_big_plugins = 1
 
 if g:use_big_plugins
-  Plugin 'valloric/youcompleteme'    " Code completion
+  Plug 'valloric/youcompleteme'    " Code completion
 endif
 
 
-Plugin 'altercation/vim-colors-solarized' " Solarized colorscheme
-Plugin 'bitc/vim-hdevtools'
-Plugin 'dbakker/vim-lint'
-Plugin 'eagletmt/neco-ghc'
-Plugin 'honza/vim-snippets.git'    " Default ultisnips snippets
-Plugin 'jpalardy/vim-slime'        " One way communication to a tmux session
-Plugin 'kien/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'      " Syntax error checking
-Plugin 'sirver/ultisnips'          " Snippet integration
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-fugitive'        " Git integration
-Plugin 'tpope/vim-surround'        " Allow manipulation of surrounding characters
-Plugin 'godlygeek/tabular'         " Text filtering and alignment
-Plugin 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
-Plugin 'mustache/vim-mustache-handlebars' " Mustache & Handlebars integration
+Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
+Plug 'bitc/vim-hdevtools'
+Plug 'dbakker/vim-lint'
+Plug 'eagletmt/neco-ghc'
+Plug 'honza/vim-snippets'        " Default ultisnips snippets
+Plug 'jpalardy/vim-slime'        " One way communication to a tmux session
+Plug 'kien/ctrlp.vim'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'      " Syntax error checking
+Plug 'sirver/ultisnips'          " Snippet integration
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'        " Git integration
+Plug 'tpope/vim-surround'        " Allow manipulation of surrounding characters
+Plug 'godlygeek/tabular'         " Text filtering and alignment
+Plug 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
+Plug 'mustache/vim-mustache-handlebars' " Mustache & Handlebars integration
 
-Plugin 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
-Plugin 'guiltydolphin/project-root-vim' " Easier project navigation
+Plug 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
+Plug 'guiltydolphin/project-root-vim' " Easier project navigation
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
 
 " }}}
 
