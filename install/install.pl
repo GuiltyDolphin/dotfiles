@@ -608,21 +608,93 @@ sub rust_config {
 # Ctags #
 #########
 
+sub ctags_build {
+    return sequence(
+        "./autogen.sh",
+        "./configure --prefix $HOME/.local",
+        "make",
+        "make install"
+    );
+}
+
 sub universal_ctags_install {
     # https://docs.ctags.io/en/latest/autotools.html
     with_directory $software_directory => sub {
         sequence(
             git_clone('https://github.com/universal-ctags/ctags.git'),
             with_directory "$software_directory/ctags" => sub {
-                sequence(
-                    "./autogen.sh",
-                    "./configure --prefix $HOME/.local",
-                    "make",
-                    "make install"
-                );
+                ctags_build();
             },
         );
     };
+}
+
+sub universal_ctags_update {
+    my ($line) = @_;
+    return sub {
+        with_directory $software_directory => sub {
+            sequence(
+                with_directory "$software_directory/ctags" => sub {
+                    sequence(
+                        "git stash --include-untracked --message='GDI: Autostash for update.'",
+                        "git pull",
+                        ctags_build(),
+                    );
+                },
+            );
+        };
+    }
+}
+
+# $line is 'stable' or 'nightly'
+sub universal_ctags_config {
+    my ($line) = @_;
+    return (
+        install => \&universal_ctags_install,
+        update => universal_ctags_update($line),
+        installed => sub { is_local_bin(get_bin_path('ctags')) },
+        dependencies => sub {
+            return [
+                # https://github.com/universal-ctags/ctags/blob/master/docs/autotools.rst#gnulinux-distributions
+                'gcc',
+                'make',
+                'pkg-config',
+                'autoconf',
+                'automake',
+                'python3-docutils',
+                'libseccomp-dev',
+                'libjansson-dev',
+                'libyaml-dev',
+                'libxml2-dev'
+            ];
+        },
+        version => {
+            current => sub {
+                my $info = `ctags --version`;
+                if ($line eq 'stable') {
+                    $info =~ qr/^Universal Ctags ([0-9.]+)\(/;
+                    return $1;
+                } else {
+                    $info =~ qr/^Universal Ctags [0-9.]+\(p([^)]+)\)/;
+                    return $1;
+                }
+            },
+            latest => sub {
+                my $version;
+                my $vletter = $line eq 'stable' ? 'v' : 'p';
+                with_directory $software_directory => sub {
+                    sequence(
+                        git_clone('https://github.com/universal-ctags/ctags.git'),
+                        with_directory "$software_directory/ctags" => sub {
+                            sequence('git fetch --tags');
+                            chomp ($version = `git tag --list | grep '^${vletter}[0-9]' | sort -r | head -n 1`);
+                        },
+                    );
+                };
+                return $version =~ s/^$vletter//r;
+            },
+        },
+    );
 }
 
 sub nodenv_config {
@@ -853,43 +925,10 @@ my %software_config = (
         with_arch_aur_config('tor-browser'),
     },
     universal_ctags => {
-        install => \&universal_ctags_install,
-        installed => sub { is_local_bin(get_bin_path('ctags')) },
-        dependencies => sub {
-            return [
-                # https://github.com/universal-ctags/ctags/blob/master/docs/autotools.rst#gnulinux-distributions
-                'gcc',
-                'make',
-                'pkg-config',
-                'autoconf',
-                'automake',
-                'python3-docutils',
-                'libseccomp-dev',
-                'libjansson-dev',
-                'libyaml-dev',
-                'libxml2-dev'
-            ];
-        },
-        version => {
-            current => sub {
-                my $info = `ctags --version`;
-                $info =~ qr/^Universal Ctags [0-9.]+\(p([^)]+)\)/;
-                return $1;
-            },
-            latest => sub {
-                my $version;
-                with_directory $software_directory => sub {
-                    sequence(
-                        git_clone('https://github.com/universal-ctags/ctags.git'),
-                        with_directory "$software_directory/ctags" => sub {
-                            sequence('git fetch --tags');
-                            chomp ($version = `git tag --list | grep '^p[0-9]' | sort -r | head -n 1`);
-                        },
-                    );
-                };
-                return $version =~ s/^p//r;
-            },
-        },
+        universal_ctags_config('stable'),
+    },
+    universal_ctags_nightly => {
+        universal_ctags_config('nightly'),
     },
     urxvt => {
         with_default_config('rxvt-unicode'),
