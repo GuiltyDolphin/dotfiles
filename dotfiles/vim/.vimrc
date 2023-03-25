@@ -10,7 +10,7 @@ set nocompatible              " be iMproved
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -144,8 +144,8 @@ let g:ctrlp_user_command = {
 " }}}
 
 " Ultisnips
-let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-let g:UltiSnipsExpandTrigger = "<c-b>"
+let g:UltiSnipsJumpForwardTrigger = '<c-b>'
+let g:UltiSnipsExpandTrigger = '<c-b>'
 
 " fugitive {{{
 
@@ -211,9 +211,9 @@ augroup HelpKeys
 augroup END
 
 function! s:ToggleHelpType()
-  if &filetype =~ '\vt[e]xt'
+  if &filetype =~# '\vt[e]xt'
     setlocal filetype=help
-  elseif &filetype =~ 'help'
+  elseif &filetype =~# 'help'
     setlocal filetype=text
   endif
 endfunction
@@ -372,7 +372,7 @@ let g:syntastic_rust_checkers = ['cargo']
 
 " vim-slime {{{
 
-let g:slime_target = "tmux"
+let g:slime_target = 'tmux'
 let g:slime_paste_file = tempname()
 
 " }}}
@@ -387,8 +387,8 @@ let g:ycm_autoclose_preview_window_after_insertion = 1 " Autoclose the info wind
 
 " haskellmode {{{
 
-let g:haddock_browser = "/usr/bin/lynx"
-let g:ghc = "/usr/bin/ghc"
+let g:haddock_browser = '/usr/bin/lynx'
+let g:ghc = '/usr/bin/ghc'
 
 " }}}
 
@@ -400,7 +400,7 @@ let g:ghc = "/usr/bin/ghc"
 
 " Ruby {{{
 
-let ruby_version = "2.0" " Preferred ruby version
+let ruby_version = '2.0' " Preferred ruby version
 
 " }}}
 
@@ -509,10 +509,10 @@ call proot#initialize_project('perl', s:pr_perl)
 
 function! s:SetPerlProject()
   setlocal shiftwidth=4
-  let a:dir = fnamemodify(b:project_root_project.root_directory, ":t")
-  if a:dir =~ '\v(duckduckgo|p5-app-duckpan)'
+  let a:dir = fnamemodify(b:project_root_project.root_directory, ':t')
+  if a:dir =~# '\v(duckduckgo|p5-app-duckpan)'
     call proot#set_project_type('ddg_backend')
-  elseif a:dir =~ '\v^(zeroclickinfo-.*)'
+  elseif a:dir =~# '\v^(zeroclickinfo-.*)'
     call proot#set_project_type('ddg_zci')
   endif
 endfunction
@@ -742,15 +742,15 @@ let g:tagbar_type_haskell = {
 " module name would be Baz.
 function! HaskellModuleName()
  let cabal_path = b:project_root_directory
- if expand("%") =~ '\v^$'
-   echoerr "Not in a valid module file"
+ if expand('%') =~? '\v^$'
+   echoerr 'Not in a valid module file'
    return -1
  endif
- if cabal_path =~ '\v^$'
-   return expand("%:t:r")
+ if cabal_path =~? '\v^$'
+   return expand('%:t:r')
  endif
- let full_path = expand("%:p:r")
- let below_cabal = substitute(full_path, cabal_path, "", "")
+ let full_path = expand('%:p:r')
+ let below_cabal = substitute(full_path, cabal_path, '', '')
  let module_path = matchlist(below_cabal, '\v/[^/]+/(.*)')[1]
  return substitute(module_path, '/', '.', 'g')
 endfunction
