@@ -401,6 +401,24 @@ sub with_arch_aur_config {
 #  Debian  #
 ############
 
+sub with_debian_config {
+    my ($package) = @_;
+    if (get_user_distro() ne 'debian') {
+        return ();
+    }
+    return (
+        install => sub { distro_debian_install($package) },
+        install_deps => sub { distro_debian_install_deps($package) },
+        installed => sub { distro_debian_installed($package) },
+        update => sub { distro_debian_update($package) },
+        version   => {
+            compare => \&distro_debian_version_compare,
+            current => sub { distro_debian_version_current($package) },
+            latest  => sub { distro_debian_version_latest($package) },
+        },
+    );
+}
+
 sub distro_debian_install {
     my $program = shift;
     return system("sudo apt-get install $program -y");
@@ -880,6 +898,7 @@ my %software_config = (
     },
     pip3 => {
         with_default_config('python-pip'),
+        with_debian_config('python3-pip'),
     },
     plover => {
         with_arch_aur_config('plover-git'),
