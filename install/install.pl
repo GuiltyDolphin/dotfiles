@@ -581,8 +581,8 @@ sub pip_version_current {
 
 sub pip_version_latest {
     my ($package, %options) = @_;
-    my $out = pip_run_output("search $package");
-    $out =~ m/^(?:$package) \(([0-9.]+)\)/m;
+    my $out = pip_run_output("index versions $package");
+    $out =~ qr/^[^ ]+ +\(([^)]+)\)/;
     my $version = $1;
     unless (defined $version) {
         error("Could not find any pip package by the name of '$package'");
