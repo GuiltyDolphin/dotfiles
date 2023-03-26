@@ -105,7 +105,12 @@ configure_display : configure_urxvt configure_x_keyboard configure_xinit configu
 	configure_xrandr configure_xrdb configure_xscreensaver configure_xset link_xresources
 
 # Setup for working in a terminal.
-configure_dev_terminal : configure_dev configure_tmuxinator
+configure_dev_terminal : configure_dev configure_terminal configure_tmuxinator
+
+configure_terminal : configure_gnome_terminal
+
+configure_gnome_terminal :
+	@./dotfiles/gnome-terminal/configure.pl --theme solarized-dark
 
 # Keyboard (when using X)
 configure_x_keyboard : install_setxkbmap
