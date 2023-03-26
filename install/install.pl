@@ -868,7 +868,7 @@ my %software_config = (
         with_arch_aur_config('mu'),
     },
     node => {
-        with_default_config('nodejs'),
+        nodenv_config(),
     },
     nodenv => {
         nodenv_config(),
