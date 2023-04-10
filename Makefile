@@ -106,7 +106,6 @@ install_rust :
 configure_dev_vim : configure_vim
 
 # Enhanced development in Vim
-# NOTE: We should also set up YCM here, but install is currently broken.
 configure_vim : link_vim setup_vim_plugins
 
 # X config
@@ -599,13 +598,6 @@ install_xset :
 	$(call install_prog,xset)
 
 # Other
-
-.PHONY: setup_ycm
-setup_ycm : setup_vim_plugins
-	@$(call install_prog,cmake) \
-		&& $(call install_prog,python-dev) \
-		&& cd $(vundle_dir)/youcompleteme \
-		&& ./install.py
 
 .PHONY: setup_vim_plugins
 setup_vim_plugins :

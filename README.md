@@ -89,8 +89,6 @@ More recipes can be found in the `Makefile` file in the `dotfiles` directory.
 
 * `make get_solarized_colors` to download the solarized color-scheme
 for terminal.
-* `make setup_ycm` will configure the `YouCompleteMe` plug-in for
-Vim - this may take a while.
 
 To install/link individual programs, you can use `install_prog` or
 `link_prog` (where `prog` is the required program). Thus `link_tmux`

@@ -32,14 +32,6 @@ if g:use_syntax_plugins
   Plug 'rust-lang/rust.vim' " General plugin for Rust
 endif
 
-" Disable to stop large plugins being used (>10M)
-let g:use_big_plugins = 1
-
-if g:use_big_plugins
-  Plug 'valloric/youcompleteme'    " Code completion
-endif
-
-
 Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
 Plug 'bitc/vim-hdevtools'
 Plug 'dbakker/vim-lint'
@@ -140,7 +132,17 @@ function! MyHover()
   call CocAction("doHover")
 endfunction
 
+function! MyGoToDefinition()
+  call CocAction('jumpDefinition')
+endfunction
+
+function! MyGoToReferences()
+  call CocAction('jumpReferences')
+endfunction
+
 nnoremap <silent> <leader>fl :call MyShowFileErrorList()<CR>
+nnoremap <silent> <localleader>gd :call MyGoToDefinition()<CR>
+nnoremap <silent> <localleader>gr :call MyGoToReferences()<CR>
 
 " }}}
 
@@ -370,14 +372,6 @@ set wildignore+=*.toc,*.aux " LaTeX build files
 
 let g:slime_target = 'tmux'
 let g:slime_paste_file = tempname()
-
-" }}}
-
-" YouCompleteMe {{{
-
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_autoclose_preview_window_after_insertion = 1 " Autoclose the info window popup when leaving insert mode
 
 " }}}
 
@@ -647,7 +641,6 @@ augroup END
 augroup Haskell
   autocmd!
   au FileType haskell setlocal omnifunc=necoghc#omnifunc
-  au FileType haskell let g:ycm_semantic_triggers={'haskell' : ['.', '= ', '> ', '- ', ':: '] }
 augroup END
 
 " }}}
