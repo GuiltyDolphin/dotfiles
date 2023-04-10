@@ -133,7 +133,11 @@ function! MyHover()
 endfunction
 
 function! MyGoToDefinition()
-  call CocAction('jumpDefinition')
+  if CocHasProvider('definition')
+    call CocAction('jumpDefinition')
+  else
+    normal! gd
+  endif
 endfunction
 
 function! MyGoToReferences()
@@ -141,7 +145,7 @@ function! MyGoToReferences()
 endfunction
 
 nnoremap <silent> <leader>fl :call MyShowFileErrorList()<CR>
-nnoremap <silent> <localleader>gd :call MyGoToDefinition()<CR>
+nnoremap <silent> gd :call MyGoToDefinition()<CR>
 nnoremap <silent> <localleader>gr :call MyGoToReferences()<CR>
 
 " }}}
