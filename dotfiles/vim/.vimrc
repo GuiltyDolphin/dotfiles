@@ -150,6 +150,18 @@ nnoremap <silent> <localleader>gr :call MyGoToReferences()<CR>
 
 " }}}
 
+" coc {{{
+
+" Scrolling for the floating (documentation) window
+nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+inoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+vnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+
+" }}}
+
 " ctrlp {{{
 
 " Open ctrlp tag window
@@ -664,12 +676,6 @@ augroup Rust
   au FileType rust nnoremap <buffer> <silent> <localleader>rb :Cbuild<cr>
   au FileType rust nnoremap <buffer> <silent> <localleader>rB :Cbench<cr>
   au FileType rust nnoremap <buffer> <silent> <localleader>rU :Cupdate<cr>
-
-  " Scrolling for the floating (documentation) window
-  au FileType rust nnoremap <silent><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
-  au FileType rust nnoremap <silent><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
-  au FileType rust inoremap <silent><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
-  au FileType rust inoremap <silent><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
 
   " Insert current entry from popup
   au FileType rust inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
