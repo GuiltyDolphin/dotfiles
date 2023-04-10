@@ -160,6 +160,91 @@ inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(
 vnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
 vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
 
+function! s:MyCocBindObjects()
+  function! MyCocBindObjectsInner(providesOK)
+    if a:providesOK
+      xmap <buffer> af <Plug>(coc-funcobj-a)
+      xmap <buffer> if <Plug>(coc-funcobj-i)
+      omap <buffer> af <Plug>(coc-funcobj-a)
+      omap <buffer> if <Plug>(coc-funcobj-i)
+      xmap <buffer> ac <Plug>(coc-classobj-a)
+      xmap <buffer> ic <Plug>(coc-classobj-i)
+      omap <buffer> ac <Plug>(coc-classobj-a)
+      omap <buffer> ic <Plug>(coc-classobj-i)
+    endif
+  endfunction
+  call <SID>MyCocActionAsyncWithCallback(function('MyCocBindObjectsInner'), 'hasProvider', 'documentSymbol')
+endfunction
+
+function! s:MyCocActionAsyncWithCallback(callback, ...)
+  call <SID>MyCocWaitForServices(function('<SID>MyCocActionAsyncWithCallbackNoWait', [a:callback] + a:000))
+endfunction
+
+function! MyCocActionAsyncWithCallbackNoWaitInner(max_iters, iter_len, iters, callback, args, e, r)
+  if a:e ==# 'Plugin not ready'
+    exec 'sleep ' . a:iter_len . 'm'
+    call MyCocActionAsyncWithCallbackNoWaitCheck(a:max_iters, a:iter_len, a:iters + 1, a:callback, a:args)
+  elseif a:e ==# 'v:null'
+    try
+      call a:callback(a:r)
+    catch
+      echom "Error in call: " v:exception
+    endtry
+  else
+    echom "unknown error: " a:e
+  endif
+endfunction
+
+function! MyCocActionAsyncWithCallbackNoWaitCheck(max_iters, iter_len, iters, callback, args)
+  if a:iters > a:max_iters
+    echom "Max iterations hit"
+    return
+  endif
+  call function('CocActionAsync', a:args + [{e, r -> MyCocActionAsyncWithCallbackNoWaitInner(a:max_iters, a:iter_len, a:iters, a:callback, a:args, e, r)}])()
+endfunction
+
+function! s:MyCocActionAsyncWithCallbackNoWait(callback, ...)
+  " in milliseconds
+  let l:max_wait = 2000
+  let l:iter_len = 100
+  let l:max_iters = l:max_wait / l:iter_len
+
+  call MyCocActionAsyncWithCallbackNoWaitCheck(l:max_iters, l:iter_len, 0, a:callback, a:000)
+endfunction
+
+function! s:MyCocWaitForServices(callback)
+  " in milliseconds
+  let l:max_wait = 2000
+  let l:iter_len = 100
+  let l:max_iters = l:max_wait / l:iter_len
+
+  function MyCocWaitForServicesCheckServices(iters, callback, services) closure
+    for service in a:services
+      if service.state ==# 'starting'
+        exec 'sleep ' . l:iter_len . 'm'
+        call MyCocWaitForServicesCheck(a:iters + 1, a:callback)
+        return
+      endif
+    endfor
+    call a:callback()
+  endfunction
+
+  function MyCocWaitForServicesCheck(iters, callback) closure
+    if a:iters > l:max_iters
+      echom "Max iterations hit"
+      return
+    endif
+    call <SID>MyCocActionAsyncWithCallbackNoWait({services -> MyCocWaitForServicesCheckServices(a:iters, a:callback, services)}, 'services')
+  endfunction
+
+  call MyCocWaitForServicesCheck(0, a:callback)
+endfunction
+
+augroup MyCocNewBuf
+  autocmd!
+  au FileType * call <SID>MyCocBindObjects()
+augroup END
+
 " }}}
 
 " ctrlp {{{
