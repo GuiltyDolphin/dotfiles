@@ -57,7 +57,8 @@ configure_dev_language_all : \
 	configure_dev_ocaml \
 	configure_dev_perl \
 	configure_dev_ruby \
-	configure_dev_rust
+	configure_dev_rust \
+	configure_dev_vim
 
 # Common Lisp development
 configure_dev_common_lisp : configure_sbcl
@@ -89,12 +90,20 @@ install_perl_local_lib :
 # Ruby development
 configure_dev_ruby : install_ruby1.9.1 link_irb
 
+rust_analyzer_target = $$CARGO_HOME/bin/rust-analyzer
 # Rust development
-configure_dev_rust : install_rust
+configure_dev_rust : configure_vim install_rust
 	@rustup component add rustfmt
+	@rustup component add rust-analyzer
+	@rustup component add rls
+	@readlink "$(rust_analyzer_target)" >/dev/null || ln -s "$$(rustup which --toolchain stable rust-analyzer)" "$(rust_analyzer_target)"
+	@vim -c 'exec "CocInstall coc-rust-analyzer" | qa'
 
 install_rust :
 	$(call install_prog,rust)
+
+# Vim development
+configure_dev_vim : configure_vim
 
 # Enhanced development in Vim
 # NOTE: We should also set up YCM here, but install is currently broken.
@@ -497,6 +506,7 @@ link_vim :
 	$(call linkf,vim/.vimrc,.vimrc)
 	@mkdir -p $(HOME)/.vim
 	$(call linkf,vim/.vim/UltiSnips,.vim/UltiSnips)
+	$(call linkf,vim/coc-settings.json,.vim/coc-settings.json)
 
 .PHONY: link_vimperator
 link_vimperator :
@@ -600,6 +610,7 @@ setup_ycm : setup_vim_plugins
 .PHONY: setup_vim_plugins
 setup_vim_plugins :
 	$(call install_prog,universal_ctags) # for tagbar
+	$(call install_prog,node) # for coc.nvim
 	@vim -c 'exec "PlugInstall" | qa'
 
 solarized_file_url = "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark"

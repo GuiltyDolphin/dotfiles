@@ -56,6 +56,7 @@ Plug 'tpope/vim-surround'        " Allow manipulation of surrounding characters
 Plug 'godlygeek/tabular'         " Text filtering and alignment
 Plug 'plasticboy/vim-markdown'   " Must come after 'godlygeek/tabular'
 Plug 'mustache/vim-mustache-handlebars' " Mustache & Handlebars integration
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP, autocompletion, IDE features
 
 Plug 'guiltydolphin/tex-headings-vim' " Who doesn't love to change section headers?
 Plug 'guiltydolphin/project-root-vim' " Easier project navigation
@@ -126,6 +127,22 @@ nnoremap <silent> <c-n> <nop>
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+
+" Linting and LSP (generic) {{{
+
+" Show error list
+function! MyShowFileErrorList()
+  CocDiagnostics
+endfunction
+
+" Hover (e.g., show type at cursor)
+function! MyHover()
+  call CocAction("doHover")
+endfunction
+
+nnoremap <silent> <leader>fl :call MyShowFileErrorList()<CR>
+
+" }}}
 
 " ctrlp {{{
 
@@ -640,7 +657,33 @@ augroup END
 let g:rustfmt_fail_silently = 0 " Don't prevent rustfmt from showing errors
 augroup Rust
   autocmd!
-  au FileType rust let b:rustfmt_autosave = 1 " Automatically format on buffer save
+
+  " Automatically format on buffer save
+  au FileType rust let b:rustfmt_autosave = 1
+
+  " General project bindings
+  au FileType rust nnoremap <buffer> <silent> <localleader>rr :Crun<cr>
+  au FileType rust nnoremap <buffer> <silent> <localleader>rt :Ctest<cr>
+  au FileType rust nnoremap <buffer> <silent> <localleader>rb :Cbuild<cr>
+  au FileType rust nnoremap <buffer> <silent> <localleader>rB :Cbench<cr>
+  au FileType rust nnoremap <buffer> <silent> <localleader>rU :Cupdate<cr>
+
+  " Scrolling for the floating (documentation) window
+  au FileType rust nnoremap <silent><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+  au FileType rust nnoremap <silent><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+  au FileType rust inoremap <silent><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+  au FileType rust inoremap <silent><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+
+  " Insert current entry from popup
+  au FileType rust inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
+
+  " Hover (e.g., show type at cursor)
+  au FileType rust nnoremap <buffer> <silent> <localleader>th :call MyHover()<cr>
+
+  " Applying code actions (e.g., allowing filling Rust expansion arms)
+  au FileType rust nmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
+  au FileType rust xmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
+  au FileType rust nmap <buffer> <silent> <localleader>tt <Plug>(coc-codeaction-cursor)
 augroup END
 
 " }}}
