@@ -49,7 +49,6 @@ Plug 'jpalardy/vim-slime'        " One way communication to a tmux session
 Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'      " Syntax error checking
 Plug 'sirver/ultisnips'          " Snippet integration
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'        " Git integration
@@ -349,26 +348,6 @@ set wildignore+=*.toc,*.aux " LaTeX build files
 " Variable {{{
 
 " Plugins {{{
-
-" Syntastic {{{
-
-let g:syntastic_python_checkers = ["python", "pep8", "pylint"]
-let g:syntastic_python_pylint_quiet_messages = {
-            \ "regex": "\\(parens after u'print'"
-            \ . "\\|Redefining built-in 'file'\\)" }
-let g:syntastic_ruby_checkers = ["mri", "rubocop", "rubylint"]
-let g:syntastic_haskell_checkers = ["hdevtools", "hlint"]
-let g:syntastic_enable_perl_checker = 1
-let g:syntastic_perl_checkers = ["perl", "podchecker"]
-let g:syntastic_haskell_hdevtools_quiet_messages = { "regex": 'Could not find module' }
-let g:syntastic_javascript_checkers = ["jshint", "jslint"]
-let s:js_ignore_used_before_defined = "'\\(DD[GH]\\|moment\\|\\$\\)' was used before it was defined."
-let g:syntastic_javascript_jshint_quiet_messages = { "regex": s:js_ignore_used_before_defined }
-let g:syntastic_javascript_jslint_quiet_messages = { "regex": s:js_ignore_used_before_defined }
-let g:syntastic_vim_checkers = ['vint']
-let g:syntastic_rust_checkers = ['cargo']
-
-" }}}
 
 " vim-slime {{{
 
