@@ -144,9 +144,14 @@ function! MyGoToReferences()
   call CocAction('jumpReferences')
 endfunction
 
+function! MyRefactor()
+  call CocAction('refactor')
+endfunction
+
 nnoremap <silent> <leader>fl :call MyShowFileErrorList()<CR>
 nnoremap <silent> gd :call MyGoToDefinition()<CR>
 nnoremap <silent> <localleader>gr :call MyGoToReferences()<CR>
+nnoremap <silent> <localleader>RR :call MyRefactor()<CR>
 
 " }}}
 
