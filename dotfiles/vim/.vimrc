@@ -162,6 +162,23 @@ let g:coc_global_extensions = []
 " For coc-settings.json
 call add(g:coc_global_extensions, 'coc-json')
 
+" Set up standard bindings for interacting with managed languages.
+"
+" Example:
+" au FileType rust call s:MyBindCocStandard()
+function s:MyBindCocStandard()
+  " Insert current entry from popup
+  inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
+
+  " Hover (e.g., show type at cursor)
+  nnoremap <buffer> <silent> <localleader>th :call MyHover()<cr>
+
+  " Applying code actions (e.g., filling expansion arms)
+  nmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
+  xmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
+  nmap <buffer> <silent> <localleader>tt <Plug>(coc-codeaction-cursor)
+endfunction
+
 " Scrolling for the floating (documentation) window
 nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
 nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
@@ -720,6 +737,15 @@ augroup JavaScript
   au FileType javascript setlocal shiftwidth=4
 augroup END
 
+" TypeScript {{{
+
+call add(g:coc_global_extensions, 'coc-tsserver')
+
+augroup TypeScript
+  au!
+  au FileType javascript,typescript call s:MyBindCocStandard()
+augroup END
+
 " }}}
 
 " JSON {{{
@@ -777,16 +803,8 @@ augroup Rust
   au FileType rust nnoremap <buffer> <silent> <localleader>rB :Cbench<cr>
   au FileType rust nnoremap <buffer> <silent> <localleader>rU :Cupdate<cr>
 
-  " Insert current entry from popup
-  au FileType rust inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
-
-  " Hover (e.g., show type at cursor)
-  au FileType rust nnoremap <buffer> <silent> <localleader>th :call MyHover()<cr>
-
-  " Applying code actions (e.g., allowing filling Rust expansion arms)
-  au FileType rust nmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
-  au FileType rust xmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
-  au FileType rust nmap <buffer> <silent> <localleader>tt <Plug>(coc-codeaction-cursor)
+  " Coc bindings
+  au FileType rust call s:MyBindCocStandard()
 augroup END
 
 " }}}
