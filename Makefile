@@ -97,7 +97,6 @@ configure_dev_rust : configure_vim install_rust
 	@rustup component add rust-analyzer
 	@rustup component add rls
 	@readlink "$(rust_analyzer_target)" >/dev/null || ln -s "$$(rustup which --toolchain stable rust-analyzer)" "$(rust_analyzer_target)"
-	@vim -c 'exec "CocInstall coc-rust-analyzer" | qa'
 
 install_rust :
 	$(call install_prog,rust)

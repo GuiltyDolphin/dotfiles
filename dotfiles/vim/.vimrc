@@ -157,6 +157,11 @@ nnoremap <silent> <localleader>RR :call MyRefactor()<CR>
 
 " coc {{{
 
+" Extensions to install on startup if they aren't already installed
+let g:coc_global_extensions = []
+" For coc-settings.json
+call add(g:coc_global_extensions, 'coc-json')
+
 " Scrolling for the floating (documentation) window
 nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
 nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
@@ -754,6 +759,9 @@ augroup END
 " }}}
 
 " Rust {{{
+
+" Install appropriate coc extensions
+call add(g:coc_global_extensions, 'coc-rust-analyzer')
 
 let g:rustfmt_fail_silently = 0 " Don't prevent rustfmt from showing errors
 augroup Rust
