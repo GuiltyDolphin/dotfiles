@@ -6,6 +6,8 @@
   autocrlf = input
   safecrlf = true
   askPass = git-cat-token
+[init]
+  defaultBranch = main
 [log]
   date = iso
 [merge]
