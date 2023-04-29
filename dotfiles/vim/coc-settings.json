@@ -1,3 +1,4 @@
 {
+    "coc.preferences.extensionUpdateCheck": "weekly",
     "diagnostic.displayByAle": false
 }
