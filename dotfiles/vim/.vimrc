@@ -131,6 +131,38 @@ augroup END
 
 " Linting and LSP (generic) {{{
 
+" Linting (Generic) {{{
+
+let g:my_lint_config = {}
+
+function! MyLintThisCommands()
+  return g:my_lint_config[&filetype]['commands']
+endfunction
+
+" Run autofix for the current setup
+function! MyLintAutofix()
+  exec MyLintThisCommands()['autofix']
+endfunction
+
+" Restart lint service
+function! MyLintRestart()
+  exec MyLintThisCommands()['restart']
+endfunction
+
+" Show lint errors for entire project
+function! MyLintShowProject()
+  exec MyLintThisCommands()['lintProject']
+  " open the current error list
+  copen
+endfunction
+
+" Configure linting
+function! MyLintConfigure()
+  exec MyLintThisCommands()['configure']
+endfunction
+
+" }}}
+
 " Show error list
 function! MyShowFileErrorList()
   CocDiagnostics
@@ -697,6 +729,15 @@ call proot#initialize_project('ddg_zci', s:pr_ddg_zci)
 
 " Buffer-based {{{
 
+" Quickfix {{{
+
+augroup Quickfix
+  au!
+  au FileType qf nnoremap <buffer><silent>Q :cclose<CR>
+augroup END
+
+" }}}
+
 " Whitespace {{{
 
 " Delete trailing whitespace when saving
@@ -741,9 +782,24 @@ augroup END
 
 " JavaScript {{{
 
+call add(g:coc_global_extensions, 'coc-eslint')
+
+let g:my_lint_config['javascript'] = {
+      \ 'commands': {
+        \ 'autofix': 'CocCommand eslint.executeAutofix',
+        \ 'configure': 'CocCommand eslint.createConfig',
+        \ 'lintProject': 'CocCommand eslint.lintProject',
+        \ 'restart': 'CocCommand eslint.restart'
+      \ }
+    \ }
+
 augroup JavaScript
   au!
   au FileType javascript setlocal shiftwidth=4
+  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>la :call MyLintAutofix()<CR>
+  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>ll :call MyLintShowProject()<CR>
+  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>lR :call MyLintRestart()<CR>
+  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>lC :call MyLintConfigure()<CR>
 augroup END
 
 " TypeScript {{{
