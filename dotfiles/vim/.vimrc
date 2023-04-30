@@ -76,7 +76,7 @@ function MyMapLocalLeader(mode, bind, what)
 endfunction
 
 function MyMapLocalLeaderAu(ft, mode, bind, what)
-  exec "au FileType " . a:ft MyMapLocalLeader(a:mode, a:bind, a:what)
+  exec printf("au FileType %s call MyMapLocalLeader(%s, %s, %s)", a:ft, string(a:mode), string(a:bind), string(a:what))
 endfunction
 
 function MyMapLocalLeaderAuCommand(ft, bind, what)
@@ -97,6 +97,19 @@ function MyMapLocalLeaderAuCalls(ft, binds)
   for [bind, target] in a:binds
     call MyMapLocalLeaderAuCall(a:ft, bind, target)
   endfor
+endfunction
+
+" Execute code when the buffer name matches the spec
+function MyWhenBufMatching(match, body)
+  if match(buffer_name(), a:match) > -1
+    exec a:body
+  endif
+endfunction
+
+" Autocommand that executes when the buffer name matches the spec
+function MyAuBufMatching(match, body)
+  " Check when entering a buffer or the buffer name changes
+  exec "au BufEnter,BufFilePost * :call MyWhenBufMatching(" . string(a:match) . ", " . string(a:body) . ')'
 endfunction
 
 " }}}
@@ -919,6 +932,9 @@ augroup Rust
 
   " Coc bindings
   au FileType rust call s:MyBindCocStandard()
+
+  " Allow easily quitting the cargo-generated buffers
+  call MyAuBufMatching('!cargo .*', "nnoremap <buffer><silent>Q :bdelete<CR>")
 augroup END
 
 " }}}
