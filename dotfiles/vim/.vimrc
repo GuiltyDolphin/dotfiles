@@ -353,7 +353,7 @@ augroup END
 " ctrlp {{{
 
 " Open ctrlp tag window
-nnoremap <silent <C-p> :CtrlP<cr>
+nnoremap <silent> <C-p> :CtrlP<cr>
 
 " In git repos: list all files (including untracked), except those excluded
 " (e.g., via .gitignore)
