@@ -115,10 +115,19 @@ nnoremap <silent> <c-n> <nop>
 
 " Plugins {{{
 
+" Tagbar {{{
+
 " Toggle tagbar window
 nnoremap <silent> <leader>b :TagbarToggle<cr>
 " Toggle NERDTree window
 nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+
+augroup MyTagbar
+  au!
+  au FileType tagbar nnoremap <buffer><silent>Q :TagbarClose<CR>
+augroup END
+
+" }}}
 
 " Linting and LSP (generic) {{{
 
