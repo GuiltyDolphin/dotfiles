@@ -68,6 +68,39 @@ colorscheme solarized
 
 " Custom mappings {{{
 
+" Helpers {{{
+
+" Bind a local leader mapping to the given action (buffer-local)
+function MyMapLocalLeader(mode, bind, what)
+  exec a:mode . " <buffer><silent><localleader>" . a:bind . " " . a:what
+endfunction
+
+function MyMapLocalLeaderAu(ft, mode, bind, what)
+  exec "au FileType " . a:ft MyMapLocalLeader(a:mode, a:bind, a:what)
+endfunction
+
+function MyMapLocalLeaderAuCommand(ft, bind, what)
+  call MyMapLocalLeaderAu(a:ft, 'nnoremap', a:bind, ':' . a:what . '<CR>')
+endfunction
+
+function MyMapLocalLeaderAuCommands(ft, binds)
+  for [bind, target] in a:binds
+    call MyMapLocalLeaderAuCommand(a:ft, bind, target)
+  endfor
+endfunction
+
+function MyMapLocalLeaderAuCall(ft, bind, what)
+  call MyMapLocalLeaderAuCommand(a:ft, a:bind, 'call ' . a:what . '()')
+endfunction
+
+function MyMapLocalLeaderAuCalls(ft, binds)
+  for [bind, target] in a:binds
+    call MyMapLocalLeaderAuCall(a:ft, bind, target)
+  endfor
+endfunction
+
+" }}}
+
 " Standard {{{
 
 " Space as leader.
@@ -212,12 +245,12 @@ function s:MyBindCocStandard()
   inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
 
   " Hover (e.g., show type at cursor)
-  nnoremap <buffer> <silent> <localleader>th :call MyHover()<cr>
+  call MyMapLocalLeader('nnoremap', 'th', ':call MyHover()<CR>')
 
   " Applying code actions (e.g., filling expansion arms)
-  nmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
-  xmap <buffer> <silent> <localleader>tT <Plug>(coc-codeaction-selected)
-  nmap <buffer> <silent> <localleader>tt <Plug>(coc-codeaction-cursor)
+  call MyMapLocalLeader('nmap', 'tT', '<Plug>(coc-codeaction-selected)')
+  call MyMapLocalLeader('xmap', 'tT', '<Plug>(coc-codeaction-selected)')
+  call MyMapLocalLeader('nmap', 'tt', '<Plug>(coc-codeaction-cursor)')
 endfunction
 
 " Scrolling for the floating (documentation) window
@@ -362,9 +395,12 @@ exec 'nnoremap <silent> <leader>' . s:proot_leader_key . 'tf :ProjectRootOpenTes
 
 augroup HaskellKeys
   autocmd!
-  au FileType haskell nnoremap <buffer> <localleader>ct :HdevtoolsType<cr>
-  au FileType haskell nnoremap <buffer> <localleader>cc :HdevtoolsClear<cr>
-  au FileType haskell nnoremap <buffer> <localleader>ci :HdevtoolsInfo<cr>
+  call MyMapLocalLeaderAuCommands('haskell', [
+        \ ['ct', 'HdevtoolsType'],
+        \ ['cc', 'HdevtoolsClear'],
+        \ ['ci', 'HdevtoolsInfo']
+        \ ]
+        \)
 augroup END
 
 " }}}
@@ -373,7 +409,7 @@ augroup END
 
 augroup RubyKeys
   autocmd!
-  au FileType ruby nnoremap <buffer> <localleader>ir :exec "!irb" . ruby_version<cr>
+  call MyMapLocalLeaderAuCommand('ruby', 'ir', 'exec "!irb" . ruby_version')
 augroup END
 
 " }}}
@@ -382,12 +418,16 @@ augroup END
 
 augroup GitCommitKeys
   autocmd!
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>r ^ciwreword<esc>
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>s ^ciwsquash<esc>
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>e ^ciwedit<esc>
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>p ^ciwpick<esc>
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>f ^ciwfixup<esc>
-  au FileType gitrebase nnoremap <silent><buffer> <localleader>x ^ciwexec<esc>
+  for [bind, target] in [
+        \ ['r', 'reword'],
+        \ ['s', 'squash'],
+        \ ['e', 'edit'],
+        \ ['p', 'pick'],
+        \ ['f', 'fixup'],
+        \ ['x', 'exec']
+        \ ]
+    call MyMapLocalLeaderAu('gitrebase', 'nnoremap', bind, '^ciw' . target . '<esc>')
+  endfor
 augroup END
 
 " }}}
@@ -396,7 +436,7 @@ augroup END
 
 augroup HelpKeys
   au!
-  au FileType help,text nnoremap <silent><buffer> <localleader>th :call <SID>ToggleHelpType()<cr>
+  call MyMapLocalLeaderAuCall('help,text', 'th', '<SID>ToggleHelpType')
 augroup END
 
 function! s:ToggleHelpType()
@@ -413,7 +453,7 @@ endfunction
 
 augroup VimKeys
   autocmd!
-  au FileType vim nnoremap <silent><buffer> <localleader>sf :source %<cr>
+  call MyMapLocalLeaderAuCommand('vim', 'sf', 'source %')
 augroup END
 
 " }}}
@@ -422,8 +462,11 @@ augroup END
 
 augroup GenericTeXKeys
   autocmd!
-  au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hh :call TeXHeaderHigher()<cr>
-  au FileType lhaskell,tex,plaintex nnoremap <silent><buffer> <localleader>hl :call TeXHeaderLower()<cr>
+  call MyMapLocalLeaderAuCalls('lhaskell,tex,plaintex', [
+        \ ['hh', 'TexHeaderHigher'],
+        \ ['hl', 'TexHeaderLower']
+        \ ]
+        \)
 augroup END
 
 " }}}
@@ -796,10 +839,13 @@ let g:my_lint_config['javascript'] = {
 augroup JavaScript
   au!
   au FileType javascript setlocal shiftwidth=4
-  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>la :call MyLintAutofix()<CR>
-  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>ll :call MyLintShowProject()<CR>
-  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>lR :call MyLintRestart()<CR>
-  au FileType javascript,typescript nnoremap <buffer> <silent> <localleader>lC :call MyLintConfigure()<CR>
+  call MyMapLocalLeaderAuCalls('javascript,typescript', [
+        \ ['la', 'MyLintAutofix'],
+        \ ['ll', 'MyLintShowProject'],
+        \ ['lR', 'MyLintRestart'],
+        \ ['lC', 'MyLintConfigure']
+        \ ]
+        \)
 augroup END
 
 " TypeScript {{{
@@ -862,11 +908,14 @@ augroup Rust
   au FileType rust let b:rustfmt_autosave = 1
 
   " General project bindings
-  au FileType rust nnoremap <buffer> <silent> <localleader>rr :Crun<cr>
-  au FileType rust nnoremap <buffer> <silent> <localleader>rt :Ctest<cr>
-  au FileType rust nnoremap <buffer> <silent> <localleader>rb :Cbuild<cr>
-  au FileType rust nnoremap <buffer> <silent> <localleader>rB :Cbench<cr>
-  au FileType rust nnoremap <buffer> <silent> <localleader>rU :Cupdate<cr>
+  call MyMapLocalLeaderAuCommands('rust', [
+        \ ['rr', 'Crun'],
+        \ ['rt', 'Ctest'],
+        \ ['rb', 'Cbuild'],
+        \ ['rB', 'Cbench'],
+        \ ['rU', 'Cupdate']
+        \ ]
+        \)
 
   " Coc bindings
   au FileType rust call s:MyBindCocStandard()
