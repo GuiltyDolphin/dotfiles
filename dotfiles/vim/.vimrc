@@ -275,25 +275,25 @@ set updatetime=500
 " Set up standard bindings for interacting with managed languages.
 "
 " Example:
-" augroup Rust
+" augroup TypeScript
 "   au!
-"   au FileType rust call s:MyBindCocStandard('Rust', 'rust')
+"   call s:MyBindCocStandard('javascript,typescript')
 " augroup END
-function s:MyBindCocStandard(group, ft)
+function s:MyBindCocStandard(ft)
   " Insert current entry from popup
-  inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"
+  exec printf('au FileType %s inoremap <silent><expr> <C-b> coc#pum#visible() ? coc#pum#insert() : "\<C-b>"', a:ft)
 
   " Hover (e.g., show type at cursor)
-  call MyMapLocalLeader('nnoremap', 'th', ':call MyHover()<CR>')
+  call MyMapLocalLeaderAu(a:ft, 'nnoremap', 'th', ':call MyHover()<CR>')
 
   " Show hover (e.g., type) info when cursor is held, providing there isn't
   " already a float showing
-  exec printf("au %s CursorHold * call MyWhenFiletypeMatching(%s, 'call MyHoverNoOverride()')", a:group, string(a:ft))
+  exec printf("au CursorHold * call MyWhenFiletypeMatching(%s, 'call MyHoverNoOverride()')", string(join(split(a:ft, ','), '\|')))
 
   " Applying code actions (e.g., filling expansion arms)
-  call MyMapLocalLeader('nmap', 'tT', '<Plug>(coc-codeaction-selected)')
-  call MyMapLocalLeader('xmap', 'tT', '<Plug>(coc-codeaction-selected)')
-  call MyMapLocalLeader('nmap', 'tt', '<Plug>(coc-codeaction-cursor)')
+  call MyMapLocalLeaderAu(a:ft, 'nmap', 'tT', '<Plug>(coc-codeaction-selected)')
+  call MyMapLocalLeaderAu(a:ft, 'xmap', 'tT', '<Plug>(coc-codeaction-selected)')
+  call MyMapLocalLeaderAu(a:ft, 'nmap', 'tt', '<Plug>(coc-codeaction-cursor)')
 endfunction
 
 " Scrolling for the floating (documentation) window
@@ -897,7 +897,7 @@ call add(g:coc_global_extensions, 'coc-tsserver')
 
 augroup TypeScript
   au!
-  au FileType javascript,typescript call s:MyBindCocStandard('TypeScript', 'javascript\|typescript')
+  call s:MyBindCocStandard('javascript,typescript')
 augroup END
 
 " }}}
@@ -961,7 +961,7 @@ augroup Rust
         \)
 
   " Coc bindings
-  au FileType rust call s:MyBindCocStandard('Rust', 'rust')
+  call s:MyBindCocStandard('rust')
 
   " Allow easily quitting the cargo-generated buffers
   call MyAuBufMatching('!cargo .*', "nnoremap <buffer><silent>Q :bdelete<CR>")
