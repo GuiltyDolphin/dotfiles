@@ -75,6 +75,14 @@ function MyMapLocalLeader(mode, bind, what)
   exec a:mode . " <buffer><silent><localleader>" . a:bind . " " . a:what
 endfunction
 
+function! MyMapLocalLeaderCommand(bind, what)
+  call MyMapLocalLeader('nnoremap', a:bind, ':' . a:what . '<CR>')
+endfunction
+
+function! MyMapLocalLeaderCall(bind, what)
+  call MyMapLocalLeaderCommand(a:bind, 'call ' . a:what . '()')
+endfunction
+
 function MyMapLocalLeaderAu(ft, mode, bind, what)
   exec printf("au FileType %s call MyMapLocalLeader(%s, %s, %s)", a:ft, string(a:mode), string(a:bind), string(a:what))
 endfunction
@@ -188,30 +196,57 @@ augroup END
 
 let g:my_lint_config = {}
 
-function! MyLintThisCommands()
-  return g:my_lint_config[&filetype]['commands']
+function! MyLintCHasCommand(name, command)
+  try
+    let l:cmdlist = g:my_lint_config[a:name]['commands']
+    return has_key(l:cmdlist, a:command)
+  catch /Key not present/
+    return v:false
+  endtry
+endfunction
+
+function! MyLintCGetCommandConfig(name, command)
+  return g:my_lint_config[a:name]['commands'][a:command]
+endfunction
+
+function! MyLintCGetThisCommand(command)
+  return MyLintCGetCommandConfig(&filetype, a:command)
 endfunction
 
 " Run autofix for the current setup
 function! MyLintAutofix()
-  exec MyLintThisCommands()['autofix']
+  exec MyLintCGetThisCommand('autofix')
 endfunction
 
 " Restart lint service
 function! MyLintRestart()
-  exec MyLintThisCommands()['restart']
+  exec MyLintCGetThisCommand('restart')
 endfunction
 
 " Show lint errors for entire project
 function! MyLintShowProject()
-  exec MyLintThisCommands()['lintProject']
+  exec MyLintCGetThisCommand('lintProject')
   " open the current error list
   copen
 endfunction
 
 " Configure linting
 function! MyLintConfigure()
-  exec MyLintThisCommands()['configure']
+  exec MyLintCGetThisCommand('configure')
+endfunction
+
+" Configure standard bindings for linting
+function! MyConfigureLinterBindings(ft)
+  for [cmd, bind, target] in [
+        \ ['autofix', 'la', 'MyLintAutofix'],
+        \ ['lintProject', 'll', 'MyLintShowProject'],
+        \ ['restart', 'lR', 'MyLintRestart'],
+        \ ['configure', 'lC', 'MyLintConfigure']
+        \ ]
+    if MyLintCHasCommand(a:ft, cmd)
+      call MyMapLocalLeaderCall(bind, target)
+    endif
+  endfor
 endfunction
 
 " }}}
@@ -882,13 +917,7 @@ let g:my_lint_config['javascript'] = {
 augroup JavaScript
   au!
   au FileType javascript setlocal shiftwidth=4
-  call MyMapLocalLeaderAuCalls('javascript,typescript', [
-        \ ['la', 'MyLintAutofix'],
-        \ ['ll', 'MyLintShowProject'],
-        \ ['lR', 'MyLintRestart'],
-        \ ['lC', 'MyLintConfigure']
-        \ ]
-        \)
+  au FileType javascript,typescript call MyConfigureLinterBindings('javascript')
 augroup END
 
 " TypeScript {{{
@@ -944,6 +973,13 @@ augroup END
 call add(g:coc_global_extensions, 'coc-rust-analyzer')
 
 let g:rustfmt_fail_silently = 0 " Don't prevent rustfmt from showing errors
+
+let g:my_lint_config['rust'] = {
+      \ 'commands': {
+        \ 'autofix': "call CocAction('format')"
+      \ }
+    \ }
+
 augroup Rust
   autocmd!
 
@@ -965,6 +1001,9 @@ augroup Rust
 
   " Allow easily quitting the cargo-generated buffers
   call MyAuBufMatching('!cargo .*', "nnoremap <buffer><silent>Q :bdelete<CR>")
+
+  " Linting
+  au FileType rust call MyConfigureLinterBindings('rust')
 augroup END
 
 " }}}
