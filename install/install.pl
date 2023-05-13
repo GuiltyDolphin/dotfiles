@@ -737,7 +737,7 @@ sub nodenv_config {
         installed => sub { defined get_bin_path('nodenv') },
         update => sub {
             sequence(
-                "git -C $nodenv_dir pull",
+                'git -C $(nodenv root) pull',
             );
         },
         up_to_date => sub { 'no_check' },
@@ -754,7 +754,7 @@ sub nodebuild_config {
                 q{git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build},
             );
         },
-        installed => sub { system("git -C $nodenv_dir/plugins/node-build rev-parse 2>/dev/null") == 0 },
+        installed => sub { system('git -C $(nodenv root)/plugins/node-build rev-parse 2>/dev/null') == 0 },
         update => sub {
             sequence(
                 q{git -C "$(nodenv root)"/plugins/node-build pull},
