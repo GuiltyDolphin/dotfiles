@@ -17,6 +17,7 @@
   reflogexpire = never
   reflogexpireunreachable = never
 [alias]
+  ap = add --patch
   br = branch
   cb = checkout -b
   ci = commit
@@ -30,8 +31,12 @@
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   last = log -1 HEAD
   list-ignored = ls-files -coi --exclude-standard
+  po = pull origin
+  ppo = !git pull origin $(git rev-parse --abbrev-ref HEAD)
   qlog = log --pretty=oneline
+  rc = rebase --continue
   ri = rebase -i
+  rst = restore --staged
   st = status
   swords = diff --staged --word-diff
   type = cat-file -t
