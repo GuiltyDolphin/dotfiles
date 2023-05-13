@@ -850,9 +850,28 @@ call proot#initialize_project('ddg_zci', s:pr_ddg_zci)
 
 " Quickfix {{{
 
+function! MyGetCurrentQuickfixType()
+  if getqflist({'qfbufnr': 0}).qfbufnr ==# bufnr()
+    return 'qf'
+  elseif getloclist(0, {'qfbufnr': 0}).qfbufnr ==# bufnr()
+    return 'loclist'
+  else
+    return 'none'
+  endif
+endfunction
+
+function! MyCloseCurrentQuickfix()
+  let l:qf_type = MyGetCurrentQuickfixType()
+  if l:qf_type ==# 'qf'
+    cclose
+  elseif l:qf_type ==# 'loclist'
+    lclose
+  endif
+endfunction
+
 augroup Quickfix
   au!
-  au FileType qf nnoremap <buffer><silent>Q :cclose<CR>
+  au FileType qf nnoremap <buffer><silent>Q :call MyCloseCurrentQuickfix()<CR>
 augroup END
 
 " }}}
