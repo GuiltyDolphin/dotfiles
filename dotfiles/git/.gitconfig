@@ -33,6 +33,7 @@
   list-ignored = ls-files -coi --exclude-standard
   po = pull origin
   ppo = !git pull origin $(git rev-parse --abbrev-ref HEAD)
+  ppush = !git push origin $(git rev-parse --abbrev-ref HEAD)
   qlog = log --pretty=oneline
   rc = rebase --continue
   ri = rebase -i
