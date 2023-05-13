@@ -305,6 +305,10 @@ let g:coc_global_extensions = []
 " Use 0.5 seconds before hover info
 set updatetime=500
 
+" Coc recommends Vim >= v8.2.0750. Disable the errors as they'll happen on
+" every Vim start.
+let g:coc_disable_startup_warning = 1
+
 " Set up standard bindings for interacting with managed languages.
 "
 " Example:
