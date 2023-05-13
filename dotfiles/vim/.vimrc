@@ -301,8 +301,6 @@ nnoremap <silent> <localleader>RR :call MyRefactor()<CR>
 
 " Extensions to install on startup if they aren't already installed
 let g:coc_global_extensions = []
-" For coc-settings.json
-call add(g:coc_global_extensions, 'coc-json')
 
 " Use 0.5 seconds before hover info
 set updatetime=500
@@ -932,6 +930,8 @@ augroup END
 " }}}
 
 " JSON {{{
+
+call add(g:coc_global_extensions, 'coc-json')
 
 augroup JSON
   au!
