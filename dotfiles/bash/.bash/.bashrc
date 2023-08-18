@@ -143,7 +143,14 @@ monitor-hide-secondary() {
 # Show the sizes of all files and directories in the current
 # directory, in ascending order of size, and produce a summary
 my-size-all() {
-    du -hsc $(ls -1a | tail -n +3) | sort --sort=human-numeric
+    # 1. size all files and directories in immediate location (includes hidden etc.)
+    # 2. remove './' from entries to clean up output
+    # 3. sort all lines by size but the first (the first line is the size for '.', i.e., the total size)
+    # 4. move the '.' line to the end (this is the summary size)
+    find . -maxdepth 1 -exec du -hs {} \; \
+      | sed 's/^\([^ ]* *\)\.\/\(.*\)$/\1\2/g' \
+      | awk 'NR==1{print $0;next}{print $0 | "sort -h"}' \
+      | awk 'l0==""{l0=$0;next}{print $0}END{print l0}'
 }
 
 
