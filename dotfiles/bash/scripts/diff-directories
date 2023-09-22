@@ -34,6 +34,11 @@ LONG_OPTIONS+=,help
 
 ! PARSED=$(getopt -o $SHORT_OPTIONS -l $LONG_OPTIONS --name "$0" -- "$@")
 
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+  # bail e.g., if invalid arguments were passed to the command
+  exit 2
+fi
+
 prefer='none'
 prefer_is_set=0
 set_prefer() {
