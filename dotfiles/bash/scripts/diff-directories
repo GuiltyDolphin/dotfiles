@@ -118,13 +118,18 @@ fi
 DIR1="$1"
 DIR2="$2"
 
+# quote a string for reference as a directory
+quote_dir() {
+  printf "%q" "$1"
+}
+
 if [ ! -d "$DIR1" ]; then
-  echo "Not a directory: $DIR1"
+  echo "Not a directory: $(quote_dir "$DIR1")"
   exit 1
 fi
 
 if [ ! -d "$DIR2" ]; then
-  echo "Not a directory: $DIR2"
+  echo "Not a directory: $(quote_dir "$DIR2")"
   exit 1
 fi
 
