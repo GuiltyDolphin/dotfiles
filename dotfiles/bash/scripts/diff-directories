@@ -23,6 +23,7 @@ Options:
 
   Additional output control:
 
+  --gitignore - ignore git-ignored files
   --ignore-build - ignore build files/directories (e.g., .stack-work)
   --ignore-git - ignore .git directories
   --ignore-temp - ignore temporary/backup files
@@ -37,7 +38,7 @@ EOF
 SHORT_OPTIONS=l,r,b,s,f,h
 LONG_OPTIONS=prefer-left,prefer-right,prefer-none
 LONG_OPTIONS+=,squash,squash-full,no-squash
-LONG_OPTIONS+=,ignore-build,ignore-git,ignore-temp,ignore-full
+LONG_OPTIONS+=,gitignore,ignore-build,ignore-git,ignore-temp,ignore-full
 LONG_OPTIONS+=,help
 
 ! PARSED=$(getopt -o $SHORT_OPTIONS -l $LONG_OPTIONS --name "$0" -- "$@")
@@ -78,6 +79,7 @@ POSITIONAL_ARGS=()
 ignore_git=0
 ignore_build=0
 ignore_temp=0
+use_gitignore=0
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -105,6 +107,10 @@ while [ $# -gt 0 ]; do
       set_squash full-squash
       shift
       ;;
+    --gitignore)
+      use_gitignore=1
+      shift
+      ;;
     --ignore-build)
       ignore_build=1
       shift
@@ -121,6 +127,7 @@ while [ $# -gt 0 ]; do
       ignore_build=1
       ignore_git=1
       ignore_temp=1
+      use_gitignore=1
       shift
       ;;
     --help|--usage)
@@ -261,20 +268,11 @@ if [ $ignore_temp -eq 1 ]; then
   add_ignores '\.~' '~($| )'
 fi
 
-git_ignore_paths() {
-  find "$DIR1" "$DIR2" -name .gitignore -exec sh -c "cd \"\$(dirname {})\"; git list-ignored | xargs -Ifile echo \"\$(dirname {})/file\"" \;
-}
-
 squash_verbosity() {
-  remove_ignores() {
-    ignore_file=/tmp/_diff_directories_ignore_paths
-    echo "$(git_ignore_paths)" > "$ignore_file"
-    grep -vFf "$ignore_file"
-  }
   if [ "$squash" = 'squash' ]; then
-    squash_git | remove_ignores
+    squash_git
   elif [ "$squash" = 'full-squash' ]; then
-    squash_git | remove_ignores | squash_differing_directories
+    squash_git | squash_differing_directories
   else
     cat
   fi
@@ -307,18 +305,38 @@ EOF
   fi
 }
 
-# strip entries that should be ignored
-strip_ignores() {
-  if [ ${#IGNORES[@]} -eq 0 ]; then
-    cat
+# strip paths matching the git-ignored files of either directory
+strip_git_ignores() {
+  git_ignore_paths() {
+    for gitignore in $(find "$DIR1" "$DIR2" -name .gitignore); do
+      export local gdir="$(dirname $gitignore)"
+      git -C "$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file\nOnly in $(dirname $gdir/file): $(basename file)"'
+    done
+  }
+  if [ $use_gitignore -eq 1 ]; then
+    local ignore_file=/tmp/_diff_directories_ignore_paths
+    echo "$(git_ignore_paths)" > "$ignore_file"
+    grep -vFf "$ignore_file"
   else
-    if [ ${#IGNORES[@]} -eq 1 ]; then
-      local ignore_re="${IGNORES[@]}"
-    else
-      local ignore_re="${IGNORES[0]}$(printf "|%s" "${IGNORES[@]:1}")"
-    fi
-    grep -vE "$ignore_re"
+    cat
   fi
 }
 
-diff -r "$DIR1" "$DIR2" | filter_preference | squash_verbosity | strip_ignores | simplify_naming
+# strip entries that should be ignored
+strip_ignores() {
+  strip_main_ignores() {
+    if [ ${#IGNORES[@]} -eq 0 ]; then
+      cat
+    else
+      if [ ${#IGNORES[@]} -eq 1 ]; then
+        local ignore_re="${IGNORES[@]}"
+      else
+        local ignore_re="${IGNORES[0]}$(printf "|%s" "${IGNORES[@]:1}")"
+      fi
+      grep -vE "$ignore_re"
+    fi
+  }
+  strip_main_ignores | strip_git_ignores
+}
+
+diff -r "$DIR1" "$DIR2" | filter_preference | strip_ignores | squash_verbosity | simplify_naming
