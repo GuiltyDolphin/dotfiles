@@ -314,6 +314,8 @@ strip_git_ignores() {
     done
   }
   if [ $use_gitignore -eq 1 ]; then
+    # write to a file as there are often many ignores, which would cause the
+    # argument list to be too long
     local ignore_file=/tmp/_diff_directories_ignore_paths
     echo "$(git_ignore_paths)" > "$ignore_file"
     grep -vFf "$ignore_file"
