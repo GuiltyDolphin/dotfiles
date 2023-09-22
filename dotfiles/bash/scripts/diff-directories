@@ -21,6 +21,13 @@ Options:
   -f, --squash-full - full squash (including directories differing by contents)
   --no-squash - don't do any squashing (default)
 
+  Additional output control:
+
+  --ignore-build - ignore build files/directories (e.g., .stack-work)
+  --ignore-git - ignore .git directories
+  --ignore-temp - ignore temporary/backup files
+  --ignore-full - turn on all ignore options
+
   Other:
 
   -h, --help - show command help
@@ -30,6 +37,7 @@ EOF
 SHORT_OPTIONS=l,r,b,s,f,h
 LONG_OPTIONS=prefer-left,prefer-right,prefer-none
 LONG_OPTIONS+=,squash,squash-full,no-squash
+LONG_OPTIONS+=,ignore-build,ignore-git,ignore-temp,ignore-full
 LONG_OPTIONS+=,help
 
 ! PARSED=$(getopt -o $SHORT_OPTIONS -l $LONG_OPTIONS --name "$0" -- "$@")
@@ -67,6 +75,10 @@ eval set -- "$PARSED"
 
 POSITIONAL_ARGS=()
 
+ignore_git=0
+ignore_build=0
+ignore_temp=0
+
 while [ $# -gt 0 ]; do
   case $1 in
     -b|--prefer-none)
@@ -91,6 +103,24 @@ while [ $# -gt 0 ]; do
       ;;
     -f|--squash-full)
       set_squash full-squash
+      shift
+      ;;
+    --ignore-build)
+      ignore_build=1
+      shift
+      ;;
+    --ignore-git)
+      ignore_git=1
+      shift
+      ;;
+    --ignore-temp)
+      ignore_temp=1
+      shift
+      ;;
+    --ignore-full)
+      ignore_build=1
+      ignore_git=1
+      ignore_temp=1
       shift
       ;;
     --help|--usage)
@@ -214,14 +244,22 @@ EOF
   awk "$squash_dirs"
 }
 
-# Prefix a line with '--' to ignore/comment it out
-IGNORES=$(echo "$(sed -E 's/| *--($| .*$)//gm' << EOF
-    \\.stack-work
-    |\\.git
-    |\\.~
-    |~($| )
-EOF
-)" | tr --delete '\n ')
+IGNORES=()
+add_ignores() {
+  IGNORES+=("$@")
+}
+
+if [ $ignore_git -eq 1 ]; then
+  add_ignores '\.git'
+fi
+
+if [ $ignore_build -eq 1 ]; then
+  add_ignores '\.stack-work'
+fi
+
+if [ $ignore_temp -eq 1 ]; then
+  add_ignores '\.~' '~($| )'
+fi
 
 git_ignore_paths() {
   find "$DIR1" "$DIR2" -name .gitignore -exec sh -c "cd \"\$(dirname {})\"; git list-ignored | xargs -Ifile echo \"\$(dirname {})/file\"" \;
@@ -269,4 +307,18 @@ EOF
   fi
 }
 
-diff -r "$DIR1" "$DIR2" | filter_preference | squash_verbosity | grep -vE "$IGNORES" | simplify_naming
+# strip entries that should be ignored
+strip_ignores() {
+  if [ ${#IGNORES[@]} -eq 0 ]; then
+    cat
+  else
+    if [ ${#IGNORES[@]} -eq 1 ]; then
+      local ignore_re="${IGNORES[@]}"
+    else
+      local ignore_re="${IGNORES[0]}$(printf "|%s" "${IGNORES[@]:1}")"
+    fi
+    grep -vE "$ignore_re"
+  fi
+}
+
+diff -r "$DIR1" "$DIR2" | filter_preference | squash_verbosity | strip_ignores | simplify_naming
