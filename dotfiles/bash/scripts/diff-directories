@@ -1,24 +1,122 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-DIR1="$1"
-DIR2="$2"
+set -o errexit -o pipefail -o nounset
 
-USAGE="USAGE: diff-directories <DIR1> <DIR2> [lrb] [sf]"
+USAGE="USAGE: diff-directories <DIR1> <DIR2> [OPTIONS]"
 HELP="$(cat <<EOF
-  l - prefer left directory (don't warn if files are only in left)
-  r - prefer right directory (don't warn if files are only in right)
-  b - prefer neither directory (warn for all "only in" files)
 
-  n - don't do any squashing
-  s - squash certain diffs for simplicity (e.g., just mention that git object directories differ, don't list)
-  f - full squash (including directories differing by contents)
+Compare contents of two directories.
+
+Options:
+
+  For setting directory preference:
+
+  -l, --prefer-left - prefer left directory (don't warn if files are only in left)
+  -r, --prefer-right - prefer right directory (don't warn if files are only in right)
+  -b, --prefer-none - (default) prefer neither directory (warn for all "only in" files)
+
+  For squashing:
+
+  -s, --squash - squash certain diffs for simplicity (e.g., just mention that git object directories differ, don't list)
+  -f, --squash-full - full squash (including directories differing by contents)
+  --no-squash - don't do any squashing (default)
+
+  Other:
+
+  -h, --help - show command help
 EOF
 )"
 
-if [ "$DIR1" = '' -o "$DIR2" = "" ]; then
+SHORT_OPTIONS=l,r,b,s,f,h
+LONG_OPTIONS=prefer-left,prefer-right,prefer-none
+LONG_OPTIONS+=,squash,squash-full,no-squash
+LONG_OPTIONS+=,help
+
+! PARSED=$(getopt -o $SHORT_OPTIONS -l $LONG_OPTIONS --name "$0" -- "$@")
+
+prefer='none'
+prefer_is_set=0
+set_prefer() {
+  local pref="$1"
+  if [ $prefer_is_set -eq 1 -a "$prefer" != "$pref" ]; then
+    echo "Multiple 'prefers' flags set, but only one may be specified."
+    exit 1
+  fi
+  prefer="$pref"
+  prefer_is_set=1
+}
+
+squash='none'
+squash_is_set=0
+set_squash() {
+  local sq="$1"
+  if [ $squash_is_set -eq 1 -a "$squash" != "$sq" ]; then
+    echo "Multiple 'squash' flags set, but only one may be specified."
+    exit 1
+  fi
+  squash="$sq"
+  squash_is_set=1
+}
+
+eval set -- "$PARSED"
+
+POSITIONAL_ARGS=()
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    -b|--prefer-none)
+      set_prefer none
+      shift
+      ;;
+    -l|--prefer-left)
+      set_prefer left
+      shift
+      ;;
+    -r|--prefer-right)
+      set_prefer right
+      shift
+      ;;
+    --no-squash)
+      set_squash none
+      shift
+      ;;
+    -s|--squash)
+      set_squash squash
+      shift
+      ;;
+    -f|--squash-full)
+      set_squash full-squash
+      shift
+      ;;
+    --help|--usage)
+      echo "$USAGE"
+      exit 0
+      ;;
+    --)
+      shift
+      POSITIONAL_ARGS+=("$@")
+      break
+      ;;
+    -*|--*)
+      echo "Unknown option: $1"
+      echo "$USAGE"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+set -- "${POSITIONAL_ARGS[@]}"
+
+if [ ${#POSITIONAL_ARGS[@]} -ne 2 ]; then
   echo "$USAGE"
   exit 1
 fi
+
+DIR1="$1"
+DIR2="$2"
 
 if [ ! -d "$DIR1" ]; then
   echo "Not a directory: $DIR1"
@@ -28,28 +126,6 @@ fi
 if [ ! -d "$DIR2" ]; then
   echo "Not a directory: $DIR2"
   exit 1
-fi
-
-prefer='none'
-
-if [ "$3" != '' -a "$3" != 'l' -a "$3" != 'r' -a "$3" != 'b' ]; then
-  echo "$USAGE"
-  exit 1
-fi
-if [ "$3" = 'l' ]; then
-  prefer='left'
-elif [ "$3" = 'r' ]; then
-  prefer='right'
-fi
-
-squash='none'
-if [ "$4" != '' -a "$4" != 's' -a "$4" != 'f' -a "$4" != 'n' ]; then
-  echo "$USAGE"
-  exit 1
-elif [ "$4" = 's' ]; then
-  squash='squash'
-elif [ "$4" = 'f' ]; then
-  squash='full-squash'
 fi
 
 filter_preference() {
