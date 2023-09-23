@@ -28,6 +28,7 @@ Options:
   --ignore-git - ignore .git directories
   --ignore-temp - ignore temporary/backup files
   --ignore-full - turn on all ignore options
+  --no-show-changes - don't show how individual files differ (just indicate when they do)
 
   Other:
 
@@ -39,6 +40,7 @@ SHORT_OPTIONS=l,r,b,s,f,h
 LONG_OPTIONS=prefer-left,prefer-right,prefer-none
 LONG_OPTIONS+=,squash,squash-full,no-squash
 LONG_OPTIONS+=,gitignore,ignore-build,ignore-git,ignore-temp,ignore-full
+LONG_OPTIONS+=,no-show-changes
 LONG_OPTIONS+=,help
 
 ! PARSED=$(getopt -o $SHORT_OPTIONS -l $LONG_OPTIONS --name "$0" -- "$@")
@@ -80,6 +82,7 @@ ignore_git=0
 ignore_build=0
 ignore_temp=0
 use_gitignore=0
+show_file_changes=1
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -128,6 +131,10 @@ while [ $# -gt 0 ]; do
       ignore_git=1
       ignore_temp=1
       use_gitignore=1
+      shift
+      ;;
+    --no-show-changes)
+      show_file_changes=0
       shift
       ;;
     --help|--usage)
@@ -341,4 +348,10 @@ strip_ignores() {
   strip_main_ignores | strip_git_ignores
 }
 
-diff -r "$DIR1" "$DIR2" | filter_preference | strip_ignores | squash_verbosity | simplify_naming
+diff_flags=("-r")
+
+if [ $show_file_changes -eq 0 ]; then
+  diff_flags+=("-q")
+fi
+
+diff ${diff_flags[@]} "$DIR1" "$DIR2" | filter_preference | strip_ignores | squash_verbosity | simplify_naming
