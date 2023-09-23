@@ -272,7 +272,7 @@ if [ $ignore_build -eq 1 ]; then
 fi
 
 if [ $ignore_temp -eq 1 ]; then
-  add_ignores '\.~' '~($| )'
+  add_ignores '\.~' '~($| )' '\.stversions'
 fi
 
 squash_verbosity() {
