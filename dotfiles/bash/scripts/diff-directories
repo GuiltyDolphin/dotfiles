@@ -307,6 +307,11 @@ EOF
 git_ignore_paths() {
   for gitignore in $(find "$DIR1" "$DIR2" -name .gitignore); do
     export local gdir="$(dirname $gitignore)"
+    git -C "$gdir" rev-parse 2>/dev/null
+    if [ $? -ne 0 ]; then
+      # not a real git directory, skip
+      continue
+    fi
     git -C "$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file"'
   done
 }
