@@ -137,8 +137,8 @@ while [ $# -gt 0 ]; do
       show_file_changes=0
       shift
       ;;
-    --help|--usage)
-      echo "$USAGE"
+    -h|--help)
+      echo "$HELP"
       exit 0
       ;;
     --)
