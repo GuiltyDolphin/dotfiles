@@ -206,7 +206,7 @@ squash_git() {
     rex="^"arr[1]"$git_path_re";
     if (!(prev ~ rex)) {
       if (\$3 ~ /$git_path_re/) {
-        print \$1" "\$2" "arr[1]".git/ <some git files differ>"
+        print \$1" "\$2" "arr[1]".git/: <some git files differ>"
       } else {
         print \$0
       }
