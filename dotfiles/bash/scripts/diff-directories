@@ -305,14 +305,18 @@ EOF
 
 # All paths that should be git-ignored
 git_ignore_paths() {
-  for gitignore in $(find "$DIR1" "$DIR2" -name .gitignore); do
-    export local gdir="$(dirname $gitignore)"
-    git -C "$gdir" rev-parse 2>/dev/null
-    if [ $? -ne 0 ]; then
-      # not a real git directory, skip
-      continue
-    fi
-    git -C "$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file"'
+  for pd in "$(normalize_dir "$DIR1")" "$(normalize_dir "$DIR2")"; do
+    for gitignore in $(find "$pd" -name .gitignore -printf "%P\n"); do
+      export local gdir="$(dirname $gitignore)"
+      git -C "$pd/$gdir" rev-parse 2>/dev/null
+      if [ $? -ne 0 ]; then
+        # not a real git directory, skip
+        continue
+      fi
+      # only print the path below the top directory, so the file can be
+      # considered for both directories in comparison
+      git -C "$pd/$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file"'
+    done
   done
 }
 
