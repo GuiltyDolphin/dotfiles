@@ -285,6 +285,10 @@ squash_verbosity() {
   fi
 }
 
+normalize_dir() {
+  dirname "$(find "$1" -maxdepth 0)/f"
+}
+
 # NOTE: assumes that the directory names can each only occur once in a line
 simplify_naming() {
   if [ "$squash" = 'none' ]; then
@@ -293,16 +297,16 @@ simplify_naming() {
     awk "$(cat <<EOF
 {
   curr=\$0
-  d1p=index(curr, "$DIR1")
+  d1p=index(curr, "$(normalize_dir "$DIR1")/")
   if (d1p != 0) {
     before=substr(curr, 0, d1p-1)
-    after=substr(curr, d1p+length("$DIR1"))
+    after=substr(curr, d1p+length("$(normalize_dir "$DIR1")/"))
     curr=before"_dir1/"after
   }
-  d2p=index(curr, "$DIR2")
+  d2p=index(curr, "$(normalize_dir "$DIR2")/")
   if (d2p != 0) {
     before=substr(curr, 0, d2p-1)
-    after=substr(curr, d2p+length("$DIR2"))
+    after=substr(curr, d2p+length("$(normalize_dir "$DIR2")/"))
     curr=before"_dir2/"after
   }
   print curr
