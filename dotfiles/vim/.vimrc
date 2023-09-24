@@ -909,9 +909,12 @@ augroup END
 
 " Bash {{{
 
+call add(g:coc_global_extensions, 'coc-sh')
+
 augroup bash
   autocmd!
   autocmd FileType bash :setlocal foldmethod=syntax
+  call s:MyBindCocStandard('sh,bash')
 augroup END
 
 " }}}
