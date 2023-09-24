@@ -345,13 +345,13 @@ build_ignores() {
   if [ ${#files[@]} -eq 0 ]; then
     return
   fi
-  join_array "\n" files[@]
+  join_array "\n" files[@] | sort | uniq
 }
 
 # path to file with paths to be ignored
 ignore_file_path=/tmp/_diff_directories_ignore_paths
 rm -f "$ignore_file_path"
-build_ignores | sort > "$ignore_file_path"
+build_ignores > "$ignore_file_path"
 
 # With one path per line, drop any higher-precision paths once a more general
 # path is found.
