@@ -182,19 +182,6 @@ if [ ! -d "$DIR2" ]; then
   exit 1
 fi
 
-filter_preference() {
-  filter_re=''
-  if [ "$prefer" = 'left' ]; then
-    filter_re="Only in $DIR1";
-  elif [ "$prefer" = 'right' ]; then
-    filter_re="Only in $DIR2";
-  else
-    cat
-    exit 0
-  fi
-  grep -Fv "$filter_re"
-}
-
 # NOTE: squashing doesn't currently play well with 'b' option - because of the alternating Only in a, Only in b... (2022-07-10)
 git_path_re='\.git[\/:]'
 
@@ -316,46 +303,129 @@ EOF
   fi
 }
 
-# strip paths matching the git-ignored files of either directory
-strip_git_ignores() {
-  git_ignore_paths() {
-    for gitignore in $(find "$DIR1" "$DIR2" -name .gitignore); do
-      export local gdir="$(dirname $gitignore)"
-      git -C "$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file\nOnly in $(dirname $gdir/file): $(basename file)"'
-    done
-  }
-  if [ $use_gitignore -eq 1 ]; then
-    # write to a file as there are often many ignores, which would cause the
-    # argument list to be too long
-    local ignore_file=/tmp/_diff_directories_ignore_paths
-    echo "$(git_ignore_paths)" > "$ignore_file"
-    grep -vFf "$ignore_file"
+# All paths that should be git-ignored
+git_ignore_paths() {
+  for gitignore in $(find "$DIR1" "$DIR2" -name .gitignore); do
+    export local gdir="$(dirname $gitignore)"
+    git -C "$gdir" list-ignored | xargs -Ifile sh -c 'echo "$gdir/file"'
+  done
+}
+
+join_array() {
+  local sep="$1"
+  declare -a local arr=("${!2}")
+  if [ ${#arr[@]} -eq 1 ]; then
+    echo "${arr[0]}"
   else
-    cat
+    echo "${arr[0]}$(printf "$sep%s" "${arr[@]:1}")"
   fi
 }
 
-# strip entries that should be ignored
-strip_ignores() {
-  strip_main_ignores() {
-    if [ ${#IGNORES[@]} -eq 0 ]; then
-      cat
-    else
-      if [ ${#IGNORES[@]} -eq 1 ]; then
-        local ignore_re="${IGNORES[@]}"
-      else
-        local ignore_re="${IGNORES[0]}$(printf "|%s" "${IGNORES[@]:1}")"
-      fi
-      grep -vE "$ignore_re"
-    fi
-  }
-  strip_main_ignores | strip_git_ignores
+# All files that should be ignored in comparison
+build_ignores() {
+  local files=()
+  if [ ${#IGNORES[@]} -eq 0 ]; then
+    files=()
+  else
+    local ignore_re="$(join_array "|" IGNORES[@])"
+    files+=("$(find "$DIR1" "$DIR2" -regextype posix-extended -regex ".*($ignore_re).*" -printf "%P\n")")
+  fi
+  if [ $use_gitignore -eq 1 ]; then
+    files+=($(git_ignore_paths))
+  fi
+  if [ ${#files[@]} -eq 0 ]; then
+    return
+  fi
+  join_array "\n" files[@]
 }
 
-diff_flags=("-r")
+# path to file with paths to be ignored
+ignore_file_path=/tmp/_diff_directories_ignore_paths
+rm -f "$ignore_file_path"
+build_ignores | sort > "$ignore_file_path"
 
-if [ $show_file_changes -eq 0 ]; then
-  diff_flags+=("-q")
-fi
+# With one path per line, drop any higher-precision paths once a more general
+# path is found.
+#
+# For example, if the input is:
+#
+# path1/path2
+# path1/path2/path3
+# path1/path4
+#
+# Then the output would be:
+#
+# path1/path2
+# path1/path4
+strip_subsequent_higher_precision_paths() {
+  awk "$(cat <<EOF
+{
+  if (!done1) {
+    currParent=\$0
+    print \$0
+    done1=1
+    next
+  }
+  lCurr=\$0
+  dp=index(lCurr, currParent"/")
+  if (dp != 1) {
+    print lCurr
+    currParent=\$0
+  }
+}
+EOF
+)"
+}
 
-diff ${diff_flags[@]} "$DIR1" "$DIR2" | filter_preference | strip_ignores | squash_verbosity | simplify_naming
+tmp_files_left_path=/tmp/_diff_directories_left
+tmp_files_right_path=/tmp/_diff_directories_right
+tmp_files_left_path_filtered=/tmp/_diff_directories_left_filtered
+tmp_files_right_path_filtered=/tmp/_diff_directories_right_filtered
+diff_main() {
+
+  # find files in each directory
+  local files_in_left=("$(find "$DIR1" -printf "%P\n")")
+  local files_in_right=("$(find "$DIR2" -printf "%P\n")")
+  echo "$(join_array "\n" files_in_left[@])" | sort > "$tmp_files_left_path"
+  echo "$(join_array "\n" files_in_right[@])" | sort > "$tmp_files_right_path"
+
+  # filter out files that should be ignored
+  echo "$(comm -23 "$tmp_files_left_path" "$ignore_file_path")" > "$tmp_files_left_path_filtered"
+  echo "$(comm -23 "$tmp_files_right_path" "$ignore_file_path")" > "$tmp_files_right_path_filtered"
+  local files_only_left=("$(comm -23 "$tmp_files_left_path_filtered" "$tmp_files_right_path_filtered" | strip_subsequent_higher_precision_paths)")
+  local files_only_right=("$(comm -13 "$tmp_files_left_path_filtered" "$tmp_files_right_path_filtered" | strip_subsequent_higher_precision_paths)")
+  local files_in_both=("$(comm -12 "$tmp_files_left_path_filtered" "$tmp_files_right_path_filtered")")
+
+  # inform about files that are unique to either directory
+  if [ $prefer != 'left' ]; then
+    for only_left in ${files_only_left[@]}; do
+      local full_path="$(normalize_dir "$DIR1")/$only_left"
+      echo "Only in $(dirname "$full_path")/: $(basename "$full_path")"
+    done
+  fi
+  if [ $prefer != 'right' ]; then
+    for only_right in ${files_only_right[@]}; do
+      local full_path="$(normalize_dir "$DIR2")/$only_right"
+      echo "Only in $(dirname "$full_path")/: $(basename "$full_path")"
+    done
+  fi
+
+  # diff remaining files that are in both directories
+  local diff_flags=()
+  if [ $show_file_changes -eq 0 ]; then
+    diff_flags+=("-q")
+  fi
+  for shared_file in ${files_in_both[@]}; do
+    if [ -f "$shared_file" ]; then
+      local diffRes="$(diff ${diff_flags[@]} "$(normalize_dir "$DIR1")/$shared_file" "$(normalize_dir "$DIR2")/$shared_file")"
+      if [ -n "$diffRes" ]; then
+        if [ $show_file_changes -eq 1 ]; then
+          echo "diff for $shared_file:"
+        fi
+        echo "$diffRes"
+      fi
+    fi
+  done
+}
+
+diff_main | squash_verbosity | simplify_naming
