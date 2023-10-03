@@ -971,9 +971,12 @@ augroup END
 
 " Python {{{
 
+call add(g:coc_global_extensions, 'coc-pyright')
+
 augroup Python
   autocmd!
   autocmd FileType python setlocal shiftwidth=4
+  call s:MyBindCocStandard('python')
 augroup END
 
 " }}}
