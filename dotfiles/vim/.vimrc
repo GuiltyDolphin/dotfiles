@@ -265,6 +265,10 @@ endfunction
 " hover is found. Useful for e.g., CursorHold where warning about no hover
 " information may get noisy.
 function! MyHoverNoOverride()
+  if !CocHasProvider('hover')
+    return
+  endif
+
   " Don't override existing floats
   if !coc#float#has_float()
     " Check if there's any hover information available
