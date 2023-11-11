@@ -293,10 +293,17 @@ function! MyRefactor()
   call CocAction('refactor')
 endfunction
 
+function! MyRenameSymbol()
+  if CocAction('hasProvider', 'rename')
+    call CocActionAsync('rename')
+  endif
+endfunction
+
 nnoremap <silent> <leader>fl :call MyShowFileErrorList()<CR>
 nnoremap <silent> gd :call MyGoToDefinition()<CR>
 nnoremap <silent> <localleader>gr :call MyGoToReferences()<CR>
 nnoremap <silent> <localleader>RR :call MyRefactor()<CR>
+nnoremap <silent> <localleader>Rr :call MyRenameSymbol()<CR>
 nnoremap <silent> <localleader>fd :<C-u>CocList diagnostics<CR>
 nnoremap <silent> <localleader>fo :<C-u>CocList outline<CR>
 nnoremap <silent> <localleader>fs :<C-u>CocList -I symbols<CR>
