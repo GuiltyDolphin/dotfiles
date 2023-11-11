@@ -27,7 +27,6 @@ if g:use_syntax_plugins
   Plug 'vim-ruby/vim-ruby'         " Convinient bindings for Ruby
   Plug 'Twinside/vim-haskellConceal'
   " Plug 'pbrisbin/vim-syntax-shakespeare'  " Highlighting for Yesod Shakespeare
-  Plug 'ehamberg/vim-cute-python'
   Plug 'idris-hackers/idris-vim' " General plugin for Idris
   Plug 'rust-lang/rust.vim' " General plugin for Rust
 endif
