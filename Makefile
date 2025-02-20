@@ -105,7 +105,12 @@ install_rust :
 configure_dev_vim : configure_vim
 
 # Enhanced development in Vim
-configure_vim : link_vim setup_vim_plugins
+configure_vim : link_vim setup_vim_plugins configure_nvim
+
+configure_nvim : link_nvim
+
+link_nvim :
+	$(call linkf,vim/nvim/init.vim,.config/nvim/init.vim)
 
 # X config
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \
