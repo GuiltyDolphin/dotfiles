@@ -111,6 +111,7 @@ configure_nvim : link_nvim
 
 link_nvim :
 	$(call linkf,vim/nvim/init.lua,.config/nvim/init.lua)
+	$(call linkf,vim/nvim/lua,.config/nvim/lua)
 
 # X config
 configure_display : configure_urxvt configure_x_keyboard configure_xinit configure_xmonad \

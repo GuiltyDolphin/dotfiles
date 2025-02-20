@@ -4,3 +4,6 @@ vim.opt.runtimepath:append("~/.vim/after")
 
 -- Source ~/.vimrc
 vim.cmd('source ~/.vimrc')
+
+-- Initialise package manager
+require("config.lazy")
