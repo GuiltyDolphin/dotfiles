@@ -150,6 +150,8 @@ nnoremap gp %
 
 " Open .vimrc
 nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
+" Open .vimrc directly (useful when using neovim)
+nnoremap <silent> <leader>eV :vsplit ~/.vimrc<cr>
 " Source .vimrc
 nnoremap <silent> <leader>sv :source $MYVIMRC<cr>
 
