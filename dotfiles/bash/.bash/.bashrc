@@ -193,3 +193,6 @@ export HISTTIMEFORMAT='%FT%T%z '
 if [ -f ~/.git-completion.bash ]; then
   source ~/.git-completion.bash
 fi
+
+# Initialise FZF
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

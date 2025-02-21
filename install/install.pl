@@ -716,6 +716,68 @@ sub universal_ctags_config {
     );
 }
 
+sub fzf_config {
+    my $fzf_github_url = 'https://github.com/junegunn/fzf.git';
+
+    my $fzf_install = sub {
+        # https://github.com/junegunn/fzf?tab=readme-ov-file#using-git
+        with_directory $software_directory => sub {
+            sequence(
+                git_clone($fzf_github_url),
+                with_directory "$software_directory/fzf" => sub {
+                    sequence(
+                        "./install"
+                    );
+                },
+            );
+        };
+    };
+
+    my $fzf_update = sub {
+        my ($line) = @_;
+        return sub {
+            with_directory $software_directory => sub {
+                sequence(
+                    with_directory "$software_directory/fzf" => sub {
+                        sequence(
+                            "git stash --include-untracked --message='GDI: Autostash for update.'",
+                            "git pull",
+                            "./install",
+                        );
+                    },
+                );
+            };
+        }
+    };
+
+    return (
+        install => $fzf_install,
+        update => $fzf_update,
+        installed => sub { is_local_bin(get_bin_path('fzf')) },
+        version => {
+            current => sub {
+                my $info = `fzf --version`;
+                $info =~ /(^[^ ]*)/;
+                return $1;
+            },
+            latest => sub {
+                my $version;
+                my $vletter = 'v';
+                with_directory $software_directory => sub {
+                    sequence(
+                        git_clone($fzf_github_url),
+                        with_directory "$software_directory/fzf" => sub {
+                            sequence('git fetch --tags');
+                            chomp ($version = `git tag --list | grep '^${vletter}[0-9]' | sort -r | head -n 1`);
+                        },
+                    );
+                };
+                return $version =~ s/^$vletter//r;
+            },
+        },
+    );
+}
+
 sub nodenv_config {
     my $nodenv_dir = "$HOME/.nodenv";
 
@@ -834,6 +896,9 @@ my %software_config = (
     },
     font_inconsolata => {
         with_default_config('ttf-inconsolata'),
+    },
+    fzf => {
+        fzf_config,
     },
     gcc => {
         with_default_config('gcc'),
