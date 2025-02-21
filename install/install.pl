@@ -199,6 +199,7 @@ sub get_user_distro {
 my @local_bins = (
     home('.local/bin'),
     home('bin'),
+    home('software'),
 );
 
 sub is_local_bin {
