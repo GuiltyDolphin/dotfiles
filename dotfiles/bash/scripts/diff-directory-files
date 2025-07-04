@@ -1,0 +1,95 @@
+#!/bin/bash
+#
+# Show new/same/old files across two directories.
+# Compares file hashes to follow files across renames.
+
+usage() {
+    echo "Usage: $0 [--new|--same|--old] <dirA> <dirB>"
+    exit 1
+}
+
+if [ $# -ne 3 ]; then
+    usage
+fi
+
+flag="$1"
+dirA="$2"
+dirB="$3"
+
+# Build associative arrays of md5sum -> filename
+declare -A md5_A md5_B name_A name_B
+
+unit_sep=$'\x1F'
+while IFS= read -r -d '' file; do
+    sum=$(md5sum "$file" | awk '{print $1}')
+    rel="${file#$dirA/}"
+    md5_A["$sum"]+="$rel$unit_sep"
+    name_A["$rel"]="$sum"
+done < <(find "$dirA" -type f -print0)
+
+while IFS= read -r -d '' file; do
+    sum=$(md5sum "$file" | awk '{print $1}')
+    rel="${file#$dirB/}"
+    md5_B["$sum"]+="$rel$unit_sep"
+    name_B["$rel"]="$sum"
+done < <(find "$dirB" -type f -print0)
+
+quote_if_spaces() {
+    local str="$1"
+    if [[ "$str" == *" "* ]]; then
+        # Escape single quotes within the string
+        str="${str//\'/\'\\\'\'}"
+        echo "'$str'"
+    else
+        echo "$str"
+    fi
+}
+
+case "$flag" in
+    --new)
+        for file in "${!name_B[@]}"; do
+            sum="${name_B[$file]}"
+            if [[ -z "${md5_A[$sum]}" ]]; then
+                echo "$file"
+            fi
+        done
+        ;;
+    --old)
+        for file in "${!name_A[@]}"; do
+            sum="${name_A[$file]}"
+            if [[ -z "${md5_B[$sum]}" ]]; then
+                echo "$file"
+            fi
+        done
+        ;;
+    --same)
+        for sum in "${!md5_A[@]}"; do
+            if [[ -n "${md5_B[$sum]}" ]]; then
+                # Check for same name
+                IFS=$unit_sep read -r -a a_files <<< "${md5_A[$sum]}"
+                for a_file in "${a_files[@]}"; do
+                    found=0
+                    IFS=$unit_sep read -r -a b_files <<< "${md5_B[$sum]}"
+                    for b_file in "${b_files[@]}"; do
+                        if [[ "$a_file" == "$b_file" ]]; then
+                            echo "$a_file"
+                            found=1
+                        fi
+                    done
+                    if [[ $found -eq 0 ]]; then
+                        # Renamed file
+                        IFS=$unit_sep read -r -a b_files <<< "${md5_B[$sum]}"
+                        for b_file in "${b_files[@]}"; do
+                            a_file_quoted="$(quote_if_spaces "$a_file")"
+                            b_file_quoted="$(quote_if_spaces "$b_file")"
+                            echo "$a_file_quoted -> $b_file_quoted"
+                        done
+                    fi
+                done
+            fi
+        done
+        ;;
+    *)
+        usage
+        ;;
+esac
