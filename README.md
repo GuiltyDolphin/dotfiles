@@ -90,13 +90,11 @@ More recipes can be found in the `Makefile` file in the `dotfiles` directory.
 * `make get_solarized_colors` to download the solarized color-scheme
 for terminal.
 
-To install/link individual programs, you can use `install_prog` or
-`link_prog` (where `prog` is the required program). Thus `link_tmux`
-will only install and link `tmux` (and any dependencies).
-
-Using `install_prog` recipes (e.g., `install_tmux`) will _only_
-install the given package (and its dependencies), and will not
-perform any additional configuration.
+The following recipe patterns exist for configuring programs:
+- `link_<prog>` - links relevant configuration files without installing the program
+- `install_<prog>` - installs the program (and dependencies) without linking
+  configuration files
+- `configure_<prog>` - installs the program and performs necessary configuration
 
 #### Are my files safe?
 

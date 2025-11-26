@@ -42,7 +42,7 @@ configure_dev_all : configure_dev_heavy configure_dev_language_all
 # Git for general version control.
 # Tmux for easier multi-session development in a terminal.
 # Vim as a fairly light-weight editor
-configure_dev : link_bash configure_git link_tmux configure_vim
+configure_dev : link_bash configure_git configure_tmux configure_vim
 
 # General development, but using Emacs as editor.
 configure_dev_heavy : configure_emacs
@@ -64,7 +64,7 @@ configure_dev_language_all : \
 configure_dev_common_lisp : configure_sbcl
 
 # Haskell development
-configure_dev_haskell : configure_dev install_haskell_platform link_ghci
+configure_dev_haskell : configure_dev install_haskell_platform configure_ghci
 
 # Idris development
 configure_dev_idris : install_idris
@@ -88,7 +88,7 @@ install_perl_local_lib :
 	$(call install_prog,perl_local_lib)
 
 # Ruby development
-configure_dev_ruby : install_ruby1.9.1 link_irb
+configure_dev_ruby : install_ruby1.9.1 configure_irb
 
 rust_analyzer_target = $$CARGO_HOME/bin/rust-analyzer
 # Rust development
@@ -105,7 +105,7 @@ install_rust :
 configure_dev_vim : configure_vim
 
 # Enhanced development in Vim
-configure_vim : link_vim setup_vim_plugins configure_nvim
+configure_vim : install_vim link_vim setup_vim_plugins configure_nvim
 
 configure_nvim : link_nvim
 
@@ -149,7 +149,7 @@ configure_tools : \
 	configure_okular \
 	configure_owncloud_desktop \
 	install_shutter \
-	link_tmuxinator
+	configure_tmuxinator
 
 # Better user experience (personal tools)
 configure_user_all : configure_display configure_tools configure_scripts \
@@ -200,14 +200,14 @@ link_bash :
 	@$(call linkf,bash/.bash_profile,.bash_profile)
 
 .PHONY: configure_cask
-configure_cask : link_cask
+configure_cask : install_cask link_cask
 
 .PHONY: install_cask
 install_cask :
 	@$(call install_prog,cask)
 
 .PHONY: link_cask
-link_cask : install_cask
+link_cask :
 	@$(call linkf,emacs/custom/Cask,.emacs.d/Cask)
 
 configure_cpanm : install_cpanm
@@ -240,10 +240,10 @@ install_emacs :
 # Requires mu for e-mail
 # Requires Inconsolata font (used as font in Emacs)
 .PHONY: configure_emacs
-configure_emacs : configure_aspell configure_cask configure_mu install_font_inconsolata install_mercurial link_emacs
+configure_emacs : configure_aspell configure_cask configure_mu install_font_inconsolata install_mercurial install_emacs link_emacs
 
 .PHONY: link_emacs
-link_emacs : install_emacs
+link_emacs :
 	@$(call linkf,emacs/custom,.emacs.d/custom)
 	@$(call linkf,emacs/custom/early-init.el,.emacs.d/early-init.el)
 	@$(call linkf,emacs/custom/init.el,.emacs.d/init.el)
@@ -271,23 +271,26 @@ configure_gcc : install_gcc
 install_gcc :
 	$(call install_prog,gcc)
 
+.PHONY : configure_ghci
+configure_ghci : install_ghci link_ghci
+
 .PHONY : install_ghci
 install_ghci :
 	@[ $$(which ghci) ] || make install_haskell_platform
 
 .PHONY: link_ghci
-link_ghci : install_ghci
+link_ghci :
 	$(call linkf,haskell/.ghci,.ghci)
 
 .PHONY: configure_git
-configure_git : link_git configure_git_autocomplete
+configure_git : install_git link_git configure_git_autocomplete
 
 .PHONY: install_git
 install_git :
 	$(call install_prog,git)
 
 .PHONY: link_git
-link_git : install_git
+link_git :
 	$(call linkf,git/.gitconfig,.gitconfig)
 
 git_completion_target=~/.git-completion.bash
@@ -320,8 +323,11 @@ install_icedtea_jdk :
 install_idris :
 	@$(call install_prog,idris)
 
+.PHONY: configure_irb
+configure_irb : install_ruby1.9.1 link_irb
+
 .PHONY: link_irb
-link_irb : install_ruby1.9.1
+link_irb :
 	@$(call linkf,ruby/.irbrc,.irbrc)
 
 .PHONY: configure_jdk
@@ -368,26 +374,26 @@ install_nodenv :
 install_nodebuild :
 	@$(call install_prog,node_build)
 
+.PHONY: configure_offlineimap
+configure_offlineimap : install_offlineimap link_offlineimap
+
 .PHONY: install_offlineimap
 install_offlineimap :
 	@$(call install_prog,offlineimap)
 
 .PHONY: link_offlineimap
-link_offlineimap : install_offlineimap
+link_offlineimap :
 	@$(call linkf,mail/.offlineimaprc,.offlineimaprc)
 
-.PHONY: configure_offlineimap
-configure_offlineimap : link_offlineimap
-
 .PHONY: configure_okular
-configure_okular : link_okular
+configure_okular : install_okular link_okular
 
 .PHONY: install_okular
 install_okular :
 	$(call install_prog,okular)
 
 .PHONY: link_okular
-link_okular : install_okular
+link_okular :
 	$(call linkf,x/okularpartrc,.config/okularpartrc)
 
 .PHONY: configure_owncloud_desktop
@@ -474,23 +480,26 @@ configure_texlive : install_texlive
 install_texlive :
 	$(call install_prog,texlive)
 
+.PHONY: configure_tmux
+configure_tmux : install_tmux link_tmux
+
 .PHONY: install_tmux
 install_tmux :
 	$(call install_prog,tmux)
 
 .PHONY: link_tmux
-link_tmux : install_tmux
+link_tmux :
 	@$(call linkf,tmux/.tmux.conf,.tmux.conf)
 
 .PHONY: configure_tmuxinator
-configure_tmuxinator : link_tmuxinator
+configure_tmuxinator : install_tmuxinator link_tmuxinator
 
 .PHONY: install_tmuxinator
 install_tmuxinator : install_ruby1.9.1
 	$(call install_prog,tmuxinator)
 
 .PHONY: link_tmuxinator
-link_tmuxinator : install_tmuxinator
+link_tmuxinator :
 	@$(call linkf,tmux/.tmuxinator,.tmuxinator)
 
 # Inconsolata is preferred terminal font.
@@ -525,30 +534,30 @@ install_vundle : install_git
 		 || git clone https://github.com/gmarik/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
 
 .PHONY: configure_xinit
-configure_xinit : link_xinit
+configure_xinit : install_xinit link_xinit
 
 .PHONY: install_xinit
 install_xinit :
 	$(call install_prog,xinit)
 
 .PHONY: link_xinit
-link_xinit : install_xinit
+link_xinit :
 	$(call linkf,x/.xserverrc,.xserverrc)
 	$(call linkf,x/.xinitrc,.xinitrc)
 
 .PHONY: configure_xmobar
-configure_xmobar : link_xmobar
+configure_xmobar : install_xmobar link_xmobar
 
 .PHONY: install_xmobar
 install_xmobar :
 	$(call install_prog,xmobar)
 
 .PHONY: link_xmobar
-link_xmobar : install_xmobar
+link_xmobar :
 	$(call linkf,x/.xmobarrc,.xmobarrc)
 
 .PHONY: configure_xmonad
-configure_xmonad : configure_rofi link_xmonad configure_xorg
+configure_xmonad : configure_rofi install_xmonad link_xmonad configure_xorg
 
 .PHONY: install_xmonad
 install_xmonad : configure_gcc configure_glibc configure_xmobar
@@ -556,7 +565,7 @@ install_xmonad : configure_gcc configure_glibc configure_xmobar
 	$(call install_prog,xmonad_contrib)
 
 .PHONY: link_xmonad
-link_xmonad : install_xmonad
+link_xmonad :
 	$(call linkf,x/.xmonad/xmonad.hs,.xmonad/xmonad.hs)
 
 .PHONY: configure_xorg
@@ -585,14 +594,14 @@ link_xresources :
 	$(call linkf,x/.Xresources,.Xresources)
 
 .PHONY: configure_xscreensaver
-configure_xscreensaver : link_xscreensaver
+configure_xscreensaver : install_xscreensaver link_xscreensaver
 
 .PHONY: install_xscreensaver
 install_xscreensaver :
 	$(call install_prog,xscreensaver)
 
 .PHONY: link_xscreensaver
-link_xscreensaver : install_xscreensaver
+link_xscreensaver :
 	$(call linkf,x/.xscreensaver,.xscreensaver)
 
 .PHONY: configure_xset
