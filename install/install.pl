@@ -145,6 +145,7 @@ sub can_execute {
 }
 
 my %distro_map = (
+    'alpine'    => 'alpine',
     'arch'      => 'arch',
     'debian'    => 'debian',
     'generic'   => 'debian',
@@ -222,6 +223,15 @@ my %base_config = (
 );
 
 my %distro_config = (
+    alpine => {
+        install   => \&distro_alpine_install,
+        installed => \&distro_alpine_installed,
+        version   => {
+            compare => \&distro_alpine_version_compare,
+            current => \&distro_alpine_version_current,
+            latest  => \&distro_alpine_version_latest,
+        },
+    },
     arch => {
         install   => \&distro_arch_install,
         installed => \&distro_arch_installed,
@@ -243,6 +253,91 @@ my %distro_config = (
         },
     },
 );
+
+############
+#  Alpine  #
+############
+
+sub distro_alpine_install {
+    my $program = shift;
+    return system("apk add $program");
+}
+
+sub distro_alpine_current_info {
+    my ($package) = @_;
+    my $raw = `apk version $package`;
+    # will look like (note, only shows if package is already installed):
+    # Installed:         Available:
+    # prog-1.2.3         = 1.2.3
+    # (or...)
+    # prog-1.2.3         < 1.2.4
+    if ($raw =~ /\Q$package\E/) {
+        $raw =~ /^\Q$package\E-([^ ]+)\s+[=<>]\s+([^ ]+)\s*$/m;
+        return (
+            installed => 1,
+            version_current => "$1",
+            version_latest  => "$2",
+        );
+    } else {
+        return (
+            installed => 0,
+        );
+    }
+}
+
+sub distro_alpine_installed {
+    my %info_current  = distro_alpine_current_info(@_);
+    return $info_current{installed};
+}
+
+sub distro_alpine_version_compare {
+    my (undef, $current, $latest) = @_;
+    my $comp = 'apk version -t';
+    chomp (my $cmp = `$comp $current $latest`);
+    if ($cmp eq '<') {
+        return -1;
+    }
+    if ($cmp eq '=') {
+        return 0;
+    }
+    if ($cmp eq '>') {
+        return 1;
+    }
+}
+
+sub distro_alpine_version_current {
+    my ($package) = @_;
+    unless (distro_alpine_installed($package)) {
+        error("$package is not installed with apk");
+    }
+    my %info = distro_alpine_current_info($package);
+    return $info{version_current};
+}
+
+sub distro_alpine_version_latest {
+    my ($package) = @_;
+    if (distro_alpine_installed($package)) {
+        my %info = distro_alpine_current_info($package);
+        return $info{version_latest};
+    }
+    # otherwise parse from remote info
+    my $raw = `apk info $package`;
+    $raw =~ /^\Q$package\E-([^ ]+) installed size/m;
+    return $1;
+}
+
+sub with_alpine_config {
+    my ($package) = @_;
+    return (
+        install   => sub { distro_alpine_install($package) },
+        installed => sub { distro_alpine_installed($package) },
+        version   => {
+            compare => \&distro_alpine_version_compare,
+            current => sub { distro_alpine_version_current($package) },
+            latest  => sub { distro_alpine_version_latest($package) },
+        },
+    );
+}
 
 ##########
 #  Arch  #
