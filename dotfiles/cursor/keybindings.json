@@ -1,0 +1,34 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+i",
+        "command": "composerMode.agent"
+    },
+    {
+        "key": "ctrl+t j",
+        "command": "workbench.action.terminal.focus"
+    },
+    {
+        "key": "ctrl+t k",
+        "command": "workbench.action.focusActiveEditorGroup"
+    },
+    {
+        "key": "ctrl+shift+0",
+        "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-composer.showBackgroundAgentHistory",
+        "when": "backgroundComposerEnabled || showBackgroundAgentHistoryAction"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-cursor.composer.openAgentWindow",
+        "when": "cursor.appLayoutEnabled && cursor.appLayout != 'agent'"
+    },
+    {
+        "key": "ctrl+alt+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
+    }
+]
