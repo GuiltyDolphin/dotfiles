@@ -1,0 +1,132 @@
+{
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Solarized Light",
+    "vim.leader": " ",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<leader>",
+                "e",
+                "v"
+            ],
+            "commands": [
+                {
+                    "command": "workbench.action.openSettingsJson"
+                }
+            ]
+        },
+        {
+            "before": [
+                ",",
+                "g",
+                "r"
+            ],
+            "commands": [
+                {
+                    "command": "editor.action.referenceSearch.trigger"
+                }
+            ]
+        },
+        {
+            "before": [
+                ",",
+                "r",
+                "r"
+            ],
+            "commands": [
+                {
+                    "command": "editor.action.rename"
+                }
+            ]
+        },
+        {
+            "before": [
+                ",",
+                "t",
+                "h"
+            ],
+            "commands": [
+                {
+                    "command": "editor.action.showHover"
+                }
+            ]
+        },
+        {
+            "before": [
+                ":"
+            ],
+            "after": [
+                ";"
+            ]
+        },
+        {
+            "before": [
+                ";"
+            ],
+            "after": [
+                ":"
+            ]
+        },
+        {
+            "before": ["<C-p>"],
+            "commands": [
+                {
+                    "command": "workbench.action.quickOpen"
+                }
+            ]
+        },
+        {
+            "before": [",", "f", "s"],
+            "commands": [
+                {
+                    "command": "workbench.action.showAllSymbols"
+                }
+            ]
+        }
+
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                ":"
+            ],
+            "after": [
+                ";"
+            ]
+        },
+        {
+            "before": [
+                ";"
+            ],
+            "after": [
+                ":"
+            ]
+        }
+    ],
+    "python.analysis.venvPath": "${workspaceFolder}/.venv",
+    "python.analysis.venv": ".venv",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "workbench.action.focusActiveEditorGroup"
+    ],
+    "remote.autoForwardPortsSource": "hybrid",
+    "claudeCode.selectedModel": "default",
+    "claudeCode.preferredLocation": "sidebar",
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/node_modules/*/**": true
+    },
+    "kotlin.languageServer.watchFiles": [
+        "**/*.kt",
+        "**/*.kts",
+        "**/*.java",
+        "**/pom.xml",
+        "**/build.gradle",
+        "**/settings.gradle"
+    ],
+    "kotlin.indexing.enabled": false,
+    "kotlin.languageServer.enabled": false,
+}
