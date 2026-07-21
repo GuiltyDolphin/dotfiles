@@ -77,7 +77,7 @@ PERSONAL_ENV_FILE="$HOME/.env-personal"
 if [[ -r "$PERSONAL_ENV_FILE" ]]; then
     source "$PERSONAL_ENV_FILE"
 else
-    echo "Personal environment file '$PERSONAL_ENV_FILE' not found"
+    echo "Personal environment file '$PERSONAL_ENV_FILE' not found" >&2
 fi
 
 ###########
